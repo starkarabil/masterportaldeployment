@@ -1,3 +1,13 @@
+var scriptTags = document.getElementsByTagName("script"),
+    scriptTagsArray = Array.prototype.slice.call(scriptTags),
+    configPath;
+
+scriptTagsArray.forEach(function (scriptTag) {
+    if (scriptTag.getAttribute("data-lgv-config") !== null) {
+        configPath = scriptTag.getAttribute("data-lgv-config");
+    }
+}, this);
+
 requirejs.config({
     waitSeconds: 60,
     paths: {
@@ -16,7 +26,7 @@ requirejs.config({
         moment: "../components/moment/min/moment.min",
         eventbus: "EventBus",
         geoapi: "GeoAPI",
-        config: "http://localhost:3000/lgv-cors/portalconfigs/mml/config",
+        config: configPath + "config",
         app: "app",
         templates: "../templates",
         modules: "../modules"
