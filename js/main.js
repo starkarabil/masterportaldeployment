@@ -1,4 +1,4 @@
-require.config({
+requirejs.config({
     waitSeconds: 60,
     paths: {
         openlayers: "../components/openlayers/ol-debug",
@@ -16,7 +16,7 @@ require.config({
         moment: "../components/moment/min/moment.min",
         eventbus: "EventBus",
         geoapi: "GeoAPI",
-        config: window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1) + "config",
+        config: "http://localhost:3000/lgv-cors/portalconfigs/mml/config",
         app: "app",
         templates: "../templates",
         modules: "../modules"
@@ -32,7 +32,15 @@ require.config({
             exports: "ol"
         }
     },
-    urlArgs: "bust=" + (new Date()).getTime()
+    urlArgs: "bust=" + (new Date()).getTime(),
+    config: {
+        // benötigt, um in der Entwicklungsumgebung, Templates cross-domain laden zu können, s. https://github.com/requirejs/text#xhr-restrictions
+        text: {
+            useXhr: function (url, protocol, hostname, port) {
+                return true;
+            }
+        }
+    }
 });
 
 define(["app"], function () {

@@ -9,7 +9,7 @@ define([
         Preparser;
 
     Preparser = Backbone.Model.extend({
-        url: "config.json",
+        url: "http://localhost:3000/lgv-cors/portalconfigs/mml/config.json",
         initialize: function () {
             this.fetch({async: false});
         },
