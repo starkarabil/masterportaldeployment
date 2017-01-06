@@ -24,6 +24,8 @@ define(function (require) {
         initialize: function () {
             var channel = Radio.channel("GFIPopup");
 
+            $("#lgv-container").append("<div id='gfipopup'></div>");
+
             channel.on({
                 "closeGFIParams": this.destroy
             }, this);
