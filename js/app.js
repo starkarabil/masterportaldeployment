@@ -13,6 +13,14 @@ define("app",
     "modules/alerting/view"
     ], function ($, Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter) {
 
+    // initial die wichtigsten DIVs an "#lgv-container" appenden
+    $("#lgv-container").append("<div id='loader'><img src='../../img/ajax-loader.gif'></div>");
+//    Hack um die Bildschirmauflösung zu bekommen
+    $("#lgv-container").append("<div id='dpidiv' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>");
+    $("#lgv-container").append("<div id='map'></div>");
+    $("#lgv-container").append("<div id='popup'></div>");
+    $("#lgv-container").append("<div id='gfipopup'></div>");
+
     // Core lade
     new Autostarter();
     new Util();
