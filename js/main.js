@@ -1,6 +1,6 @@
 var scriptTags = document.getElementsByTagName("script"),
     scriptTagsArray = Array.prototype.slice.call(scriptTags),
-    configPath;
+    configPath = window.location.href;
 
 scriptTagsArray.forEach(function (scriptTag) {
     if (scriptTag.getAttribute("data-lgv-config") !== null) {

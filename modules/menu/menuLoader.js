@@ -1,15 +1,13 @@
-define([
-    "backbone.radio",
-    "modules/menu/desktop/listViewLight",
-    "modules/menu/desktop/listView",
-    "modules/menu/mobile/listView"
-], function () {
+define(function (require) {
     var Radio = require("backbone.radio"),
+        MenuTemplate = require("text!modules/menu/template.html"),
         MenuLoader;
 
     MenuLoader = function () {
         var channel = Radio.channel("MenuLoader");
 
+        // Bootstrap Navigation wird an den Wrapper gehängt
+        $("#lgv-container").append(_.template(MenuTemplate));
         this.treeType = Radio.request("Parser", "getTreeType");
         this.loadMenu = function (caller) {
             var isMobile = Radio.request("Util", "isViewMobile");
