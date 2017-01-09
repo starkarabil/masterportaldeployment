@@ -46,7 +46,7 @@ define([
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            $("body").append(this.$el.html(this.template(attr)));
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
             $(".legend-win-content").css("max-height", ($(window).height() * 0.7));
             this.$el.draggable({
                 containment: "#map",

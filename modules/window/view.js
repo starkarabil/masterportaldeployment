@@ -42,11 +42,11 @@ define([
 
             if (this.model.get("isVisible") === true) {
                 if (this.model.get("isCollapsed") === true) {
-                    $("body").append(this.$el.html(this.templateMin(attr)));
+                    $("#lgv-container").append(this.$el.html(this.templateMin(attr)));
                     this.$el.css({"top": "", "bottom": "0", "left": "0", "margin-bottom": "60px"});
                 }
                 else {
-                    $("body").append(this.$el.html(this.templateMax(attr)));
+                    $("#lgv-container").append(this.$el.html(this.templateMax(attr)));
                     this.$el.css({"top": this.model.get("maxPosTop"), "bottom": "", "left": this.model.get("maxPosLeft"), "margin-bottom": "30px"});
                 }
                 this.model.sendParamsToWinCotent();

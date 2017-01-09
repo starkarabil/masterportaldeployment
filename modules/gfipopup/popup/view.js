@@ -24,6 +24,8 @@ define(function (require) {
         initialize: function () {
             var channel = Radio.channel("GFIPopup");
 
+            $("#lgv-container").append("<div id='gfipopup'></div>");
+
             channel.on({
                 "closeGFIParams": this.destroy
             }, this);
@@ -107,7 +109,7 @@ define(function (require) {
 
             if (this.gfiWindow !== "attached") {
                 this.$el.attr("class", "gfi-win");
-                $("body").append(this.$el.html(this.template(attr)));
+                $("#lgv-container").append(this.$el.html(this.template(attr)));
                 $(".gfi-content").css("max-height", ($(window).height() * 0.7));
             }
             else {

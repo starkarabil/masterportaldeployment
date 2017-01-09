@@ -17,7 +17,7 @@ define([
             'click .close': 'buttonclick'
         },
         render: function () {
-            $("body").append(this.$el.html(this.template()));
+            $("#lgv-container").append(this.$el.html(this.template()));
         },
         buttonclick: function (evt) {
             if (evt.currentTarget.id === 'cookiefalse') {

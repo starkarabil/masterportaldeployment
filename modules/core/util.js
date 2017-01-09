@@ -11,6 +11,8 @@ define([
         initialize: function () {
             var channel = Radio.channel("Util");
 
+            $("#lgv-container").append("<div id='loader'><img src='../../../img/ajax-loader.gif'></div>");
+
             channel.reply({
                 "isViewMobile": this.getIsViewMobile,
                 "getPath": this.getPath,

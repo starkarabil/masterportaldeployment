@@ -21,6 +21,8 @@ define(function (require) {
         *
         */
         initialize: function () {
+            $("#lgv-container").append("<div id='map'></div>");
+
             this.listenTo(this, "change:initalLoading", this.initalLoadingChanged);
             var channel = Radio.channel("Map"),
                 mapView = new MapView();

@@ -23,7 +23,7 @@ define([
                 $(".scale-line").css("right", 0);
             }
             else {
-                $("body").append(this.$el);
+                $("#lgv-container").append(this.$el);
                 $(".scale-line").css("left", 0);
             }
 

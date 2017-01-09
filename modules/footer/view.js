@@ -15,7 +15,7 @@ define([
         render: function () {
             var attr = this.model.toJSON();
 
-            $("body").append(this.$el.html(this.template(attr)));
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
         }
     });
 

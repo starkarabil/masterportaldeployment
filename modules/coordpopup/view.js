@@ -12,6 +12,7 @@ define([
             "click .glyphicon-remove": "destroy"
         },
         initialize: function () {
+            $("#lgv-container").append("<div id='popup'></div>");
             this.listenTo(this.model, "change:coordinateGeo", this.render);
         },
         render: function () {

@@ -83,6 +83,8 @@ define([
         initialize: function () {
             var channel = Radio.channel("MapView");
 
+            $("#lgv-container").append("<div id='dpidiv' style='height: 1in; left: -100%; position: absolute; top: -100%; width: 1in;'></div>");
+
             channel.reply({
                 "getProjection": function () {
                     return this.get("projection");

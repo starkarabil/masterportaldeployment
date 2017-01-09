@@ -16,7 +16,7 @@ define([
             this.render();
         },
         render: function () {
-            $("body").append(this.$el.html(this.template()));
+            $("#lgv-container").append(this.$el.html(this.template()));
         },
         setCoordinates: function (evt) {
             var coordinates = evt.map.getCoordinateFromPixel(evt.pixel),
