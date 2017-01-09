@@ -17,7 +17,7 @@ define([
         initialize: function () {
             Radio.trigger("Map", "registerListener", "pointermove", this.checkForEachFeatureAtPixel, this);
 
-            $("body").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
+            $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
 
             this.set("mhpOverlay", new ol.Overlay({
                 element: $("#mousehoverpopup")[0]

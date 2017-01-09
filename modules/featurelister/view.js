@@ -199,6 +199,7 @@ define([
         */
         hoverTr: function (evt) {
             var featureid = evt.currentTarget.id;
+
             this.model.unscaleFeature();
             this.model.scaleFeature(featureid);
         },
@@ -328,7 +329,7 @@ define([
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            $("body").append(this.$el.html(this.template(attr)));
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
             this.$el.draggable({
                 containment: "#map",
                 handle: ".featurelist-win-header",

@@ -32,7 +32,7 @@ define([
             });
         },
         render: function () {
-            $("body").append(this.$el);
+            $("#lgv-container").append(this.$el);
         },
         removeWindow: function () {
             this.$el.hide("slow");
