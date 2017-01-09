@@ -59,7 +59,7 @@ define([
             html += "</div>";
 
             if (!$("#messages").length) {
-                $("body").prepend(messagediv);
+                $("#lgv-container").prepend(messagediv);
             }
 
             $("#messages").prepend(html);

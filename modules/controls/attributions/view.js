@@ -45,7 +45,7 @@ define([
         render: function () {
             var attr = this.model.toJSON();
 
-            $("body").append(this.$el.html(this.templateShow(attr)));
+            $("#lgv-container").append(this.$el.html(this.templateShow(attr)));
             if (this.model.getIsVisibleInMap() === true) {
                 this.$el.show();
                 this.$el.addClass("attributions-background-color");
