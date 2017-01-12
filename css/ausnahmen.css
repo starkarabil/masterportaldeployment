@@ -1,0 +1,16 @@
+/*aus kml-import*/
+.lgv-container input.file {
+    position: relative;
+    height: 100%;
+    text-align: left;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+}
+
+
+.lgv-container input[type="file" i]::-webkit-file-upload-button {
+    opacity:0;
+    width: 0px;
+}

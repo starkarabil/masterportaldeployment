@@ -17,9 +17,9 @@ define([
             "click .glyphicon-remove": "toggle"
         },
         initialize: function () {
-            $(window).resize(function () {
+            $("#lgv-container").resize(function () {
                 if ($(".legend-win-content").height() !== null) {
-                    $(".legend-win-content").css("max-height", ($(window).height() * 0.7));
+                    $(".legend-win-content").css("max-height", ($("#lgv-container").height() * 0.7));
                 }
             });
 
@@ -47,7 +47,7 @@ define([
 
             this.$el.html(this.template(attr));
             $("#lgv-container").append(this.$el.html(this.template(attr)));
-            $(".legend-win-content").css("max-height", ($(window).height() * 0.7));
+            $(".legend-win-content").css("max-height", ($("#lgv-container").height() * 0.7));
             this.$el.draggable({
                 containment: "#map",
                 handle: ".legend-win-header"

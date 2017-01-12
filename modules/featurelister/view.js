@@ -356,13 +356,13 @@ define([
             var totalFeaturesCount = this.model.get("layer").features ? this.model.get("layer").features.length : -1,
                 shownFeaturesCount = $("#featurelist-list-table tr").length - 1,
                 posY = this.$el[0].style.top ? parseInt(this.$el[0].style.top) : parseInt(this.$el.css("top")),
-                winHeight = $(window).height(),
+                winHeight = $("#lgv-container").height(),
                 marginTop = parseInt(this.$el.css("marginTop")),
                 marginBottom = parseInt(this.$el.css("marginBottom")),
                 header = 107,
                 footer = shownFeaturesCount < totalFeaturesCount ? 71 : 0,
                 maxHeight = winHeight - posY - marginTop - marginBottom - header - footer - 5,
-                maxWidth = $(window).width() * 0.4;
+                maxWidth = $("#lgv-container").width() * 0.4;
 
             $(".featurelist-list-table").css("max-height", maxHeight);
             $(".featurelist-list-table").css("max-width", maxWidth);

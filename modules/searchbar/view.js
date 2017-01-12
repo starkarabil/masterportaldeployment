@@ -93,8 +93,8 @@ define([
 
             this.listenTo(Radio.channel("MenuLoader"), {
                 "ready": function () {
-                    if ($(window).width() >= 768) {
-                        $("#searchInput").width($(window).width() - $(".desktop").width() - 150);
+                    if ($("#lgv-container").width() >= 768) {
+                        $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
                     }
                 }
             });
@@ -144,13 +144,13 @@ define([
             }
 
             // Hack für flexible Suchleiste
-            $(window).on("resize", function () {
-                if ($(window).width() >= 768) {
-                    $("#searchInput").width($(window).width() - $(".desktop").width() - 150);
+            $("#lgv-container").on("resize", function () {
+                if ($("#lgv-container").width() >= 768) {
+                    $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
                 }
             });
-            if ($(window).width() >= 768) {
-                $("#searchInput").width($(window).width() - $(".desktop").width() - 150);
+            if ($("#lgv-container").width() >= 768) {
+                $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
             }
         },
         events: {
@@ -186,7 +186,7 @@ define([
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            if (window.innerWidth < 768) {
+            if ($("#lgv-container").width() < 768) {
                 $(".navbar-toggle").before(this.$el); // vor dem toggleButton
             }
             else {

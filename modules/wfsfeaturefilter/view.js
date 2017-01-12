@@ -164,7 +164,7 @@ define([
             }
         },
         setMaxHeight: function () {
-            var maxHeight = $(window).height() - 160;
+            var maxHeight = $("#lgv-container").height() - 160;
 
             $("#wfsFilterWin").css("max-height", maxHeight);
         }

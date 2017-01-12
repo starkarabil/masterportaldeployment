@@ -5,13 +5,13 @@ define([
     var AttributionView = Backbone.View.extend({
         model: Attribution,
         initialize: function () {
-            $(window).resize($.proxy(function () {
+            $("#lgv-container").resize($.proxy(function () {
                 this.render();
             }, this));
             this.listenTo(this.model, "change:attribution", this.render);
         },
         render: function () {
-            if (window.innerWidth < 768) {
+            if ($("#lgv-container").width() < 768) {
                 this.model.get("attribution").setCollapsed(true);
             }
             else {

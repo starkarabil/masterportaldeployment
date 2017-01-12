@@ -78,7 +78,7 @@ define(function (require) {
         rerender: function () {
             $(this.model.get("element")).popover({
                 placement: function () {
-                    if (this.getPosition().top > window.innerHeight / 2) {
+                    if (this.getPosition().top > $("#lgv-container").height() / 2) {
                         return "top";
                     }
                     else {
@@ -110,7 +110,7 @@ define(function (require) {
             if (this.gfiWindow !== "attached") {
                 this.$el.attr("class", "gfi-win");
                 $("#lgv-container").append(this.$el.html(this.template(attr)));
-                $(".gfi-content").css("max-height", ($(window).height() * 0.7));
+                $(".gfi-content").css("max-height", ($("#lgv-container").height() * 0.7));
             }
             else {
                 this.$el.html(this.template(attr));
@@ -120,7 +120,7 @@ define(function (require) {
             this.$el.find(".gfi-title").text(this.model.get("gfiTitles")[this.model.get("gfiCounter") - 1]);
             $(this.model.get("element")).popover({
                 placement: function () {
-                    if (this.getPosition().top > window.innerHeight / 2) {
+                    if (this.getPosition().top > $("#lgv-container").height() / 2) {
                         return "top";
                     }
                     else {

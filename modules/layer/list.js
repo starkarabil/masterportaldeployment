@@ -203,7 +203,7 @@ define([
                 response = this.createLayerPerDataset(response);
                 response = this.cloneObjects(response);
                 response = this.cloneByStyle(response);
-                if ($(window).width() >= 768) {
+                if ($("#lgv-container").width() >= 768) {
                 //    this.set("isMobile", false);
                     this.reset(response);
                     this.sendNodeNames();

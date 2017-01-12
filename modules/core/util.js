@@ -39,7 +39,7 @@ define([
                 }
             });
 
-            $(window).on("resize", _.bind(this.toggleIsViewMobile, this));
+            $("#lgv-container").on("resize", _.bind(this.toggleIsViewMobile, this));
         },
         isAndroid: function () {
             return navigator.userAgent.match(/Android/i);
@@ -147,7 +147,7 @@ define([
          * Toggled das Attribut isViewMobile bei über- oder unterschreiten einer Fensterbreite von 768px
          */
         toggleIsViewMobile: function () {
-            if ($(window).width() >= 768) {
+            if ($("#lgv-container").width() >= 768) {
                 this.setIsViewMobile(false);
             }
             else {

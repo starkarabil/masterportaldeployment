@@ -24,11 +24,11 @@ define([
                 }
             });
             this.$el.css({
-                "max-height": window.innerHeight - 100 // 100 fixer Wert für navbar &co.
+                "max-height": $("#lgv-container").height() - 100 // 100 fixer Wert für navbar &co.
             });
-            $(window).resize($.proxy(function () {
+            $("#lgv-container").resize($.proxy(function () {
                 this.$el.css({
-                    "max-height": window.innerHeight - 100 // 100 fixer Wert für navbar &co.
+                    "max-height": $("#lgv-container").height() - 100 // 100 fixer Wert für navbar &co.
                 });
             }, this));
         },

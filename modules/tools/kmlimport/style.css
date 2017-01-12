@@ -1,17 +1,20 @@
 #filechoser {
     color: rgb(255,0,0);
 }
-input[type="file" i]::-webkit-file-upload-button {
+/*ausgelagert in ausnahmen.css, das less nicht mit "i" klarkommt*/
+/*input[type="file" i]::-webkit-file-upload-button {
     opacity:0;
     width: 0px;
-}
+}*/
 
 
 div.fileinputs {
 	position: relative;
 }
 
-input.file {
+/*ausgelagert in ausnahmen.css, das less nicht mit "alpha" klarkommt*/
+
+/*input.file {
 	position: relative;
     height: 100%;
 	text-align: left;
@@ -19,7 +22,7 @@ input.file {
 	filter:alpha(opacity: 0);
 	opacity: 0;
 	z-index: 2;
-}
+}*/
 
 div.fakefile {
 	position: absolute;

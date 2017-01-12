@@ -32,7 +32,7 @@ define([
             }
         },
         setMaxHeight: function () {
-            var height = $(window).height() - 130;
+            var height = $("#lgv-container").height() - 130;
 
             $(".win-body").css("max-height", height);
             $(".win-body").css("max-width", 400);
