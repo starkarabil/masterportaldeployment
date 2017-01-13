@@ -527,7 +527,6 @@
   cursor: move;
 }
 .lgv-container .gfi-win > .gfi-content {
-  width: 100%;
   overflow-y: auto;
   background-color: #ffffff;
 }
@@ -1631,7 +1630,7 @@
 .lgv-container .attributions-view dl {
   margin-bottom: 0;
   font-size: 12px;
-  max-width: calc(-310vw);
+  max-width: calc(-310%);
 }
 .lgv-container .attributions-view dd {
   margin-bottom: 8px;
@@ -1829,16 +1828,19 @@
 .lgv-container .layerinformation-modal > .modal-body > .metalink {
   float: right;
 }
-.lgv-container .alert {
-  top: 25%;
-  text-align: justify;
-}
 .lgv-container .messages {
   position: absolute;
-  top: 25%;
-  z-index: 2001;
-  transform: translate(-50%);
-  left: 50%;
+  top: 70px;
+  overflow-y: auto;
+  margin-left: 25%;
+  margin-right: 25%;
+  max-width: 50%;
+  z-index: 9000;
+}
+.lgv-container .messages > .alert {
+  position: relative;
+  text-align: justify;
+  word-wrap: break-word;
 }
 .lgv-container #searchMarker {
   top: 3px;
@@ -2337,6 +2339,8 @@
   transition: .5s;
 }
 .lgv-container #map {
+  position: absolute;
+  top: 0px;
   height: 100%;
   width: 100%;
 }

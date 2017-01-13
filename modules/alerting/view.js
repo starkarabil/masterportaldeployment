@@ -16,6 +16,8 @@ define([
     var AlertingView = Backbone.View.extend({
         model: Model,
         initialize: function () {
+            $("#lgv-container").append("<div id='messages' class='messages'></div>");
+            this.setMaxHeight();
             EventBus.on("alert", this.checkVal, this);
             EventBus.on("alert:remove", this.remove, this);
             var channel = Radio.channel("Alert");
@@ -49,8 +51,8 @@ define([
         },
         render: function (message, kategorie, dismissable) {
             var dismissablestring = (dismissable === true) ? " alert-dismissable" : "",
-                html = "<div id='alertmessage' class='alert " + kategorie + dismissablestring + "' role='alert'>",
-                messagediv = "<div id='messages' class='messages'></div>";
+                html = "<div id='alertmessage' class='alert " + kategorie + dismissablestring + "' role='alert'>";
+                // messagediv = "<div id='messages' class='messages'></div>";
 
             if (dismissable === true) {
                 html += "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times</span></button>";
@@ -58,13 +60,16 @@ define([
             html += message;
             html += "</div>";
 
-            if (!$("#messages").length) {
-                $("#lgv-container").prepend(messagediv);
-            }
-
             $("#messages").prepend(html);
 
         },
+
+        setMaxHeight: function () {
+            var height = $("#lgv-container").height() - 130;
+
+            $("#messages").css("max-height", height);
+        },
+
         remove: function () {
             $("#alertmessage").remove();
         }

@@ -1,12 +1,16 @@
-.alert {
-    top: 25%;
-    text-align: justify;
-}
-
 .messages {
     position: absolute;
-    top: 25%;
-    z-index: 2001;
-    transform: translate(-50%);
-    left: 50%;
+    top: 70px;
+    overflow-y: auto;
+    margin-left: 25%;
+    margin-right: 25%;
+    max-width: 50%;
+    z-index: 9000;
 }
+
+.messages > .alert {
+    position: relative;
+    text-align: justify;
+    word-wrap:break-word;
+}
+

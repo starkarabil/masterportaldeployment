@@ -13,7 +13,6 @@
     cursor: move;
 }
 .gfi-win > .gfi-content {
-    width: 100%;
     overflow-y: auto;
     background-color: rgb(255, 255, 255);
 }

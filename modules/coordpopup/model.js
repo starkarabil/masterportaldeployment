@@ -9,12 +9,14 @@ define([
 
     var CoordPopup = Backbone.Model.extend({
          defaults: {
-            element: $("#popup"),
+            // element: $("#popup"),
             coordOverlay: {},
             coordinateUTM: {},
             coordinateGeo: {}
         },
         initialize: function () {
+            $("#lgv-container").append("<div id='coordpopup'></div>");
+            this.setElement($("#coordpopup"));
             this.listenTo(Radio.channel("Map"), {
                 "setPositionCoordPopup": this.setPosition
             });
@@ -22,6 +24,7 @@ define([
             this.setCoordOverlay(new ol.Overlay({
                 element: this.getElement()[0]
             }));
+
             Radio.trigger("Map", "addOverlay", this.getCoordOverlay());
         },
         getCoordOverlay: function () {
