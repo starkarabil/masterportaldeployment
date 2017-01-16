@@ -71,7 +71,7 @@ require.s.contexts._.execCb = function (name, callback, args, exports) {
        modulesLoading--;
 
         if (lastModuleRequired && modulesLoading === 0) {
-            console.log("Finished loading Modules");
+            window.postMessage("Portal ready", "*");
         }
     }
     return result;
