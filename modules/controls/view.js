@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio"
-], function (Backbone, Radio) {
+
+], function () {
 
     var ControlsView = Backbone.View.extend({
         className: "container-fluid controls-view",

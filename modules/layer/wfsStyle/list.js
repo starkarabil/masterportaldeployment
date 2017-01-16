@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "modules/layer/wfsStyle/model",
+        "modules/layer/wfsStyle/model",
     "config",
     "eventbus",
-    "backbone.radio"
-], function (Backbone, WFSStyle, Config, EventBus, Radio) {
+
+], function (WFSStyle, Config, EventBus) {
 
     var StyleList = Backbone.Collection.extend ({
         model: WFSStyle,

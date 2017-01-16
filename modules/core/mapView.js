@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "config"
 ], function () {
 
     var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+
         ol = require("openlayers"),
         Config = require("config"),
         MapView;

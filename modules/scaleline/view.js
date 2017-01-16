@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "modules/scaleline/model",
+        "modules/scaleline/model",
     "text!modules/scaleline/template.html",
     "config"
-], function (Backbone, ScaleLine, ScaleLineTemplate, Config) {
+], function (ScaleLine, ScaleLineTemplate, Config) {
 
     var ScaleLineView = Backbone.View.extend({
         model: ScaleLine,

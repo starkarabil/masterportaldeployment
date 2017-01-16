@@ -1,11 +1,10 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus",
     "config",
     "openlayers",
     "modules/cookie/view"
-], function (Backbone, Radio, EventBus, Config, ol, cookie) {
+], function (EventBus, Config, ol, cookie) {
     "use strict";
     var GrenznachweisModel = Backbone.Model.extend({
         defaults: {

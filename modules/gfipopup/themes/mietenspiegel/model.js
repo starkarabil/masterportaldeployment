@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config",
     "eventbus"
-], function (Backbone, Radio, Config, EventBus) {
+], function (Config, EventBus) {
     "use strict";
     var GFIModel = Backbone.Model.extend({
         /**

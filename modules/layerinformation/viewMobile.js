@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "modules/layerinformation/model",
+        "modules/layerinformation/model",
     "text!modules/layerinformation/templateMobile.html"
-], function (Backbone, Layerinformation, LayerInformationMobileTemplate) {
+], function (Layerinformation, LayerInformationMobileTemplate) {
 
     var LayerInformationView = Backbone.View.extend({
         model: new Layerinformation(),

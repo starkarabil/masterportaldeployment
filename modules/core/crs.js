@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "proj4",
     "config"
 ], function () {
 
     var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+
         Proj4 = require("proj4"),
         Config = require("config"),
         CRS;

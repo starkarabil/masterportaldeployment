@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "eventbus",
+        "eventbus",
     "config",
     "videojs"
-], function (Backbone, EventBus, Config, VideoJS) {
+], function (EventBus, Config, VideoJS) {
 
     var VideoModel = Backbone.Model.extend({
         /**

@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "text!modules/searchbar/template.html",
+        "text!modules/searchbar/template.html",
     "text!modules/searchbar/templateRecommendedList.html",
     "text!modules/searchbar/templateHitList.html",
     "modules/searchbar/model",
     "eventbus",
-    "backbone.radio"
-], function (Backbone, SearchbarTemplate, SearchbarRecommendedListTemplate, SearchbarHitListTemplate, Searchbar, EventBus, Radio) {
+
+], function (SearchbarTemplate, SearchbarRecommendedListTemplate, SearchbarHitListTemplate, Searchbar, EventBus) {
     "use strict";
     return Backbone.View.extend({
         model: Searchbar,

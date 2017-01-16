@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "config"
-], function (Backbone, Radio, ol, Config) {
+], function (ol, Config) {
 
     var WFSStyle = Backbone.Model.extend({
         defaults: {

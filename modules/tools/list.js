@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/tools/model",
     "eventbus",
     "config"
-], function (Backbone, Radio, Tool, EventBus, Config) {
+], function (Tool, EventBus, Config) {
 
     var ToolList = Backbone.Collection.extend({
         model: Tool,

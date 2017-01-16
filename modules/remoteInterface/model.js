@@ -1,6 +1,6 @@
 define(function (require) {
-    var Radio = require("backbone.radio"),
-        Backbone = require("backbone"),
+
+    var Backbone = require("backbone"),
         ol = require("openlayers"),
         RemoteInterface;
 

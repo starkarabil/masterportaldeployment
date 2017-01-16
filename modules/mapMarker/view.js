@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "modules/mapMarker/model",
     "eventbus"
-    ], function (Backbone, Radio, ol, MapHandlerModel, EventBus) {
+    ], function (ol, MapHandlerModel, EventBus) {
     "use strict";
 
     var searchVector = new ol.layer.Vector({

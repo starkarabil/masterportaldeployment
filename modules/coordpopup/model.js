@@ -1,11 +1,10 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "proj4",
     "config",
     "bootstrap/popover"
-], function (Backbone, Radio, ol, proj4, Config) {
+], function (ol, proj4, Config) {
 
     var CoordPopup = Backbone.Model.extend({
          defaults: {

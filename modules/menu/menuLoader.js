@@ -1,13 +1,11 @@
 define([
-    "backbone.radio",
+
     "modules/menu/desktop/listViewLight",
     "modules/menu/desktop/listView",
     "modules/menu/mobile/listView"
 ], function () {
-    var Radio = require("backbone.radio"),
-        MenuLoader;
 
-    MenuLoader = function () {
+    var MenuLoader = function () {
         var channel = Radio.channel("MenuLoader");
 
         this.treeType = Radio.request("Parser", "getTreeType");

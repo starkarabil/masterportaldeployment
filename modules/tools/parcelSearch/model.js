@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "underscore.string",
     "modules/core/util"
-], function (Backbone, Radio, _String, Util) {
+], function (_String, Util) {
 
     var ParcelSearch = Backbone.Model.extend({
         defaults: {

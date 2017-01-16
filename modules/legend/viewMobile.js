@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "text!modules/legend/templateMobile.html",
+        "text!modules/legend/templateMobile.html",
     "modules/legend/model",
-    "backbone.radio"
-], function (Backbone, LegendTemplate, Legend, Radio) {
+
+], function (LegendTemplate, Legend) {
 
     var MobileLegendView = Backbone.View.extend({
         model: new Legend(),

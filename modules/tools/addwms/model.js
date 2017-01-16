@@ -7,10 +7,9 @@
 **/
 
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers"
-], function (Backbone, Radio, ol) {
+], function (ol) {
 
     var AddWMSModel = Backbone.Model.extend({
         initialize: function () {

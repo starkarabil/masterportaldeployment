@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus",
     "config",
     "modules/core/requestor"
-], function (Backbone, Radio, EventBus, Config, Requestor) {
+], function (EventBus, Config, Requestor) {
 
     var FeatureListerModel = Backbone.Model.extend({
         defaults: {

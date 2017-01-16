@@ -1,11 +1,10 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/menu/desktop/folder/templateTree.html"
 ], function () {
 
     var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+
         FolderTemplate = require("text!modules/menu/desktop/folder/templateTree.html"),
         FolderView;
 

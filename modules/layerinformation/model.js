@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config",
     "moment"
-], function (Backbone, Radio, Config, moment) {
+], function (Config, moment) {
 
     var LayerInformation = Backbone.Model.extend({
         defaults: {

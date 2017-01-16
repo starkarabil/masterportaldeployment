@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "eventbus",
     "config"
-], function (Backbone, Radio, ol, EventBus, Config) {
+], function (ol, EventBus, Config) {
 
     var Attribution = Backbone.Model.extend({
         defaults: {

@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "eventbus",
     "config"
-], function (Backbone, Radio, ol, EventBus, Config) {
+], function (ol, EventBus, Config) {
     "use strict";
     var RoutingModel = Backbone.Model.extend({
         /**

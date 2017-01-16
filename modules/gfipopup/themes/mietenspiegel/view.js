@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/themes/mietenspiegel/template.html",
+        "text!modules/gfipopup/themes/mietenspiegel/template.html",
     "text!modules/gfipopup/themes/mietenspiegel/template-formular.html",
     "modules/gfipopup/themes/mietenspiegel/model",
     "eventbus"
-], function (Backbone, GFITemplate, GFITemplateFormular, GFIModel, EventBus) {
+], function (GFITemplate, GFITemplateFormular, GFIModel, EventBus) {
     "use strict";
     var GFIContentMietenspiegelView = Backbone.View.extend({
         /*

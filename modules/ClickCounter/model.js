@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio"
-], function (Backbone, Radio) {
+
+], function () {
 
     var ClickCounter = Backbone.Model.extend({
         defaults: {

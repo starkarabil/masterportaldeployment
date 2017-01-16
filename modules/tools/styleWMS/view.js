@@ -1,6 +1,5 @@
 define([
-    "backbone",
-    "text!modules/tools/styleWMS/template.html",
+        "text!modules/tools/styleWMS/template.html",
     "modules/tools/styleWMS/model",
     "colorpicker"
 ], function () {

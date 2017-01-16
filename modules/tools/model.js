@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus"
-], function (Backbone, Radio, EventBus) {
+], function (EventBus) {
 
     var Tools = Backbone.Model.extend({
         defaults: {

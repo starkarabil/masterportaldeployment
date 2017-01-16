@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "config"
-], function (Backbone, Radio, ol, Config) {
+], function (ol, Config) {
 
     var Measure = Backbone.Model.extend({
         defaults: {

@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/controls/orientation/poi/template.html",
     "modules/controls/orientation/poi/collection",
     "modules/controls/orientation/poi/feature/view",
     "bootstrap/tab",
     "bootstrap/modal"
-], function (Backbone, Radio, PointOfInterestListTemplate, PointOfInterestList, PointOfInterestView) {
+], function (PointOfInterestListTemplate, PointOfInterestList, PointOfInterestView) {
 
     var PointOfInterestListView = Backbone.View.extend({
         collection: PointOfInterestList,

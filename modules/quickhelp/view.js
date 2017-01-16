@@ -1,13 +1,12 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/quickhelp/templateSearch.html",
     "text!modules/quickhelp/templateTree.html",
     "text!modules/quickhelp/templateMeasureTool.html",
     "eventbus",
     "modules/core/util",
     "jqueryui/widgets/draggable"
-], function (Backbone, Radio, TemplateSearch, TemplateTree, TemplateMeasureTool, EventBus, Util) {
+], function (TemplateSearch, TemplateTree, TemplateMeasureTool, EventBus, Util) {
 
     var view = Backbone.View.extend({
         templateSearch: _.template(TemplateSearch),

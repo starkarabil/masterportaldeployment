@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio"
-], function (Backbone, Radio) {
+    //
+], function () {
 
     var Autostarter = Backbone.Model.extend({
         defaults: {

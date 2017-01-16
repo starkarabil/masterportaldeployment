@@ -1,7 +1,7 @@
 define(function (require) {
 
     var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+
         ol = require("openlayers"),
         MapView = require("modules/core/mapView"),
         Map;

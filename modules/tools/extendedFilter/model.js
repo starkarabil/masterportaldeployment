@@ -1,6 +1,6 @@
 define(function (require){
     var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+
         Config = require("config"),
         ExtendedFilter;
 

@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers"
-], function (Backbone, Radio, ol) {
+], function (ol) {
 
     var PointOfInterest = Backbone.Model.extend({
         initialize: function () {

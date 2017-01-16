@@ -1,16 +1,15 @@
 define([
-    "backbone",
-    "text!modules/controls/attributions/templateShow.html",
+        "text!modules/controls/attributions/templateShow.html",
     "text!modules/controls/attributions/templateHide.html",
     "modules/controls/attributions/model",
-    "backbone.radio"
+
 ], function () {
 
     var Backbone = require("backbone"),
         TemplateShow = require("text!modules/controls/attributions/templateShow.html"),
         TemplateHide = require("text!modules/controls/attributions/templateHide.html"),
         Attributions = require("modules/controls/attributions/model"),
-        Radio = require("backbone.radio"),
+
         AttributionsView;
 
     AttributionsView = Backbone.View.extend({

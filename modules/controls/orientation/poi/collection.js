@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/controls/orientation/poi/feature/model",
     "eventbus",
     "openlayers"
-], function (Backbone, Radio, PointOfInterest, EventBus, ol) {
+], function (PointOfInterest, EventBus, ol) {
 
     var PointOfInterestList = Backbone.Collection.extend({
         initialize: function () {

@@ -1,6 +1,5 @@
 define([
-    "backbone",
-    "text!modules/menu/desktop/folder/templateMenu.html"
+        "text!modules/menu/desktop/folder/templateMenu.html"
 ], function () {
 
     var Backbone = require("backbone"),

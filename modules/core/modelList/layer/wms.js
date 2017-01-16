@@ -1,7 +1,7 @@
 define(function (require) {
 
     var Layer = require("modules/core/modelList/layer/model"),
-        Radio = require("backbone.radio"),
+
         ol = require("openlayers"),
         WMSLayer;
 

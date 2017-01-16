@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "config",
+        "config",
     "modules/gfipopup/gfiObjects/img/view",
     "modules/gfipopup/gfiObjects/video/view",
     "modules/gfipopup/gfiObjects/routable/view"
-], function (Backbone, Config, ImgView, VideoView, RoutableView) {
+], function (Config, ImgView, VideoView, RoutableView) {
     "use strict";
     var GFIContentSolaratlasModel = Backbone.Model.extend({
         /**

@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "text!modules/legend/template.html",
+        "text!modules/legend/template.html",
     "text!modules/legend/templateMobile.html",
     "modules/legend/model",
     "eventbus",
-    "backbone.radio",
+
     "jqueryui/widgets/draggable"
-], function (Backbone, LegendTemplate, LegendTemplateMobile, Legend, EventBus, Radio) {
+], function (LegendTemplate, LegendTemplateMobile, Legend, EventBus) {
 
     var LegendView = Backbone.View.extend({
         model: new Legend(),

@@ -1,13 +1,12 @@
 define([
-    "backbone",
-    "text!modules/tools/draw/template.html",
+        "text!modules/tools/draw/template.html",
     "text!modules/tools/draw/templatePoint.html",
     "text!modules/tools/draw/templateText.html",
     "text!modules/tools/draw/templateLine.html",
     "text!modules/tools/draw/templatePolygon.html",
     "text!modules/tools/draw/templateCircle.html",
     "modules/tools/draw/model"
-], function (Backbone, DrawTemplate, PointTemplate, TextTemplate, LineTemplate, PolygonTemplate, CircleTemplate, DrawTool) {
+], function (DrawTemplate, PointTemplate, TextTemplate, LineTemplate, PolygonTemplate, CircleTemplate, DrawTool) {
 
     var DrawToolView = Backbone.View.extend({
         model: new DrawTool(),

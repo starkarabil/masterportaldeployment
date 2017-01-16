@@ -1,6 +1,5 @@
 define("app",
     [
-    "jquery",
     "config",
     "modules/core/util",
     "modules/core/rawLayerList",
@@ -9,9 +8,9 @@ define("app",
     "modules/core/map",
     "modules/core/parametricURL",
     "modules/core/crs",
-    "modules/core/autostarter",
-    "modules/alerting/view"
-    ], function ($, Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter) {
+    "modules/core/autostarter"
+    ], function (Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter) {
+    Radio = Backbone.Radio;
 
     // Core laden
     new Autostarter();
@@ -60,9 +59,8 @@ define("app",
     }
 
     require([
-        "config",
-        "backbone.radio"
-    ], function (Config, Radio) {
+        "config"
+    ], function (Config) {
 
         if (Radio.request("Util", "isAny")) {
             require(["modules/layerinformation/viewMobile"], function (MobileLayerInformationView) {
@@ -122,6 +120,7 @@ define("app",
                     require(["modules/gfipopup/popup/popupLoader"], function (PopupLoader) {
                         new PopupLoader();
                     });
+                    break;
                 }
                 case "coord": {
                     require(["modules/coordpopup/view"], function (CoordPopupView) {
@@ -245,10 +244,12 @@ define("app",
                 controlsView = new ControlsView();
 
             _.each(controls, function (control) {
+                var el;
+
                 switch (control.id) {
                     case "toggleMenu": {
                         if (control.attr === true) {
-                            var el = controlsView.addRow(control.id);
+                            el = controlsView.addRow(control.id);
 
                             require(["modules/controls/togglemenu/view"], function (ToggleMenuControlView) {
                                 new ToggleMenuControlView({el: el});
@@ -258,7 +259,7 @@ define("app",
                     }
                     case "zoom": {
                         if (control.attr === true) {
-                            var el = controlsView.addRow(control.id);
+                            el = controlsView.addRow(control.id);
 
                             require(["modules/controls/zoom/view"], function (ZoomControlView) {
                                 new ZoomControlView({el: el});
@@ -267,7 +268,7 @@ define("app",
                         break;
                     }
                     case "orientation": {
-                        var el = controlsView.addRow(control.id);
+                        el = controlsView.addRow(control.id);
 
                         require(["modules/controls/orientation/view"], function (OrientationView) {
                             new OrientationView({el: el});
@@ -284,7 +285,7 @@ define("app",
                     }
                     case "fullScreen": {
                         if (control.attr === true) {
-                            var el = controlsView.addRow(control.id);
+                            el = controlsView.addRow(control.id);
 
                             require(["modules/controls/fullScreen/view"], function (FullScreenView) {
                                 new FullScreenView({el: el});
@@ -329,4 +330,9 @@ define("app",
 
         Radio.trigger("Util", "hideLoader");
     });
+    // Dient dazu, den Zeitpunkt zu makieren, an dem alle require-Aufrufe ->abgeschickt<- wurden
+    require([""], function () {
+        lastModuleRequired = true;
+    });
 });
+

@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "require"
-], function (Backbone, Radio, Require) {
+], function (Require) {
 
     var Util = Backbone.Model.extend({
         // defaults: {

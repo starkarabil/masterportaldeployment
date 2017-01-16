@@ -1,6 +1,5 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "bootstrap/dropdown",
     "bootstrap/collapse",
     "modules/menu/mobile/folder/view",
@@ -13,7 +12,7 @@ define([
     ],
     function () {
         var Backbone = require("backbone"),
-            Radio = require("backbone.radio"),
+
             FolderView = require("modules/menu/mobile/folder/view"),
             LayerView = require("modules/menu/mobile/layer/view"),
             LayerViewLight = require("modules/menu/mobile/layer/viewLight"),

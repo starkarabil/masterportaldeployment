@@ -1,6 +1,5 @@
 define([
-    "backbone"
-], function () {
+    ], function () {
 
     var Backbone = require("backbone"),
         FullScreenView;

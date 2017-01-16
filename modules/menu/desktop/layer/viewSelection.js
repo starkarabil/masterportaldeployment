@@ -1,14 +1,13 @@
 define([
-    "backbone",
-    "text!modules/menu/desktop/layer/templateSelection.html",
+        "text!modules/menu/desktop/layer/templateSelection.html",
     "text!modules/menu/desktop/layer/templateSettings.html",
-    "backbone.radio"
+
 ], function () {
 
     var Backbone = require("backbone"),
         Template = require("text!modules/menu/desktop/layer/templateSelection.html"),
         TemplateSettings = require("text!modules/menu/desktop/layer/templateSettings.html"),
-        Radio = require("backbone.radio"),
+
         LayerView;
 
     LayerView = Backbone.View.extend({

@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "config"
-], function (Backbone, Radio, ol, Config) {
+], function (ol, Config) {
 
     var RoutingModel = Backbone.Model.extend({
         defaults: {
@@ -69,7 +68,7 @@ define([
 //            var map = this.get("map");
 //
 //            this.removeOverlay();
-//            var layer = Radio.trigger("map", )
+//            var layer = Radio.trigger("map")
 //            _.each(map.getLayers(), function (layer) {
 //                if (_.isArray(layer)) {
 //                    _.each(layer, function (childlayer) {

@@ -1,6 +1,5 @@
 define([
-    "backbone",
-    "text!modules/menu/mobile/breadCrumb/template.html"
+        "text!modules/menu/mobile/breadCrumb/template.html"
 ], function () {
 
     var Backbone = require("backbone"),
