@@ -67,7 +67,7 @@ require.s.contexts._.execCb = function (name, callback, args, exports) {
 
     var result = callback.apply(exports, args);
 
-    if (name.startsWith("modules")) {
+    if (name.startsWith("modules") || result === "lastModuleRequired") {
        modulesLoading--;
 
         if (lastModuleRequired && modulesLoading === 0) {

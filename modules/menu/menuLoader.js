@@ -1,44 +1,36 @@
-define([
-
-    "modules/menu/desktop/listViewLight",
-    "modules/menu/desktop/listView",
-    "modules/menu/mobile/listView"
-], function () {
+define(function (require) {
 
     var MenuLoader = function () {
-        var channel = Radio.channel("MenuLoader");
+        var channel = Radio.channel("MenuLoader"),
+            ListViewLight = require("modules/menu/desktop/listViewLight"),
+            ListView = require("modules/menu/desktop/listView"),
+            ListViewMobile = require("modules/menu/mobile/listView");
 
         this.treeType = Radio.request("Parser", "getTreeType");
-        this.loadMenu = function (caller) {
-            var isMobile = Radio.request("Util", "isViewMobile");
+        this.getMenuView = function () {
+            var isMobile = Radio.request("Util", "isViewMobile"),
+                currentMenu;
 
             if (isMobile) {
-                require(["modules/menu/mobile/listView"], function (Menu) {
-                    caller.currentMenu = new Menu();
-                    channel.trigger("ready");
-                });
+                currentMenu = new ListViewMobile();
             }
             else {
                 if (this.treeType === "light") {
-                    require(["modules/menu/desktop/listViewLight"], function (Menu) {
-                        caller.currentMenu = new Menu();
-                        channel.trigger("ready");
-                    });
+                    currentMenu = new ListViewLight();
                 }
                 else {
-                    require(["modules/menu/desktop/listView"], function (Menu) {
-                        caller.currentMenu = new Menu();
-                        channel.trigger("ready");
-                    });
+                    currentMenu = new ListView();
                 }
             }
+            channel.trigger("ready");
+            return currentMenu;
         };
-        this.currentMenu = this.loadMenu(this);
+        this.currentMenu = this.getMenuView();
         Radio.on("Util", {
             "isViewMobileChanged": function () {
                 this.currentMenu.removeView();
 
-                this.currentMenu = this.loadMenu(this);
+                this.currentMenu = this.getMenuView();
             }
         }, this);
     };
