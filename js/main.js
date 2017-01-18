@@ -14,6 +14,7 @@ requirejs.config({
         openlayers: "../components/openlayers/ol-debug",
         jquery: "../components/jquery/dist/jquery.min",
         jqueryui: "../components/jquery-ui/ui",
+        eqcss: "../components/eqcss/EQCSS.min",
         underscore: "../components/underscore/underscore-min",
         "underscore.string": "../components/underscore.string/dist/underscore.string.min",
         backbone: "../components/backbone/backbone",

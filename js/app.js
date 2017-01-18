@@ -10,8 +10,9 @@ define("app",
     "modules/core/parametricURL",
     "modules/core/crs",
     "modules/core/autostarter",
+    "eqcss",
     "modules/alerting/view"
-    ], function ($, Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter) {
+], function ($, Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter) {
 
     // Core lade
     new Autostarter();
