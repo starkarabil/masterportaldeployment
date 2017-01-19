@@ -39,7 +39,7 @@ define([
                 }
             });
 
-            $("#lgv-container").on("resize", _.bind(this.toggleIsViewMobile, this));
+            $(window).on("resize", _.bind(this.toggleIsViewMobile, this));
         },
         isAndroid: function () {
             return navigator.userAgent.match(/Android/i);

@@ -26,7 +26,7 @@ define([
             this.$el.css({
                 "max-height": $("#lgv-container").height() - 100 // 100 fixer Wert für navbar &co.
             });
-            $("#lgv-container").resize($.proxy(function () {
+            $(window).resize($.proxy(function () {
                 this.$el.css({
                     "max-height": $("#lgv-container").height() - 100 // 100 fixer Wert für navbar &co.
                 });

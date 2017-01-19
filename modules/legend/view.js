@@ -17,7 +17,7 @@ define([
             "click .glyphicon-remove": "toggle"
         },
         initialize: function () {
-            $("#lgv-container").resize(function () {
+            $(window).resize(function () {
                 if ($(".legend-win-content").height() !== null) {
                     $(".legend-win-content").css("max-height", ($("#lgv-container").height() * 0.7));
                 }

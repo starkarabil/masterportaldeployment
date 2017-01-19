@@ -144,7 +144,7 @@ define([
             }
 
             // Hack für flexible Suchleiste
-            $("#lgv-container").on("resize", function () {
+            $(window).on("resize", function () {
                 if ($("#lgv-container").width() >= 768) {
                     $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
                 }

@@ -15,7 +15,7 @@ define([
                 "setSize": this.setSize
             }, this);
 
-            $("#lgv-container").on("resize", this.setSize);
+            $(window).on("resize", this.setSize);
             this.setLogo();
             this.render(title);
             this.setSize();
