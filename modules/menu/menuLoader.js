@@ -7,11 +7,13 @@ define(function (require) {
         var channel = Radio.channel("MenuLoader");
 
         // Bootstrap Navigation wird an den Wrapper gehängt
-        $("#lgv-container").append(_.template(MenuTemplate));
+        // $("#lgv-container").prepend(_.template(MenuTemplate));
         this.treeType = Radio.request("Parser", "getTreeType");
         this.loadMenu = function (caller) {
             var isMobile = Radio.request("Util", "isViewMobile");
 
+            // Bootstrap Navigation wird an den Wrapper gehängt
+            $("#lgv-container").prepend(_.template(MenuTemplate));
             if (isMobile) {
                 require(["modules/menu/mobile/listView"], function (Menu) {
                     caller.currentMenu = new Menu();

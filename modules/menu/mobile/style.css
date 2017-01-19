@@ -3,6 +3,10 @@
     overflow-y: auto;
 }
 
+.mobile .navbar-header {
+    min-height: 50px;
+}
+
 .mobile span.title {
     font-family: "UniversNextW01-Regular","Arial Narrow",Arial,sans-serif;
     font-size: 14px;
