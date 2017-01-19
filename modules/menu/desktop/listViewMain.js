@@ -50,9 +50,6 @@ define([
                 // remove entfernt alle Listener und das Dom-Element
                 this.remove();
                 this.collection.setAllModelsInvisible();
-                // Das Dom-Element wird für den mobile-View beim wechsel benötigt
-                // deswegen wieder anhängen.
-                $("body").append(this.el);
             }
         });
         return Menu;

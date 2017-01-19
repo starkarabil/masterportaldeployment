@@ -194,7 +194,6 @@ define([
                 this.breadCrumbListView.removeView();
                 this.remove();
                 this.collection.setAllModelsInvisible();
-                $("body").append(this.el);
             },
             startTool: function (toolId) {
                 var tools = this.collection.where({type: "tool"}),
