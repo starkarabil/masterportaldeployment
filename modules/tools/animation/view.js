@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        Animation = require("modules/tools/animation/model"),
+    var         Animation = require("modules/tools/animation/model"),
         AnimationTemplate = require("text!modules/tools/animation/template.html"),
         AnimationView;
 

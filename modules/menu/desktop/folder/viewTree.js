@@ -3,8 +3,7 @@ define([
     "text!modules/menu/desktop/folder/templateTree.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         FolderTemplate = require("text!modules/menu/desktop/folder/templateTree.html"),
         FolderView;
 

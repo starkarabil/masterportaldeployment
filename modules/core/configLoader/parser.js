@@ -3,8 +3,7 @@ define([
     "modules/core/modelList/list"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         ModelList = require("modules/core/modelList/list"),
         Parser;
 

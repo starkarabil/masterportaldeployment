@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-
+    var
         GFIPopupTemplate = require("text!modules/gfipopup/popup/template.html"),
         GFIPopup = require("modules/gfipopup/popup/model"),
         EventBus = require("eventbus"),

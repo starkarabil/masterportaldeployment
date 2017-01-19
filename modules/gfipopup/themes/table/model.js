@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        GFITableModel;
+    var         GFITableModel;
 
     GFITableModel = Backbone.Model.extend({
 

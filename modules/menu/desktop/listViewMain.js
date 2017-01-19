@@ -5,8 +5,7 @@ define([
     "bootstrap/collapse"
     ],
     function () {
-        var Backbone = require("backbone"),
-
+        var
             DesktopToolView = require("modules/menu/desktop/tool/view"),
             DesktopFolderView = require("modules/menu/desktop/folder/viewMenu"),
             Menu;

@@ -4,8 +4,7 @@ define([
 
 ], function () {
 
-    var Backbone = require("backbone"),
-        TemplateSettings = require("text!modules/menu/desktop/layer/templateSettings.html"),
+    var         TemplateSettings = require("text!modules/menu/desktop/layer/templateSettings.html"),
         Template = require("text!modules/menu/desktop/layer/templateLight.html"),
 
         LayerView;

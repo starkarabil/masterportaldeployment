@@ -3,8 +3,7 @@ define([
     "eventbus"
 ], function () {
 
-    var Backbone = require("backbone"),
-        EventBus = require("eventbus"),
+    var         EventBus = require("eventbus"),
 
         LayerSearch;
 

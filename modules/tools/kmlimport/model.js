@@ -4,8 +4,7 @@ define([
 
     "proj4"
 ], function () {
-    var Backbone = require("backbone"),
-        ol = require("openlayers"),
+    var         ol = require("openlayers"),
         EventBus = require("eventbus"),
 
         proj4 = require("proj4"),

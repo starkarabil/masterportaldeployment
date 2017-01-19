@@ -4,8 +4,7 @@ define([
 
 ], function () {
 
-    var Backbone = require("backbone"),
-        FolderTemplate = require("text!modules/menu/mobile/folder/template.html"),
+    var         FolderTemplate = require("text!modules/menu/mobile/folder/template.html"),
         FolderLeafTemplate = require("text!modules/menu/mobile/folder/templateLeaf.html"),
 
         FolderView;

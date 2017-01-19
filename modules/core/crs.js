@@ -4,8 +4,7 @@ define([
     "config"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         Proj4 = require("proj4"),
         Config = require("config"),
         CRS;

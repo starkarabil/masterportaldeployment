@@ -2,8 +2,7 @@ define([
         "config",
     "eventbus"
 ], function () {
-    var Backbone = require("backbone"),
-        Config = require("config"),
+    var         Config = require("config"),
         EventBus = require("eventbus"),
 
         ZoomToFeature = Backbone.Model.extend({

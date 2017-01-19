@@ -3,8 +3,7 @@ define([
     "config"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         Config = require("config"),
         SaveSelection;
 

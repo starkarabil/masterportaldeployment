@@ -5,8 +5,7 @@ define([
 
 ], function () {
 
-    var Backbone = require("backbone"),
-        TemplateShow = require("text!modules/controls/attributions/templateShow.html"),
+    var         TemplateShow = require("text!modules/controls/attributions/templateShow.html"),
         TemplateHide = require("text!modules/controls/attributions/templateHide.html"),
         Attributions = require("modules/controls/attributions/model"),
 

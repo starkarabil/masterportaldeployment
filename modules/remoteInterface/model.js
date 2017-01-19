@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        ol = require("openlayers"),
+    var         ol = require("openlayers"),
         RemoteInterface;
 
     RemoteInterface = Backbone.Model.extend({

@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-
+    var
         ol = require("openlayers"),
         AddGeoJSON;
 

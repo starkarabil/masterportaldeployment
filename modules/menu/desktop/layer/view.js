@@ -3,8 +3,7 @@ define([
     "text!modules/menu/desktop/layer/template.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         Template = require("text!modules/menu/desktop/layer/template.html"),
         LayerView;
 

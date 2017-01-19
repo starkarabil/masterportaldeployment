@@ -4,8 +4,7 @@ define([
     "colorpicker"
 ], function () {
 
-    var Backbone = require("backbone"),
-        StyleWMS = require("modules/tools/styleWMS/model"),
+    var         StyleWMS = require("modules/tools/styleWMS/model"),
         StyleWMSTemplate = require("text!modules/tools/styleWMS/template.html"),
         StyleWMSView;
 

@@ -1,8 +1,7 @@
 define([
     ], function () {
 
-    var Backbone = require("backbone"),
-        BreadCrumbItem;
+    var         BreadCrumbItem;
 
     BreadCrumbItem = Backbone.Model.extend({
         defaults: {

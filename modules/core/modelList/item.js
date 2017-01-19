@@ -1,8 +1,7 @@
 define([
     ], function () {
 
-    var Backbone = require("backbone"),
-        Item;
+    var         Item;
 
     Item = Backbone.Model.extend({
         defaults: {

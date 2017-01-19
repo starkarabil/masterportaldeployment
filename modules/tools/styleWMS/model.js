@@ -3,8 +3,7 @@ define([
 
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         StyleWMS;
 
     StyleWMS = Backbone.Model.extend({

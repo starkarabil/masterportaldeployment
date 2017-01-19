@@ -333,6 +333,7 @@ define("app",
     // Dient dazu, den Zeitpunkt zu makieren, an dem alle require-Aufrufe ->abgeschickt<- wurden
     require([""], function () {
         lastModuleRequired = true;
+        return "lastModule";
     });
 });
 

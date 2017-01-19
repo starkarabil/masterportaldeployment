@@ -5,8 +5,7 @@ define([
     "text!modules/menu/mobile/layer/templateSettings.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Template = require("text!modules/menu/mobile/layer/template.html"),
+    var         Template = require("text!modules/menu/mobile/layer/template.html"),
         SelectionTemplate = require("text!modules/menu/mobile/layer/templateSelection.html"),
         SettingsTemplate = require("text!modules/menu/mobile/layer/templateSettings.html"),
 

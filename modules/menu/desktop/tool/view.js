@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-
+    var
         ItemTemplate = require("text!modules/menu/desktop/tool/template.html"),
         ItemView;
 

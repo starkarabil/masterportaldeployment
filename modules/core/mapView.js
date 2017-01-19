@@ -4,8 +4,7 @@ define([
     "config"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         ol = require("openlayers"),
         Config = require("config"),
         MapView;

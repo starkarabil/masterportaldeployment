@@ -3,8 +3,7 @@ define([
     "modules/menu/mobile/breadCrumb/model"
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         BreadCrumbItem = require("modules/menu/mobile/breadCrumb/model"),
         BreadCrumbList;
 

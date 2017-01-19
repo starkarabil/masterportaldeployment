@@ -2,8 +2,7 @@ define([
         "text!modules/menu/mobile/breadCrumb/template.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Template = require("text!modules/menu/mobile/breadCrumb/template.html"),
+    var         Template = require("text!modules/menu/mobile/breadCrumb/template.html"),
         BreadCrumbView;
 
     BreadCrumbView = Backbone.View.extend({

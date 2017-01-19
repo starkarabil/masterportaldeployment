@@ -3,8 +3,7 @@ define([
     "text!modules/menu/desktop/folder/templateCatalog.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Template = require("text!modules/menu/desktop/folder/templateCatalog.html"),
+    var         Template = require("text!modules/menu/desktop/folder/templateCatalog.html"),
 
         FolderView = Backbone.View.extend({
             tagName: "li",

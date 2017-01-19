@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        GFITableTemplate = require("text!modules/gfipopup/themes/table/template.html"),
+    var         GFITableTemplate = require("text!modules/gfipopup/themes/table/template.html"),
         GFITableModel = require("modules/gfipopup/themes/table/model"),
         GFITableView;
 

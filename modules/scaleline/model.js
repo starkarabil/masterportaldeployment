@@ -2,8 +2,7 @@ define([
 
 ], function () {
 
-    var Backbone = require("backbone"),
-
+    var
         ScaleLine;
 
     ScaleLine = Backbone.Model.extend({
