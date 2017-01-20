@@ -16,8 +16,6 @@ define([
         initialize: function () {
             $("#lgv-container").append("<div id='messages' class='messages'></div>");
             this.setMaxHeight();
-            EventBus.on("alert", this.checkVal, this);
-            EventBus.on("alert:remove", this.remove, this);
             var channel = Radio.channel("Alert");
 
             channel.on({
