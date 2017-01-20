@@ -46,11 +46,24 @@ define([
             channel.on({
                 "setCategory": this.setCategory,
                 "addItem": this.addItem,
-                "addItems": this.addItems
+                "addItems": this.addItems,
+                "addFolder": this.addFolder,
+                "addLayer": this.addLayer,
+                "addGeoJSONLayer": this.addGeoJSONLayer
             }, this);
 
             this.listenTo(this, {
                 "change:category": function () {
+                    var modelList = Radio.request("ModelList", "getCollection"),
+                        modelListToRemove = modelList.filter(function (model) {
+                            // Alle Fachdaten Layer
+                            return model.get("type") === "layer" && model.get("parentId") !== "Baselayer";
+                        });
+
+                    _.each(modelListToRemove, function (model) {
+                        model.setIsSelected(false);
+                    });
+                    modelList.remove(modelListToRemove);
                     this.setItemList([]);
                     this.addTreeMenuItems();
                     this.parseTree(Radio.request("RawLayerList", "getLayerAttributesList"));
@@ -185,6 +198,72 @@ define([
             _.each(objs, function (obj) {
                 this.addItem(_.extend(obj, attr));
             }, this);
+        },
+
+        addFolder: function (name, id, parentId, level) {
+            var folder = {
+                type: "folder",
+                name: name,
+                glyphicon: "glyphicon-plus-sign",
+                id: id,
+                parentId: parentId,
+                isExpanded: false,
+                level: level
+            };
+
+            this.addItem(folder);
+        },
+
+        addLayer: function (name, id, parentId, level, layers, url, version) {
+            console.log(name);
+            var layer = {
+                type: "layer",
+                name: name,
+                id: id,
+                parentId: parentId,
+                level: level,
+                url: url,
+                typ: "WMS",
+                layers: layers,
+                format: "image/png",
+                version: version,
+                singleTile: false,
+                transparent: true,
+                tilesize: "512",
+                gutter: "0",
+                featureCount: 3,
+                minScale: "0",
+                maxScale: "350000",
+                gfiAttributes: "showAll",
+                layerAttribution: "nicht vorhanden",
+                legendURL: "",
+                isbaselayer: false,
+                cache: false,
+                datasets: []
+            };
+
+            this.addItem(layer);
+        },
+
+        addGeoJSONLayer: function (name, id, features) {
+            var layer = {
+                type: "layer",
+                name: name,
+                id: id,
+                typ: "GeoJSON",
+                features: features,
+                transparent: true,
+                minScale: "0",
+                maxScale: "350000",
+                gfiAttributes: "showAll",
+                layerAttribution: "nicht vorhanden",
+                legendURL: "",
+                isbaselayer: false,
+                cache: false,
+                datasets: []
+            };
+
+            this.addItem(layer);
         },
 
         /**

@@ -66,32 +66,52 @@ define(function (require) {
             });
 
             // Config auslesen oder default
-            if (_.has(Config, "animation")) {
-                this.setDefaults();
-            }
+            this.setDefaults();
+            
 
             this.sendRequest("GET", this.getParams(), this.parseKreise);
             Radio.trigger("Map", "addLayerToIndex", [this.get("layer"), Radio.request("Map", "getLayers").getArray().length]);
         },
 
         setDefaults: function () {
-            this.setZoomLevel(Config.animation.zoomlevel);
-            this.setSteps(Config.animation.steps || 50);
-            this.setUrl(Config.animation.url || "http://geodienste.hamburg.de/Test_MRH_WFS_Pendlerverflechtung");
-            this.setParams(Config.animation.params || {
-                REQUEST: "GetFeature",
-                SERVICE: "WFS",
-                TYPENAME: "app:mrh_einpendler_gemeinde",
-                VERSION: "1.1.0",
-                maxFeatures: "10000"
-            });
-            this.setFeatureType(Config.animation.featureType || "mrh_einpendler_gemeinde");
-            this.setMinPx(Config.animation.minPx || 1);
-            this.setMaxPx(Config.animation.maxPx || 20);
-            this.setNumKreiseToStyle(Config.animation.num_kreise_to_style || 2);
-            this.setColors(Config.animation.colors || ["rgba(255,0,0,0.5)", "rgba(0,0,255,0.5)"]);
-            this.setAttrAnzahl(Config.animation.attrAnzahl || "anzahl_einpendler");
-            this.setAttrKreis(Config.animation.attrKreis || "wohnort_kreis");
+             if (_.has(Config, "animation")) { 
+                this.setZoomLevel(Config.animation.zoomlevel || 1);
+                this.setSteps(Config.animation.steps || 50);
+                this.setUrl(Config.animation.url || "http://geodienste.hamburg.de/Test_MRH_WFS_Pendlerverflechtung");
+                this.setParams(Config.animation.params || {
+                    REQUEST: "GetFeature",
+                    SERVICE: "WFS",
+                    TYPENAME: "app:mrh_kreise",
+                    VERSION: "1.1.0",
+                    maxFeatures: "10000"
+                });
+                this.setFeatureType(Config.animation.featureType || "mrh_einpendler_gemeinde");
+                this.setMinPx(Config.animation.minPx || 1);
+                this.setMaxPx(Config.animation.maxPx || 20);
+                this.setNumKreiseToStyle(Config.animation.num_kreise_to_style || 2);
+                this.setColors(Config.animation.colors || ["rgba(255,0,0,0.5)", "rgba(0,0,255,0.5)"]);
+                this.setAttrAnzahl(Config.animation.attrAnzahl || "anzahl_einpendler");
+                this.setAttrKreis(Config.animation.attrKreis || "wohnort_kreis");
+            }
+            else {
+                this.setZoomLevel(1);
+                this.setSteps(50);
+                this.setUrl("http://geodienste.hamburg.de/Test_MRH_WFS_Pendlerverflechtung");
+                this.setParams({
+                    REQUEST: "GetFeature",
+                    SERVICE: "WFS",
+                    TYPENAME: "app:mrh_kreise",
+                    VERSION: "1.1.0",
+                    maxFeatures: "10000"
+                });
+                this.setFeatureType("mrh_einpendler_gemeinde");
+                this.setMinPx(1);
+                this.setMaxPx(20);
+                this.setNumKreiseToStyle(2);
+                this.setColors(["rgba(255,0,0,0.5)", "rgba(0,0,255,0.5)"]);
+                this.setAttrAnzahl("anzahl_einpendler");
+                this.setAttrKreis("wohnort_kreis");
+            }
         },
 
         /**
@@ -440,7 +460,7 @@ define(function (require) {
 
             this.set("animationLayer", animationLayer);
             this.get("animationLayer").getSource().clear();
-            Radio.trigger("Map", "registerPostCompose", this.moveFeature, this);
+            Radio.trigger("Map", "registerListener", "postcompose", this.moveFeature, this);
             if (this.get("animating")) {
                 this.stopAnimation([]);
             }
@@ -467,7 +487,7 @@ define(function (require) {
             }
         },
         stopAnimation: function (features) {
-            Radio.trigger("Map", "unregisterPostCompose", this.moveFeature, this);
+            Radio.trigger("Map", "unregisterPostCompose", "postcompose", this.moveFeature, this);
             this.set("animating", false);
             // Wenn Animation fertig alle Features als Vectoren auf neue Layer malen.
             // features ist undefined, wenn die Funktion üder den Resetknopf aufgerufen wird

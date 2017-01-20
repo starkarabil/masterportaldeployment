@@ -28,7 +28,11 @@ define(function (require) {
                 mapView = new MapView();
 
             channel.reply({
+                "getMap": function () {
+                    return this.get("map");
+                },
                 "getLayers": this.getLayers,
+                "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "createLayerIfNotExists": this.createLayerIfNotExists
             }, this);
 
@@ -48,10 +52,18 @@ define(function (require) {
                 "zoomToExtent": this.zoomToExtent,
                 "updatePrintPage": this.updatePrintPage,
                 "activateClick": this.activateClick,
+                "createVectorLayer": this.createVectorLayer,
                 "addLoadingLayer": this.addLoadingLayer,
                 "removeLoadingLayer": this.removeLoadingLayer,
-                "registerListener": this.registerListener
+                "registerListener": this.registerListener,
+                "unregisterListener": this.unregisterListener
             }, this);
+
+            this.listenTo(this, {
+                "change:vectorLayer": function (model, value) {
+                    this.addLayerToIndex([value, 0]);
+                }
+            });
 
             this.set("view", mapView.get("view"));
 
@@ -74,6 +86,42 @@ define(function (require) {
 
         },
 
+        /**
+         * Findet einen Layer über seinen Namen und gibt ihn zurück
+         * @param  {string} layerName - Name des Layers
+         * @return {ol.layer}
+         */
+        getLayerByName: function (layerName) {
+            var layers = this.get("map").getLayers().getArray(),
+                layer = _.find(layers, function (layer) {
+                    return layer.get("name") === layerName;
+                });
+
+            return layer;
+        },
+
+        /**
+         * Erstellt einen Vectorlayer
+         * @param {string} layerName - Name des Vectorlayers
+         */
+        createVectorLayer: function (layerName) {
+            var layer = new ol.layer.Vector({
+                source: new ol.source.Vector({useSpatialIndex: false}),
+                alwaysOnTop: true,
+                name: layerName
+            });
+
+            this.setVectorLayer(layer);
+        },
+
+        setVectorLayer: function (value) {
+            this.set("vectorLayer", value);
+        },
+
+        getVectorLayer: function () {
+            return this.get("vectorLayer");
+        },
+
         getLayers: function () {
             return this.get("map").getLayers();
         },
@@ -92,39 +140,36 @@ define(function (require) {
             }
         },
 
+        getWGS84MapSizeBBOX: function () {
+            var bbox = this.get("view").calculateExtent(this.get("map").getSize()),
+                firstCoord = [bbox[0], bbox[1]],
+                secondCoord = [bbox[2], bbox[3]],
+                firstCoordTransform = Radio.request("CRS", "transform", {fromCRS: "EPSG:25832", toCRS: "EPSG:4326", point: firstCoord}),
+                secondCoordTransform = Radio.request("CRS", "transform", {fromCRS: "EPSG:25832", toCRS: "EPSG:4326", point: secondCoord});
+
+            return [firstCoordTransform[0], firstCoordTransform[1], secondCoordTransform[0], secondCoordTransform[1]];
+        },
+
+        GFIPopupVisibility: function (value) {
+            if (value === true) {
+                this.set("GFIPopupVisibility", true);
+            }
+            else {
+                this.set("GFIPopupVisibility", false);
+            }
+        },
+
         getMap: function () {
             return this.get("map");
         },
 
         activateClick: function (tool) {
-            if (tool === "coord") {
-                this.get("map").un("click", this.setGFIParams, this);
-                this.get("map").on("click", this.setPositionCoordPopup, this);
-                // this.get("map").un("pointermove", this.registerPointerMove);
-            }
-            else if (tool === "gfi") {
-                this.get("map").un("click", this.setPositionCoordPopup, this);
+            if (tool === "gfi") {
                 this.get("map").on("click", this.setGFIParams, this);
-                // this.get("map").un("pointermove", this.registerPointerMove);
             }
-            else if (tool === "measure") {
-                this.get("map").un("click", this.setPositionCoordPopup, this);
+            else if (tool === "coords" || tool === "draw" || tool === "measure") {
                 this.get("map").un("click", this.setGFIParams, this);
-                // this.get("map").on("pointermove", this.registerPointerMove);
             }
-            else if (tool === "draw" || tool === "record") {
-                this.get("map").un("click", this.setPositionCoordPopup, this);
-                this.get("map").un("click", this.setGFIParams, this);
-                // this.get("map").un("pointermove", this.registerPointerMove);
-            }
-        },
-
-        registerPostCompose: function (callback, context) {
-            this.get("map").on("postcompose", callback, context);
-        },
-
-        unregisterPostCompose: function (callback, context) {
-            this.get("map").un("postcompose", callback, context);
         },
 
         /**
@@ -142,9 +187,10 @@ define(function (require) {
          * Meldet Listener auf bestimmte Events ab
          * @param {String} event - Der Eventtyp
          * @param {Function} callback - Die Callback Funktion
+         * @param {Object} context
          */
-        unregisterListener: function (event, callback) {
-            this.getMap().un(event, callback);
+        unregisterListener: function (event, callback, context) {
+            this.getMap().un(event, callback, context);
         },
 
         /**
@@ -254,19 +300,6 @@ define(function (require) {
             });
         },
 
-        /**
-        *
-        */
-        setPositionCoordPopup: function (evt) {
-            // Abbruch, wenn auf SearchMarker x geklickt wird.
-            // TODO
-            // if (this.checkInsideSearchMarker(evt.pixel[1], evt.pixel[0]) === true) {
-            //     return;
-            // }
-            // else {
-                Radio.trigger("Map", "setPositionCoordPopup", evt.coordinate);
-            // }
-        },
         /**
         * Prüft, ob clickpunkt in RemoveIcon und liefert true/false zurück.
         */

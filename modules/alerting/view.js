@@ -1,11 +1,9 @@
 define([
-    "jquery",
     "backbone",
     "backbone.radio",
-    "eventbus",
     "modules/alerting/model",
     "bootstrap/alert"
-], function ($, Backbone, Radio, EventBus, Model) {
+], function (Backbone, Radio, Model) {
     /*
      * Dieses Modul reagiert auf Events vom EventBus, nimmt als Parameter des Events ein hmtl-String oder ein Konfigurationsobjekt entgegen und stellt dies dar.
      * Das Konfigurationsobjekt kann folgende Einstellungen überschrieben:

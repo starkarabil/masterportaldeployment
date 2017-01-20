@@ -170,7 +170,7 @@ define([
                 if (tool) {
                     tool.setIsActive(true);
                 }
-             }
+            }
         });
         return Menu;
     }
