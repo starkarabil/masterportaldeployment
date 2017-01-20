@@ -23,6 +23,7 @@
     "backbone.radio": "1.x",
     "bootstrap": "3.x",
     "bootstrap-colorpicker": "2.x",
+    "eqcss": "1.5.0",
     "jquery": "2.x",
     "proj4": "2.x",
     "requirejs": "2.x",
