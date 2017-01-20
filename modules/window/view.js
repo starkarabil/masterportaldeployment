@@ -51,10 +51,16 @@ define([
                 }
                 this.model.sendParamsToWinCotent();
                 this.$el.show("slow");
+                this.setMaxHeight();
             }
             else {
                 this.$el.hide("slow");
             }
+        },
+        setMaxHeight: function () {
+            var height = $("#lgv-container").height() - 130;
+
+            $(".win-body").css("max-height", height);
         },
         minimize: function () {
             this.model.set("maxPosTop", this.$el.css("top"));
