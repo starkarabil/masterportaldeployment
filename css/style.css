@@ -1652,6 +1652,9 @@
     max-width: calc(65vw);
   }
 }
+.lgv-container .attributions-view img {
+  max-height: 2em;
+}
 .lgv-container .orientationButtons {
   margin-top: 30px;
 }
@@ -2094,6 +2097,7 @@
   font-family: "UniversNextW04-620CondB", "Arial Narrow", Arial, sans-serif;
   /*font-size: 12px;*/
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.176);
+  border: 0;
 }
 .lgv-container .dropdown-menu {
   padding: 0;
@@ -2140,10 +2144,11 @@
 .lgv-container ul#Themen.light {
   font-size: 12px;
   color: #555555;
-  border: 1px solid #e5e5e5;
 }
 .lgv-container ul#Themen.light li {
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
+  border-left: 0;
+  border-right: 0;
   padding: 8px 6px;
   max-width: 500px;
   min-width: 380px;
@@ -2695,8 +2700,8 @@
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.eot');
-  src: url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.woff2') format('woff2'), url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.woff') format('woff'), url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.ttf') format('truetype'), url('../components/lgv-config/css/woffs/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .lgv-container .glyphicon {
   position: relative;
