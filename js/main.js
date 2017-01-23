@@ -88,7 +88,7 @@ require.s.contexts._.execCb = function (name, callback, args, exports) {
        modulesLoading--;
 
         if (lastModuleRequired && modulesLoading === 0) {
-            window.postMessage("Portal ready", "*");
+            window.postMessage("portalReady", "*");
         }
     }
     return result;
