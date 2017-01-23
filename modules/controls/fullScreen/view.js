@@ -1,9 +1,7 @@
 define([
-    "backbone"
-], function () {
+    ], function () {
 
-    var Backbone = require("backbone"),
-        FullScreenView;
+    var         FullScreenView;
 
     FullScreenView = Backbone.View.extend({
         className: "row",

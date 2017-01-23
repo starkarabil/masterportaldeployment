@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/themes/reisezeiten/template.html",
+        "text!modules/gfipopup/themes/reisezeiten/template.html",
     "modules/gfipopup/themes/reisezeiten/model",
     "eventbus"
-], function (Backbone, Template, Model, EventBus) {
+], function (Template, Model, EventBus) {
     "use strict";
     var RoutingView = Backbone.View.extend({
         template: _.template(Template),

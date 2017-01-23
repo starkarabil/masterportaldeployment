@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/mouseHover/model",
     "eventbus"
-], function (Backbone, Radio, MouseHoverPopup, EventBus) {
+], function (MouseHoverPopup, EventBus) {
 
     var MouseHoverPopupView = Backbone.View.extend({
         model: MouseHoverPopup,

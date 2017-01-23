@@ -1,13 +1,11 @@
 define([
-    "backbone",
-    "openlayers",
+        "openlayers",
     "eventbus",
-    "backbone.radio"
+
 ], function () {
-    var Backbone = require("backbone"),
-        ol = require("openlayers"),
+    var         ol = require("openlayers"),
         EventBus = require("eventbus"),
-        Radio = require("backbone.radio"),
+
         DrawTool;
 
     DrawTool = Backbone.Model.extend({

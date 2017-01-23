@@ -1,6 +1,5 @@
 define([
-    "backbone"
-], function (Backbone) {
+    ], function () {
 
     var AlertingModel = Backbone.Model.extend({
         defaults: {

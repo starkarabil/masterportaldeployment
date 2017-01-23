@@ -4,11 +4,9 @@
 **/
 
 define([
-    "jquery",
-    "backbone",
     "text!modules/tools/addwms/template.html",
     "modules/tools/addwms/model"
-], function ($, Backbone, AddWMSWin, AddWMSModel) {
+], function ($, AddWMSWin, AddWMSModel) {
 
     var AddWMSView = Backbone.View.extend({
         model: AddWMSModel,

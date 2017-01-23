@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/controls/zoom/template.html",
     "eventbus"
-], function (Backbone, Radio, ZoomControlTemplate, EventBus) {
+], function (ZoomControlTemplate, EventBus) {
 
     var ZoomControlView = Backbone.View.extend({
         className: "row",

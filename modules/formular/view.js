@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus",
     "config",
     "modules/formular/grenznachweis",
     "text!modules/formular/grenznachweis.html",
     "text!modules/formular/grenznachweis.css"
-], function (Backbone, Radio, EventBus, Config, Grenznachweismodel, Grenznachweistemplate, Grenznachweiscss) {
+], function (EventBus, Config, Grenznachweismodel, Grenznachweistemplate, Grenznachweiscss) {
     "use strict";
     var formularView = Backbone.View.extend({
         id: "formularWin",

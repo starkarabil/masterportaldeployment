@@ -1,11 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         Config = require("config"),
         SaveSelection;
 

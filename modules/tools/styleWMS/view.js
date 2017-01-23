@@ -1,12 +1,10 @@
 define([
-    "backbone",
-    "text!modules/tools/styleWMS/template.html",
+        "text!modules/tools/styleWMS/template.html",
     "modules/tools/styleWMS/model",
     "colorpicker"
 ], function () {
 
-    var Backbone = require("backbone"),
-        StyleWMS = require("modules/tools/styleWMS/model"),
+    var         StyleWMS = require("modules/tools/styleWMS/model"),
         StyleWMSTemplate = require("text!modules/tools/styleWMS/template.html"),
         StyleWMSView;
 

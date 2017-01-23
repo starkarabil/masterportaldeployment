@@ -1,14 +1,12 @@
 define([
-    "backbone",
-    "text!modules/menu/mobile/folder/template.html",
+        "text!modules/menu/mobile/folder/template.html",
     "text!modules/menu/mobile/folder/templateLeaf.html",
-    "backbone.radio"
+
 ], function () {
 
-    var Backbone = require("backbone"),
-        FolderTemplate = require("text!modules/menu/mobile/folder/template.html"),
+    var         FolderTemplate = require("text!modules/menu/mobile/folder/template.html"),
         FolderLeafTemplate = require("text!modules/menu/mobile/folder/templateLeaf.html"),
-        Radio = require("backbone.radio"),
+
         FolderView;
 
     FolderView = Backbone.View.extend({

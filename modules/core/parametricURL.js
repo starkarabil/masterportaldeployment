@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "underscore.string",
     "config",
     "modules/core/configLoader/preparser"
-], function (Backbone, Radio, _String, Config, Preparser) {
+], function (_String, Config, Preparser) {
 
     var ParametricURL = Backbone.Model.extend({
         defaults: {

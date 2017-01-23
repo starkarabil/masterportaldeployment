@@ -1,11 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/menu/mobile/breadCrumb/model"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         BreadCrumbItem = require("modules/menu/mobile/breadCrumb/model"),
         BreadCrumbList;
 

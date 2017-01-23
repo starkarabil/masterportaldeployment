@@ -1,13 +1,11 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/menu/mobile/breadCrumb/list",
     "modules/menu/mobile/breadCrumb/view",
     "text!modules/menu/mobile/breadCrumb/templateListView.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         List = require("modules/menu/mobile/breadCrumb/list"),
         View = require("modules/menu/mobile/breadCrumb/view"),
         Template = require("text!modules/menu/mobile/breadCrumb/templateListView.html"),

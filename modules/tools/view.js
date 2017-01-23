@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "text!modules/tools/template.html",
+        "text!modules/tools/template.html",
     "modules/tools/model"
-    ], function (Backbone, ToolsTemplate, Tools) {
+    ], function (ToolsTemplate, Tools) {
     var ToolsView = Backbone.View.extend({
         tagName: "li",
         template: _.template(ToolsTemplate),

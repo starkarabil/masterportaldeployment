@@ -1,12 +1,11 @@
 define([
-    "backbone",
-    "eventbus",
-    "backbone.radio",
+        "eventbus",
+
     "openlayers",
     "proj4",
     "config",
-    "backbone.radio"
-], function (Backbone, EventBus, Radio, ol, proj4, Config, Radio) {
+
+], function (EventBus, ol, proj4, Config) {
 
     var OrientationModel = Backbone.Model.extend({
         defaults: {

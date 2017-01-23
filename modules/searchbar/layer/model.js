@@ -1,12 +1,10 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus"
 ], function () {
 
-    var Backbone = require("backbone"),
-        EventBus = require("eventbus"),
-        Radio = require("backbone.radio"),
+    var         EventBus = require("eventbus"),
+
         LayerSearch;
 
     LayerSearch = Backbone.Model.extend({

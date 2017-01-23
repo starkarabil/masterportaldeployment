@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "eventbus",
     "proj4"
-], function (Backbone, Radio, ol, EventBus, proj4) {
+], function (ol, EventBus, proj4) {
 
     var SearchByCoord = Backbone.Model.extend({
 

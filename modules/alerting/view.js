@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/alerting/model",
     "bootstrap/alert"
-], function (Backbone, Radio, Model) {
+], function (Model) {
     /*
      * Dieses Modul reagiert auf Events vom EventBus, nimmt als Parameter des Events ein hmtl-String oder ein Konfigurationsobjekt entgegen und stellt dies dar.
      * Das Konfigurationsobjekt kann folgende Einstellungen überschrieben:
@@ -71,5 +70,5 @@ define([
         }
     });
 
-    return new AlertingView();
+    return AlertingView;
 });

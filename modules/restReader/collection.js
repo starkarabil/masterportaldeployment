@@ -1,8 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio",
     "config"
-], function (Backbone, Radio, Config) {
+], function (Config) {
     "use strict";
     var RestList = Backbone.Collection.extend({
         url: function () {

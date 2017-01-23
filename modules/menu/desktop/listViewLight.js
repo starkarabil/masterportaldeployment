@@ -2,7 +2,7 @@ define(function (require) {
 
     var listView = require("modules/menu/desktop/listViewMain"),
         DesktopLayerViewLight = require("modules/menu/desktop/layer/viewLight"),
-        Radio = require("backbone.radio"),
+
         Menu;
 
     Menu = listView.extend({

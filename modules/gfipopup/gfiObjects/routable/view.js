@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/gfiObjects/routable/template.html",
+        "text!modules/gfipopup/gfiObjects/routable/template.html",
     "modules/gfipopup/gfiObjects/routable/model",
     "eventbus"
-], function (Backbone, VideoTemplate, RoutableModel, EventBus) {
+], function (VideoTemplate, RoutableModel, EventBus) {
     "use strict";
     var RoutableView = Backbone.View.extend({
         template: _.template(VideoTemplate),

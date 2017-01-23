@@ -1,11 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/menu/desktop/layer/template.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         Template = require("text!modules/menu/desktop/layer/template.html"),
         LayerView;
 

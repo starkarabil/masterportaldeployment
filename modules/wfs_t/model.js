@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "eventbus"
-], function (Backbone, Radio, ol, EventBus) {
+], function (ol, EventBus) {
 
     var WFS_T = Backbone.Model.extend({
 

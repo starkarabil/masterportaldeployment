@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "modules/attribution/model"
-], function (Backbone, Attribution) {
+        "modules/attribution/model"
+], function (Attribution) {
     var AttributionView = Backbone.View.extend({
         model: Attribution,
         initialize: function () {

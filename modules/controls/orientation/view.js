@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "text!modules/controls/orientation/template.html",
+        "text!modules/controls/orientation/template.html",
     "modules/controls/orientation/model",
     "config",
-    "backbone.radio"
-], function (Backbone, OrientationTemplate, OrientationModel, Config, Radio) {
+
+], function (OrientationTemplate, OrientationModel, Config) {
     "use strict";
     var OrientationView = Backbone.View.extend({
         className: "row",

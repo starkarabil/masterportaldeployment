@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio"
-], function (Backbone, Radio) {
+
+], function () {
     "use strict";
     var ContactModel = Backbone.Model.extend({
         defaults: {

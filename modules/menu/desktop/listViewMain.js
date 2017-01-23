@@ -1,13 +1,11 @@
 define([
-    "backbone",
-    "modules/menu/desktop/tool/view",
+        "modules/menu/desktop/tool/view",
     "modules/menu/desktop/folder/viewMenu",
       "bootstrap/dropdown",
     "bootstrap/collapse"
     ],
     function () {
-        var Backbone = require("backbone"),
-            Radio = require("backbone.radio"),
+        var
             DesktopToolView = require("modules/menu/desktop/tool/view"),
             DesktopFolderView = require("modules/menu/desktop/folder/viewMenu"),
             Menu;

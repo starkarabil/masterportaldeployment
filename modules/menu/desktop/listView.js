@@ -1,5 +1,5 @@
 define([
-    "backbone.radio",
+
     "modules/menu/desktop/listViewMain",
     "modules/menu/desktop/folder/viewTree",
     "modules/menu/desktop/folder/viewCatalog",
@@ -11,7 +11,7 @@ define([
             CatalogFolderView = require("modules/menu/desktop/folder/viewCatalog"),
             DesktopLayerView = require("modules/menu/desktop/layer/view"),
             SelectionView = require("modules/menu/desktop/layer/viewSelection"),
-            Radio = require("backbone.radio"),
+
             Menu;
 
         Menu = listView.extend({

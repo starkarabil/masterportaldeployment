@@ -3,7 +3,7 @@ define([
     'backbone',
     'modules/cookie/model',
     'text!modules/cookie/template.html'
-], function ($, Backbone, cookieModel, cookieTemplate) {
+], function ($, cookieModel, cookieTemplate) {
 
     var cookieView = Backbone.View.extend({
         model: cookieModel,

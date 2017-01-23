@@ -1,6 +1,5 @@
 define(function (require) {
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         View = require("modules/gfipopup/popup/view"),
         ViewMobile = require("modules/gfipopup/popup/viewMobile"),
         Util = require("modules/core/util"),

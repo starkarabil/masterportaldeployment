@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/gfiObjects/video/template.html",
+        "text!modules/gfipopup/gfiObjects/video/template.html",
     "modules/gfipopup/gfiObjects/video/model",
     "eventbus"
-], function (Backbone, VideoTemplate, VideoModel, EventBus) {
+], function (VideoTemplate, VideoModel, EventBus) {
     "use strict";
     var VideoView = Backbone.View.extend({
         template: _.template(VideoTemplate),

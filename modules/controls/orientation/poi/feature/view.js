@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "text!modules/controls/orientation/poi/feature/template.html",
+        "text!modules/controls/orientation/poi/feature/template.html",
     "modules/controls/orientation/poi/feature/model"
-], function (Backbone, PointOfInterestTemplate, PointOfInterest) {
+], function (PointOfInterestTemplate, PointOfInterest) {
 
     var PointOfInterestView = Backbone.View.extend({
         model: PointOfInterest,

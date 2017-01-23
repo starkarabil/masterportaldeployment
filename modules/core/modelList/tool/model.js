@@ -1,12 +1,12 @@
 define([
-    "backbone.radio",
+
     "modules/core/modelList/item",
     "eventbus"
 ], function () {
 
     var Item = require("modules/core/modelList/item"),
         EventBus = require("eventbus"),
-        Radio = require("backbone.radio"),
+
         Tool;
 
     Tool = Item.extend({

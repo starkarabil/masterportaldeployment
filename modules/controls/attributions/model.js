@@ -1,10 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio"
+
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         Attributions;
 
     Attributions = Backbone.Model.extend({

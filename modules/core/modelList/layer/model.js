@@ -1,7 +1,7 @@
 define(function (require) {
 
     var Item = require("modules/core/modelList/item"),
-        Radio = require("backbone.radio"),
+
         Layer;
 
     Layer = Item.extend({

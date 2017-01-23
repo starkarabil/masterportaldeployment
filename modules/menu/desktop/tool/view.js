@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         ItemTemplate = require("text!modules/menu/desktop/tool/template.html"),
         ItemView;
 

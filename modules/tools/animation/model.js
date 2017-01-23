@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         ol = require("openlayers"),
         Config = require("config"),
         Animation;
@@ -67,14 +66,14 @@ define(function (require) {
 
             // Config auslesen oder default
             this.setDefaults();
-            
+
 
             this.sendRequest("GET", this.getParams(), this.parseKreise);
             Radio.trigger("Map", "addLayerToIndex", [this.get("layer"), Radio.request("Map", "getLayers").getArray().length]);
         },
 
         setDefaults: function () {
-             if (_.has(Config, "animation")) { 
+             if (_.has(Config, "animation")) {
                 this.setZoomLevel(Config.animation.zoomlevel || 1);
                 this.setSteps(Config.animation.steps || 50);
                 this.setUrl(Config.animation.url || "http://geodienste.hamburg.de/Test_MRH_WFS_Pendlerverflechtung");

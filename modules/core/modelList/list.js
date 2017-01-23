@@ -1,6 +1,5 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/core/modelList/layer/wms",
     "modules/core/modelList/layer/wfs",
     "modules/core/modelList/layer/geojson",
@@ -10,15 +9,14 @@ define([
     "modules/layer/wfsStyle/list"
 ], function () {
 
-    var Backbone = require("backbone"),
-        WMSLayer = require("modules/core/modelList/layer/wms"),
+    var         WMSLayer = require("modules/core/modelList/layer/wms"),
         WFSLayer = require("modules/core/modelList/layer/wfs"),
         GeoJSONLayer = require("modules/core/modelList/layer/geojson"),
         StyleList = require("modules/layer/wfsStyle/list"),
         GROUPLayer = require("modules/core/modelList/layer/group"),
         Folder = require("modules/core/modelList/folder/model"),
         Tool = require("modules/core/modelList/tool/model"),
-        Radio = require("backbone.radio"),
+
         ModelList;
 
     ModelList = Backbone.Collection.extend({

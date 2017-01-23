@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/themes/trinkwasser/template.html",
+        "text!modules/gfipopup/themes/trinkwasser/template.html",
     "modules/gfipopup/themes/trinkwasser/model"
-], function (Backbone, GFIContentTrinkwasserTemplate, GFIContentTrinkwasserModel) {
+], function (GFIContentTrinkwasserTemplate, GFIContentTrinkwasserModel) {
     "use strict";
     var GFIContentTrinkwasserView = Backbone.View.extend({
         template: _.template(GFIContentTrinkwasserTemplate),

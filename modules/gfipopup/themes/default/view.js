@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "text!modules/gfipopup/themes/default/template.html",
+        "text!modules/gfipopup/themes/default/template.html",
     "modules/gfipopup/themes/default/model"
-], function (Backbone, GFIContentDefaultTemplate, GFIContentDefaultModel) {
+], function (GFIContentDefaultTemplate, GFIContentDefaultModel) {
     "use strict";
     var GFIContentDefaultView = Backbone.View.extend({
         template: _.template(GFIContentDefaultTemplate),

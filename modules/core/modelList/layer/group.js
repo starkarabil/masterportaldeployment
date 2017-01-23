@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "modules/core/modelList/layer/model"
-], function (Backbone, Radio, ol, Layer) {
+], function (ol, Layer) {
 
     var GroupLayer = Layer.extend({
 

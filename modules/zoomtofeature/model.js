@@ -1,12 +1,8 @@
 define([
-    "backbone",
-    "config",
-    "backbone.radio",
+        "config",
     "eventbus"
 ], function () {
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
-        Config = require("config"),
+    var         Config = require("config"),
         EventBus = require("eventbus"),
 
         ZoomToFeature = Backbone.Model.extend({

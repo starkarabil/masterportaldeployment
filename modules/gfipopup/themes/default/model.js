@@ -1,11 +1,10 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/gfipopup/gfiObjects/img/view",
     "modules/gfipopup/gfiObjects/video/view",
     "modules/gfipopup/gfiObjects/routable/view",
     "modules/core/util"
-], function (Backbone, Radio, ImgView, VideoView, RoutableView, Util) {
+], function (ImgView, VideoView, RoutableView, Util) {
     "use strict";
     var GFIContentDefaultModel = Backbone.Model.extend({
         /**

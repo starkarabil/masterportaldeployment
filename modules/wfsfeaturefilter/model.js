@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "backbone.radio"
-], function (Backbone, Radio) {
+
+], function () {
     "use strict";
     var wfsFeatureFilter = Backbone.Model.extend({
         defaults: {

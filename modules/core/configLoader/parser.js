@@ -1,11 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/core/modelList/list"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         ModelList = require("modules/core/modelList/list"),
         Parser;
 

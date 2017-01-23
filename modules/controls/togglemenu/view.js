@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config"
-], function (Backbone, Radio, Config) {
+], function (Config) {
 
     var ToggleControlView = Backbone.View.extend({
         className: "row",

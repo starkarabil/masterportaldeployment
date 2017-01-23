@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "eventbus",
+        "eventbus",
     "config"
-], function (Backbone, EventBus, Config) {
+], function (EventBus, Config) {
     "use strict";
     var ImgModel = Backbone.Model.extend({
         /**

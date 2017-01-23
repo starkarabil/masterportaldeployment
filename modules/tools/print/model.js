@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config",
     "openlayers"
-], function (Backbone, Radio, Config, ol) {
+], function (Config, ol) {
     "use strict";
     var model = Backbone.Model.extend({
 

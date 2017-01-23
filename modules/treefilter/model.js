@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "config",
     "modules/core/util"
-], function (Backbone, Radio, Config, Util) {
+], function (Config, Util) {
 
     var TreeFilter = Backbone.Model.extend({
         defaults: {

@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "text!modules/tools/searchByCoord/template.html",
+        "text!modules/tools/searchByCoord/template.html",
     "modules/tools/searchByCoord/model"
-], function (Backbone, SearchByCoordTemplate, SearchByCoord) {
+], function (SearchByCoordTemplate, SearchByCoord) {
 
     var SearchByCoordView = Backbone.View.extend({
         model: SearchByCoord,

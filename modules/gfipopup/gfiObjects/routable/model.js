@@ -1,7 +1,6 @@
 define([
-    "backbone",
-    "eventbus"
-], function (Backbone, EventBus) {
+        "eventbus"
+], function (EventBus) {
     "use strict";
     var RoutableModel = Backbone.Model.extend({
         /**

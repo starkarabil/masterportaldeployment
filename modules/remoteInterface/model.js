@@ -1,7 +1,6 @@
 define(function (require) {
-    var Radio = require("backbone.radio"),
-        Backbone = require("backbone"),
-        ol = require("openlayers"),
+
+    var         ol = require("openlayers"),
         RemoteInterface;
 
     RemoteInterface = Backbone.Model.extend({

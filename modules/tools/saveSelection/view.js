@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "text!modules/tools/saveSelection/template.html",
+        "text!modules/tools/saveSelection/template.html",
     "text!modules/tools/saveSelection/templateSimpleMap.html",
     "modules/tools/saveSelection/model"
-], function (Backbone, SaveSelectionTemplate, SaveSelectionSimpleMapTemplate, SaveSelection) {
+], function (SaveSelectionTemplate, SaveSelectionSimpleMapTemplate, SaveSelection) {
 
     var SaveSelectionView = Backbone.View.extend({
         model: new SaveSelection(),

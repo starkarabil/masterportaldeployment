@@ -1,8 +1,7 @@
 define(function (require) {
     require(["bootstrap/popover"]);
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         EventBus = require("eventbus"),
         ol = require("openlayers"),
         Requestor = require("modules/core/requestor"),

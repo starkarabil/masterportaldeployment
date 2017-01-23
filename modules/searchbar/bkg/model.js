@@ -1,9 +1,8 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "eventbus",
     "modules/searchbar/model"
-    ], function (Backbone, Radio, EventBus) {
+    ], function (EventBus) {
     "use strict";
     return Backbone.Model.extend({
         /**

@@ -1,9 +1,8 @@
 define([
     "openlayers",
-    "backbone",
-    "backbone.radio",
+
     "proj4"
-], function (ol, Backbone, Radio, proj4) {
+], function (ol, proj4) {
         var Download = Backbone.Model.extend({
             // Die Features
             data: {},

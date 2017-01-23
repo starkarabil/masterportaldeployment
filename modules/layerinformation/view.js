@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/layerinformation/model",
     "text!modules/layerinformation/template.html",
     "jqueryui/widgets/draggable"
-], function (Backbone, Radio, Layerinformation, LayerInformationTemplate) {
+], function (Layerinformation, LayerInformationTemplate) {
 
     var LayerInformationView = Backbone.View.extend({
         model: new Layerinformation(),

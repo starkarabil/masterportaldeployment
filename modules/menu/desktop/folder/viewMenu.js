@@ -1,10 +1,8 @@
 define([
-    "backbone",
-    "text!modules/menu/desktop/folder/templateMenu.html"
+        "text!modules/menu/desktop/folder/templateMenu.html"
 ], function () {
 
-    var Backbone = require("backbone"),
-        Template = require("text!modules/menu/desktop/folder/templateMenu.html"),
+    var         Template = require("text!modules/menu/desktop/folder/templateMenu.html"),
         FolderView;
 
     FolderView = Backbone.View.extend({

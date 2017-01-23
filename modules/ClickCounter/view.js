@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/clickCounter/model"
-], function (Backbone, Radio, ClickCounterModel) {
+], function (ClickCounterModel) {
 
     var ClickCounterView = Backbone.View.extend({
         initialize: function (desktopURL, mobileURL) {

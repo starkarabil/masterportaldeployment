@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "bootstrap/modal"
-], function (Backbone, Radio) {
+], function () {
 
     var Legend = Backbone.Model.extend({
 

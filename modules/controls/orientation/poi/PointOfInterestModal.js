@@ -1,6 +1,5 @@
 define([
-    "backbone"
-], function (Backbone) {
+    ], function () {
 
     var PointOfInterest = Backbone.Model.extend({
         defaults: {

@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         ol = require("openlayers"),
         AddGeoJSON;
 

@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "openlayers",
     "eventbus",
     "bootstrap/popover"
-], function (Backbone, Radio, ol, EventBus) {
+], function (ol, EventBus) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {

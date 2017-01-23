@@ -1,11 +1,11 @@
 define([
     "modules/core/modelList/layer/model",
-    "backbone.radio",
+
     "openlayers"
 ], function () {
 
     var Layer = require("modules/core/modelList/layer/model"),
-        Radio = require("backbone.radio"),
+
         ol = require("openlayers"),
         // StyleList = require("modules/layer/wfsStyle/list"),
         WFSLayer;

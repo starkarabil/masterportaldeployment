@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/tools/list",
     "modules/tools/view",
     "modules/core/util"
-], function (Backbone, Radio, TreeList, ToolView, Util) {
+], function (TreeList, ToolView, Util) {
 
     var ToolListView = Backbone.View.extend({
         collection: new TreeList(),

@@ -1,10 +1,9 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "modules/gfipopup/gfiObjects/img/view",
     "modules/gfipopup/gfiObjects/video/view",
     "modules/gfipopup/gfiObjects/routable/view"
-], function (Backbone, Radio, ImgView, VideoView, RoutableView) {
+], function (ImgView, VideoView, RoutableView) {
     "use strict";
     var GFIContentTrinkwasserModel = Backbone.Model.extend({
         /**

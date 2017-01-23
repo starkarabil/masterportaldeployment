@@ -1,11 +1,9 @@
 define([
-    "backbone",
-    "eventbus",
-    "backbone.radio"
+        "eventbus",
+
 ], function () {
 
-    var Backbone = require("backbone"),
-        Radio = require("backbone.radio"),
+    var
         StyleWMS;
 
     StyleWMS = Backbone.Model.extend({

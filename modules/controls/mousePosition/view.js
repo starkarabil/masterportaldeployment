@@ -1,8 +1,7 @@
 define([
-    "backbone",
-    "backbone.radio",
+
     "text!modules/controls/mousePosition/template.html"
-], function (Backbone, Radio, MousePositionTemplate) {
+], function (MousePositionTemplate) {
 
     var MousePositionView = Backbone.View.extend({
         className: "mouse-position hidden-xs",

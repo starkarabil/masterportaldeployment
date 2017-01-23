@@ -1,14 +1,18 @@
-define([
-    "backbone",
-    "text!modules/searchbar/template.html",
-    "text!modules/searchbar/templateRecommendedList.html",
-    "text!modules/searchbar/templateHitList.html",
-    "modules/searchbar/model",
-    "eventbus",
-    "backbone.radio"
-], function (Backbone, SearchbarTemplate, SearchbarRecommendedListTemplate, SearchbarHitListTemplate, Searchbar, EventBus, Radio) {
-    "use strict";
-    return Backbone.View.extend({
+define(function (require) {
+    var GAZModel = require("modules/searchbar/gaz/model"),
+        SpecialWFSModel = require("modules/searchbar/specialWFS/model"),
+        VisibleWFSModel = require("modules/searchbar/visibleWFS/model"),
+        BKGModel = require("modules/searchbar/bkg/model"),
+        TreeModel = require("modules/searchbar/tree/model"),
+        LayerSearch = require("modules/searchbar/layer/model"),
+        SearchbarTemplate = require("text!modules/searchbar/template.html"),
+        SearchbarRecommendedListTemplate = require("text!modules/searchbar/templateRecommendedList.html"),
+        SearchbarHitListTemplate = require("text!modules/searchbar/templateHitList.html"),
+        Searchbar = require("modules/searchbar/model"),
+        EventBus = require("eventbus"),
+        SearchbarView;
+
+    SearchbarView = Backbone.View.extend({
         model: Searchbar,
         id: "searchbar", // wird ignoriert, bei renderToDOM
         className: "navbar-form col-xs-9", // wird ignoriert, bei renderToDOM
@@ -113,34 +117,34 @@ define([
             $("#searchInput").blur();
             // bedarfsweises Laden der Suchalgorythmen
             if (_.has(config, "gazetteer") === true) {
-                require(["modules/searchbar/gaz/model"], function (GAZModel) {
+                // require(["modules/searchbar/gaz/model"], function (GAZModel) {
                     new GAZModel(config.gazetteer);
-                });
+                // });
             }
             if (_.has(config, "specialWFS") === true) {
-                require(["modules/searchbar/specialWFS/model"], function (SpecialWFSModel) {
+                // require(["modules/searchbar/specialWFS/model"], function (SpecialWFSModel) {
                     new SpecialWFSModel(config.specialWFS);
-                });
+                // });
             }
             if (_.has(config, "visibleWFS") === true) {
-                require(["modules/searchbar/visibleWFS/model"], function (VisibleWFSModel) {
+                // require(["modules/searchbar/visibleWFS/model"], function (VisibleWFSModel) {
                     new VisibleWFSModel(config.visibleWFS);
-                });
+                // });
             }
             if (_.has(config, "bkg") === true) {
-                require(["modules/searchbar/bkg/model"], function (BKGModel) {
+                // require(["modules/searchbar/bkg/model"], function (BKGModel) {
                     new BKGModel(config.bkg);
-                });
+                // });
             }
             if (_.has(config, "tree") === true) {
-                require(["modules/searchbar/tree/model"], function (TreeModel) {
+                // require(["modules/searchbar/tree/model"], function (TreeModel) {
                     new TreeModel(config.tree);
-                });
+                // });
             }
             if (_.has(config, "layer") === true) {
-                require(["modules/searchbar/layer/model"], function (LayerSearch) {
+                // require(["modules/searchbar/layer/model"], function (LayerSearch) {
                     new LayerSearch(config.layer);
-                });
+                // });
             }
 
             // Hack für flexible Suchleiste
@@ -553,4 +557,6 @@ define([
             element[0].setSelectionRange(strLength, strLength);
         }
     });
+
+    return SearchbarView;
 });
