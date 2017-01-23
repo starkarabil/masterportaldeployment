@@ -97,6 +97,7 @@ define(function (require) {
 
             this.listenTo(Radio.channel("MenuLoader"), {
                 "ready": function () {
+                    this.render();
                     if ($("#lgv-container").width() >= 768) {
                         $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
                     }
@@ -109,7 +110,9 @@ define(function (require) {
                 }
             });
 
-            this.render();
+            if ($("#main-nav").length > 0) {
+                this.render();
+            }
 
             if (navigator.appVersion.indexOf("MSIE 9.") !== -1) {
                 $("#searchInput").val(this.model.get("placeholder"));
