@@ -308,9 +308,13 @@ define("app",
             });
         });
 
-        require(["modules/mapMarker/view"], function (MapMarkerView) {
-            new MapMarkerView();
-        });
+        // Prüfung, ob MapMarker geladen werden soll. In MML disabled.
+        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== false) {
+            require(["modules/mapMarker/view"], function (MapMarkerView) {
+                new MapMarkerView();
+            });
+        }
+
 
         var sbconfig = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 

@@ -46,6 +46,7 @@
 	z-index: 2;
 }*/
   /*------------------------Menubar--------------------------------------*/
+  /**************** Navbar ****************/
   /**************** Themenbaum ****************/
   /* ----------------------Themenbaum light -----------------------------*/
   /*Haupt Themenliste */
@@ -1371,6 +1372,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 .lgv-container #searchForm > .input-group {
   width: 100%;
@@ -1445,6 +1447,9 @@
   background: -o-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -ms-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
+.lgv-container .dropdown-menu-search li.type .badge {
+  float: right;
+}
 .lgv-container .dropdown-menu-search li:hover {
   cursor: pointer;
   background-color: #efefef;
@@ -1484,7 +1489,7 @@
 .lgv-container .btn-search-question > span:hover {
   opacity: 1;
 }
-.lgv-container .results {
+.lgv-container #searchbar .results {
   background-color: #d42132;
   font-size: 12px;
   text-align: right;
@@ -2117,6 +2122,19 @@
 .lgv-container .navbar-collapse.in {
   padding: 0;
   max-height: 80vh;
+}
+.lgv-container #main-nav {
+  margin-bottom: 0;
+}
+.lgv-container #main-nav .navbar-collapse {
+  padding: 0;
+}
+@element ".lgv-container" and (max-width: 767px) {
+  .lgv-container #main-nav .navbar-collapse {
+    z-index: 1000;
+    position: absolute;
+    width: 100%;
+  }
 }
 .lgv-container ul#Themen {
   border: none;

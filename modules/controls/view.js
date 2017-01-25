@@ -17,7 +17,7 @@ define([
             var result = Radio.request("ParametricURL", "getResult");
 
             if (!_.has(result, "STYLE") || _.values(_.pick(result, "STYLE"))[0].toUpperCase() !== "SIMPLE") {
-                $(".navbar").after(this.$el);
+                $(".lgv-container").append(this.$el);
             }
         },
         addRow: function (id) {
