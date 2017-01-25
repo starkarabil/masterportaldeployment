@@ -4,12 +4,14 @@ define([
 ], function (Require) {
 
     var Util = Backbone.Model.extend({
-        // defaults: {
-        //     isViewMobile: false
-        // },
+        defaults: {
+            isViewMobile: false
+        },
         initialize: function () {
-            var channel = Radio.channel("Util");
+            var channel = Radio.channel("Util"),
+                context = this;
 
+                this.toggleIsViewMobile();
             $("#lgv-container").append("<div id='loader'><img src='../../../img/ajax-loader.gif'></div>");
 
             channel.reply({
@@ -37,8 +39,11 @@ define([
                     channel.trigger("isViewMobileChanged");
                 }
             });
-
-            $(window).on("resize", _.bind(this.toggleIsViewMobile, this));
+            $(window).resize(
+                function () {
+                    context.toggleIsViewMobile();
+                }
+            );
         },
         isAndroid: function () {
             return navigator.userAgent.match(/Android/i);
@@ -146,7 +151,9 @@ define([
          * Toggled das Attribut isViewMobile bei über- oder unterschreiten einer Fensterbreite von 768px
          */
         toggleIsViewMobile: function () {
-            if ($("#lgv-container").width() >= 768) {
+            var width = $("#lgv-container").width();
+
+            if (width > 768) {
                 this.setIsViewMobile(false);
             }
             else {

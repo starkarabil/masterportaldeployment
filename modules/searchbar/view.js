@@ -193,7 +193,7 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            if ($("#lgv-container").width() < 768) {
+            if ($("#lgv-container").width() <= 768) {
                 $(".navbar-toggle").before(this.$el); // vor dem toggleButton
             }
             else {
