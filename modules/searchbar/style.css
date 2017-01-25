@@ -40,6 +40,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin: 0;
 }
 
 #searchForm > .input-group {
@@ -127,6 +128,10 @@
     background: -ms-linear-gradient(top , white , #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
 
+.dropdown-menu-search li.type .badge {
+    float: right;
+}
+
 .dropdown-menu-search li:hover {
     cursor: pointer;
     background-color: #efefef;
@@ -174,7 +179,7 @@
     opacity: 1;
 }
 
-.results {
+#searchbar .results {
     background-color: #d42132;
     font-size: 12px;
     text-align: right;
