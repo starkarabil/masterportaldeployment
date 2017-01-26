@@ -43,9 +43,6 @@ requirejs.config({
         modules: "../modules"
     },
     shim: {
-        app: {
-            deps: ["jquery", "backbone", "backbone.radio"]
-        },
         bootstrap: {
             deps: ["jquery"]
         },
@@ -107,5 +104,9 @@ requirejs.onError = function (err) {
     }
 };
 
-define(["app"], function () {
+// zuerst libs laden, die alle Module brauchen. die sind dann im globalen Namespace verfügbar, empfehlung s. https://gist.github.com/jjt/3306911
+require(["jquery", "backbone", "backbone.radio"], function () {
+    // dann unsere app laden, die von diesen globalen libs abhängen
+    Radio = Backbone.Radio;
+    require(["app"]);
 });
