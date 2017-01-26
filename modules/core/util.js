@@ -82,6 +82,12 @@ define([
                 return false;
             }
         },
+        /**
+         * macht einen Pfad relativ zu requirejs-baseUrl (bei uns js, wo data-main liegt), es sei denn, er beginnt mit "/" oder "http" (absoluter Pfad).
+         * use case:
+         *  - require.config.paths werden relativ zu main.js interpretiert; so kann z.B. derselbe Pfad auch für das Laden der config.json genutzt werden.
+         *  - in der gebauten Version können sich Pfade von der index.html zum img-ordner unterscheiden, von js aus sind sie gleich.
+        **/
         getPath: function (path) {
             var baseUrl = Require.toUrl("").split("?")[0];
 
