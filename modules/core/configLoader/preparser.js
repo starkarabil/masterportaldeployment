@@ -7,7 +7,9 @@ define([
         Preparser;
 
     Preparser = Backbone.Model.extend({
-        url: configPath + "config.json",
+        url: function () {
+            return Radio.request("Util", "getPath", configPath) + "config.json";
+        },
         initialize: function () {
             this.fetch({async: false});
         },
