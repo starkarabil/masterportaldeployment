@@ -1,6 +1,4 @@
-define([
-
-], function () {
+define(function () {
 
     var ControlsView = Backbone.View.extend({
         className: "container-fluid controls-view",
@@ -14,10 +12,11 @@ define([
             });
         },
         render: function () {
-            var result = Radio.request("ParametricURL", "getResult");
+            var result = Radio.request("ParametricURL", "getResult"),
+                mapViewPort = Radio.request("Map", "getViewPort");
 
             if (!_.has(result, "STYLE") || _.values(_.pick(result, "STYLE"))[0].toUpperCase() !== "SIMPLE") {
-                $(".lgv-container").append(this.$el);
+                $(mapViewPort).append(this.$el);
             }
         },
         addRow: function (id) {

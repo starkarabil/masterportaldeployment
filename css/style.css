@@ -2091,6 +2091,11 @@
   left: 0px;
   z-index: 1;
 }
+.lgv-container #main-nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
 .lgv-container .navbar {
   min-height: 0;
   /*wichtig für toggleButton, muss nochmal schöner gemacht werden*/

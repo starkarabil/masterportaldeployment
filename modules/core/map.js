@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var
-        ol = require("openlayers"),
+    var ol = require("openlayers"),
         MapView = require("modules/core/mapView"),
         Map;
 
@@ -27,9 +26,8 @@ define(function (require) {
                 mapView = new MapView();
 
             channel.reply({
-                "getMap": function () {
-                    return this.get("map");
-                },
+                "getTargetElement": this.getTargetElement,
+                "getViewPort": this.getViewPort,
                 "getLayers": this.getLayers,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "createLayerIfNotExists": this.createLayerIfNotExists
@@ -62,6 +60,10 @@ define(function (require) {
                 "change:vectorLayer": function (model, value) {
                     this.addLayerToIndex([value, 0]);
                 }
+            });
+
+            this.listenToOnce(this, {
+                "change:map": this.addCopyrightToMap
             });
 
             this.set("view", mapView.get("view"));
@@ -549,6 +551,31 @@ define(function (require) {
                 Radio.trigger("Map", "addLayerToIndex", [layer, layers.getArray().length]);
             }
             return resultLayer;
+        },
+
+        /**
+         * Zeichnet den LGV Copyright auf die Map.
+         */
+        addCopyrightToMap: function () {
+            var copyright = "Kartographie und Gestaltung: <a href='http://www.geoinfo.hamburg.de/' target='_blank'>Landesbetrieb Geoinformation und Vermessung Hamburg</a>";
+
+            $(this.getViewPort()).append("<div class='copyright'>" + copyright + "</div>");
+        },
+
+        /**
+         * Gibt den Viewport der Karte zurück.
+         * @return {HTML DOM Element} - Karten-Ansichtsfenster
+         */
+        getViewPort: function () {
+            return this.getMap().getViewport();
+        },
+
+        /**
+         * Gibt das DOM-Element zurück, in das die Karte gezeichnet ist.
+         * @return {HTML DOM Element}
+         */
+        getTargetElement: function () {
+            return this.getMap().getTargetElement();
         }
     });
 

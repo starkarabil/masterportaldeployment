@@ -9,15 +9,15 @@ define(function (require) {
             ListView = require("modules/menu/desktop/listView"),
             ListViewMobile = require("modules/menu/mobile/listView");
 
-        // Bootstrap Navigation wird an den Wrapper gehängt
-        // $("#lgv-container").prepend(_.template(MenuTemplate));
+        // Bootstrap Navigation wird an den Viewport der Map gehängt
         this.treeType = Radio.request("Parser", "getTreeType");
+        this.mapViewPort = Radio.request("Map", "getViewPort");
         this.getMenuView = function () {
             var isMobile = Radio.request("Util", "isViewMobile"),
                 currentMenu;
 
             // Bootstrap Navigation wird an den Wrapper gehängt
-            $("#lgv-container").prepend(_.template(MenuTemplate));
+            $(this.mapViewPort).append(_.template(MenuTemplate));
             if (isMobile) {
                 currentMenu = new ListViewMobile();
             }

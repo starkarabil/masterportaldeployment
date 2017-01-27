@@ -20,7 +20,7 @@ define([
         },
         toggleNavigation: function () {
             $(".toggleButton > span").toggleClass("glyphicon-chevron-up glyphicon-chevron-down");
-            if ($(".controls-view").css("top") === "0px") {
+            if ($(".toggleButton > span").hasClass("glyphicon-chevron-up") === true) {
                 $(".controls-view").css("top", "50px");
                 $(".toggleButton").attr("title", "Menü ausblenden");
                 $("nav").show();
