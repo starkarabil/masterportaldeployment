@@ -48,7 +48,7 @@ define(function () {
         },
 
         getMeldePinPosition: function () {
-            return Radio.request("DragMarker", "getCenter");
+            return Radio.request("DragMarker", "getPosition");
         },
 
         getWGS84MapSizeBBOX: function () {
@@ -76,7 +76,7 @@ define(function () {
         },
 
         setMeldePinPosition: function (coordinate) {
-            Radio.trigger("DragMarker", "setCenter", coordinate);
+            Radio.trigger("DragMarker", "setPosition", coordinate);
         },
 
         showLayer: function (value) {
