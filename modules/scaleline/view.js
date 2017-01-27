@@ -6,7 +6,7 @@ define([
 
     var ScaleLineView = Backbone.View.extend({
         model: ScaleLine,
-        className: "scale-line",
+        className: "scale-line hidden-xs",
         template: _.template(ScaleLineTemplate),
         initialize: function () {
             this.listenTo(this.model, "change:scaleLineValue", this.render);

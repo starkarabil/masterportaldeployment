@@ -30,10 +30,3 @@
 .dropdown-menu > .divider {
     margin: 6px 0;
 }
-
-@element ".lgv-container" and (max-width: 767px) {
-    .dropdown-menu {
-        border-right: 0;
-        border-left: 0;
-    }
-}

@@ -19,15 +19,3 @@
 .scale:last-child {
     padding: 0 16px;
 }
-
-@element ".lgv-container" and (max-width: 767px) {
-    .scale-line {
-        display: none;
-    }
-}
-
-@element ".lgv-container" and (min-width: 768px) {
-    .scale-line {
-        display: block;
-    }
-}

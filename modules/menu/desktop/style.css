@@ -7,13 +7,6 @@
     padding: 0;
 }
 
-@element ".lgv-container" and (max-width: 767px) {
-    .lgv-container #main-nav .navbar-collapse {
-        z-index: 1000;
-        position: absolute;
-        width: 100%;
-    }
-}
 /**************** Themenbaum ****************/
 ul#Themen {
     border: none;
