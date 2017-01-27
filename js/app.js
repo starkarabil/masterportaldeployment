@@ -12,7 +12,6 @@ define("app",
     "modules/alerting/view",
     "eqcss"
 ], function (Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter, Alert) {
-    Radio = Backbone.Radio;
 
     // Core laden
     new Alert();
