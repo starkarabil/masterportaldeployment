@@ -184,76 +184,7 @@
 .lgv-container th {
   padding: 0;
 }
-@media print {
-  .lgv-container *,
-  .lgv-container *:before,
-  .lgv-container *:after {
-    background: transparent !important;
-    color: #000 !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-  .lgv-container a,
-  .lgv-container a:visited {
-    text-decoration: underline;
-  }
-  .lgv-container a[href]:after {
-    content: " (" attr(href) ")";
-  }
-  .lgv-container abbr[title]:after {
-    content: " (" attr(title) ")";
-  }
-  .lgv-container a[href^="#"]:after,
-  .lgv-container a[href^="javascript:"]:after {
-    content: "";
-  }
-  .lgv-container pre,
-  .lgv-container blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-  .lgv-container thead {
-    display: table-header-group;
-  }
-  .lgv-container tr,
-  .lgv-container img {
-    page-break-inside: avoid;
-  }
-  .lgv-container img {
-    max-width: 100% !important;
-  }
-  .lgv-container p,
-  .lgv-container h2,
-  .lgv-container h3 {
-    orphans: 3;
-    widows: 3;
-  }
-  .lgv-container h2,
-  .lgv-container h3 {
-    page-break-after: avoid;
-  }
-  .lgv-container .navbar {
-    display: none;
-  }
-  .lgv-container .btn > .caret,
-  .lgv-container .dropup > .btn > .caret {
-    border-top-color: #000 !important;
-  }
-  .lgv-container .label {
-    border: 1px solid #000;
-  }
-  .lgv-container .table {
-    border-collapse: collapse !important;
-  }
-  .lgv-container .table td,
-  .lgv-container .table th {
-    background-color: #fff !important;
-  }
-  .lgv-container .table-bordered th,
-  .lgv-container .table-bordered td {
-    border: 1px solid #ddd !important;
-  }
-}
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
@@ -2428,7 +2359,7 @@ a.lgv-container .bg-danger:focus {
   overflow-x: auto;
   min-height: 0.01%;
 }
-@media screen and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .table-responsive {
     width: 100%;
     margin-bottom: 15px;
@@ -2585,7 +2516,7 @@ textarea.lgv-container .form-control {
 .lgv-container input[type="search"] {
   -webkit-appearance: none;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
+@element ".lgv-container" and (-webkit-min-device-pixel-ratio: 0) {
   .lgv-container input[type="date"].form-control,
   .lgv-container input[type="time"].form-control,
   .lgv-container input[type="datetime-local"].form-control,
@@ -4957,7 +4888,7 @@ a.lgv-container .badge:focus {
 .lgv-container .jumbotron .container {
   max-width: 100%;
 }
-@media screen and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .jumbotron {
     padding-top: 48px;
     padding-bottom: 48px;
@@ -6393,7 +6324,7 @@ button.lgv-container .close {
 .lgv-container .carousel-caption .btn {
   text-shadow: none;
 }
-@media screen and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .carousel-control .glyphicon-chevron-left,
   .lgv-container .carousel-control .glyphicon-chevron-right,
   .lgv-container .carousel-control .icon-prev,
@@ -6672,47 +6603,15 @@ button.lgv-container .close {
 .lgv-container .visible-print {
   display: none !important;
 }
-@media print {
-  .lgv-container .visible-print {
-    display: block !important;
-  }
-  table.lgv-container .visible-print {
-    display: table !important;
-  }
-  tr.lgv-container .visible-print {
-    display: table-row !important;
-  }
-  th.lgv-container .visible-print,
-  td.lgv-container .visible-print {
-    display: table-cell !important;
-  }
-}
+
 .lgv-container .visible-print-block {
   display: none !important;
 }
-@media print {
-  .lgv-container .visible-print-block {
-    display: block !important;
-  }
-}
+
 .lgv-container .visible-print-inline {
   display: none !important;
 }
-@media print {
-  .lgv-container .visible-print-inline {
-    display: inline !important;
-  }
-}
+
 .lgv-container .visible-print-inline-block {
   display: none !important;
-}
-@media print {
-  .lgv-container .visible-print-inline-block {
-    display: inline-block !important;
-  }
-}
-@media print {
-  .lgv-container .hidden-print {
-    display: none !important;
-  }
 }
