@@ -15,8 +15,8 @@ define(function () {
 
             channel.on({
                 "addFeatures": this.addFeatures,
-                "hideAllFeatures": this.showAllFeatures,
-                "hideFeatures": this.showFeatures,
+                "hideAllFeatures": this.hideAllFeatures,
+                "hideFeatures": this.hideFeatures,
                 "hideLayer": this.hideLayer,
                 "hideMapMarker": this.hideMapMarker,
                 "setCenter": this.setCenter,
@@ -29,6 +29,18 @@ define(function () {
                 "zoomToFeature": this.zoomToFeature,
                 "zoomToFeatures": this.zoomToFeatures
             }, this);
+        },
+        showAllFeatures: function (name) {
+            Radio.trigger("ModelList","showAllFeatures", name);
+        },
+        hideAllFeatures: function (name) {
+            Radio.trigger("ModelList","hideAllFeatures", name);
+        },
+        showFeatures: function (name, featureIds) {
+            Radio.trigger("ModelList","showFeaturesByIds", name, featureIds);
+        },
+        hideFeatures: function (name, featureIds) {
+            Radio.trigger("ModelList","hideFeaturesByIds", name, featureIds);
         },
 
         addFeatures: function (features, name) {

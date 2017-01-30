@@ -34,7 +34,7 @@ define(function (require) {
             var collection = this.getLayerSource().getFeatures();
 
             collection.forEach(function (feature) {
-                feature.setStyle(this.getDefaultStyle());
+                feature.setStyle(this.getStyles());
             }, this);
         },
 
@@ -54,11 +54,20 @@ define(function (require) {
          * @param  {string[]} featureIdList
          */
         showFeaturesByIds: function (featureIdList) {
-            this.hideAllFeatures();
             _.each(featureIdList, function (id) {
                 var feature = this.getLayerSource().getFeatureById(id);
+                feature.setStyle(this.getStyles());
+            }, this);
+        },
 
-                feature.setStyle(this.getDefaultStyle());
+        /**
+         * Versteckt nur die Features an, deren Id übergeben wird
+         * @param  {string[]} featureIdList
+         */
+        hideFeaturesByIds: function (featureIdList) {
+            _.each(featureIdList, function (id) {
+                var feature = this.getLayerSource().getFeatureById(id);
+                feature.setStyle(this.getHiddenStyle());
             }, this);
         },
 
