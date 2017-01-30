@@ -22,7 +22,7 @@ define(function (require) {
 
             channel.on({
                 "addFeatures": function (features, name) {
-                    this.setLayerId("9999_" + name);
+                    this.setLayerId(name);
                     this.setLayerName(name);
                     this.createFeaturesFromGeoJson(features);
                 }
