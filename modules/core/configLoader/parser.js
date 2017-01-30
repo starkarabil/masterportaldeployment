@@ -76,8 +76,8 @@ define([
             this.parseMapView(this.getPortalConfig().mapView);
 
             if (this.getTreeType() === "light") {
-                this.parseTree(this.getOverlayer(), "Themen", 0);
-                this.parseTree(this.getBaselayer(), "Themen", 0);
+                this.parseTree(this.getOverlayer(), "Themen", 0, false);
+                this.parseTree(this.getBaselayer(), "Themen", 0, true);
             }
             else if (this.getTreeType() === "custom") {
                 this.addTreeMenuItems();

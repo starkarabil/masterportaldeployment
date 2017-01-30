@@ -9,7 +9,7 @@ define([
     "modules/layer/wfsStyle/list"
 ], function () {
 
-    var         WMSLayer = require("modules/core/modelList/layer/wms"),
+    var WMSLayer = require("modules/core/modelList/layer/wms"),
         WFSLayer = require("modules/core/modelList/layer/wfs"),
         GeoJSONLayer = require("modules/core/modelList/layer/geojson"),
         StyleList = require("modules/layer/wfsStyle/list"),
@@ -32,6 +32,9 @@ define([
                 },
                 "getModelByAttributes": function (attributes) {
                     return this.findWhere(attributes);
+                },
+                "getBaseLayers": function () {
+                    return this.getBaseLayers();
                 }
             }, this);
 
@@ -48,6 +51,8 @@ define([
                 "showModelInTree": this.showModelInTree,
                 "closeAllExpandedFolder": this.closeExpandedFolder,
                 "setAllDescendantsInvisible": this.setAllDescendantsInvisible,
+                "showLayers": this.showLayers,
+                "hideLayers": this.hideLayers,
                 "renderTree": function () {
                     this.trigger("renderTree");
                 }
@@ -482,8 +487,34 @@ define([
             var model = this.get(id);
 
             model.showFeaturesByIds(featureIds);
-        }
+        },
+        getBaseLayers: function () {
+            var baseLayers = this.where({isBaseLayer: true, isVisibleInMap: true}),
+                names = [];
 
+            _.each(baseLayers, function (layer) {
+                names.push(layer.getName());
+            });
+            return names;
+        },
+        showLayers: function (layerNames) {
+            var layers = this.filter(function (layer) {
+                    return _.contains(layerNames, layer.getName());
+                }, this);
+
+            _.each(layers, function (layer) {
+                    layer.setIsSelected(true);
+            }, this);
+        },
+        hideLayers: function (layerNames) {
+            var layers = this.filter(function (layer) {
+                    return _.contains(layerNames, layer.getName());
+                }, this);
+
+            _.each(layers, function (layer) {
+                    layer.setIsSelected(false);
+            }, this);
+        }
     });
 
     return ModelList;

@@ -10,14 +10,15 @@ define(function () {
                 "getMeldePinAddress": this.getMeldePinAddress,
                 "getMeldePinPosition": this.getMeldePinPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
-                "getZoomLevel": this.getZoomLevel
+                "getZoomLevel": this.getZoomLevel,
+                "getBaseLayers": this.getBaseLayers
             }, this);
 
             channel.on({
                 "addFeatures": this.addFeatures,
                 "hideAllFeatures": this.showAllFeatures,
                 "hideFeatures": this.showFeatures,
-                "hideLayer": this.hideLayer,
+                "hideLayers": this.hideLayers,
                 "hideMapMarker": this.hideMapMarker,
                 "setCenter": this.setCenter,
                 "setMeldePinPosition": this.setMeldePinPosition,
@@ -27,7 +28,8 @@ define(function () {
                 "showLayer": this.showLayer,
                 "showMapMarker": this.showMapMarker,
                 "zoomToFeature": this.zoomToFeature,
-                "zoomToFeatures": this.zoomToFeatures
+                "zoomToFeatures": this.zoomToFeatures,
+                "showLayers": this.showLayers
             }, this);
         },
 
@@ -35,6 +37,14 @@ define(function () {
             Radio.trigger("AddGeoJSON", "addFeatures", features, name);
         },
 
+        // getter for baseLayers
+        getBaseLayers: function () {
+            return Radio.request("ModelList", "getBaseLayers");
+        },
+        // setter for Layers
+        showLayers: function (layerNames) {
+            return Radio.request("Map", "showLayers", layerNames);
+        },
         getCenter: function () {
             return Radio.request("MapView", "getCenter");
         },
@@ -59,8 +69,8 @@ define(function () {
             return Radio.request("MapView", "getZoomLevel");
         },
 
-        hideLayer: function (value) {
-            Radio.trigger("ModelList", "hideLayer", value);
+        hideLayers: function (value) {
+            Radio.trigger("ModelList", "hideLayers", value);
         },
 
         hideMarker: function () {
@@ -86,11 +96,12 @@ define(function () {
         showMarker: function (value) {
             Radio.trigger("MapMarker", "showMarker", value);
         },
-
+        showLayers: function (layerNames) {
+            Radio.trigger("ModelList", "showLayers", layerNames);
+        },
         zoomToFeature: function (feature) {
             Radio.trigger("MapView", "zoomToFeature", feature);
         },
-
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
         }
