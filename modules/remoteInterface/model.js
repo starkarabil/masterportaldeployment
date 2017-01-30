@@ -44,11 +44,11 @@ define(function () {
         },
 
         getMeldePinAddress: function () {
-            return Radio.request("MeldePin", "getAddress");
+            return Radio.request("DragMarker", "getNearestAddress");
         },
 
         getMeldePinPosition: function () {
-            return Radio.request("MeldePin", "getPosition");
+            return Radio.request("DragMarker", "getPosition");
         },
 
         getWGS84MapSizeBBOX: function () {
@@ -75,8 +75,8 @@ define(function () {
             Radio.trigger("MapView", "setCenter", value);
         },
 
-        setMeldePinPosition: function (value) {
-            Radio.trigger("MeldePin", "setPosition", value);
+        setMeldePinPosition: function (coordinate) {
+            Radio.trigger("DragMarker", "setPosition", coordinate);
         },
 
         showLayer: function (value) {
