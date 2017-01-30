@@ -12,15 +12,19 @@ define(function (require) {
         defaults: {
             MM_PER_INCHES: 25.4,
             POINTS_PER_INCH: 72,
-            initalLoading: 0
+            initalLoading: 0,
+            map: new ol.Map({
+                // control defaults werden rausgeschmissen
+                controls: [],
+                // interaction defaults options werden überschrieben
+                interactions: ol.interaction.defaults({altShiftDragRotate: false, pinchRotate: false})
+            })
         },
 
         /**
         *
         */
         initialize: function () {
-            $("#lgv-container").append("<div id='map'></div>");
-
             this.listenTo(this, "change:initalLoading", this.initalLoadingChanged);
             var channel = Radio.channel("Map"),
                 mapView = new MapView();
@@ -66,16 +70,14 @@ define(function (require) {
                 "change:map": this.addCopyrightToMap
             });
 
-            this.set("view", mapView.get("view"));
+            // Listener ol.Map
+            this.registerListenerOnce("postrender", function () {
+                require(["eqcss"]);
+            }, this);
 
-            this.set("map", new ol.Map({
-                logo: null,
-                renderer: "canvas",
-                target: "map",
-                view: this.get("view"),
-                controls: [],
-                interactions: ol.interaction.defaults({altShiftDragRotate: false, pinchRotate: false})
-            }));
+            this.set("view", mapView.get("view"));
+            this.getMap().setTarget("map");
+            this.getMap().setView(this.get("view"));
 
             Radio.trigger("zoomtofeature", "zoomtoid");
             Radio.trigger("ModelList", "addInitialyNeededModels");
@@ -182,6 +184,17 @@ define(function (require) {
          */
         registerListener: function (event, callback, context) {
             this.getMap().on(event, callback, context);
+        },
+
+        /**
+         * Registriert Listener einmalig für bestimmte Events auf der Karte
+         * Siehe http://openlayers.org/en/latest/apidoc/ol.Map.html
+         * @param {String} event - Der Eventtyp
+         * @param {Function} callback - Die Callback Funktion
+         * @param {Object} context
+         */
+        registerListenerOnce: function (event, callback, context) {
+            this.getMap().once(event, callback, context);
         },
 
         /**

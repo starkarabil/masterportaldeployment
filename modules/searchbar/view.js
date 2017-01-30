@@ -98,8 +98,8 @@ define(function (require) {
             this.listenTo(Radio.channel("MenuLoader"), {
                 "ready": function () {
                     this.render();
-                    if ($("#lgv-container").width() >= 768) {
-                        $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
+                    if ($("#map").width() >= 768) {
+                        $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
                     }
                 }
             });
@@ -152,12 +152,12 @@ define(function (require) {
 
             // Hack für flexible Suchleiste
             $(window).on("resize", function () {
-                if ($("#lgv-container").width() >= 768) {
-                    $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
+                if ($("#map").width() >= 768) {
+                    $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
                 }
             });
-            if ($("#lgv-container").width() >= 768) {
-                $("#searchInput").width($("#lgv-container").width() - $(".desktop").width() - 150);
+            if ($("#map").width() >= 768) {
+                $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
             }
         },
         events: {
@@ -193,7 +193,7 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            if ($("#lgv-container").width() <= 768) {
+            if ($("#map").width() <= 768) {
                 $(".navbar-toggle").before(this.$el); // vor dem toggleButton
             }
             else {

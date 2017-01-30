@@ -9,8 +9,7 @@ define("app",
     "modules/core/parametricURL",
     "modules/core/crs",
     "modules/core/autostarter",
-    "modules/alerting/view",
-    "eqcss"
+    "modules/alerting/view"
 ], function (Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter, Alert) {
 
     // Core laden

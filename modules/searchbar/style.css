@@ -1,4 +1,4 @@
-@element ".lgv-container" and (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
     #searchbar {
         margin-top: 8px;
         margin-bottom: 8px;
@@ -22,7 +22,7 @@
     }
 }
 
-@element ".lgv-container" and (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
     #searchbar {
         float: right;
         padding-left: 10px;
