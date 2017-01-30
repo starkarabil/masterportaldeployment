@@ -16,7 +16,7 @@ define([
          * @param  {string} parentId
          * @param  {Number} level - Rekursionsebene = Ebene im Themenbaum
          */
-        parseTree: function (object, parentId, level) {
+        parseTree: function (object, parentId, level, isBaseLayer) {
             if (_.has(object, "Layer")) {
                 _.each(object.Layer, function (layer) {
                     // Für Singel-Layer (ol.layer.Layer)
@@ -24,7 +24,7 @@ define([
                     if (_.isString(layer.id)) {
                         var objFromRawList = Radio.request("RawLayerList", "getLayerAttributesWhere", {id: layer.id});
 
-                        layer = _.extend(objFromRawList, layer);
+                        layer = _.extend(objFromRawList, layer, {isBaseLayer: isBaseLayer});
                     }
                     // Für Single-Layer (ol.layer.Layer) mit mehreren Layern(FNP, LAPRO, Geobasisdaten (farbig), etc.)
                     // z.B.: {id: ["550,551,552,...,559"], visible: false}
@@ -44,7 +44,7 @@ define([
 
                             layerdefinitions.push(objFromRawList);
                         });
-                        layer = _.extend(layer, {typ: "GROUP", id: layerdefinitions[0].id, layerdefinitions: layerdefinitions});
+                        layer = _.extend(layer, {typ: "GROUP", id: layerdefinitions[0].id, layerdefinitions: layerdefinitions, isBaseLayer: isBaseLayer});
                     }
 
                     // HVV :(
@@ -69,7 +69,8 @@ define([
                                 parentId: parentId,
                                 level: level,
                                 format: "image/png",
-                                isVisibleInTree: this.getIsVisibleInTree(level, "folder", true)
+                                isVisibleInTree: this.getIsVisibleInTree(level, "folder", true),
+                                isBaseLayer: isBaseLayer
                             }, layer));
                     }
                 }, this);
@@ -92,7 +93,7 @@ define([
                         isInThemen: true
                     });
                     // rekursiver Aufruf
-                    this.parseTree(folder, folder.id, level + 1);
+                    this.parseTree(folder, folder.id, level + 1, isBaseLayer);
                 }, this);
             }
         },
