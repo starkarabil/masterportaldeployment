@@ -326,6 +326,9 @@ define(function (require) {
                     Radio.trigger("Map", "removeLayer", this.getLayer());
                 }
             }
+            else if (Radio.request("Parser", "getTreeType") === "light" && this.getIsSelected() === true) {
+                Radio.trigger("Map", "addLayerToIndex", [this.getLayer(), this.getSelectionIDX()]);
+            }
         },
 
         /**

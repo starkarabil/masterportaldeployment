@@ -32,7 +32,7 @@ define(function () {
         },
 
         addFeatures: function (features, name) {
-            Radio.trigger("AddFeatures", "addFeatures", features, name);
+            Radio.trigger("AddGeoJSON", "addFeatures", features, name);
         },
 
         getCenter: function () {

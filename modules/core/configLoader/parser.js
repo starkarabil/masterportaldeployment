@@ -213,7 +213,6 @@ define([
         },
 
         addLayer: function (name, id, parentId, level, layers, url, version) {
-            console.log(name);
             var layer = {
                 type: "layer",
                 name: name,
@@ -248,6 +247,7 @@ define([
                 type: "layer",
                 name: name,
                 id: id,
+                isSelected: true,
                 typ: "GeoJSON",
                 features: features,
                 transparent: true,

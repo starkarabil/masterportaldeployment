@@ -229,9 +229,6 @@ define("app",
                             new LegendView();
                         }
                     });
-                    require(["modules/tools/addGeoJSON/model"], function (AddGeoJSON) {
-                        new AddGeoJSON();
-                    });
                     break;
                 }
                 default: {
@@ -239,7 +236,6 @@ define("app",
                 }
             }
         });
-
         // controls
         require(["modules/controls/view"], function (ControlsView) {
             var controls = Radio.request("Parser", "getItemsByAttributes", {type: "control"}),
@@ -314,7 +310,6 @@ define("app",
             });
         }
 
-
         var sbconfig = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 
         if (sbconfig) {
@@ -333,6 +328,10 @@ define("app",
 
         require(["modules/tools/styleWMS/view"], function (StyleWMSView) {
             new StyleWMSView();
+        });
+
+        require(["modules/tools/addGeoJSON/model"], function (AddGeoJSON) {
+            new AddGeoJSON();
         });
 
         Radio.trigger("Util", "hideLoader");

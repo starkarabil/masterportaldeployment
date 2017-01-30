@@ -23,7 +23,7 @@ define(function (require) {
         createLayer: function () {
             this.setLayer(new ol.layer.Vector({
                 source: this.getLayerSource(),
-                style: this.getDefaultStyle()
+                style: this.getStyles()
             }));
         },
 
@@ -67,7 +67,13 @@ define(function (require) {
             return this.get("features");
         },
 
-        getDefaultStyle: function () {
+        getStyles: function () {
+            if (this.get("id") === "flurst" || this.get("id") === "potfl") {
+                return this.getDefaultStylePolygon();
+            }
+        },
+
+        getDefaultStylePolygon: function () {
             return new ol.style.Style({
                 fill: new ol.style.Fill({
                     color: "rgba(49, 159, 211, 0.8)"

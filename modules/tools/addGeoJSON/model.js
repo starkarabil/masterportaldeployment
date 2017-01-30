@@ -20,6 +20,14 @@ define(function (require) {
                 }
             });
 
+            channel.on({
+                "addFeatures": function (features, name) {
+                    this.setLayerId("9999_" + name);
+                    this.setLayerName(name);
+                    this.createFeaturesFromGeoJson(features);
+                }
+            }, this);
+
             this.listenTo(this, {
                 "change:features": this.addLayer
             });
@@ -47,6 +55,17 @@ define(function (require) {
                 features.push(feature);
             }, this);
 
+            this.setFeatures(features);
+        },
+
+        /**
+         * Erzeugt aus einem GeoJSON OpenLayers Features
+         * @param  {Object[]} features - GeoJSON
+         */
+        createFeaturesFromGeoJson: function (features) {
+            var features;
+
+            features = this.getReader().readFeatures(features);
             this.setFeatures(features);
         },
 
