@@ -58,7 +58,7 @@ define([
             this.listenTo(this, {
                 "change:isVisibleInMap": function () {
                     channel.trigger("updateVisibleInMapList");
-                    channel.trigger("updatedSelectedLayerList", this.where({ isSelected: true, type: "layer" }));
+                    channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
                 },
                 "change:isExpanded": function (model) {
                     this.trigger("updateOverlayerView", model.getId());
@@ -67,7 +67,7 @@ define([
                     }
                     // Trigger fÃ¼r mobiles Wandern im Baum
                     this.trigger("traverseTree", model);
-                    channel.trigger("updatedSelectedLayerList", this.where({ isSelected: true, type: "layer" }));
+                    channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
                 },
                 "change:isSelected": function (model) {
                     if (model.getType() === "layer") {
@@ -75,13 +75,13 @@ define([
                         model.setIsVisibleInMap(model.getIsSelected());
                     }
                     this.trigger("updateSelection");
-                    channel.trigger("updatedSelectedLayerList", this.where({ isSelected: true, type: "layer" }));
+                    channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
                 },
                 "change:transparency": function () {
-                    channel.trigger("updatedSelectedLayerList", this.where({ isSelected: true, type: "layer" }));
+                    channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
                 },
                 "change:selectionIDX": function () {
-                    channel.trigger("updatedSelectedLayerList", this.where({ isSelected: true, type: "layer" }));
+                    channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
                 }
             });
         },
@@ -112,7 +112,7 @@ define([
          * @return {[type]} [description]
          */
         closeAllExpandedFolder: function () {
-            var folderModel = this.findWhere({ isExpanded: true });
+            var folderModel = this.findWhere({isExpanded: true});
 
             if (!_.isUndefined(folderModel)) {
                 folderModel.setIsExpanded(false);
@@ -125,9 +125,9 @@ define([
          * @param {int} parentId Die Id des Objektes dessen Kinder angezeigt werden sollen
          */
         setModelsVisibleByParentId: function (parentId) {
-            var itemListByParentId = this.where({ parentId: parentId }),
+            var itemListByParentId = this.where({parentId: parentId}),
                 // Falls es ein LeafFolder ist --> "Alle auswÃ¤hlen" Template
-                selectedLeafFolder = this.where({ id: parentId, isLeafFolder: true });
+                selectedLeafFolder = this.where({id: parentId, isLeafFolder: true});
 
             _.each(_.union(selectedLeafFolder, itemListByParentId), function (item) {
                 item.setIsVisibleInTree(true);
@@ -142,10 +142,10 @@ define([
             var children;
 
             if (parentId === "SelectedLayer") {
-                children = this.where({ isSelected: true });
+                children = this.where({isSelected: true});
             }
             else {
-                children = this.where({ parentId: parentId });
+                children = this.where({parentId: parentId});
             }
             _.each(children, function (item) {
                 item.setIsVisibleInTree(false);
@@ -157,8 +157,8 @@ define([
          * @param {int} parentId Die Id des Objektes dessen Kinder angezeigt werden sollen
          */
         setVisibleByParentIsExpanded: function (parentId) {
-            var itemListByParentId = this.where({ parentId: parentId }),
-                parent = this.findWhere({ id: parentId });
+            var itemListByParentId = this.where({parentId: parentId}),
+                parent = this.findWhere({id: parentId});
 
             if (!parent.getIsExpanded()) {
                 this.setAllDescendantsInvisible(parentId);
@@ -170,12 +170,12 @@ define([
             }
         },
         setAllDescendantsInvisible: function (parentId) {
-            var itemListByParentId = this.where({ parentId: parentId });
+            var itemListByParentId = this.where({parentId: parentId});
 
             _.each(itemListByParentId, function (item) {
                 item.setIsVisibleInTree(false);
                 if (item.getType() === "folder") {
-                    item.setIsExpanded(false, { silent: true });
+                    item.setIsExpanded(false, {silent: true});
                 }
                 this.setAllDescendantsInvisible(item.getId());
             }, this);
@@ -188,7 +188,7 @@ define([
             this.forEach(function (model) {
                 model.setIsVisibleInTree(false);
                 if (model.getType() === "folder") {
-                    model.setIsExpanded(false, { silent: true });
+                    model.setIsExpanded(false, {silent: true});
                 }
             });
         },
@@ -197,7 +197,7 @@ define([
          * @param {Backbone.Model} model - folderModel
          */
         setIsSelectedOnChildLayers: function (model) {
-            var layers = this.add(Radio.request("Parser", "getItemsByAttributes", { parentId: model.getId() }));
+            var layers = this.add(Radio.request("Parser", "getItemsByAttributes", {parentId: model.getId()}));
 
             _.each(layers, function (layer) {
                 layer.setIsSelected(model.getIsSelected());
@@ -209,8 +209,8 @@ define([
          * @param {Backbone.Model} model - layerModel
          */
         setIsSelectedOnParent: function (model) {
-            var layers = this.where({ parentId: model.getParentId() }),
-                folderModel = this.findWhere({ id: model.getParentId() }),
+            var layers = this.where({parentId: model.getParentId()}),
+                folderModel = this.findWhere({id: model.getParentId()}),
                 allLayersSelected = _.every(layers, function (layer) {
                     return layer.getIsSelected() === true;
                 });
@@ -224,7 +224,7 @@ define([
         },
 
         setActiveToolToFalse: function (model) {
-            var tool = _.without(this.where({ isActive: true }), model)[0];
+            var tool = _.without(this.where({isActive: true}), model)[0];
 
             if (_.isUndefined(tool) === false) {
                 tool.setIsActive(false);
@@ -317,7 +317,7 @@ define([
          * @param {boolean} value
          */
         setIsSettingVisible: function (value) {
-            var models = this.where({ type: "layer" });
+            var models = this.where({type: "layer"});
 
             _.each(models, function (model) {
                 model.setIsSettingVisible(value);
@@ -335,27 +335,27 @@ define([
                 treeType = Radio.request("Parser", "getTreeType");
 
             if (treeType === "light") {
-                var lightModels = Radio.request("Parser", "getItemsByAttributes", { type: "layer" });
+                var lightModels = Radio.request("Parser", "getItemsByAttributes", {type: "layer"});
 
                 lightModels.reverse();
                 this.add(lightModels);
                 // Parametrisierter Aufruf im lighttree
                 _.each(paramLayers, function (paramLayer) {
-                    this.setModelAttributesById(paramLayer.id, { isVisibleInMap: paramLayer.visibility, transparency: paramLayer.transparency });
+                    this.setModelAttributesById(paramLayer.id, {isVisibleInMap: paramLayer.visibility, transparency: paramLayer.transparency});
                 }, this);
             }
             // Parametrisierter Aufruf
             else if (paramLayers.length > 0) {
                 _.each(paramLayers, function (paramLayer) {
-                    var lightModel = Radio.request("Parser", "getItemByAttributes", { id: paramLayer.id });
+                    var lightModel = Radio.request("Parser", "getItemByAttributes", {id: paramLayer.id});
 
                     if (_.isUndefined(lightModel) === false) {
                         this.add(lightModel);
                         if (paramLayer.visibility === true) {
-                            this.setModelAttributesById(paramLayer.id, { isSelected: true, transparency: paramLayer.transparency });
+                            this.setModelAttributesById(paramLayer.id, {isSelected: true, transparency: paramLayer.transparency});
                         }
                         else {
-                            this.setModelAttributesById(paramLayer.id, { isSelected: true, transparency: paramLayer.transparency });
+                            this.setModelAttributesById(paramLayer.id, {isSelected: true, transparency: paramLayer.transparency});
                             // selektierte Layer werden automatisch sichtbar geschaltet, daher muss hier nochmal der Layer auf nicht sichtbar gestellt werden
                             if (_.isUndefined(this.get(paramLayer.id)) === false) {
                                 this.get(paramLayer.id).setIsVisibleInMap(false);
@@ -366,7 +366,7 @@ define([
             }
             // Only Add models in selection
             else {
-                this.addModelsByAttributes({ type: "layer", isSelected: true });
+                this.addModelsByAttributes({type: "layer", isSelected: true});
             }
         },
 
@@ -390,7 +390,7 @@ define([
          * @param  {String} modelId
          */
         showModelInTree: function (modelId) {
-            var lightModel = Radio.request("Parser", "getItemByAttributes", { id: modelId });
+            var lightModel = Radio.request("Parser", "getItemByAttributes", {id: modelId});
 
             this.closeAllExpandedFolder();
 
@@ -398,7 +398,7 @@ define([
             $("#root li:first-child").addClass("open");
             // Parent und eventuelle Siblings werden hinzugefÃ¼gt
             this.addAndExpandModelsRecursive(lightModel.parentId);
-            this.setModelAttributesById(modelId, { isSelected: true });
+            this.setModelAttributesById(modelId, {isSelected: true});
             // Nur bei Overlayern wird in Tree gescrollt.
             if (lightModel.parentId !== "Baselayer") {
                 this.scrollToLayer(lightModel.name);
@@ -410,7 +410,7 @@ define([
          * @param {String} layername - in "Fachdaten" wird auf diesen Layer gescrolled
          */
         scrollToLayer: function (overlayername) {
-            var liLayer = _.findWhere($("#Overlayer").find("span"), { title: overlayername }),
+            var liLayer = _.findWhere($("#Overlayer").find("span"), {title: overlayername}),
                 offsetFromTop = liLayer ? $(liLayer).offset().top : null,
                 heightThemen = $("#Themen").css("height"),
                 scrollToPx = 0;
@@ -439,8 +439,8 @@ define([
          * @param {String} parentId - Models mit dieser parentId werden zur Liste hinzugefÃ¼gt
          */
         addAndExpandModelsRecursive: function (parentId) {
-            var lightSiblingsModels = Radio.request("Parser", "getItemsByAttributes", { parentId: parentId }),
-                parentModel = Radio.request("Parser", "getItemByAttributes", { id: lightSiblingsModels[0].parentId });
+            var lightSiblingsModels = Radio.request("Parser", "getItemsByAttributes", {parentId: parentId}),
+                parentModel = Radio.request("Parser", "getItemByAttributes", {id: lightSiblingsModels[0].parentId});
 
             this.add(lightSiblingsModels);
             // Abbruchbedingung
@@ -451,7 +451,7 @@ define([
         },
 
         toggleCatalogs: function (id) {
-            _.each(this.where({ parentId: "Themen" }), function (model) {
+            _.each(this.where({parentId: "Themen"}), function (model) {
                 if (model.getId() !== id) {
                     model.setIsExpanded(false);
                 }
@@ -464,7 +464,7 @@ define([
          * @return {[type]}          [description]
          */
         removeModelsByParentId: function (parentId) {
-            _.each(this.where({ parentId: parentId }), function (model) {
+            _.each(this.where({parentId: parentId}), function (model) {
                 if (model.getType() === "layer" && model.getIsVisibleInMap() === true) {
                     model.setIsVisibleInMap(false);
                 }
