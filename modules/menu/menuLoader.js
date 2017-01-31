@@ -1,4 +1,7 @@
 define(function (require) {
+    require("bootstrap/dropdown");
+    require("bootstrap/transition");
+    require("bootstrap/collapse");
 
     var MenuTemplate = require("text!modules/menu/template.html"),
         MenuLoader;
@@ -17,7 +20,7 @@ define(function (require) {
                 currentMenu;
 
             // Bootstrap Navigation wird an den Wrapper gehängt
-            $(this.mapViewPort).append(_.template(MenuTemplate));
+            $(".ol-overlaycontainer-stopevent").append(_.template(MenuTemplate));
             if (isMobile) {
                 currentMenu = new ListViewMobile();
             }
@@ -40,6 +43,7 @@ define(function (require) {
                 this.currentMenu = this.getMenuView();
             }
         }, this);
+
     };
 
     return MenuLoader;
