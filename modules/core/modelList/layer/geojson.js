@@ -56,6 +56,7 @@ define(function (require) {
         showFeaturesByIds: function (featureIdList) {
             _.each(featureIdList, function (id) {
                 var feature = this.getLayerSource().getFeatureById(id);
+
                 feature.setStyle(this.getStyles());
             }, this);
         },
@@ -67,6 +68,7 @@ define(function (require) {
         hideFeaturesByIds: function (featureIdList) {
             _.each(featureIdList, function (id) {
                 var feature = this.getLayerSource().getFeatureById(id);
+
                 feature.setStyle(this.getHiddenStyle());
             }, this);
         },

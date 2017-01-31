@@ -67,9 +67,9 @@ define(function (require) {
 
             features = this.getReader().readFeatures(features);
 
-            _.each(features,function(feature){
+            _.each(features,function (feature) {
                 if (feature.get("OBJECTID")) {
-                    feature.setId(feature.get("OBJECTID"))
+                    feature.setId(feature.get("OBJECTID"));
                 }
             });
             this.setFeatures(features);
