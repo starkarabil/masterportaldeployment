@@ -1,14 +1,8 @@
-define([
-        "modules/menu/desktop/tool/view",
-    "modules/menu/desktop/folder/viewMenu",
-      "bootstrap/dropdown",
-    "bootstrap/collapse"
-    ],
-    function () {
-        var
-            DesktopToolView = require("modules/menu/desktop/tool/view"),
-            DesktopFolderView = require("modules/menu/desktop/folder/viewMenu"),
-            Menu;
+define(function (require) {
+
+    var DesktopToolView = require("modules/menu/desktop/tool/view"),
+        DesktopFolderView = require("modules/menu/desktop/folder/viewMenu"),
+        Menu;
 
         Menu = Backbone.View.extend({
             collection: {},
@@ -21,6 +15,7 @@ define([
                 $("div.collapse.navbar-collapse ul.nav-menu").removeClass("list-group mobile");
 
                 this.renderTopMenu();
+                $(".dropdown-toggle").dropdown();
             },
             renderTopMenu: function () {
                 var rootModels = this.collection.where({parentId: "root"}),
