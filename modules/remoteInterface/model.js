@@ -11,7 +11,8 @@ define(function () {
                 "getMeldePinPosition": this.getMeldePinPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
-                "getBaseLayers": this.getBaseLayers
+                "getBaseLayers": this.getBaseLayers,
+                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent
             }, this);
 
             channel.on({
@@ -31,6 +32,10 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers
             }, this);
+        },
+
+        getLayerFeaturesInExtent: function (name) {
+            return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
         },
         showAllFeatures: function (name) {
             Radio.trigger("ModelList","showAllFeatures", name);
