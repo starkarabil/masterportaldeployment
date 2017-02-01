@@ -66,6 +66,12 @@ define(function (require) {
             var features;
 
             features = this.getReader().readFeatures(features);
+
+            _.each(features,function (feature) {
+                if (feature.get("OBJECTID")) {
+                    feature.setId(feature.get("OBJECTID"));
+                }
+            });
             this.setFeatures(features);
         },
 

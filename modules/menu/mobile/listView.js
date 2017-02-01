@@ -20,6 +20,11 @@ define([
             Menu;
 
         Menu = Backbone.View.extend({
+            events: {
+                "click button": function () {
+                    $(".collapse").collapse("toggle");
+                }
+            },
             collection: {},
             el: "nav#main-nav",
             attributes: {role: "navigation"},

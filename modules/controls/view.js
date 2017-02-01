@@ -16,7 +16,8 @@ define(function () {
                 mapViewPort = Radio.request("Map", "getViewPort");
 
             if (!_.has(result, "STYLE") || _.values(_.pick(result, "STYLE"))[0].toUpperCase() !== "SIMPLE") {
-                $(mapViewPort).append(this.$el);
+                $(".ol-overlaycontainer-stopevent").append(this.$el);
+                // $(mapViewPort).append(this.$el);
             }
         },
         addRow: function (id) {
