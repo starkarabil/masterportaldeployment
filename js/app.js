@@ -303,9 +303,14 @@ define("app",
         });
 
         // Prüfung, ob MapMarker geladen werden soll. In MML disabled.
-        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== false) {
+        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== "dragMarker") {
             require(["modules/mapMarker/view"], function (MapMarkerView) {
                 new MapMarkerView();
+            });
+        }
+        else {
+            require(["modules/dragMarker/model"], function (DragMarkerModel) {
+                new DragMarkerModel();
             });
         }
 
