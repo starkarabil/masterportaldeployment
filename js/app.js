@@ -300,7 +300,6 @@ define("app",
                     }
                     case "toggleBaselayer": {
                         if (control.attr === true) {
-                            console.log(1);
                             require(["modules/baselayerToggle/view"], function (BaselayerView) {
                                 new BaselayerView();
                             });
