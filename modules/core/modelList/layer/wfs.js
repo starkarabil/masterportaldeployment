@@ -17,19 +17,7 @@ define([
          * @return {[type]} [description]
          */
         createLayerSource: function () {
-            this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.WFS(),
-                url: function (extent, resolution) {
-                    console.log(extent);
-                    // console.log(resolution);
-                    return Radio.request("Util", "getProxyURL", "http://geodienste.hamburg.de/Test_HH_WFS_MML_extern") +
-                            "?REQUEST=GetFeature&SERVICE=WFS&TYPENAME=Anliegen_extern&srsName=EPSG:25832&VERSION=1.1.0&" +
-                            "Filter=<Filter><BBOX><PropertyName>geometry</PropertyName><Box%20srsName='EPSG:25832'>" +
-                            "<coordinates>" + extent.join(",") + "</coordinates></Box></BBOX></Filter>";
-                            // "BBOX=" + extent.join(",");
-                },
-                strategy: ol.loadingstrategy.bbox
-            }));
+            this.setLayerSource(new ol.source.Vector());
         },
 
         /**
@@ -58,7 +46,7 @@ define([
                 id: this.getId()
             }));
 
-            // this.updateData();
+            this.updateData();
         },
 
         /**
@@ -83,8 +71,6 @@ define([
                 SERVICE: "WFS",
                 TYPENAME: this.get("featureType"),
                 VERSION: this.getVersion()
-                ,
-                MAXFEATURES: 1400
             };
 
             Radio.trigger("Util", "showLoader");
@@ -196,7 +182,7 @@ define([
             this.set("isResolutionInRange", isResolutionInRange);
             if (visibility === true && isResolutionInRange === true) {
                 if (this.get("layer").getSource().getFeatures().length === 0) {
-                    // this.updateData();
+                    this.updateData();
                     this.set("visibility", false, {silent: true});
                 }
                 else {

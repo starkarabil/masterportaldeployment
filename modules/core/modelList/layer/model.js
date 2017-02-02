@@ -19,17 +19,9 @@ define(function (require) {
             layerInfoClicked: false
         },
         initialize: function () {
-            this.listenToOnce(Radio.channel("MapView"), {
-                "readyyy": function () {console.log(44);
-                    this.createLayerSource();
-                    Radio.trigger("Map", "addLayerToIndex", [this.getLayer(), this.getSelectionIDX()]);
-                    this.setIsVisibleInMap(this.getIsSelected());
-                    // this.createLayer();
-                }
-            });
             this.listenToOnce(this, {
                 // Die LayerSource wird beim ersten Selektieren einmalig erstellt
-                // "change:isSelected": this.createLayerSource,
+                "change:isSelected": this.createLayerSource,
                 // Anschließend evt. die ClusterSource und der Layer
                 "change:layerSource": function () {
                     if (this.has("clusterDistance") === true) {
@@ -97,9 +89,9 @@ define(function (require) {
                     this.collection.insertIntoSelectionIDX(this);
                 }
 
-                // this.createLayerSource();
-                // Radio.trigger("Map", "addLayerToIndex", [this.getLayer(), this.getSelectionIDX()]);
-                // this.setIsVisibleInMap(this.getIsSelected());
+                this.createLayerSource();
+                Radio.trigger("Map", "addLayerToIndex", [this.getLayer(), this.getSelectionIDX()]);
+                this.setIsVisibleInMap(this.getIsSelected());
             }
             this.setAttributes();
             this.createLegendURL();

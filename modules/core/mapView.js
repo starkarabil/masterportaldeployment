@@ -149,24 +149,14 @@ define([
             this.setProjection();
             this.setStartCenter();
             this.setView();
-            this.get("view").on("propertychange", function (evt) {
-                // console.log(evt);
-                // console.log(evt.target.calculateExtent(Radio.request("Map", "getSize")));
-            }, this);
+
             // Listener für ol.View
             this.get("view").on("change:resolution", function (evt) {
                 this.set("resolution", this.get("view").getResolution());
                 channel.trigger("changedZoomLevel", this.getZoom());
-                console.log(this.get("view").getResolution());
-                channel.trigger("readyyy");
             }, this);
             this.get("view").on("change:center", function () {
-                // console.log(this.get("view").getCenter());
                 this.set("center", this.get("view").getCenter());
-                // console.log(this.get("view").getCenter());
-                // this.get("view").calculateExtent(Radio.request("Map", "getSize"));
-                // console.log(Radio.request("Map", "getSize"));
-                // console.log(this.get("view").calculateExtent(Radio.request("Map", "getSize")));
             }, this);
         },
         resetView: function () {
