@@ -31,6 +31,8 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers
             }, this);
+
+            Radio.on("Map", "changedExtent", this.changedExtent)
         },
         showAllFeatures: function (name) {
             Radio.trigger("ModelList","showAllFeatures", name);
@@ -116,6 +118,9 @@ define(function () {
         },
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
+        },
+        changedExtent: function (extent) {
+            Radio.trigger("RemoteInterface", "changedExtent", extent);
         }
     });
 
