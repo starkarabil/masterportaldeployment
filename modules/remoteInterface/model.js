@@ -7,8 +7,8 @@ define(function () {
             channel.reply({
                 "getCenter": this.getCenter,
                 "getMapState": this.getMapState,
-                "getMeldePinAddress": this.getMeldePinAddress,
-                "getMeldePinPosition": this.getMeldePinPosition,
+                "getDragMarkerAddress": this.getDragMarkerAddress,
+                "getDragMarkerPosition": this.getDragMarkerPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
                 "getBaseLayers": this.getBaseLayers
@@ -21,7 +21,7 @@ define(function () {
                 "hideLayers": this.hideLayers,
                 "hideMapMarker": this.hideMapMarker,
                 "setCenter": this.setCenter,
-                "setMeldePinPosition": this.setMeldePinPosition,
+                "setDragMarkerPosition": this.setDragMarkerPosition,
                 "setZoomLevel": this.setZoomLevel,
                 "showAllFeatures": this.showAllFeatures,
                 "showFeatures": this.showFeatures,
@@ -31,6 +31,8 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers
             }, this);
+
+            Radio.on("Map", "changedExtent", this.changedExtent)
         },
         showAllFeatures: function (name) {
             Radio.trigger("ModelList","showAllFeatures", name);
@@ -65,11 +67,11 @@ define(function () {
             return Radio.request("SaveSelection", "getMapState");
         },
 
-        getMeldePinAddress: function () {
+        getDragMarkerAddress: function () {
             return Radio.request("DragMarker", "getNearestAddress");
         },
 
-        getMeldePinPosition: function () {
+        getDragMarkerPosition: function () {
             return Radio.request("DragMarker", "getPosition");
         },
 
@@ -97,7 +99,7 @@ define(function () {
             Radio.trigger("MapView", "setCenter", value);
         },
 
-        setMeldePinPosition: function (coordinate) {
+        setDragMarkerPosition: function (coordinate) {
             Radio.trigger("DragMarker", "setPosition", coordinate);
         },
 
@@ -116,6 +118,9 @@ define(function () {
         },
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
+        },
+        changedExtent: function (extent) {
+            Radio.trigger("RemoteInterface", "changedExtent", extent);
         }
     });
 

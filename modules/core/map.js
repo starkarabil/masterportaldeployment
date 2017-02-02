@@ -75,6 +75,10 @@ define(function (require) {
                 require(["eqcss"]);
             }, this);
 
+            this.registerListener("moveend", function () {
+                this.changedExtent();
+            }, this);
+
             this.set("view", mapView.get("view"));
             this.getMap().setTarget("map");
             this.getMap().setView(this.get("view"));
@@ -589,7 +593,20 @@ define(function (require) {
          */
         getTargetElement: function () {
             return this.getMap().getTargetElement();
-        }
+        },
+
+         /**
+          * Wird von moveend der map getriggert, wenn sich der Extent verändert hat.
+          * bei Drag und Zoom
+          */
+         changedExtent: function () {
+             var view = this.get("view"),
+                 map = this.getMap(),
+                 size = map.getSize(),
+                 extent = view.calculateExtent(size);
+
+             Radio.trigger("Map", "changedExtent", extent);
+         }
     });
 
     return Map;

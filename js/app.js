@@ -316,7 +316,6 @@ define("app",
                 var title = Radio.request("Parser", "getPortalConfig").PortalTitle;
 
                 new SearchbarView(sbconfig);
-                console.log("searchbar");
                 if (title) {
                     require(["modules/title/view"], function (TitleView) {
                         new TitleView(title);
