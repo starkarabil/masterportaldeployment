@@ -118,8 +118,8 @@ define("app",
                     break;
                 }
                 case "gfi": {
-                    require(["modules/gfipopup/popup/popupLoader"], function (PopupLoader) {
-                        new PopupLoader();
+                    require(["modules/tools/gfi/model"], function (GfiModel) {
+                        new GfiModel();
                     });
                     break;
                 }

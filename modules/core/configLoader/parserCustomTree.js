@@ -25,6 +25,9 @@ define([
                         var objFromRawList = Radio.request("RawLayerList", "getLayerAttributesWhere", {id: layer.id});
 
                         layer = _.extend(objFromRawList, layer, {isBaseLayer: isBaseLayer});
+                        if (_.isNull(objFromRawList)) { // Wenn LayerID nicht definiert, dann Abbruch
+                            return;
+                        }
                     }
                     // Für Single-Layer (ol.layer.Layer) mit mehreren Layern(FNP, LAPRO, Geobasisdaten (farbig), etc.)
                     // z.B.: {id: ["550,551,552,...,559"], visible: false}
@@ -32,6 +35,9 @@ define([
                         var objsFromRawList = Radio.request("RawLayerList", "getLayerAttributesList"),
                             mergedObjsFromRawList = this.mergeObjectsByIds(layer.id, objsFromRawList);
 
+                        if (layer.id.length !== mergedObjsFromRawList.layers.split(",").length) { // Wenn nicht alle LayerIDs des Arrays definiert, dann Abbruch
+                            return;
+                        }
                         layer = _.extend(mergedObjsFromRawList, _.omit(layer, "id"));
                     }
                     // Für Gruppen-Layer (ol.layer.Group)
@@ -42,9 +48,14 @@ define([
                         _.each(layer.id, function (childLayer) {
                             var objFromRawList = Radio.request("RawLayerList", "getLayerAttributesWhere", {id: childLayer.id});
 
-                            layerdefinitions.push(objFromRawList);
+                            if (!_.isNull(objFromRawList)) {
+                                layerdefinitions.push(objFromRawList);
+                            }
                         });
                         layer = _.extend(layer, {typ: "GROUP", id: layerdefinitions[0].id, layerdefinitions: layerdefinitions, isBaseLayer: isBaseLayer});
+                        if (layer.id.length !== layerdefinitions.length) { // Wenn nicht alle LayerIDs des Arrays definiert, dann Abbruch
+                            return;
+                        }
                     }
 
                     // HVV :(

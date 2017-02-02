@@ -131,21 +131,7 @@
       "contact": {
           "name": "Kontakt",
           "glyphicon": "glyphicon-envelope",
-          "email": "LGVGeoPortal-Hilfe@gv.hamburg.de",
           "serviceID": "80001",
-          "from": [
-            {
-              "email": "lgvgeoportal-hilfe@gv.hamburg.de",
-              "name": "LGVGeoportalHilfe"
-            }
-          ],
-          "to": [
-           ],
-          "ccToUser": true,
-          "cc": [],
-          "bcc": [],
-          "subject": "",
-          "textPlaceholder": "Bitte formulieren",
           "includeSystemInfo": true
       }
     },
@@ -155,7 +141,7 @@
       "zoom": true,
       "orientation": "once",
       "poi": true,
-      "attributions": false
+      "attributions": true
     },
     "scaleLine": true,
     "Baumtyp": "light"
@@ -186,7 +172,31 @@
         },
         {
           "id": "1562",
+          "visibility": true,
           "layerAttribution": "<span>Attributierung für Fachlayer Test Test Test Test Test Test Test Test</span>"
+        },
+        {
+          "id": "2128",
+          "styleId": "2128",
+          "visibility": false,
+          "clusterDistance": 0,
+          "searchField": "",
+          "mouseHoverField": "",
+          "filterOptions": [],
+          "styleLabelField": ""
+        },
+        {
+          "id": "3302",
+          "gfiTheme": "trinkwasser",
+          "visibility": false,
+          "featureCount": 5
+        },
+        {
+          "id": "2059",
+          "visibility": false,
+          "styleId": "2059",
+          "clusterDistance": 30,
+          "styleField": "kategorie"
         },
         {
           "id": "4926",
@@ -202,6 +212,11 @@
           "mouseHoverField": "GEBIETSNAME"
         },
         {
+            "id": "2714",
+            "gfiTheme": "reisezeiten",
+            "styleId": "2119"
+        },
+        {
           "id": "4905",
           "visibility": false,
           "gfiTheme": "table",
@@ -213,16 +228,28 @@
            "styleId": "45",
            "clusterDistance": 40,
            "routable": true
-       },
-       {
+        },
+        {
+           "id": "4479",
+           "visibility": false
+        },
+        {
+          "id": ["4537", "4538"],
+          "name": "Eignungsflächen",
+          "visibility": false,
+          "legendURL": ["http://www.geoportal-hamburg.de/legende/legende_solar.png"],
+          "gfiTheme": "solaratlas",
+          "attributions": "<span>Darstellung der Eignungsflächen ab Maßstab 1: 5000 </span>"
+        },
+        {
           "id": "2407",
           "visibility": false,
           "infoFormat": "text/html"
-      },
+        },
         {
           "id": "1711",
           "styleId": "1711",
-          "visibility": false,
+          "visibility": true,
           "layerAttribution": "<span>Attributierung für Fachlayer</span>",
           "mouseHoverField": ["name", "strasse"],
           "searchField": "name",

@@ -368,7 +368,7 @@ define([
         * Setzt die createURL in Abhängigkeit der GFI
         */
         getGFIForPrint: function () {
-            var gfis = Radio.request("GFIPopup", "getGFIForPrint"),
+            var gfis = Radio.request("GFI", "getIsVisible") === true ? Radio.request("GFI", "getGFIForPrint") : null,
                 gfiParams = _.isArray(gfis) === true ? _.pairs(gfis[0]) : null, // Parameter
                 gfiTitle = _.isArray(gfis) === true ? gfis[1] : "", // Layertitel
                 gfiPosition = _.isArray(gfis) === true ? gfis[2] : null, // Koordinaten des GFI
