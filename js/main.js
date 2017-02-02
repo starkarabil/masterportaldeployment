@@ -66,7 +66,7 @@ requirejs.config({
     Zählt immer wenn von require ein script tag erzeugt wird modulesLoading hoch.
     */
     onNodeCreated: function (node, config, moduleName, url) {
-       if (moduleName.startsWith("modules")) {
+       if (moduleName.substr(0, 7) === "modules") {
             modulesLoading++;
         }
     }
@@ -81,7 +81,7 @@ require.s.contexts._.execCb = function (name, callback, args, exports) {
 
     var result = callback.apply(exports, args);
 
-    if (name.startsWith("modules") || result === "lastModuleRequired") {
+    if ((name.substr(0, 7) === "modules") || result === "lastModuleRequired") {
        modulesLoading--;
 
         if (lastModuleRequired && modulesLoading === 0) {
