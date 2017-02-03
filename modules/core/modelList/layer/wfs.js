@@ -102,7 +102,7 @@ define([
                             if (_.isUndefined(this.get("editable")) === true || this.get("editable") === false) {
                                 this.styling();
                             }
-                            this.getLayer().setStyle(this.get("style"));
+                            // this.getLayer().setStyle(this.get("style"));
                             }
                         else {
                             // var src = new ol.source.Vector({
