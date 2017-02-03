@@ -108,6 +108,10 @@ define("app",
             new WindowView();
         });
 
+        require(["modules/simpleLister/view"], function (SimpleListerView) {
+            new SimpleListerView();
+        });
+
         // Tools
         _.each(Radio.request("Parser", "getItemsByAttributes", {type: "tool"}), function (tool) {
             switch (tool.id) {

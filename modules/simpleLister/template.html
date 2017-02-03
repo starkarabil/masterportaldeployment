@@ -1,0 +1,14 @@
+<div class="simple-lister-button" title="Anliegen anzeigen">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+</div>
+<div>
+<table class="table">
+    <% _.each(featuresInExtent, function(feature){%>
+        <tr>
+            <%_.each(feature.properties, function(prop){%>
+            <td><%= prop%></td>
+            <%});%>
+        </tr>
+    <%});%>
+</table>
+</div>
