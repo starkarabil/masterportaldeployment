@@ -35,6 +35,9 @@ define([
                 },
                 "getBaseLayers": function () {
                     return this.getBaseLayers();
+                },
+                "getLayerFeaturesInExtent": function (name) {
+                    return this.getLayerFeaturesInExtent(name);
                 }
             }, this);
 
@@ -529,6 +532,31 @@ define([
             _.each(layers, function (layer) {
                     layer.setIsSelected(false);
             }, this);
+        },
+        getLayerFeaturesInExtent: function (name) {
+            var layer = this.get(name),
+                source,
+                extent,
+                featuresInExtent,
+                errormsg,
+                geoJSONFeatures = [];
+
+            if (layer) {
+                source = layer.get("layer").getSource();
+                extent = Radio.request("Map","getExtent");
+                featuresInExtent = source.getFeaturesInExtent(extent);
+
+                _.each(featuresInExtent, function (feature) {
+                    geoJSONFeatures.push(source.getFormat().writeFeature(feature));
+                });
+
+            }
+            else {
+                errormsg = "{\"\error\": \"Layer mit dem Namen " + name + " existiert nicht\"}";
+
+                geoJSONFeatures.push(errormsg);
+            }
+            return geoJSONFeatures;
         }
     });
 
