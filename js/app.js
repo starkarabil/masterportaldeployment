@@ -107,10 +107,13 @@ define("app",
         require(["modules/window/view"], function (WindowView) {
             new WindowView();
         });
+        var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
 
-        require(["modules/simpleLister/view"], function (SimpleListerView) {
-            new SimpleListerView();
-        });
+        if (simpleLister) {
+            require(["modules/simpleLister/view"], function (SimpleListerView) {
+                new SimpleListerView();
+            });
+        }
 
         // Tools
         _.each(Radio.request("Parser", "getItemsByAttributes", {type: "tool"}), function (tool) {

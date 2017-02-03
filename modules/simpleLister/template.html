@@ -1,14 +1,20 @@
-<div class="simple-lister-button" title="Anliegen anzeigen">
-    <span class="glyphicon glyphicon-chevron-right"></span>
+<div class="simple-lister-button col-md-1 hidden-xs" title="Anliegen anzeigen">
+    <span class="glyphicon <%= glyphicon %>"></span>
 </div>
-<div>
-<table class="table">
-    <% _.each(featuresInExtent, function(feature){%>
-        <tr>
-            <%_.each(feature.properties, function(prop){%>
-            <td><%= prop%></td>
-            <%});%>
-        </tr>
-    <%});%>
-</table>
+<div id="simple-lister-table" class="simple-lister-table col-md-1" style="display: <%= display %>">
+    <table class="table">
+
+        <%if (featuresInExtent.length <1) {%>
+            <tr>
+                <td><%= errortxt%></td>
+            </tr>
+        <%}%>
+        <% _.each(featuresInExtent, function(feature){%>
+            <tr>
+                <%_.each(feature.properties, function(prop){%>
+                <td><%= prop%></td>
+                <%});%>
+            </tr>
+        <%});%>
+    </table>
 </div>
