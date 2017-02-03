@@ -258,7 +258,9 @@ define([
                 legendURL: "",
                 isbaselayer: false,
                 cache: false,
-                datasets: []
+                datasets: [],
+                clusterDistance: 50,
+                styleId: "989898"
             };
 
             this.addItem(layer);

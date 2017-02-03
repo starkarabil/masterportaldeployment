@@ -74,7 +74,7 @@ define([
             if (anzahl !== "") {
                 var font = this.get("clusterfont").toString(),
                     color = this.returnColor(this.get("clustercolor")),
-                    scale = parseInt(this.get("clusterscale"), 10),
+                    scale = parseFloat(this.get("clusterscale"), 10),
                     offsetX = parseInt(this.get("clusteroffsetx"), 10),
                     offsetY = parseInt(this.get("clusteroffsety"), 10),
                     fillcolor = this.returnColor(this.get("clusterfillcolor")),
