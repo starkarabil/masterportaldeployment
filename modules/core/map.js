@@ -34,7 +34,8 @@ define(function (require) {
                 "getViewPort": this.getViewPort,
                 "getLayers": this.getLayers,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
-                "createLayerIfNotExists": this.createLayerIfNotExists
+                "createLayerIfNotExists": this.createLayerIfNotExists,
+                "getExtent": this.getExtent
             }, this);
 
             channel.on({
@@ -155,6 +156,12 @@ define(function (require) {
                 secondCoordTransform = Radio.request("CRS", "transform", {fromCRS: "EPSG:25832", toCRS: "EPSG:4326", point: secondCoord});
 
             return [firstCoordTransform[0], firstCoordTransform[1], secondCoordTransform[0], secondCoordTransform[1]];
+        },
+
+        getExtent: function () {
+            var extent = this.get("view").calculateExtent(this.get("map").getSize());
+
+            return extent;
         },
 
         GFIPopupVisibility: function (value) {
