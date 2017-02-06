@@ -398,8 +398,10 @@ define("app",
             });
         }
         else {
+            incModulesLoading();
             require(["modules/dragMarker/model"], function (DragMarkerModel) {
                 new DragMarkerModel();
+                decModulesLoading();
             });
         }
 
