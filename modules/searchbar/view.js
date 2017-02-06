@@ -202,7 +202,7 @@ define(function (require) {
 
             this.$el.html(this.template(attr));
 
-            if (this.config.renderToDOM) {
+            if (this.config.renderToDOM === "#searchbarInMap") {
                 $(this.config.renderToDOM).append(this.$el); // rendern am DOM, das übergeben wird
             }
             else {

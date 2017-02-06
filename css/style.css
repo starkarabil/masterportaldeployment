@@ -1330,8 +1330,8 @@
 .lgv-container #searchbarInMap {
   position: absolute;
   left: 20px;
-  max-width: 30%;
   top: 150px;
+  max-width: 350px;
 }
 .lgv-container #searchInputLi {
   white-space: nowrap;
