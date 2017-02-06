@@ -36,6 +36,13 @@
     }
 }
 
+#searchbarInMap {
+    position: absolute;
+    left: 20px;
+    max-width: 30%;
+    top: 150px;
+}
+
 #searchInputLi {
     white-space: nowrap;
     overflow: hidden;

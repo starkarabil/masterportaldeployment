@@ -72,8 +72,12 @@ define(function (require) {
             // mediaQueryMaxWidth.addListener(function () {
             //     that.render();
             // });
+            this.config = config;
 
             if (config.renderToDOM) {
+                if (config.renderToDOM === "#searchbarInMap") {
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"searchbarInMap\"></div");
+                }
                 this.setElement(config.renderToDOM);
             }
             if (config.recommandedListLength) {
@@ -193,12 +197,20 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            if ($("#map").width() <= 768) {
-                $(".navbar-toggle").before(this.$el); // vor dem toggleButton
+
+            if (this.config.renderToDOM) {
+                $(this.config.renderToDOM).append(this.$el); // rendern am DOM, das übergeben wird
             }
             else {
-                $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
+                if ($("#map").width() <= 768) {
+                    console.log(123);
+                    $(".navbar-toggle").before(this.$el); // vor dem toggleButton
+                }
+                else {
+                    $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
+                }
             }
+
             this.focusOnEnd($("#searchInput"));
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");
