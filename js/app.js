@@ -298,6 +298,14 @@ define("app",
                         }
                         break;
                     }
+                    case "toggleBaselayer": {
+                        if (control.attr === true) {
+                            require(["modules/controls/baselayerToggle/view"], function (BaselayerView) {
+                                new BaselayerView();
+                            });
+                        }
+                        break;
+                    }
                 }
             });
         });
