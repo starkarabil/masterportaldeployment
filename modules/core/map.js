@@ -34,7 +34,8 @@ define(function (require) {
                 "getViewPort": this.getViewPort,
                 "getLayers": this.getLayers,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
-                "createLayerIfNotExists": this.createLayerIfNotExists
+                "createLayerIfNotExists": this.createLayerIfNotExists,
+                "getExtent": this.getExtent
             }, this);
 
             channel.on({
@@ -73,6 +74,10 @@ define(function (require) {
             // Listener ol.Map
             this.registerListenerOnce("postrender", function () {
                 require(["eqcss"]);
+            }, this);
+
+            this.registerListener("moveend", function () {
+                this.changedExtent();
             }, this);
 
             this.set("view", mapView.get("view"));
@@ -151,6 +156,12 @@ define(function (require) {
                 secondCoordTransform = Radio.request("CRS", "transform", {fromCRS: "EPSG:25832", toCRS: "EPSG:4326", point: secondCoord});
 
             return [firstCoordTransform[0], firstCoordTransform[1], secondCoordTransform[0], secondCoordTransform[1]];
+        },
+
+        getExtent: function () {
+            var extent = this.get("view").calculateExtent(this.get("map").getSize());
+
+            return extent;
         },
 
         GFIPopupVisibility: function (value) {
@@ -589,7 +600,20 @@ define(function (require) {
          */
         getTargetElement: function () {
             return this.getMap().getTargetElement();
-        }
+        },
+
+         /**
+          * Wird von moveend der map getriggert, wenn sich der Extent verändert hat.
+          * bei Drag und Zoom
+          */
+         changedExtent: function () {
+             var view = this.get("view"),
+                 map = this.getMap(),
+                 size = map.getSize(),
+                 extent = view.calculateExtent(size);
+
+             Radio.trigger("Map", "changedExtent", extent);
+         }
     });
 
     return Map;

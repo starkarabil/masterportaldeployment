@@ -1,0 +1,30 @@
+.baselayerToggle {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 5px !important;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+}
+.baselayerToggleText {
+    color: white;
+    font-size: large;
+    text-align: center;
+    line-height: 40px;
+}
+.baselayerToggle:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.unselectable {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}

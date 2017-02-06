@@ -146,6 +146,16 @@ define("app",
              decModulesLoading();
          });
 
+        var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
+
+        if (simpleLister) {
+            incModulesLoading();
+            require(["modules/simpleLister/view"], function (SimpleListerView) {
+                new SimpleListerView();
+                decModulesLoading();
+            });
+        }
+
         // Tools
         _.each(Radio.request("Parser", "getItemsByAttributes", {type: "tool"}), function (tool) {
             incModulesLoading();
@@ -366,18 +376,31 @@ define("app",
                         decModulesLoading();
                         break;
                     }
+                    case "toggleBaselayer": {
+                        if (control.attr === true) {
+                            require(["modules/controls/baselayerToggle/view"], function (BaselayerView) {
+                                new BaselayerView();
+                            });
+                        }
+                        break;
+                    }
                 }
             });
             decModulesLoading();
         });
 
         // Prüfung, ob MapMarker geladen werden soll. In MML disabled.
-        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== false) {
+        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== "dragMarker") {
             incModulesLoading();
-             require(["modules/mapMarker/view"], function (MapMarkerView) {
-                 new MapMarkerView();
-                 decModulesLoading();
-             });
+            require(["modules/mapMarker/view"], function (MapMarkerView) {
+                new MapMarkerView();
+                decModulesLoading();
+            });
+        }
+        else {
+            require(["modules/dragMarker/model"], function (DragMarkerModel) {
+                new DragMarkerModel();
+            });
         }
 
         var sbconfig = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;

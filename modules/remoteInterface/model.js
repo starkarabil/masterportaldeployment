@@ -11,7 +11,8 @@ define(function () {
                 "getDragMarkerPosition": this.getDragMarkerPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
-                "getBaseLayers": this.getBaseLayers
+                "getBaseLayers": this.getBaseLayers,
+                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent
             }, this);
 
             channel.on({
@@ -31,6 +32,12 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers
             }, this);
+
+            Radio.on("Map", "changedExtent", this.changedExtent)
+        },
+
+        getLayerFeaturesInExtent: function (name) {
+            return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
         },
         showAllFeatures: function (name) {
             Radio.trigger("ModelList","showAllFeatures", name);
@@ -116,6 +123,9 @@ define(function () {
         },
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
+        },
+        changedExtent: function (extent) {
+            Radio.trigger("RemoteInterface", "changedExtent", extent);
         }
     });
 
