@@ -74,12 +74,6 @@ define(function (require) {
             // });
             this.config = config;
 
-            if (config.renderToDOM) {
-                if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"searchbarInMap\"></div");
-                }
-                this.setElement(config.renderToDOM);
-            }
             if (config.recommandedListLength) {
                 this.model.set("recommandedListLength", config.recommandedListLength);
             }
@@ -163,6 +157,16 @@ define(function (require) {
             if ($("#map").width() >= 768) {
                 $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
             }
+            if (config.renderToDOM) {
+                if (config.renderToDOM === "#searchbarInMap") {
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"searchbarInMap\"></div");
+                }
+                this.setElement(config.renderToDOM);
+                this.render();
+                if ($("#map").width() >= 768) {
+                        $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
+                }
+            }
         },
         events: {
             "paste input": "setSearchString",
@@ -203,7 +207,6 @@ define(function (require) {
             }
             else {
                 if ($("#map").width() <= 768) {
-                    console.log(123);
                     $(".navbar-toggle").before(this.$el); // vor dem toggleButton
                 }
                 else {

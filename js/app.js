@@ -23,9 +23,13 @@ define("app",
     new Map();
 
     // Module laden
-    require(["modules/menu/menuLoader"], function (MenuLoader) {
-        new MenuLoader();
-    });
+    var menu = Radio.request("Parser","getPortalConfig").menu;
+
+    if (menu.hide !== true) {
+        require(["modules/menu/menuLoader"], function (MenuLoader) {
+            new MenuLoader();
+        });
+    }
     new RestReaderList();
 
     require(["modules/remoteinterface/model"], function (Remoteinterface) {
