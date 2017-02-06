@@ -1,6 +1,9 @@
 var scriptTags = document.getElementsByTagName("script"),
     scriptTagsArray = Array.prototype.slice.call(scriptTags),
-    configPath = window.location.href;
+    configPath = window.location.href,
+    modulesLoading = 0,
+    lastModuleRequired = false,
+    Radio;
 
 scriptTagsArray.forEach(function (scriptTag) {
     if (scriptTag.getAttribute("data-lgv-config") !== null) {
@@ -14,9 +17,6 @@ modulesLoading: Zählt wie viele Module required wurden, deren callback noch nic
 lastModuleRequired: Wird ganz am Ende der app.js auf true gesetzt, wenn alle Requireaufrufe für unsere Module abgeschickt wurden.
             Erst wenn wirklich alle require Aufrufe abgeschickt wurden und ModuleCount gleich 0 ist können wir sicher sein, das alle Module geladen wurden.
 */
-var modulesLoading = 0,
-    lastModuleRequired = false,
-    Radio;
 
 requirejs.config({
     waitSeconds: 60,
@@ -61,36 +61,8 @@ requirejs.config({
                 return true;
             }
         }
-    },
-    /*
-    Zählt immer wenn von require ein script tag erzeugt wird modulesLoading hoch.
-    */
-    onNodeCreated: function (node, config, moduleName, url) {
-       if (moduleName.startsWith("modules")) {
-            modulesLoading++;
-        }
     }
 });
-
-/*
-Überschreibt die Methode von Require, die die von uns definierten Callbacks aufruft,
-so dass wenn die Callback returned der moduleCount decreased wird.
-Wenn all Module required wurden, wird ein Event getriggert.
-*/
-require.s.contexts._.execCb = function (name, callback, args, exports) {
-
-    var result = callback.apply(exports, args);
-
-    if (name.startsWith("modules") || result === "lastModuleRequired") {
-       modulesLoading--;
-
-        if (lastModuleRequired && modulesLoading === 0) {
-            window.postMessage("portalReady", "*");
-        }
-    }
-    return result;
-
-};
 
 // Überschreibt das Errorhandling von Require so,
 // dass der ursprüngliche Fehler sammt Stacjtrace ausgegeben wird.
