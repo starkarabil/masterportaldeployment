@@ -72,6 +72,7 @@ define([
         * Selektion angestpßen.
         */
         checkForEachFeatureAtPixel: function (evt) {
+            if (evt.dragging) return;
             var pFeatureArray = [],
                 featuresAtPixel = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                     return {
