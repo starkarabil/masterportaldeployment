@@ -8,7 +8,8 @@ define([
         defaults: {
             // select interaction reagiert auf pointermove
             selectPointerMove: new ol.interaction.Select({
-                condition: ol.events.condition.pointerMove
+                condition: ol.events.condition.pointerMove,
+                multi: true
             }),
             wfsList: [],
             mhpresult: "",
