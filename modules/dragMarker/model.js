@@ -147,6 +147,9 @@ define([
         },
 
         featureAtPixel: function (evt) {
+            if (evt.dragging === true) {
+                return;
+            }
             var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                 return feature;
             });
