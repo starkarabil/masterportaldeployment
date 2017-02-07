@@ -24,9 +24,9 @@ define(function (require) {
                 "change:isSelected": this.createLayerSource,
                 // Anschließend evt. die ClusterSource und der Layer
                 "change:layerSource": function () {
-                    // if (this.has("clusterDistance") === true) {
-                    //     this.createClusterLayerSource();
-                    // }
+                    if (this.has("clusterDistance") === true) {
+                        this.createClusterLayerSource();
+                    }
                     if (this.get("typ") !== "WMS") {
                         this.createStyle();
                     }

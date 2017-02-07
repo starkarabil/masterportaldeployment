@@ -59,7 +59,7 @@ define(function (require) {
                     if (_.isUndefined(stylelistmodel) === true) {
                         stylelistmodel = Radio.request("StyleList", "returnModelByValue", styleId);
                     }
-                    return stylelistmodel.getClusterStyle(feature);
+                    feature.setStyle(stylelistmodel.getClusterStyle(feature));
                 });
             }
         },

@@ -259,8 +259,8 @@ define([
                 isbaselayer: false,
                 cache: false,
                 datasets: [],
-                clusterDistance: 50,
-                styleId: "989898"
+                clusterDistance: 40,
+                styleId: "mml"
             };
 
             this.addItem(layer);

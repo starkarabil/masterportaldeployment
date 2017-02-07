@@ -8,7 +8,7 @@ define(function (require) {
         defaults: {
             reader: new ol.format.GeoJSON()
         },
-        url: "https://191.233.106.244/lgv-config/mml_anliegen.json",
+        url: "../../components/lgv-config/mml_anliegen.json",
 
         initialize: function () {
             var channel = Radio.channel("AddGeoJSON");
@@ -81,7 +81,7 @@ define(function (require) {
 
             features = this.getReader().readFeatures(features);
 
-            _.each(features,function (feature) {
+            _.each(features, function (feature) {
                 if (feature.get("OBJECTID")) {
                     feature.setId(feature.get("OBJECTID"));
                 }

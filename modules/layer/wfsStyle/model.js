@@ -95,14 +95,11 @@ define([
                             width: strokewidth
                         })
                     }),
-                    style = this.getSimpleStyle();
-
-                style.push(
-                new ol.style.Style({
+                style = new ol.style.Style({
                     text: clusterText,
-                    zIndex: "Infinity"
-                }));
-                return style;
+                    image: this.getSimpleStyle()[0].getImage()
+                });
+                return [style];
             }
         },
         getCustomLabeledStyle: function (label) {
