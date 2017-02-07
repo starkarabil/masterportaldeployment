@@ -13,6 +13,7 @@ define([
         },
 
         initialize: function () {
+            Radio.trigger("Map", "registerListener", "moveend", this.getLayerFeaturesInExtent, this);
             this.getParams();
         },
         getParams: function () {

@@ -20,13 +20,8 @@ define([
             this.listenTo(this.model, {
                 "change:featuresInExtent": this.render
             });
-            this.listenTo(Radio.channel("MapView"), {
-                "changedCenter": this.getLayerFeaturesInExtent,
-                "changedScale": this.getLayerFeaturesInExtent
-            });
 
             this.render();
-
         },
 
         toggleSimpleList: function () {
