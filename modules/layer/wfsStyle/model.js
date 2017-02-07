@@ -120,9 +120,8 @@ define([
                     offset = [parseFloat(this.get("imageoffsetx")), parseFloat(this.get("imageoffsety"))];
 
                     imagestyle = new ol.style.Icon({
+                        imgSize: [width, height],
                         src: src,
-                        width: width,
-                        height: height,
                         scale: scale,
                         anchor: offset
     //                    anchorXUnits: "pixels",
