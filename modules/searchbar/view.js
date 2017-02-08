@@ -72,10 +72,8 @@ define(function (require) {
             // mediaQueryMaxWidth.addListener(function () {
             //     that.render();
             // });
+            this.config = config;
 
-            if (config.renderToDOM) {
-                this.setElement(config.renderToDOM);
-            }
             if (config.recommandedListLength) {
                 this.model.set("recommandedListLength", config.recommandedListLength);
             }
@@ -159,6 +157,16 @@ define(function (require) {
             if ($("#map").width() >= 768) {
                 $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
             }
+            if (config.renderToDOM) {
+                if (config.renderToDOM === "#searchbarInMap") {
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form col-xs-9\"></div");
+                }
+                this.setElement(config.renderToDOM);
+                this.render();
+                if ($("#map").width() >= 768) {
+                        $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
+                }
+            }
         },
         events: {
             "paste input": "setSearchString",
@@ -193,12 +201,19 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            if ($("#map").width() <= 768) {
-                $(".navbar-toggle").before(this.$el); // vor dem toggleButton
+
+            if (this.config.renderToDOM === "#searchbarInMap") {
+                $(this.config.renderToDOM).append(this.$el); // rendern am DOM, das übergeben wird
             }
             else {
-                $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
+                if ($("#map").width() <= 768) {
+                    $(".navbar-toggle").before(this.$el); // vor dem toggleButton
+                }
+                else {
+                    $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
+                }
             }
+
             this.focusOnEnd($("#searchInput"));
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");
