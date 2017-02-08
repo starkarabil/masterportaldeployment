@@ -2,7 +2,7 @@
 @import "../components/lgv-config/css/fonts.css";
 .lgv-container {
   /*!
- * Bootstrap Colorpicker v2.4.0
+ * Bootstrap Colorpicker v2.5.1
  * https://itsjavi.com/bootstrap-colorpicker/
  *
  * Originally written by (c) 2012 Stefan Petre
@@ -1455,6 +1455,15 @@
   opacity: 1;
 }
 .lgv-container #searchbar .results {
+  background-color: #d42132;
+  font-size: 12px;
+  text-align: right;
+  padding: 6px;
+  border-top-width: 2px;
+  color: #fff;
+  opacity: 0.6;
+}
+.lgv-container #searchbarInMap .results {
   background-color: #d42132;
   font-size: 12px;
   text-align: right;

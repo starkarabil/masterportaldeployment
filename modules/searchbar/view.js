@@ -159,7 +159,7 @@ define(function (require) {
             }
             if (config.renderToDOM) {
                 if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"searchbarInMap\"></div");
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form col-xs-9\"></div");
                 }
                 this.setElement(config.renderToDOM);
                 this.render();
