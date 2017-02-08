@@ -2,7 +2,7 @@
 @import "../components/lgv-config/css/fonts.css";
 .lgv-container {
   /*!
- * Bootstrap Colorpicker v2.4.0
+ * Bootstrap Colorpicker v2.5.1
  * https://itsjavi.com/bootstrap-colorpicker/
  *
  * Originally written by (c) 2012 Stefan Petre
@@ -1327,6 +1327,12 @@
     min-width: 300px;
   }
 }
+.lgv-container #searchbarInMap {
+  position: absolute;
+  left: 20px;
+  top: 150px;
+  max-width: 350px;
+}
 .lgv-container #searchInputLi {
   white-space: nowrap;
   overflow: hidden;
@@ -1449,6 +1455,15 @@
   opacity: 1;
 }
 .lgv-container #searchbar .results {
+  background-color: #d42132;
+  font-size: 12px;
+  text-align: right;
+  padding: 6px;
+  border-top-width: 2px;
+  color: #fff;
+  opacity: 0.6;
+}
+.lgv-container #searchbarInMap .results {
   background-color: #d42132;
   font-size: 12px;
   text-align: right;
@@ -3812,7 +3827,7 @@ a.lgv-container .bg-danger:focus {
 .lgv-container dd {
   margin-left: 0;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .dl-horizontal dt {
     float: left;
     width: 160px;
@@ -3894,17 +3909,17 @@ a.lgv-container .bg-danger:focus {
   padding-left: 15px;
   padding-right: 15px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .container {
     width: 750px;
   }
 }
-@element "#map" and (min-width: 992px) {
+@element ".lgv-container" and (min-width: 992px) {
   .lgv-container .container {
     width: 970px;
   }
 }
-@element "#map" and (min-width: 1200px) {
+@element ".lgv-container" and (min-width: 1200px) {
   .lgv-container .container {
     width: 1170px;
   }
@@ -4139,7 +4154,7 @@ a.lgv-container .bg-danger:focus {
 .lgv-container .col-xs-offset-0 {
   margin-left: 0%;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .col-sm-1,
   .col-sm-2,
   .col-sm-3,
@@ -4308,7 +4323,7 @@ a.lgv-container .bg-danger:focus {
     margin-left: 0%;
   }
 }
-@element "#map" and (min-width: 992px) {
+@element ".lgv-container" and (min-width: 992px) {
   .lgv-container .col-md-1,
   .col-md-2,
   .col-md-3,
@@ -4477,7 +4492,7 @@ a.lgv-container .bg-danger:focus {
     margin-left: 0%;
   }
 }
-@element "#map" and (min-width: 1200px) {
+@element ".lgv-container" and (min-width: 1200px) {
   .lgv-container .col-lg-1,
   .col-lg-2,
   .col-lg-3,
@@ -5310,7 +5325,7 @@ select[multiple].lgv-container .input-lg {
   margin-bottom: 10px;
   color: #737373;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -5376,7 +5391,7 @@ select[multiple].lgv-container .input-lg {
   margin-left: -15px;
   margin-right: -15px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .form-horizontal .control-label {
     text-align: right;
     margin-bottom: 0;
@@ -5386,13 +5401,13 @@ select[multiple].lgv-container .input-lg {
 .lgv-container .form-horizontal .has-feedback .form-control-feedback {
   right: 15px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .form-horizontal .form-group-lg .control-label {
     padding-top: 11px;
     font-size: 18px;
   }
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .form-horizontal .form-group-sm .control-label {
     padding-top: 6px;
     font-size: 12px;
@@ -6022,7 +6037,7 @@ tbody.lgv-container .collapse.in {
   bottom: 100%;
   margin-bottom: 2px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-right .dropdown-menu {
     left: auto;
     right: 0;
@@ -6445,7 +6460,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .nav-tabs.nav-justified > li {
     display: table-cell;
     width: 1%;
@@ -6463,7 +6478,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .nav-tabs.nav-justified > .active > a:focus {
   border: 1px solid #dddddd;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .nav-tabs.nav-justified > li > a {
     border-bottom: 1px solid #dddddd;
     border-radius: 4px 4px 0 0;
@@ -6510,7 +6525,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .nav-justified > li {
     display: table-cell;
     width: 1%;
@@ -6531,7 +6546,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .nav-tabs-justified > .active > a:focus {
   border: 1px solid #dddddd;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .nav-tabs-justified > li > a {
     border-bottom: 1px solid #dddddd;
     border-radius: 4px 4px 0 0;
@@ -6559,7 +6574,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   margin-bottom: 20px;
   border: 1px solid transparent;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-header {
     float: left;
   }
@@ -6575,7 +6590,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .navbar-collapse.in {
   overflow-y: auto;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-collapse {
     width: auto;
     border-top: 0;
@@ -6601,7 +6616,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .navbar-fixed-bottom .navbar-collapse {
   max-height: 340px;
 }
-@element "#map" and (max-device-width: 480px) and (orientation: landscape) {
+@element ".lgv-container" and (max-device-width: 480px) and (orientation: landscape) {
   .lgv-container .navbar-fixed-top .navbar-collapse,
   .lgv-container .navbar-fixed-bottom .navbar-collapse {
     max-height: 200px;
@@ -6614,7 +6629,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   margin-right: -15px;
   margin-left: -15px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .container > .navbar-header,
   .lgv-container .container-fluid > .navbar-header,
   .lgv-container .container > .navbar-collapse,
@@ -6667,7 +6682,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-toggle {
     display: none;
   }
@@ -6680,7 +6695,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   padding-bottom: 10px;
   line-height: 20px;
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .navbar-nav .open .dropdown-menu {
     position: static;
     float: none;
@@ -6702,7 +6717,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
     background-image: none;
   }
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-nav {
     float: left;
     margin: 0;
@@ -6726,7 +6741,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   margin-top: 8px;
   margin-bottom: 8px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-form .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -6776,7 +6791,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
     top: 0;
   }
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .navbar-form .form-group {
     margin-bottom: 5px;
   }
@@ -6784,7 +6799,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
     margin-bottom: 0;
   }
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-form {
     width: auto;
     border: 0;
@@ -6824,14 +6839,14 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   margin-top: 15px;
   margin-bottom: 15px;
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-text {
     float: left;
     margin-left: 15px;
     margin-right: 15px;
   }
 }
-@element "#map" and (min-width: 768px) {
+@element ".lgv-container" and (min-width: 768px) {
   .lgv-container .navbar-left {
     float: left !important;
   }
@@ -8268,7 +8283,7 @@ button.lgv-container .close {
 .lgv-container .visible-lg-inline-block {
   display: none !important;
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .visible-xs {
     display: block !important;
   }
@@ -8283,22 +8298,22 @@ button.lgv-container .close {
     display: table-cell !important;
   }
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .visible-xs-block {
     display: block !important;
   }
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .visible-xs-inline {
     display: inline !important;
   }
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .visible-xs-inline-block {
     display: inline-block !important;
   }
 }
-@element "#map" and (max-width: 767px) {
+@element ".lgv-container" and (max-width: 767px) {
   .lgv-container .hidden-xs {
     display: none !important;
   }
@@ -9331,3 +9346,4 @@ https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
     opacity:0;
     width: 0px;
 }
+

@@ -36,11 +36,17 @@ define("app",
     new Map();
     new RestReaderList();
     // Module laden
-    incModulesLoading();
-    require(["modules/menu/menuLoader"], function (MenuLoader) {
-         new MenuLoader();
-         decModulesLoading();
-     });
+
+    var menu = Radio.request("Parser","getPortalConfig").menu;
+
+    if (menu.hide !== true) {
+        incModulesLoading();
+        require(["modules/menu/menuLoader"], function (MenuLoader) {
+            new MenuLoader();
+            decModulesLoading();
+        });
+    }
+    new RestReaderList();
 
     incModulesLoading();
     require(["modules/remoteinterface/model"], function (Remoteinterface) {

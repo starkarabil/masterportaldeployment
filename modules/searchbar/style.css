@@ -35,6 +35,13 @@
         min-width: 300px;
     }
 }
+#searchbarInMap {
+    position: absolute;
+    left: 20px;
+    top: 150px;
+    max-width: 350px;
+}
+
 
 #searchInputLi {
     white-space: nowrap;
@@ -180,6 +187,16 @@
 }
 
 #searchbar .results {
+    background-color: #d42132;
+    font-size: 12px;
+    text-align: right;
+    padding: 6px;
+    border-top-width: 2px;
+    color: #fff;
+    opacity: 0.6;
+}
+
+#searchbarInMap .results {
     background-color: #d42132;
     font-size: 12px;
     text-align: right;
