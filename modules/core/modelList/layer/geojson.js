@@ -13,7 +13,8 @@ define(function (require) {
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
                 format: new ol.format.GeoJSON(),
-                features: this.getFeatures()
+                features: this.getFeatures(),
+                url: this.get("url")
             }));
         },
 
