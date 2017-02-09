@@ -35,7 +35,7 @@ define(function (require) {
          */
         createLayer: function () {
             this.setLayer(new ol.layer.Vector({
-                source: this.getClusterLayerSource(),
+                source: (this.has("clusterLayerSource") === true) ? this.getClusterLayerSource() : this.getLayerSource(),
                 style: this.getStyle()
             }));
         },

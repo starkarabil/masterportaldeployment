@@ -9,7 +9,13 @@ define([
             // select interaction reagiert auf pointermove
             selectPointerMove: new ol.interaction.Select({
                 condition: ol.events.condition.pointerMove,
-                multi: true
+                multi: true,
+                filter: function (feature) {
+                    if (feature.get("name") === "DragMarkerPoint") {
+                        return false;
+                    }
+                    return true;
+                }
             }),
             wfsList: [],
             mhpresult: "",
