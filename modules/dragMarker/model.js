@@ -21,7 +21,6 @@ define([
             featureName: "DragMarkerPoint",
             dragMarkerLayer: new ol.layer.Vector({
                 source: new ol.source.Vector(),
-                alwaysOnTop: true,
                 style: new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [17, 40], // Anchor for marker_red_small.png
@@ -30,7 +29,9 @@ define([
                         opacity: 0.7,
                         src: "../../components/lgv-config/img/marker_red_small.png"
                     })
-                })
+                }),
+                alwaysOnTop: true,
+                visible: true
             }),
             dragInteraction: new ol.interaction.Pointer({
                 handleDownEvent: function () {
@@ -62,7 +63,9 @@ define([
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
                 "handleMoveEvent": this.handleMoveEvent,
-                "setPosition": this.setPosition
+                "setPosition": this.setPosition,
+                "hide": this.hideMarker,
+                "show": this.showMarker
             }, this);
 
             channel.reply({
@@ -83,6 +86,29 @@ define([
             // Set defaults
             this.setPosition(this.get("coordinate"));
             this.getBoundaryHH();
+            this.checkInitialVisibility();
+        },
+
+        checkInitialVisibility: function () {
+            var isInitVisible = Radio.request("Parser","getPortalConfig").mapMarkerModul.isInitVisible;
+
+            if (isInitVisible === false) {
+                this.hideMarker();
+            }
+            else {
+                this.showMarker();
+            }
+        },
+        getDragMarkerLayer: function () {
+            return this.get("dragMarkerLayer");
+        },
+
+        showMarker: function () {
+            this.getDragMarkerLayer().setVisible(true);
+        },
+
+        hideMarker: function () {
+            this.getDragMarkerLayer().setVisible(false);
         },
 
         // liest die landesgrenze_hh.json ein und ruft dann parse auf

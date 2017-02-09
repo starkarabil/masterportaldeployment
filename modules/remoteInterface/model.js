@@ -30,12 +30,20 @@ define(function () {
                 "showMapMarker": this.showMapMarker,
                 "zoomToFeature": this.zoomToFeature,
                 "zoomToFeatures": this.zoomToFeatures,
-                "showLayers": this.showLayers
+                "showLayers": this.showLayers,
+                "showDragMarker": this.showDragMarker,
+                "hideDragMarker": this.hideDragMarker
             }, this);
 
-            Radio.on("Map", "changedExtent", this.changedExtent)
+            Radio.on("Map", "changedExtent", this.changedExtent);
         },
 
+        showDragMarker: function () {
+            Radio.trigger("DragMarker","show");
+        },
+        hideDragMarker: function () {
+            Radio.trigger("DragMarker","hide");
+        },
         getLayerFeaturesInExtent: function (name) {
             return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
         },
