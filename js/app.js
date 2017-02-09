@@ -395,8 +395,10 @@ define("app",
             decModulesLoading();
         });
 
+        var marker = Radio.request("Parser","getPortalConfig").mapMarkerModul;
+
         // Prüfung, ob MapMarker geladen werden soll. In MML disabled.
-        if (_.isUndefined(Config.mapMarkerModul) === true || Config.mapMarkerModul !== "dragMarker") {
+        if (_.isUndefined(marker) === true || marker.marker !== "dragMarker") {
             incModulesLoading();
             require(["modules/mapMarker/view"], function (MapMarkerView) {
                 new MapMarkerView();
