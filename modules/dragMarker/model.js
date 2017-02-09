@@ -90,9 +90,9 @@ define([
         },
 
         checkInitialVisibility: function () {
-            var isInitVisible = Radio.request("Parser","getPortalConfig").mapMarkerModul.isInitVisible;
+            var visible = Radio.request("Parser","getPortalConfig").mapMarkerModul.visible;
 
-            if (isInitVisible === false) {
+            if (visible === false) {
                 this.hideMarker();
             }
             else {
