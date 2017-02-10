@@ -7,7 +7,7 @@ define([
         defaults: {
             isViewMobile: false
         },
-        initialize: function () {
+        initialize: function (Config) {
             var channel = Radio.channel("Util"),
                 context = this;
 
@@ -23,7 +23,10 @@ define([
                 "isOpera": this.isOpera,
                 "isWindows": this.isWindows,
                 "isChrome": this.isChrome,
-                "isAny": this.isAny
+                "isAny": this.isAny,
+                "lgvConfigPath": Config.lgvConfigPath,
+                "getImgPath": Config.imgPath,
+                "getProjektImgPath": Config.imgProjektPath
             }, this);
 
             channel.on({

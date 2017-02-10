@@ -28,7 +28,7 @@ define([
                         anchorXUnits: "pixels",
                         anchorYUnits: "pixels",
                         opacity: 0.7,
-                        src: "../../components/lgv-config/img/marker_red_small.png"
+                        src: Radio.request("Util", "getImgPath") + "marker_red_small.png"
                     })
                 })
             }),
@@ -49,12 +49,13 @@ define([
             dragMarkerFeature: null,
             featureAtPixel: "",
             sourceHH: null,
-            url: "../mml/landesgrenze_hh.json",
+            url: Radio.request("Util", "lgvConfigPath") + "landesgrenze_hh.json",
             nearestAddress: null
         },
 
         initialize: function () {
             EventBus.on("searchbar:hit", this.searchbarhit, this);
+
 
             // Radio channel
             var channel = Radio.channel("DragMarker");

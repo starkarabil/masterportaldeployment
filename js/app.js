@@ -28,7 +28,7 @@ define("app",
     // Core laden
     new Alert();
     new Autostarter();
-    new Util();
+    new Util(Config);
     new RawLayerList();
     new Preparser();
     new ParametricURL();
