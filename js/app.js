@@ -388,6 +388,7 @@ define("app",
                                 new BaselayerView();
                             });
                         }
+                        decModulesLoading();
                         break;
                     }
                 }
