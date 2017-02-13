@@ -33,8 +33,11 @@ define([
                 "getModelByAttributes": function (attributes) {
                     return this.findWhere(attributes);
                 },
-                "getBaseLayers": function () {
-                    return this.getBaseLayers();
+                "getVisibleBaseLayers": function () {
+                    return this.getVisibleBaseLayers();
+                },
+                "getAllBaseLayers": function () {
+                    return this.getAllBaseLayers();
                 },
                 "getLayerFeaturesInExtent": function (name) {
                     return this.getLayerFeaturesInExtent(name);
@@ -499,8 +502,17 @@ define([
 
             model.showFeaturesByIds(featureIds);
         },
-        getBaseLayers: function () {
+        getVisibleBaseLayers: function () {
             var baseLayers = this.where({isBaseLayer: true, isVisibleInMap: true}),
+                names = [];
+
+            _.each(baseLayers, function (layer) {
+                names.push(layer.getName());
+            });
+            return names;
+        },
+        getAllBaseLayers: function () {
+            var baseLayers = this.where({isBaseLayer: true}),
                 names = [];
 
             _.each(baseLayers, function (layer) {
