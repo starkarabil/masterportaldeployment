@@ -93,5 +93,5 @@ define([
         }
     });
 
-    return new ReverseGeocoder();
+    return ReverseGeocoder;
 });
