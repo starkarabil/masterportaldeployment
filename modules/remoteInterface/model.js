@@ -68,10 +68,6 @@ define(function () {
         getBaseLayers: function () {
             return Radio.request("ModelList", "getBaseLayers");
         },
-        // setter for Layers
-        showLayers: function (layerNames) {
-            return Radio.request("Map", "showLayers", layerNames);
-        },
         getCenter: function () {
             return Radio.request("MapView", "getCenter");
         },

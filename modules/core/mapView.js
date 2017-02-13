@@ -110,7 +110,8 @@ define([
                 "setZoomLevelUp": this.setZoomLevelUp,
                 "setZoomLevelDown": this.setZoomLevelDown,
                 "setScale": this.setScale,
-                "resetView": this.resetView
+                "resetView": this.resetView,
+                "setZoomLevel": this.setZoomLevel
             }, this);
 
             this.listenTo(this, {
@@ -418,6 +419,10 @@ define([
 
             tempArray.push(value);
             this.set(attribute, _.flatten(tempArray));
+        },
+
+        setZoomLevel: function (value) {
+            this.get("view").setZoom(value);
         }
     });
 
