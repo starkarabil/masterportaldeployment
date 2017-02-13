@@ -538,16 +538,24 @@ define([
                 source,
                 extent,
                 featuresInExtent,
+                format,
                 errormsg,
                 geoJSONFeatures = [];
 
             if (layer) {
                 source = layer.get("layer").getSource();
                 extent = Radio.request("Map","getExtent");
+                format = source.getFormat();
                 featuresInExtent = source.getFeaturesInExtent(extent);
 
+                // bei einer ol.Source.Cluster ist die eigentliche Source gewrapped
+                if (_.isUndefined(format)) {
+                    format = source.getSource().getFormat();
+                    featuresInExtent = source.getSource().getFeaturesInExtent(extent);
+                }
+
                 _.each(featuresInExtent, function (feature) {
-                    geoJSONFeatures.push(source.getFormat().writeFeature(feature));
+                    geoJSONFeatures.push(format.writeFeature(feature));
                 });
 
             }

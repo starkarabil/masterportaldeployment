@@ -25,6 +25,7 @@ define(function (require) {
         createClusterLayerSource: function () {
             this.setClusterLayerSource(new ol.source.Cluster({
                 source: this.getLayerSource(),
+                format: new ol.format.GeoJSON(),
                 distance: this.getClusterDistance()
             }));
         },
