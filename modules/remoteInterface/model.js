@@ -37,6 +37,7 @@ define(function () {
             }, this);
 
             Radio.on("Map", "changedExtent", this.changedExtent);
+            Radio.on("DragMarker", "newAddress", this.newDragMarkerAddress);
         },
 
         showDragMarker: function () {
@@ -141,6 +142,9 @@ define(function () {
         },
         changedExtent: function (extent) {
             Radio.trigger("RemoteInterface", "changedExtent", extent);
+        },
+        newDragMarkerAddress: function (dragMarkerAddress) {
+            Radio.trigger("RemoteInterface", "newDragMarkerAddress", dragMarkerAddress);
         }
     });
 
