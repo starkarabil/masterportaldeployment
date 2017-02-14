@@ -12,7 +12,8 @@ define([
     ReverseGeocoder = Backbone.Model.extend({
         defaults: {
             url: "",
-            ajax: null
+            ajax: null,
+            timeout: 5000
         },
         initialize: function () {
             // Setter URL
@@ -29,10 +30,14 @@ define([
             var portalConfig = Radio.request("Parser", "getPortalConfig"),
                 config = portalConfig.reverseGeocoder ? portalConfig.reverseGeocoder : null,
                 wpsId = config.wpsId ? config.wpsId : null,
+                timeout = config.timeout ? config.timeout : null,
                 servicedefinition = wpsId ? Radio.request("RestReader", "getServiceById", wpsId)[0] : null,
                 proxiedUrl = servicedefinition ? Radio.request("Util", "getProxyURL", servicedefinition.get("url")) : "";
 
             this.set("url", proxiedUrl);
+            if (timeout) {
+                this.set("timeout", timeout);
+            }
             if (!proxiedUrl) {
                 Radio.trigger("Alert", "alert", {text: "Fehler beim Initialisieren des ReverseGeocoders", kategorie: "alert-danger"});
             }
@@ -56,6 +61,7 @@ define([
                 method: "POST",
                 contentType: "text/xml; charset=UTF-8",
                 context: this,
+                timeout: this.get("timeout"),
                 complete: function (jqXHR) {
                     this.ajaxComplete(jqXHR);
                 },
