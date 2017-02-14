@@ -71,7 +71,7 @@ define([
             }));
         },
         ajaxComplete: function (jqXHR) {
-            if (jqXHR.status !== (200) && jqXHR.status !== (0) || jqXHR.responseText && jqXHR.responseText.indexOf("ExceptionReport") !== -1) {
+            if (jqXHR.status !== (200) || jqXHR.responseText && jqXHR.responseText.indexOf("ExceptionReport") !== -1) {
                 Radio.trigger("ReverseGeocoder", "addressComputed", {
                     error: "An error occurred while requesting nearest address.",
                     errorXHR: jqXHR
