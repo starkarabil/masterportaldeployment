@@ -66,8 +66,10 @@ define([
         },
         ajaxComplete: function (jqXHR) {
             if (jqXHR.status !== (200) && jqXHR.status !== (0) || jqXHR.responseText && jqXHR.responseText.indexOf("ExceptionReport") !== -1) {
-                Radio.trigger("Alert", "alert", {text: "Nächstgelegene Adresse nicht ermittelt. Bitte versuchen Sie es später wieder.", kategorie: "alert-info"});
-                Radio.trigger("ReverseGeocoder", "addressComputed", null);
+                Radio.trigger("ReverseGeocoder", "addressComputed", {
+                    error: "An error occurred while requesting nearest address.",
+                    errorXHR: jqXHR
+                });
             }
         },
         ajaxSuccess: function (response) {
