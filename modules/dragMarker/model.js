@@ -71,6 +71,9 @@ define(function (require) {
             // external Radio channel
             Radio.on("ReverseGeocoder", "addressComputed", this.setNearestAddress, this);
 
+            // internal Listeners
+            this.listenTo(this, {"change:nearestAddress": this.newAddress});
+
             // Prepare Map
             Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
             Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
@@ -210,6 +213,11 @@ define(function (require) {
         // trigger new center coordinate
         triggerNewCoordinate: function () {
             Radio.trigger("ReverseGeocoder", "request", this.get("coordinate"));
+        },
+
+        // trigger newAddress gefunden. Kann auch Fehlerobjekt sein.
+        newAddress: function () {
+            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"))
         },
 
         // INTERACTION EVENTS
