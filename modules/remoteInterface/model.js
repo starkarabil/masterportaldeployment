@@ -32,7 +32,8 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers,
                 "showDragMarker": this.showDragMarker,
-                "hideDragMarker": this.hideDragMarker
+                "hideDragMarker": this.hideDragMarker,
+                "requestDragMarkerAddress": this.requestDragMarkerAddress
             }, this);
 
             Radio.on("Map", "changedExtent", this.changedExtent);
@@ -126,20 +127,29 @@ define(function () {
         showMarker: function (value) {
             Radio.trigger("MapMarker", "showMarker", value);
         },
+
         showLayers: function (layerNames) {
             Radio.trigger("ModelList", "showLayers", layerNames);
         },
+
         zoomToFeature: function (feature) {
             Radio.trigger("MapView", "zoomToFeature", feature);
         },
+
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
         },
+
         changedExtent: function (extent) {
             Radio.trigger("RemoteInterface", "changedExtent", extent);
         },
+
         newDragMarkerAddress: function (dragMarkerAddress) {
             Radio.trigger("RemoteInterface", "newDragMarkerAddress", dragMarkerAddress);
+        },
+
+        requestDragMarkerAddress: function () {
+            Radio.trigger("DragMarker", "requestAddress");
         }
     });
 
