@@ -65,8 +65,7 @@ define(function (require) {
             channel.reply({
                 "handleDownEvent": this.handleDownEvent,
                 "handleUpEvent": this.handleUpEvent,
-                "getPosition": this.getPosition,
-                "getNearestAddress": this.getNearestAddress
+                "getPosition": this.getPosition
             }, this);
 
             // external Radio channel
@@ -159,11 +158,6 @@ define(function (require) {
         // receives new address from WPS
         setNearestAddress: function (response) {
             this.set("nearestAddress", response);
-        },
-
-        // returns nearestAddress
-        getNearestAddress: function () {
-            return this.get("nearestAddress");
         },
 
         featureAtPixel: function (evt) {
