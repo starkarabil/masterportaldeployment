@@ -7,7 +7,6 @@ define(function () {
             channel.reply({
                 "getCenter": this.getCenter,
                 "getMapState": this.getMapState,
-                "getDragMarkerAddress": this.getDragMarkerAddress,
                 "getDragMarkerPosition": this.getDragMarkerPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
@@ -86,10 +85,6 @@ define(function () {
 
         getMapState: function () {
             return Radio.request("SaveSelection", "getMapState");
-        },
-
-        getDragMarkerAddress: function () {
-            return Radio.request("DragMarker", "getNearestAddress");
         },
 
         getDragMarkerPosition: function () {
