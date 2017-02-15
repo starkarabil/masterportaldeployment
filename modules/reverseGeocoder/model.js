@@ -12,7 +12,8 @@ define([
     ReverseGeocoder = Backbone.Model.extend({
         defaults: {
             url: "",
-            ajax: null
+            ajax: null,
+            timeout: 5000
         },
         initialize: function () {
             // Setter URL
@@ -29,10 +30,14 @@ define([
             var portalConfig = Radio.request("Parser", "getPortalConfig"),
                 config = portalConfig.reverseGeocoder ? portalConfig.reverseGeocoder : null,
                 wpsId = config.wpsId ? config.wpsId : null,
+                timeout = config.timeout ? config.timeout : null,
                 servicedefinition = wpsId ? Radio.request("RestReader", "getServiceById", wpsId)[0] : null,
                 proxiedUrl = servicedefinition ? Radio.request("Util", "getProxyURL", servicedefinition.get("url")) : "";
 
             this.set("url", proxiedUrl);
+            if (timeout) {
+                this.set("timeout", timeout);
+            }
             if (!proxiedUrl) {
                 Radio.trigger("Alert", "alert", {text: "Fehler beim Initialisieren des ReverseGeocoders", kategorie: "alert-danger"});
             }
@@ -51,11 +56,12 @@ define([
                 request_str = "<wps:Execute xmlns:wps='http://www.opengis.net/wps/1.0.0' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:ows='http://www.opengis.net/ows/1.1' service='WPS' version='1.0.0' xsi:schemaLocation='http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsExecute_request.xsd'><ows:Identifier>ReverseGeocoder.fmw</ows:Identifier>" + dataInput + "</wps:Execute>";
 
             this.set("ajax", $.ajax({
-                url: this.get("url") + "?Request=Execute&Service=WPS&Version=1.0.0",
+                url: this.get("url"),
                 data: request_str,
                 method: "POST",
                 contentType: "text/xml; charset=UTF-8",
                 context: this,
+                timeout: this.get("timeout"),
                 complete: function (jqXHR) {
                     this.ajaxComplete(jqXHR);
                 },
@@ -65,9 +71,11 @@ define([
             }));
         },
         ajaxComplete: function (jqXHR) {
-            if (jqXHR.status !== (200) && jqXHR.status !== (0) || jqXHR.responseText && jqXHR.responseText.indexOf("ExceptionReport") !== -1) {
-                Radio.trigger("Alert", "alert", {text: "Nächstgelegene Adresse nicht ermittelt. Bitte versuchen Sie es später wieder.", kategorie: "alert-info"});
-                Radio.trigger("ReverseGeocoder", "addressComputed", null);
+            if (jqXHR.status !== (200) || jqXHR.responseText && jqXHR.responseText.indexOf("ExceptionReport") !== -1) {
+                Radio.trigger("ReverseGeocoder", "addressComputed", {
+                    error: "An error occurred while requesting nearest address.",
+                    errorXHR: jqXHR
+                });
             }
         },
         ajaxSuccess: function (response) {
