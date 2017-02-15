@@ -258,7 +258,9 @@ define([
                 legendURL: "",
                 isbaselayer: false,
                 cache: false,
-                datasets: []
+                datasets: [],
+                clusterDistance: 40,
+                styleId: "mml"
             };
 
             this.addItem(layer);

@@ -1,0 +1,18 @@
+.simple-lister-view {
+    position: absolute;
+    top: 100px;
+}
+.simple-lister-button {
+    margin-top: 20px;
+}
+.simple-lister-button > .glyphicon {
+    font-size: 20px;
+    padding: 7px 6px 6px 7px;
+    color: #f3f3f3;
+    background-color: rgb(182, 0, 0);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+}
+.simple-lister-table {
+    left: 15px;
+    background-color: white;
+}

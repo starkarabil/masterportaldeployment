@@ -1,5 +1,4 @@
 define([
-
     "openlayers",
     "eventbus",
     "bootstrap/popover"
@@ -7,6 +6,17 @@ define([
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {
+            // select interaction reagiert auf pointermove
+            selectPointerMove: new ol.interaction.Select({
+                condition: ol.events.condition.pointerMove,
+                multi: true,
+                filter: function (feature) {
+                    if (feature.get("name") === "DragMarkerPoint") {
+                        return false;
+                    }
+                    return true;
+                }
+            }),
             wfsList: [],
             mhpresult: "",
             mhpcoordinates: [],
@@ -14,7 +24,10 @@ define([
             GFIPopupVisibility: false
         },
         initialize: function () {
-            Radio.trigger("Map", "registerListener", "pointermove", this.checkForEachFeatureAtPixel, this);
+            // select interaction Listener
+            this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
+
+            Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
 
             $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
 
@@ -72,16 +85,51 @@ define([
         * Selektion angestpßen.
         */
         checkForEachFeatureAtPixel: function (evt) {
+            if (evt.mapBrowserEvent.dragging) {
+                return;
+            }
+
+            var selected = evt.selected,
+                deselected = evt.deselected,
+                eventPixel = evt.mapBrowserEvent.pixel,
+                map = evt.mapBrowserEvent.map;
+
+            if (selected.length) {
+                selected.forEach(function (feature) {
+                    var newStyle = feature.getStyle()[0].clone();
+
+                    newStyle.getImage().setScale(1.2);
+                    if (_.isNull(newStyle.getText()) === false) {
+                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                    }
+                    feature.setStyle([newStyle]);
+                });
+            }
+            else {
+                deselected.forEach(function (feature) {
+                    var newStyle = feature.getStyle()[0].clone();
+
+                    newStyle.getImage().setScale(1);
+                    if (_.isNull(newStyle.getText()) === false) {
+                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                    }
+                    feature.setStyle([newStyle]);
+                });
+            }
+
             var pFeatureArray = [],
-                featuresAtPixel = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
                     return {
                         feature: feature,
                         layer: layer
                     };
             });
+
             // featuresAtPixel.layer !== null --> kleiner schneller Hack da sonst beim zeichnen die ganze Zeit versucht wird ein Popup zu zeigen?? SD 01.09.2015
             if (featuresAtPixel !== undefined && featuresAtPixel.layer !== null) {
                 var selFeature = featuresAtPixel.feature;
+
+                map.getTargetElement().style.cursor = "pointer";
                 // Cluster-Features
                 if (selFeature.getProperties().features) {
                     var list = selFeature.getProperties().features;
@@ -114,6 +162,7 @@ define([
                 }
             }
             else {
+                map.getTargetElement().style.cursor = "";
                 this.removeMouseHoverFeatureIfSet();
             }
         },

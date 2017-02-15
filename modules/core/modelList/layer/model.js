@@ -27,6 +27,9 @@ define(function (require) {
                     if (this.has("clusterDistance") === true) {
                         this.createClusterLayerSource();
                     }
+                    if (this.get("typ") !== "WMS") {
+                        this.createStyle();
+                    }
                     this.createLayer();
                 },
                 "change:layer": function () {

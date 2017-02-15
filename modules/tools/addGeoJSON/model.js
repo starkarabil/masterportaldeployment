@@ -8,7 +8,7 @@ define(function (require) {
         defaults: {
             reader: new ol.format.GeoJSON()
         },
-        url: "https://191.233.106.244/lgv-config/mml_anliegen.json",
+        url: "http://191.233.106.244/lgv-config/mml_anliegen.json",
 
         initialize: function () {
             var channel = Radio.channel("AddGeoJSON");
@@ -33,13 +33,13 @@ define(function (require) {
                 "change:features": this.addLayer
             });
 
-            this.fetch({
-                url: this.url,
-                context: this,
-                error: function () {
-                    Radio.trigger("Alert", "alert", {text: "<strong>Anliegen kann nicht geladen werden!", kategorie: "alert-danger"});
-                }
-            });
+            // this.fetch({
+            //     url: this.url,
+            //     context: this,
+            //     error: function () {
+            //         Radio.trigger("Alert", "alert", {text: "<strong>Anliegen kann nicht geladen werden!", kategorie: "alert-danger"});
+            //     }
+            // });
         },
 
         parse: function (response, options) {
@@ -81,7 +81,7 @@ define(function (require) {
 
             features = this.getReader().readFeatures(features);
 
-            _.each(features,function (feature) {
+            _.each(features, function (feature) {
                 if (feature.get("OBJECTID")) {
                     feature.setId(feature.get("OBJECTID"));
                 }

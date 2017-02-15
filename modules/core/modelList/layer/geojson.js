@@ -13,7 +13,20 @@ define(function (require) {
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
                 format: new ol.format.GeoJSON(),
+                url: this.get("url"),
                 features: this.getFeatures()
+            }));
+        },
+
+        /**
+         * [createClusterLayerSource description]
+         * @return {[type]} [description]
+         */
+        createClusterLayerSource: function () {
+            this.setClusterLayerSource(new ol.source.Cluster({
+                source: this.getLayerSource(),
+                format: new ol.format.GeoJSON(),
+                distance: this.getClusterDistance()
             }));
         },
 
@@ -23,9 +36,35 @@ define(function (require) {
          */
         createLayer: function () {
             this.setLayer(new ol.layer.Vector({
-                source: this.getLayerSource(),
-                style: this.getStyles()
+                source: (this.has("clusterLayerSource") === true) ? this.getClusterLayerSource() : this.getLayerSource(),
+                style: this.getStyle()
             }));
+        },
+
+        /**
+         * [createLayerStyle description]
+         * @return {[type]} [description]
+         */
+        createStyle: function () {
+            var styleId = this.getStyleId();
+
+            if (this.has("clusterLayerSource")) {
+                this.set("style", function (feature) {
+                    // Anzahl der Features
+                    var size = feature.get("features").length,
+                        stylelistmodel;
+
+                    // Wenn mehrere Features vorhanden sind, wird geprüft, ob dafür ein extra Style vorhanden ist
+                    if (size > 1) {
+                        stylelistmodel = Radio.request("StyleList", "returnModelById", styleId + "_cluster");
+                    }
+                    // Ansonsten nimm den normal one
+                    if (_.isUndefined(stylelistmodel) === true) {
+                        stylelistmodel = Radio.request("StyleList", "returnModelByValue", styleId);
+                    }
+                    feature.setStyle(stylelistmodel.getClusterStyle(feature));
+                });
+            }
         },
 
         /**
@@ -74,14 +113,34 @@ define(function (require) {
             }, this);
         },
 
+        // Setter
+        setClusterLayerSource: function (value) {
+            this.set("clusterLayerSource", value);
+        },
+
         // Getter
         getFeatures: function () {
             return this.get("features");
         },
 
-        getStyles: function () {
+        getClusterLayerSource: function () {
+            return this.get("clusterLayerSource");
+        },
+
+        getClusterDistance: function () {
+            return this.get("clusterDistance");
+        },
+
+        getStyleId: function () {
+            return this.get("styleId");
+        },
+
+        getStyle: function () {
             if (this.get("id") === "flurst" || this.get("id") === "potfl") {
                 return this.getDefaultStylePolygon();
+            }
+            else {
+                return this.get("style");
             }
         },
 

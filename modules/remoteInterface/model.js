@@ -11,7 +11,8 @@ define(function () {
                 "getDragMarkerPosition": this.getDragMarkerPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
-                "getBaseLayers": this.getBaseLayers,
+                "getVisibleBaseLayers": this.getVisibleBaseLayers,
+                "getAllBaseLayers": this.getAllBaseLayers,
                 "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent
             }, this);
 
@@ -30,24 +31,38 @@ define(function () {
                 "showMapMarker": this.showMapMarker,
                 "zoomToFeature": this.zoomToFeature,
                 "zoomToFeatures": this.zoomToFeatures,
-                "showLayers": this.showLayers
+                "showLayers": this.showLayers,
+                "showDragMarker": this.showDragMarker,
+                "hideDragMarker": this.hideDragMarker
             }, this);
 
-            Radio.on("Map", "changedExtent", this.changedExtent)
+            Radio.on("Map", "changedExtent", this.changedExtent);
+        },
+
+        showDragMarker: function () {
+            Radio.trigger("DragMarker","show");
+        },
+
+        hideDragMarker: function () {
+            Radio.trigger("DragMarker","hide");
         },
 
         getLayerFeaturesInExtent: function (name) {
             return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
         },
+
         showAllFeatures: function (name) {
             Radio.trigger("ModelList","showAllFeatures", name);
         },
+
         hideAllFeatures: function (name) {
             Radio.trigger("ModelList","hideAllFeatures", name);
         },
+
         showFeatures: function (name, featureIds) {
             Radio.trigger("ModelList","showFeaturesByIds", name, featureIds);
         },
+
         hideFeatures: function (name, featureIds) {
             Radio.trigger("ModelList","hideFeaturesByIds", name, featureIds);
         },
@@ -56,14 +71,14 @@ define(function () {
             Radio.trigger("AddGeoJSON", "addFeatures", features, name);
         },
 
-        // getter for baseLayers
-        getBaseLayers: function () {
-            return Radio.request("ModelList", "getBaseLayers");
+        getVisibleBaseLayers: function () {
+            return Radio.request("ModelList", "getVisibleBaseLayers");
         },
-        // setter for Layers
-        showLayers: function (layerNames) {
-            return Radio.request("Map", "showLayers", layerNames);
+
+        getAllBaseLayers: function () {
+            return Radio.request("ModelList", "getAllBaseLayers");
         },
+
         getCenter: function () {
             return Radio.request("MapView", "getCenter");
         },

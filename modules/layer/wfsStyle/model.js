@@ -74,7 +74,7 @@ define([
             if (anzahl !== "") {
                 var font = this.get("clusterfont").toString(),
                     color = this.returnColor(this.get("clustercolor")),
-                    scale = parseInt(this.get("clusterscale"), 10),
+                    scale = parseFloat(this.get("clusterscale"), 10),
                     offsetX = parseInt(this.get("clusteroffsetx"), 10),
                     offsetY = parseInt(this.get("clusteroffsety"), 10),
                     fillcolor = this.returnColor(this.get("clusterfillcolor")),
@@ -95,14 +95,11 @@ define([
                             width: strokewidth
                         })
                     }),
-                    style = this.getSimpleStyle();
-
-                style.push(
-                new ol.style.Style({
+                style = new ol.style.Style({
                     text: clusterText,
-                    zIndex: "Infinity"
-                }));
-                return style;
+                    image: this.getSimpleStyle()[0].getImage()
+                });
+                return [style];
             }
         },
         getCustomLabeledStyle: function (label) {
@@ -123,9 +120,8 @@ define([
                     offset = [parseFloat(this.get("imageoffsetx")), parseFloat(this.get("imageoffsety"))];
 
                     imagestyle = new ol.style.Icon({
+                        imgSize: [width, height],
                         src: src,
-                        width: width,
-                        height: height,
                         scale: scale,
                         anchor: offset
     //                    anchorXUnits: "pixels",

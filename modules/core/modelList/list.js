@@ -33,8 +33,11 @@ define([
                 "getModelByAttributes": function (attributes) {
                     return this.findWhere(attributes);
                 },
-                "getBaseLayers": function () {
-                    return this.getBaseLayers();
+                "getVisibleBaseLayers": function () {
+                    return this.getVisibleBaseLayers();
+                },
+                "getAllBaseLayers": function () {
+                    return this.getAllBaseLayers();
                 },
                 "getLayerFeaturesInExtent": function (name) {
                     return this.getLayerFeaturesInExtent(name);
@@ -499,8 +502,17 @@ define([
 
             model.showFeaturesByIds(featureIds);
         },
-        getBaseLayers: function () {
+        getVisibleBaseLayers: function () {
             var baseLayers = this.where({isBaseLayer: true, isVisibleInMap: true}),
+                names = [];
+
+            _.each(baseLayers, function (layer) {
+                names.push(layer.getName());
+            });
+            return names;
+        },
+        getAllBaseLayers: function () {
+            var baseLayers = this.where({isBaseLayer: true}),
                 names = [];
 
             _.each(baseLayers, function (layer) {
@@ -538,16 +550,24 @@ define([
                 source,
                 extent,
                 featuresInExtent,
+                format,
                 errormsg,
                 geoJSONFeatures = [];
 
             if (layer) {
                 source = layer.get("layer").getSource();
                 extent = Radio.request("Map","getExtent");
+                format = source.getFormat();
                 featuresInExtent = source.getFeaturesInExtent(extent);
 
+                // bei einer ol.Source.Cluster ist die eigentliche Source gewrapped
+                if (_.isUndefined(format)) {
+                    format = source.getSource().getFormat();
+                    featuresInExtent = source.getSource().getFeaturesInExtent(extent);
+                }
+
                 _.each(featuresInExtent, function (feature) {
-                    geoJSONFeatures.push(source.getFormat().writeFeature(feature));
+                    geoJSONFeatures.push(format.writeFeature(feature));
                 });
 
             }
