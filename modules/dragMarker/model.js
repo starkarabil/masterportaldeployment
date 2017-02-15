@@ -247,22 +247,24 @@ define([
             }
         },
 
-        // switch cursorstyles
+        // switch cursorstyles. Macht nur Sinn, wenn nicht mobileDevice
         handleMoveEvent: function () {
-            var featureAtPixel = this.get("featureAtPixel"),
-                element = $("#map")[0],
-                actualCursor = this.get("cursor"),
-                prevCursor = this.get("previousCursor");
+            if (_.isNull(Radio.request("Util", "isAny")) === false) {
+                var featureAtPixel = this.get("featureAtPixel"),
+                    element = $("#map")[0],
+                    actualCursor = this.get("cursor"),
+                    prevCursor = this.get("previousCursor");
 
-            if (featureAtPixel) {
-                if (element.style.cursor !== actualCursor) {
-                    this.set("previousCursor", element.style.cursor);
-                    element.style.cursor = actualCursor;
+                if (featureAtPixel) {
+                    if (element.style.cursor !== actualCursor) {
+                        this.set("previousCursor", element.style.cursor);
+                        element.style.cursor = actualCursor;
+                    }
                 }
-            }
-            else if (prevCursor !== undefined) {
-                element.style.cursor = prevCursor;
-                this.set("previousCursor", undefined);
+                else if (prevCursor !== undefined) {
+                    element.style.cursor = prevCursor;
+                    this.set("previousCursor", undefined);
+                }
             }
         },
 
@@ -270,6 +272,7 @@ define([
         handleUpEvent: function () {
             this.triggerNewCoordinate();
             this.set("dragMarkerFeature", null);
+            this.set("featureAtPixel", null);
             return false;
         }
     });
