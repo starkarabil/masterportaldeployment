@@ -56,7 +56,7 @@ define([
                 request_str = "<wps:Execute xmlns:wps='http://www.opengis.net/wps/1.0.0' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:ows='http://www.opengis.net/ows/1.1' service='WPS' version='1.0.0' xsi:schemaLocation='http://www.opengis.net/wps/1.0.0 http://schemas.opengis.net/wps/1.0.0/wpsExecute_request.xsd'><ows:Identifier>ReverseGeocoder.fmw</ows:Identifier>" + dataInput + "</wps:Execute>";
 
             this.set("ajax", $.ajax({
-                url: this.get("url") + "?Request=Execute&Service=WPS&Version=1.0.0",
+                url: this.get("url"),
                 data: request_str,
                 method: "POST",
                 contentType: "text/xml; charset=UTF-8",
