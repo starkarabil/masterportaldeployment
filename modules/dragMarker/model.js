@@ -1,10 +1,4 @@
-define([
-    "backbone",
-    "openlayers",
-    "backbone.radio",
-    "eventbus",
-    "modules/reverseGeocoder/model"
-], function () {
+define(function (require) {
 
     var Backbone = require("backbone"),
         ol = require("openlayers"),

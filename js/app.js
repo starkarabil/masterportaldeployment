@@ -46,7 +46,6 @@ define("app",
             decModulesLoading();
         });
     }
-    new RestReaderList();
 
     incModulesLoading();
     require(["modules/remoteinterface/model"], function (Remoteinterface) {
@@ -408,7 +407,8 @@ define("app",
         }
         else {
             incModulesLoading();
-            require(["modules/dragMarker/model"], function (DragMarkerModel) {
+            require(["modules/dragMarker/model", "modules/reverseGeocoder/model"], function (DragMarkerModel, reverseGeocoder) {
+                new reverseGeocoder();
                 new DragMarkerModel();
                 decModulesLoading();
             });

@@ -16,6 +16,7 @@ define([
 
             this.fetch({
                 cache: false,
+                async: false,
                 success: function () {
                     channel.trigger("isReady", true);
                 },
