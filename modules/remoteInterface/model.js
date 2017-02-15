@@ -7,7 +7,6 @@ define(function () {
             channel.reply({
                 "getCenter": this.getCenter,
                 "getMapState": this.getMapState,
-                "getDragMarkerAddress": this.getDragMarkerAddress,
                 "getDragMarkerPosition": this.getDragMarkerPosition,
                 "getWGS84MapSizeBBOX": this.getWGS84MapSizeBBOX,
                 "getZoomLevel": this.getZoomLevel,
@@ -33,10 +32,12 @@ define(function () {
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers,
                 "showDragMarker": this.showDragMarker,
-                "hideDragMarker": this.hideDragMarker
+                "hideDragMarker": this.hideDragMarker,
+                "requestDragMarkerAddress": this.requestDragMarkerAddress
             }, this);
 
             Radio.on("Map", "changedExtent", this.changedExtent);
+            Radio.on("DragMarker", "newAddress", this.newDragMarkerAddress);
         },
 
         showDragMarker: function () {
@@ -87,10 +88,6 @@ define(function () {
             return Radio.request("SaveSelection", "getMapState");
         },
 
-        getDragMarkerAddress: function () {
-            return Radio.request("DragMarker", "getNearestAddress");
-        },
-
         getDragMarkerPosition: function () {
             return Radio.request("DragMarker", "getPosition");
         },
@@ -130,17 +127,29 @@ define(function () {
         showMarker: function (value) {
             Radio.trigger("MapMarker", "showMarker", value);
         },
+
         showLayers: function (layerNames) {
             Radio.trigger("ModelList", "showLayers", layerNames);
         },
+
         zoomToFeature: function (feature) {
             Radio.trigger("MapView", "zoomToFeature", feature);
         },
+
         zoomToFeatures: function (features) {
             Radio.trigger("MapView", "zoomToFeatures", features);
         },
+
         changedExtent: function (extent) {
             Radio.trigger("RemoteInterface", "changedExtent", extent);
+        },
+
+        newDragMarkerAddress: function (dragMarkerAddress) {
+            Radio.trigger("RemoteInterface", "newDragMarkerAddress", dragMarkerAddress);
+        },
+
+        requestDragMarkerAddress: function () {
+            Radio.trigger("DragMarker", "requestAddress");
         }
     });
 
