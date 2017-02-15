@@ -5,7 +5,9 @@ define(function (require) {
         GeoJSONLayer;
 
     GeoJSONLayer = Layer.extend({
-
+        defaults: {
+            featuresToHide: new Array()
+        },
         /**
          * [createLayerSource description]
          * @return {[type]} [description]
@@ -65,27 +67,39 @@ define(function (require) {
                     feature.setStyle(stylelistmodel.getClusterStyle(feature));
                 });
             }
+            else {
+                this.set("style", function (feature) {
+                    stylelistmodel = Radio.request("StyleList", "returnModelByValue", styleId);
+                    feature.setStyle(stylelistmodel.getSimpleStyle());
+                });
+            }
         },
 
         /**
          * Zeigt alle Features mit dem Default-Style an
          */
         showAllFeatures: function () {
-            var collection = this.getLayerSource().getFeatures();
+            var source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide();
 
-            collection.forEach(function (feature) {
-                feature.setStyle(this.getStyles());
-            }, this);
+                _.each(featuresToHide, function (feature) {
+                    source.addFeature(feature);
+                    featuresToHide = _.without(featuresToHide, feature);
+                });
+                this.setFeaturesToHide(featuresToHide);
         },
 
         /**
          * Versteckt alle Features mit dem Hidden-Style
          */
         hideAllFeatures: function () {
-            var collection = this.getLayerSource().getFeatures();
+            var collection = this.getLayerSource().getFeatures(),
+                source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide();
 
             collection.forEach(function (feature) {
-                feature.setStyle(this.getHiddenStyle());
+                featuresToHide.push(feature);
+                source.removeFeature(feature);
             }, this);
         },
 
@@ -94,11 +108,18 @@ define(function (require) {
          * @param  {string[]} featureIdList
          */
         showFeaturesByIds: function (featureIdList) {
-            _.each(featureIdList, function (id) {
-                var feature = this.getLayerSource().getFeatureById(id);
+            var source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide();
 
-                feature.setStyle(this.getStyles());
+            _.each(featureIdList, function (id) {
+                _.each(featuresToHide, function (feature) {
+                    if (String(feature.getId()) === id) {
+                        source.addFeature(feature);
+                        featuresToHide = _.without(featuresToHide, feature);
+                    }
+                }, this);
             }, this);
+            this.setFeaturesToHide(featuresToHide);
         },
 
         /**
@@ -106,13 +127,27 @@ define(function (require) {
          * @param  {string[]} featureIdList
          */
         hideFeaturesByIds: function (featureIdList) {
+            var source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide();
+
             _.each(featureIdList, function (id) {
                 var feature = this.getLayerSource().getFeatureById(id);
 
-                feature.setStyle(this.getHiddenStyle());
+                if (feature) {
+                    featuresToHide.push(feature);
+                    source.removeFeature(feature);
+                }
             }, this);
         },
 
+        // getter for FeaturesToHide
+        getFeaturesToHide: function () {
+            return this.get("featuresToHide");
+        },
+        // setter for FeaturesToHide
+        setFeaturesToHide: function (value) {
+            this.set("featuresToHide", value);
+        },
         // Setter
         setClusterLayerSource: function (value) {
             this.set("clusterLayerSource", value);
@@ -152,17 +187,6 @@ define(function (require) {
                 stroke: new ol.style.Stroke({
                     color: "rgba(50, 50, 50, 1)",
                     width: 1
-                })
-            });
-        },
-
-        getHiddenStyle: function () {
-            return new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: "rgba(255, 255, 255, 0)"
-                }),
-                stroke: new ol.style.Stroke({
-                    color: "rgba(49, 159, 211, 0)"
                 })
             });
         }
