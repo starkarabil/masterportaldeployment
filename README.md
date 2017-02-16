@@ -157,8 +157,8 @@ yeaih! das Portal local ist für lokale Entwicklung konfiguriert.
 Ein Portal für die Veröffentlichung fertig machen.
 
 ```
-// grunt build --path=<pfad-zum-portal> --name=<Portalname> [--env=internet| default:fhhnet]
-# grunt build --path=portale/local --name=FHH-Atlas
+// grunt build --path=<pfad-zum-portal> --name=<Portalname> --url=<Server> --dev=<boolean> [--env=internet| default:fhhnet]
+# grunt build --path=portal/master --name=Master --url=http://geoportal-hamburg.de/master --dev=false
 ```
 
 - baut das Portal und alles, was es braucht in den Ordner dist/<pkg.version>
