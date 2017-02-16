@@ -75,16 +75,13 @@ define([
             if (toolModel) {
                 toolModel.setIsActive(false);
             }
-            if (this.model.get("winType") === "routing") {
-                EventBus.trigger("deleteRoute", this);
-            }
-            else if (this.model.get("winType") === "download") {
+            if (this.model.get("winType") === "download") {
                 Radio.request("ModelList", "getModelByAttributes", {id: "draw"}).setIsActive(false);
             }
             this.$el.hide("slow");
             this.model.setVisible(false);
             this.model.sendParamsToWinCotent();
-            EventBus.trigger("onlyActivateGFI");
+            Radio.trigger("ModelList", "setModelAttributesById", "gfi", {isActive: true});
         }
     });
 

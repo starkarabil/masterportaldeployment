@@ -61,6 +61,8 @@ define([
         },
 
         parse: function (xmlDoc) {
+            var layername = this.get("layername"); // CI_Citation fall-back-level
+
             return {
                 "abstractText": function () {
                     var abstractText = $("gmd\\:abstract,abstract", xmlDoc)[0].textContent;
@@ -75,8 +77,7 @@ define([
                 "date": function () {
 
                     var dates = $("gmd\\:CI_Date,CI_Date", xmlDoc),
-                    datetype,revisionDateTime,publicationDateTime,
-                    dateTime;
+                        datetype, revisionDateTime, publicationDateTime, dateTime;
 
                     if (dates.length === 1) {
                         dateTime = $("gco\\:DateTime,DateTime, gco\\:Date,Date", dates)[0].textContent;
@@ -102,6 +103,13 @@ define([
                         dateTime = publicationDateTime;
                     }
                     return moment(dateTime).format("DD.MM.YYYY");
+                }(),
+                "title": function () {
+                    var ci_Citation = $("gmd\\:CI_Citation,CI_Citation", xmlDoc)[0],
+                        gmdTitle = _.isUndefined(ci_Citation) === false ? $("gmd\\:title,title", ci_Citation) : undefined,
+                        title = _.isUndefined(gmdTitle) === false ? gmdTitle[0].textContent : layername;
+
+                    return title;
                 }()
             };
         },
