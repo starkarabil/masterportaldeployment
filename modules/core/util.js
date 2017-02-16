@@ -12,7 +12,7 @@ define([
                 context = this;
 
                 this.toggleIsViewMobile();
-            $("#lgv-container").append("<div id='loader'><img src='../../../img/ajax-loader.gif'></div>");
+            $("#lgv-container").append("<div id='loader'><img src='" + Config.imgProjektPath + "ajax-loader.gif'></div>");
 
             channel.reply({
                 "isViewMobile": this.getIsViewMobile,

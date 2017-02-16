@@ -33,13 +33,13 @@ define(function (require) {
                 "change:features": this.addLayer
             });
 
-            this.fetch({
-                url: this.url,
-                context: this,
-                error: function () {
-                    Radio.trigger("Alert", "alert", {text: "<strong>Anliegen kann nicht geladen werden!", kategorie: "alert-danger"});
-                }
-            });
+            // this.fetch({
+            //     url: this.url,
+            //     context: this,
+            //     error: function () {
+            //         Radio.trigger("Alert", "alert", {text: "<strong>Anliegen kann nicht geladen werden!", kategorie: "alert-danger"});
+            //     }
+            // });
         },
 
         parse: function (response, options) {
