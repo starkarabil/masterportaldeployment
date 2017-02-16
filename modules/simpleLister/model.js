@@ -23,8 +23,8 @@ define([
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
         },
 
-        getLayerFeaturesInExtent: function (name) {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", name),
+        getLayerFeaturesInExtent: function () {
+            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerName()),
                 featuresObj = [];
 
             _.each(features, function (feature) {

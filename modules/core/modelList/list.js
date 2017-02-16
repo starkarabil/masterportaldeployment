@@ -343,10 +343,11 @@ define([
             // benÃ¶tigen, der ihre Reihenfolge in der Config Json entspricht und nicht der Reihenfolge
             // wie sie hinzugefÃ¼gt werden
             var paramLayers = Radio.request("ParametricURL", "getLayerParams"),
-                treeType = Radio.request("Parser", "getTreeType");
+                treeType = Radio.request("Parser", "getTreeType"),
+                lightModels;
 
             if (treeType === "light") {
-                var lightModels = Radio.request("Parser", "getItemsByAttributes", {type: "layer"});
+                lightModels = Radio.request("Parser", "getItemsByAttributes", {type: "layer"});
 
                 lightModels.reverse();
                 this.add(lightModels);
@@ -546,7 +547,7 @@ define([
             }, this);
         },
         getLayerFeaturesInExtent: function (name) {
-            var layer = this.get(name),
+            var layer = this.findWhere({"name": name}),
                 source,
                 extent,
                 featuresInExtent,
