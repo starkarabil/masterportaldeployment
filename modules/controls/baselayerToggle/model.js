@@ -2,7 +2,6 @@ define(function (require) {
     var Radio = require("backbone.radio"),
         Backbone = require("backbone"),
         BaselayerToggleModel;
-    "use strict";
 
     BaselayerToggleModel = Backbone.Model.extend({
         defaults: {
@@ -12,6 +11,17 @@ define(function (require) {
         },
         initialize: function () {
             this.findNextBaselayer();
+            this.listenTo(Radio.channel("BaselayerToggle"), {
+                "layerChanged": this.layerChanged
+            });
+        },
+        layerChanged: function () {
+            var activeBaseLayer = Radio.request("ModelList", "getModelsByAttributes", {isBaseLayer: true, isVisibleInMap: true})[0];
+
+            if (_.isUndefined(activeBaseLayer) === false) {
+                this.set("activeBaseLayer", activeBaseLayer);
+                this.findNextBaselayer();
+            }
         },
         findNextBaselayer: function () {
             var activeLayerId = this.get("activeBaseLayer").id,
