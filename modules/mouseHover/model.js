@@ -266,31 +266,63 @@ define([
         hoverOnClusterFeature: function (clusterFeature, eventPixel, map) {
             var featureArray = clusterFeature.get("features"),
                 source,
-                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml");
+                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml"),
+                hasFeaturesWithSameExtent = false;
 
             featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
                     source = layer.getSource();
             });
-            _.each(featureArray, function (feature, index) {
-                var newClusterFeature = clusterFeature.clone();
+            hasFeaturesWithSameExtent = this.hasFeaturesWithSameExtent(featureArray);
+            if (hasFeaturesWithSameCoords = false) {
+                _.each(featureArray, function (feature, index) {
+                    var newClusterFeature = clusterFeature.clone();
 
-                newClusterFeature.set("features",[feature]);
-                newClusterFeature.setGeometry(feature.getGeometry());
-                newClusterFeature.setId(index);
-                newClusterFeature.setStyle(stylelistmodel.getClusterStyle(newClusterFeature));
-                source.addFeature(newClusterFeature);
+                    newClusterFeature.set("features",[feature]);
+                    newClusterFeature.setGeometry(feature.getGeometry());
+                    newClusterFeature.setId(index);
+                    newClusterFeature.setStyle(stylelistmodel.getClusterStyle(newClusterFeature));
+                    source.addFeature(newClusterFeature);
+                });
+                this.setSource(source);
+            }
+        },
+        hasFeaturesWithSameExtent: function (featureArray) {
+            xMinArray = [],
+            yMinArray = [],
+            xMaxArray = [],
+            yMaxArray = [],
+            size = featureArray.length,
+            hasFeaturesWithSameExtent = false;
+
+            _.each(featureArray, function (feature, index) {
+                    xMinArray.push(feature.getGeometry().getExtent()[0]);
+                    yMinArray.push(feature.getGeometry().getExtent()[1]);
+                    xMaxArray.push(feature.getGeometry().getExtent()[2]);
+                    yMaxArray.push(feature.getGeometry().getExtent()[3]);
             });
-            this.setSource(source);
+
+            xMinArray = _.uniq(xMinArray);
+            yMinArray = _.uniq(yMinArray);
+            xMaxArray = _.uniq(xMaxArray);
+            yMaxArray = _.uniq(yMaxArray);
+            if (xMinArray.length !== size && yMinArray.length !== size && xMaxArray.length !== size && yMaxArray.length !== size) {
+                hasFeaturesWithSameExtent = true;
+                console.log("gleicher extent");
+            }
+            return hasFeaturesWithSameExtent;
         },
         hoverOffClusterFeature: function (clusterFeature, eventPixel, map) {
             var featureArray = clusterFeature.get("features"),
                 source = this.getSource(),
                 feature;
 
-            _.each(featureArray, function (feature, index) {
-                feature = source.getFeatureById(index);
-                source.removeFeature(feature);
-            });
+            try {
+                _.each(featureArray, function (feature, index) {
+                    feature = source.getFeatureById(index);
+                    source.removeFeature(feature);
+                });
+            }
+            catch (e) {}
         },
         setSource: function (value) {
             this.set("source", value);
@@ -307,33 +339,33 @@ define([
             }
         },
         featureClicked: function (feature, layer) {
-            // [minX, minY, maxX, maxY]
-            // [567652, 5935064, 567652, 5935064]
-            var minX = [],
-                minY = [],
-                maxX = [],
-                maxY = [],
-                extent = [];
+            var extent = [];
 
-            if (feature.get("features")) {
+            if (feature.get("features") && feature.get("features").length > 1) {
                 _.each(feature.get("features"), function (feature) {
-                    minX.push(feature.getGeometry().getExtent()[0]);
-                    minY.push(feature.getGeometry().getExtent()[1]);
-                    maxX.push(feature.getGeometry().getExtent()[2]);
-                    maxY.push(feature.getGeometry().getExtent()[3]);
+                    if (extent.length === 0) {
+                        extent.push(feature.getGeometry().getExtent()[0]);
+                        extent.push(feature.getGeometry().getExtent()[1]);
+                        extent.push(feature.getGeometry().getExtent()[2]);
+                        extent.push(feature.getGeometry().getExtent()[3]);
+                    }
+                    else {
+                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
+                            extent[0] = feature.getGeometry().getExtent()[0];
+                        }
+                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
+                            extent[1] = feature.getGeometry().getExtent()[1];
+                        }
+                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
+                            extent[2] = feature.getGeometry().getExtent()[2];
+                        }
+                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
+                            extent[3] = feature.getGeometry().getExtent()[3];
+                        }
+                    }
                 });
-                minX.sort();
-                minY.sort();
-                maxX.sort();
-                maxY.sort();
-                console.log(minX);
-                console.log(minY);
-                console.log(maxX);
-                console.log(maxY);
+                Radio.trigger("Map","zoomToExtent", extent);
             }
-
-
-            // console.log(extent);
         }
     });
 
