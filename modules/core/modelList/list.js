@@ -39,8 +39,8 @@ define([
                 "getAllBaseLayers": function () {
                     return this.getAllBaseLayers();
                 },
-                "getLayerFeaturesInExtent": function (name) {
-                    return this.getLayerFeaturesInExtent(name);
+                "getLayerFeaturesInExtent": function (id) {
+                    return this.getLayerFeaturesInExtent(id);
                 }
             }, this);
 
@@ -546,8 +546,8 @@ define([
                     layer.setIsSelected(false);
             }, this);
         },
-        getLayerFeaturesInExtent: function (name) {
-            var layer = this.findWhere({"name": name}),
+        getLayerFeaturesInExtent: function (id) {
+            var layer = this.findWhere({"id": id}),
                 source,
                 extent,
                 featuresInExtent,
