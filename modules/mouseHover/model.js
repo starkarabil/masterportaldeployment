@@ -307,13 +307,33 @@ define([
             }
         },
         featureClicked: function (feature, layer) {
+            // [minX, minY, maxX, maxY]
+            // [567652, 5935064, 567652, 5935064]
+            var minX = [],
+                minY = [],
+                maxX = [],
+                maxY = [],
+                extent = [];
+
             if (feature.get("features")) {
-                console.log(feature);
+                _.each(feature.get("features"), function (feature) {
+                    minX.push(feature.getGeometry().getExtent()[0]);
+                    minY.push(feature.getGeometry().getExtent()[1]);
+                    maxX.push(feature.getGeometry().getExtent()[2]);
+                    maxY.push(feature.getGeometry().getExtent()[3]);
+                });
+                minX.sort();
+                minY.sort();
+                maxX.sort();
+                maxY.sort();
+                console.log(minX);
+                console.log(minY);
+                console.log(maxX);
+                console.log(maxY);
             }
-            var extent = feature.getGeometry().getExtent();
 
 
-            console.log(extent);
+            // console.log(extent);
         }
     });
 
