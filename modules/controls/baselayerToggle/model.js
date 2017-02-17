@@ -2,7 +2,6 @@ define(function (require) {
     var Radio = require("backbone.radio"),
         Backbone = require("backbone"),
         BaselayerToggleModel;
-    "use strict";
 
     BaselayerToggleModel = Backbone.Model.extend({
         defaults: {
