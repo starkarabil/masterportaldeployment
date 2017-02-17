@@ -528,6 +528,7 @@ define([
             _.each(layers, function (layer) {
                     layer.setIsSelected(true);
             }, this);
+            Radio.trigger("BaselayerToggle", "layerChanged");
         },
 
         hideFeaturesByIds: function (id, featureIds) {
@@ -544,6 +545,7 @@ define([
             _.each(layers, function (layer) {
                     layer.setIsSelected(false);
             }, this);
+            Radio.trigger("BaselayerToggle", "layerChanged");
         },
         getLayerFeaturesInExtent: function (name) {
             var layer = this.get(name),
