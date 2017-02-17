@@ -42,7 +42,7 @@ define(function (require) {
                 }
             }),
             dragMarkerFeature: null,
-            featureAtPixel: "",
+            featureAtPixel: null,
             sourceHH: null,
             url: "../mml/landesgrenze_hh.json",
             nearestAddress: null
@@ -78,7 +78,7 @@ define(function (require) {
             // Prepare Map
             Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
             Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
-            Radio.trigger("Map", "registerListener", "pointermove", this.featureAtPixel, this);
+            Radio.trigger("Map", "registerListener", "pointerdrag", this.featureAtPixel, this);
 
             // Set defaults
             this.setPosition(this.get("coordinate"));
@@ -165,18 +165,17 @@ define(function (require) {
         },
 
         featureAtPixel: function (evt) {
-            if (evt.dragging === true) {
-                return;
-            }
-            var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-                return feature;
-            });
+            if (this.get("featureAtPixel") === null) {
+                var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                    return feature;
+                });
 
-            if (feature && feature.get("name") === this.get("featureName")) {
-                this.set("featureAtPixel", feature);
-            }
-            else {
-                this.set("featureAtPixel", null);
+                if (feature && feature.get("name") === this.get("featureName")) {
+                    this.set("featureAtPixel", feature);
+                }
+                else {
+                    this.set("featureAtPixel", null);
+                }
             }
         },
 
