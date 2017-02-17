@@ -15,7 +15,8 @@ define([
                         return false;
                     }
                     return true;
-                }
+                },
+                style: this.hoverStyleFunction
             }),
             wfsList: [],
             mhpresult: "",
@@ -28,7 +29,7 @@ define([
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
 
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
-
+            Radio.trigger("Map", "registerListener", "click", this.clickOnMap, this);
             $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
 
             this.set("mhpOverlay", new ol.Overlay({
@@ -101,23 +102,40 @@ define([
                 selected.forEach(function (feature) {
                     var newStyle = feature.getStyle()[0].clone();
 
-                    newStyle.getImage().setScale(1.2);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                    // bei ClusterFeatures
+                    if (feature.get("features").length > 1) {
+                        newStyle.getImage().setOpacity(0.5);
+                        feature.setStyle([newStyle]);
+                        this.hoverOnClusterFeature(feature, eventPixel, map);
                     }
-                    feature.setStyle([newStyle]);
-                });
+                    else {
+                        newStyle.getImage().setScale(1.2);
+                        if (_.isNull(newStyle.getText()) === false) {
+                            newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                        }
+                        feature.setStyle([newStyle]);
+                    }
+                }, this);
+
             }
             else {
                 deselected.forEach(function (feature) {
                     var newStyle = feature.getStyle()[0].clone();
 
-                    newStyle.getImage().setScale(1);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                    // bei ClusterFeatures
+                    if (feature.get("features").length > 1) {
+                        newStyle.getImage().setOpacity(1);
+                        feature.setStyle([newStyle]);
+                        this.hoverOffClusterFeature(feature, eventPixel, map);
                     }
-                    feature.setStyle([newStyle]);
-                });
+                    else {
+                        newStyle.getImage().setScale(1);
+                        if (_.isNull(newStyle.getText()) === false) {
+                            newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                        }
+                        feature.setStyle([newStyle]);
+                    }
+                }, this);
             }
 
             var pFeatureArray = [],
@@ -244,6 +262,58 @@ define([
                     this.set("mhpresult", value);
                 }
             }
+        },
+        hoverOnClusterFeature: function (clusterFeature, eventPixel, map) {
+            var featureArray = clusterFeature.get("features"),
+                source,
+                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml");
+
+            featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
+                    source = layer.getSource();
+            });
+            _.each(featureArray, function (feature, index) {
+                var newClusterFeature = clusterFeature.clone();
+
+                newClusterFeature.set("features",[feature]);
+                newClusterFeature.setGeometry(feature.getGeometry());
+                newClusterFeature.setId(index);
+                newClusterFeature.setStyle(stylelistmodel.getClusterStyle(newClusterFeature));
+                source.addFeature(newClusterFeature);
+            });
+            this.setSource(source);
+        },
+        hoverOffClusterFeature: function (clusterFeature, eventPixel, map) {
+            var featureArray = clusterFeature.get("features"),
+                source = this.getSource(),
+                feature;
+
+            _.each(featureArray, function (feature, index) {
+                feature = source.getFeatureById(index);
+                source.removeFeature(feature);
+            });
+        },
+        setSource: function (value) {
+            this.set("source", value);
+        },
+        getSource: function () {
+            return this.get("source");
+        },
+        clickOnMap: function (evt) {
+            var eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
+                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
+
+            if (isFeatureAtPixel === true) {
+                Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.featureClicked);
+            }
+        },
+        featureClicked: function (feature, layer) {
+            if (feature.get("features")) {
+                console.log(feature);
+            }
+            var extent = feature.getGeometry().getExtent();
+
+
+            console.log(extent);
         }
     });
 
