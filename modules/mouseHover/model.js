@@ -17,7 +17,7 @@ define([
                     return true;
                 }
             }),
-            wfsList: [],
+            mouseHoverInfos: [],
             mhpresult: "",
             mhpcoordinates: [],
             oldSelection: "",
@@ -35,25 +35,26 @@ define([
                 element: $("#mousehoverpopup")[0]
             }));
 
-            this.filterWFSList();
+            this.getMouseHoverInfos();
             this.set("element", this.get("mhpOverlay").getElement());
             EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
         },
 
-        filterWFSList: function () {
-            var wfsList = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
-                wfsListFiltered = [];
+        /*
+         * Erstellt initial eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
+        */
+        getMouseHoverInfos: function () {
+            var wfsLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
+                geoJsonLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "GeoJSON"}),
+                vectorLayers = _.union(wfsLayers, geoJsonLayers),
+                mouseHoverLayers = _.filter(vectorLayers, function (layer) {
+                    return _.has(layer, "mouseHoverField") && layer.mouseHoverField !== "";
+                }),
+                mouseHoverInfos = _.map(mouseHoverLayers, function (layer) {
+                    return _.pick(layer, "id", "mouseHoverField");
+                });
 
-            _.each(wfsList, function (element) {
-                if (_.has(element, "mouseHoverField")) {
-                    wfsListFiltered.push({
-                        layerId: element.id,
-                        fieldname: element.mouseHoverField
-                    });
-                }
-            });
-
-            this.set("wfsList", wfsListFiltered);
+            this.set("mouseHoverInfos", mouseHoverInfos);
         },
 
         GFIPopupVisibility: function (GFIPopupVisibility) {
@@ -197,7 +198,7 @@ define([
         * mhpresult. Auf mhpresult lauscht die View, die daraufhin rendert
         */
         prepMouseHoverFeature: function (pFeatureArray) {
-            var wfsList = this.get("wfsList"),
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
                 value = "",
                 coord;
 
@@ -206,8 +207,8 @@ define([
                 _.each(pFeatureArray, function (element) {
                     var featureProperties = element.feature.getProperties(),
                         featureGeometry = element.feature.getGeometry(),
-                        listEintrag = _.find(wfsList, function (ele) {
-                            return ele.layerId === element.layerId;
+                        listEintrag = _.find(mouseHoverInfos, function (mouseHoverInfo) {
+                            return mouseHoverInfo.id === element.layerId;
                     });
 
                     if (listEintrag) {
