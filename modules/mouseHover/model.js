@@ -1,11 +1,14 @@
 define([
     "openlayers",
+    "backbone.radio",
     "eventbus",
     "bootstrap/popover"
-], function (ol, EventBus) {
+], function (ol, Radio, EventBus) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {
+            cursor: "pointer",
+            previousCursor: undefined,
             // select interaction reagiert auf pointermove
             selectPointerMove: new ol.interaction.Select({
                 condition: ol.events.condition.pointerMove,
@@ -123,6 +126,24 @@ define([
             $(this.get("element")).tooltip("show");
         },
 
+        // Setzt Cursor pointer, wenn Selektion vorliegt
+        setCursor: function (features) {
+            var element = $("#map")[0],
+                actualCursor = this.get("cursor"),
+                prevCursor = this.get("previousCursor");
+
+            if (features.length > 0) {
+                if (element.style.cursor !== actualCursor) {
+                    this.set("previousCursor", element.style.cursor);
+                    element.style.cursor = actualCursor;
+                }
+            }
+            else if (prevCursor !== undefined) {
+                element.style.cursor = prevCursor;
+                this.set("previousCursor", undefined);
+            }
+        },
+
         // Vergrößert das Symbol
         scaleFeaturesUp: function (features) {
             features.forEach(function (feature) {
@@ -166,8 +187,7 @@ define([
 
             var selected = evt.selected,
                 deselected = evt.deselected,
-                eventPixel = evt.mapBrowserEvent.pixel,
-                map = evt.mapBrowserEvent.map;
+                selectedFeatures = [];
 
             // Skaliert Vektorsymbol selektierter Features
             this.scaleFeaturesUp(selected);
@@ -175,55 +195,41 @@ define([
             // Deskaliert Vektorsymbol deselektierter Features
             this.scaleFeaturesDown(deselected);
 
+            // Setze Cursor Style
+            this.setCursor(selected);
 
-            var pFeatureArray = [],
-                featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
-                    return {
-                        feature: feature,
-                        layer: layer
-                    };
-            });
+            // Erzeuge Liste selektierter Features
+            _.each(selected, function (selFeature) {
+                var selLayer = evt.target.getLayer(selFeature),
+                    isClusterFeature = selLayer.getSource() instanceof ol.source.Cluster
 
-            // featuresAtPixel.layer !== null --> kleiner schneller Hack da sonst beim zeichnen die ganze Zeit versucht wird ein Popup zu zeigen?? SD 01.09.2015
-            if (featuresAtPixel !== undefined && featuresAtPixel.layer !== null) {
-                var selFeature = featuresAtPixel.feature;
-
-                map.getTargetElement().style.cursor = "pointer";
-                // Cluster-Features
-                if (selFeature.getProperties().features) {
-                    var list = selFeature.getProperties().features;
-
-                    _.each(list, function (element) {
-                        pFeatureArray.push({
-                            feature: element,
-                            layerId: featuresAtPixel.layer.get("id")
+                if (isClusterFeature) {
+                    _.each(selFeature.get("features"), function (feature) {
+                        selectedFeatures.push({
+                            feature: feature,
+                            layerId: selLayer.get("id")
                         });
                     });
                 }
                 else {
-                    pFeatureArray.push({
+                    selectedFeatures.push({
                         feature: selFeature,
-                        layerId: featuresAtPixel.layer.get("id")
-                    });
+                        layerId: selLayer.get("id")
+                    })
                 }
 
-                if (pFeatureArray.length > 0) {
-                    if (this.get("oldSelection") === "") {
-                        this.set("oldSelection", pFeatureArray);
-                        this.prepMouseHoverFeature(pFeatureArray);
-                    }
-                    else {
-                        if (this.compareArrayOfObjects(pFeatureArray, this.get("oldSelection")) === false) {
-                            this.destroyPopup(pFeatureArray);
-                            this.set("oldSelection", pFeatureArray);
-                                this.prepMouseHoverFeature(pFeatureArray);
-                        }
-                    }
-                }
+            });
+
+            if (this.get("oldSelection") === "") {
+                this.set("oldSelection", selectedFeatures);
+                this.prepMouseHoverFeature(selectedFeatures);
             }
             else {
-                map.getTargetElement().style.cursor = "";
-                this.removeMouseHoverFeatureIfSet();
+                if (this.compareArrayOfObjects(selectedFeatures, this.get("oldSelection")) === false) {
+                    this.destroyPopup(selectedFeatures);
+                    this.set("oldSelection", selectedFeatures);
+                        this.prepMouseHoverFeature(selectedFeatures);
+                }
             }
         },
 
@@ -242,15 +248,6 @@ define([
             return true;
         },
 
-        /**
-        * Diese Funktion prüft ob mhpresult = "" und falls nicht
-        * wird MouseHover destroyt
-        */
-        removeMouseHoverFeatureIfSet: function () {
-            if (this.get("mhpresult") && this.get("mhpresult") !== "") {
-                this.destroyPopup();
-            }
-        },
         /**
         * Dies Funktion durchsucht das übergebene pFeatureArray und extrahiert den
         * anzuzeigenden Text sowie die Popup-Koordinate und setzt
