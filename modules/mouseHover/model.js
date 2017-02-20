@@ -50,6 +50,7 @@ define([
             EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
         },
 
+        // Reply-Funktion: Meldet true, wenn Layer in Liste "mouseHoverInfos" enthalten ist. Sonst false.
         isHoverLayer: function (ollayer) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
                 ollyerId = ollayer.get("id"),
