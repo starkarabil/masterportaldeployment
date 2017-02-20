@@ -122,6 +122,33 @@ define([
         showPopup: function () {
             $(this.get("element")).tooltip("show");
         },
+
+        // Vergrößert das Symbol
+        scaleFeaturesUp: function (features) {
+            features.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
+
+                newStyle.getImage().setScale(1.2);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                }
+                feature.setStyle([newStyle]);
+            });
+        },
+
+        // Verkleinert das Symbol
+        scaleFeaturesDown: function (features) {
+            features.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
+
+                newStyle.getImage().setScale(1);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                }
+                feature.setStyle([newStyle]);
+            });
+        },
+
         /**
         * forEachFeatureAtPixel greift nur bei sichtbaren Features.
         * wenn 2. Parameter (layer) == null, dann kein Layer
@@ -143,26 +170,11 @@ define([
                 map = evt.mapBrowserEvent.map;
 
             // Skaliert Vektorsymbol selektierter Features
-            selected.forEach(function (feature) {
-                var newStyle = feature.getStyle()[0].clone();
-
-                newStyle.getImage().setScale(1.2);
-                if (_.isNull(newStyle.getText()) === false) {
-                    newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
-                }
-                feature.setStyle([newStyle]);
-            });
+            this.scaleFeaturesUp(selected);
 
             // Deskaliert Vektorsymbol deselektierter Features
-            deselected.forEach(function (feature) {
-                var newStyle = feature.getStyle()[0].clone();
+            this.scaleFeaturesDown(deselected);
 
-                newStyle.getImage().setScale(1);
-                if (_.isNull(newStyle.getText()) === false) {
-                    newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
-                }
-                feature.setStyle([newStyle]);
-            });
 
             var pFeatureArray = [],
                 featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
