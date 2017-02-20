@@ -208,9 +208,12 @@ define([
                         layerId: selLayer.get("id")
                     })
                 }
-
             });
+            this.checkSelektion(selectedFeatures);
+        },
 
+        // Prüft, ob sich die selectedFeatures verändert haben und zeichnet ggf. neu.
+        checkSelektion: function (selectedFeatures) {
             if (this.get("oldSelection") === "") {
                 this.set("oldSelection", selectedFeatures);
                 this.prepMouseHoverFeature(selectedFeatures);
