@@ -170,16 +170,7 @@ define([
             });
         },
 
-        /**
-        * forEachFeatureAtPixel greift nur bei sichtbaren Features.
-        * wenn 2. Parameter (layer) == null, dann kein Layer
-        * Wertet an der aktuell getriggerten Position alle Features der
-        * Map aus, die über subfunction function(layer) zurückgegeben werden.
-        * pFeatureArray wird so mit allen darzustellenden Features gepusht.
-        * Nachdem die Selektion erstellt wurde, wird diese für initiale
-        * if-Bedingung gespeichert und abschließend wird das Aufbereiten dieser
-        * Selektion angestpßen.
-        */
+        // Erzeuge Liste selektierter Features aus evt
         checkForEachFeatureAtPixel: function (evt) {
             if (evt.mapBrowserEvent.dragging) {
                 return;
