@@ -17,7 +17,7 @@ define([
                     return true;
                 },
                 layers: function (ollayer) {
-                    return ollayer instanceof ol.layer.Vector && ollayer.getVisible() === true;
+                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
                 }
             }),
             mouseHoverInfos: [],
@@ -27,6 +27,13 @@ define([
             GFIPopupVisibility: false
         },
         initialize: function () {
+            // Radio channel
+            var channel = Radio.channel("MouseHover");
+
+            channel.reply({
+                "isHoverLayer": this.isHoverLayer
+            }, this);
+
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
 
@@ -41,6 +48,21 @@ define([
             this.getMouseHoverInfos();
             this.set("element", this.get("mhpOverlay").getElement());
             EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
+        },
+
+        isHoverLayer: function (ollayer) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                ollyerId = ollayer.get("id"),
+                isHoverLayer = _.find(mouseHoverInfos, function (info) {
+                    if (info.id === ollyerId) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                });
+
+            return isHoverLayer;
         },
 
         /*
@@ -131,7 +153,7 @@ define([
             // featuresAtPixel.layer !== null --> kleiner schneller Hack da sonst beim zeichnen die ganze Zeit versucht wird ein Popup zu zeigen?? SD 01.09.2015
             if (featuresAtPixel !== undefined && featuresAtPixel.layer !== null) {
                 var selFeature = featuresAtPixel.feature;
-
+console.log(featuresAtPixel);
                 map.getTargetElement().style.cursor = "pointer";
                 // Cluster-Features
                 if (selFeature.getProperties().features) {
