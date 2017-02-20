@@ -15,6 +15,9 @@ define([
                         return false;
                     }
                     return true;
+                },
+                layers: function (ollayer) {
+                    return ollayer instanceof ol.layer.Vector && ollayer.getVisible() === true;
                 }
             }),
             mouseHoverInfos: [],
@@ -95,28 +98,27 @@ define([
                 eventPixel = evt.mapBrowserEvent.pixel,
                 map = evt.mapBrowserEvent.map;
 
-            if (selected.length) {
-                selected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
+            // Skaliert Vektorsymbol selektierter Features
+            selected.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
 
-                    newStyle.getImage().setScale(1.2);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
-                    }
-                    feature.setStyle([newStyle]);
-                });
-            }
-            else {
-                deselected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
+                newStyle.getImage().setScale(1.2);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                }
+                feature.setStyle([newStyle]);
+            });
 
-                    newStyle.getImage().setScale(1);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
-                    }
-                    feature.setStyle([newStyle]);
-                });
-            }
+            // Deskaliert Vektorsymbol deselektierter Features
+            deselected.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
+
+                newStyle.getImage().setScale(1);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                }
+                feature.setStyle([newStyle]);
+            });
 
             var pFeatureArray = [],
                 featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
@@ -148,6 +150,7 @@ define([
                         layerId: featuresAtPixel.layer.get("id")
                     });
                 }
+
                 if (pFeatureArray.length > 0) {
                     if (this.get("oldSelection") === "") {
                         this.set("oldSelection", pFeatureArray);
