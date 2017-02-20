@@ -10,11 +10,8 @@ define([
             selectPointerMove: new ol.interaction.Select({
                 condition: ol.events.condition.pointerMove,
                 multi: true,
-                filter: function (feature) {
-                    if (feature.get("name") === "DragMarkerPoint") {
-                        return false;
-                    }
-                    return true;
+                filter: function (feature, layer) {
+                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
                 },
                 layers: function (ollayer) {
                     return Radio.request("MouseHover", "isHoverLayer", ollayer);
@@ -31,7 +28,8 @@ define([
             var channel = Radio.channel("MouseHover");
 
             channel.reply({
-                "isHoverLayer": this.isHoverLayer
+                "isHoverLayer": this.isHoverLayer,
+                "hasHoverInfo": this.hasHoverInfo
             }, this);
 
             // select interaction Listener
@@ -48,6 +46,29 @@ define([
             this.getMouseHoverInfos();
             this.set("element", this.get("mhpOverlay").getElement());
             EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
+        },
+
+        // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
+        hasHoverInfo: function (olfeature, ollayer) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                ollyerId = ollayer.get("id"),
+                hoverLayer = _.find(mouseHoverInfos, function (info) {
+                    return info.id === ollyerId;
+                }),
+                hoverAttribute = hoverLayer.mouseHoverField,
+                isClusterFeature = ollayer.getSource() instanceof ol.source.Cluster,
+                hasHoverValue;
+
+            if (isClusterFeature) {
+                hasHoverValue = _.some(olfeature.get("features"), function (feature) {
+                    return feature.get(hoverAttribute) !== "";
+                })
+            }
+            else {
+                hasHoverValue = olfeature.get(hoverAttribute) !== "" ? true : false;
+            }
+
+            return hasHoverValue;
         },
 
         // Reply-Funktion: Meldet true, wenn Layer in Liste "mouseHoverInfos" enthalten ist. Sonst false.
