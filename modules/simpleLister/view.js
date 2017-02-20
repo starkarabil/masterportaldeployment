@@ -39,7 +39,7 @@ define([
             this.render();
         },
         getLayerFeaturesInExtent: function () {
-            this.model.getLayerFeaturesInExtent(this.model.getLayerId());
+            this.model.getLayerFeaturesInExtent();
         },
         render: function () {
             var attr = this.model.toJSON();
