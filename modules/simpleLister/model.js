@@ -8,7 +8,8 @@ define([
     SimpleLister = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
-            featuresPerPage: 20,
+            featuresPerPage: 20, // Anzahl initialer Features in Liste
+            totalFeaturesInPage: 20, // Aktuelle Anzahl an Features in Liste
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -27,12 +28,9 @@ define([
 
         getLayerFeaturesInExtent: function () {
             var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
-                featuresObj = [];
+                featuresPerPage =  this.get("featuresPerPage");
 
-            _.each(features, function (feature) {
-                featuresObj.push(JSON.parse(feature));
-            });
-            this.setFeaturesInExtent(featuresObj);
+            this.setFeaturesInExtent(features, featuresPerPage);
         },
 
         // getter for featuresInExtent
@@ -41,8 +39,15 @@ define([
         },
 
         // setter for featuresInExtent
-        setFeaturesInExtent: function (value) {
-            this.set("featuresInExtent", value);
+        setFeaturesInExtent: function (features, number) {
+            var featuresObj = [];
+
+            _.each(features, function (feature, index) {
+                if (index < number) {
+                    featuresObj.push(JSON.parse(feature));
+                }
+            });
+            this.set("featuresInExtent", featuresObj);
         },
 
         // getter for glyphicon
