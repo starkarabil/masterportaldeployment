@@ -274,6 +274,22 @@ define([
                                 value = value + "<span>" + _.values(_.pick(featureProperties, element)) + "</span></br>";
                             });
                         }
+                        else if (mouseHoverField && _.isObject(mouseHoverField)) {
+                            var headerFields = mouseHoverField.header,
+                                textFields = mouseHoverField.text,
+                                hoverHeader = "",
+                                hoverText = "";
+
+                            _.each(headerFields, function (headerField) {
+                                hoverHeader = hoverHeader = "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
+                            });
+
+                            _.each(textFields, function (textField) {
+                                hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
+                            });
+
+                            value = "<span>" + hoverHeader + "</span></br>" + "<span>" + hoverText + "</span>";
+                        }
                         if (!coord) {
                             if (featureGeometry.getType() === "MultiPolygon" || featureGeometry.getType() === "Polygon") {
                                 coord = _.flatten(featureGeometry.getInteriorPoints().getCoordinates());
