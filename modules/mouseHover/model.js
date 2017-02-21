@@ -12,13 +12,14 @@ define([
             // select interaction reagiert auf pointermove
             selectPointerMove: new ol.interaction.Select({
                 condition: ol.events.condition.pointerMove,
-                multi: true,
+                multi: false,
                 filter: function (feature, layer) {
                     return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
                 },
                 layers: function (ollayer) {
                     return Radio.request("MouseHover", "isHoverLayer", ollayer);
-                }
+                },
+                hitTolerance: 2
             }),
             mouseHoverInfos: [],
             mhpresult: "",
@@ -216,7 +217,10 @@ define([
 
         // Prüft, ob sich die selectedFeatures verändert haben und zeichnet ggf. neu.
         checkSelektion: function (selectedFeatures) {
-            if (this.get("oldSelection") === "") {
+            if (selectedFeatures.length === 0) {
+                this.destroyPopup(selectedFeatures);
+            }
+            else if (this.get("oldSelection") === "") {
                 this.set("oldSelection", selectedFeatures);
                 this.prepMouseHoverFeature(selectedFeatures);
             }
@@ -224,7 +228,7 @@ define([
                 if (this.compareArrayOfObjects(selectedFeatures, this.get("oldSelection")) === false) {
                     this.destroyPopup(selectedFeatures);
                     this.set("oldSelection", selectedFeatures);
-                        this.prepMouseHoverFeature(selectedFeatures);
+                    this.prepMouseHoverFeature(selectedFeatures);
                 }
             }
         },
