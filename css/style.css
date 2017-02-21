@@ -2345,9 +2345,10 @@
   color: #fff;
   cursor: pointer;
 }
-.lgv-container .gfi-mobile {
+.lgv-container #gfi-mobil {
   color: #555555;
   font-size: 14px;
+  overflow-y: auto;
 }
 .lgv-container .gfi-mobile .modal-header {
   padding: 0;
@@ -2366,7 +2367,6 @@
 }
 .lgv-container .gfi-mobile .modal-body {
   padding: 0;
-  overflow-y: auto;
 }
 .lgv-container .gfi-mobile table {
   margin: 0;
