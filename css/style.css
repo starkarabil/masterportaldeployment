@@ -2276,7 +2276,7 @@
   border: 0;
 }
 .lgv-container .popover-content {
-  padding: 0 !important;
+  padding: 0;
 }
 .lgv-container .gfi .panel {
   margin-bottom: 0;
