@@ -300,10 +300,18 @@ define(function (require) {
         */
         checkInsideSearchMarker: function (top, left) {
             var button = Radio.request("MapMarker", "getCloseButtonCorners"),
-                bottomSM = button.bottom,
-                leftSM = button.left,
-                topSM = button.top,
+                bottomSM,
+                leftSM,
+                topSM,
+                rightSM;
+
+            try {
+                bottomSM = button.bottom;
+                leftSM = button.left;
+                topSM = button.top;
                 rightSM = button.right;
+            }
+            catch (e) {}
 
             if (top <= topSM && top >= bottomSM && left >= leftSM && left <= rightSM) {
                 this.setIsVisible(false);
