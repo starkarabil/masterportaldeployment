@@ -23,6 +23,7 @@ define([
                 "isOpera": this.isOpera,
                 "isWindows": this.isWindows,
                 "isChrome": this.isChrome,
+                "isInternetExplorer": this.isInternetExplorer,
                 "isAny": this.isAny
             }, this);
 
@@ -36,7 +37,7 @@ define([
 
             this.listenTo(this, {
                 "change:isViewMobile": function () {
-                    channel.trigger("isViewMobileChanged");
+                    channel.trigger("isViewMobileChanged", this.getIsViewMobile());
                 }
             });
             $(window).resize(
@@ -48,6 +49,10 @@ define([
         isAndroid: function () {
             return navigator.userAgent.match(/Android/i);
         },
+        /**
+         * Sucht im userAgent nach dem String iPhone, iPod oder iPad.
+         * @return {Array|null} - Liefert ein Array mit den Ergebnissen. Gibt null zurück, wenn nichts gefunden wird.
+         */
         isApple: function () {
             return navigator.userAgent.match(/iPhone|iPod|iPad/i);
         },

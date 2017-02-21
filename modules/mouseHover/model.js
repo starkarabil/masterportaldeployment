@@ -51,7 +51,12 @@ define([
 
             // Lese MouseHover Definition aus config
             this.getMouseHoverInfos();
-            EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
+
+            // Listeners
+            this.listenTo(Radio.channel("GFI"), {
+                "isVisible": this.GFIPopupVisibility
+            }, this);
+
         },
 
         // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
