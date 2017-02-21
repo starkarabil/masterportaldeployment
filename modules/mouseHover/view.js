@@ -1,11 +1,9 @@
 define(function (require) {
-    var MouseHoverTemplate = require("text!modules/mouseHover/template.html"),
-        Model = require("modules/mouseHover/model"),
+    var Model = require("modules/mouseHover/model"),
         MouseHoverView;
 
     MouseHoverView = Backbone.View.extend({
         model: Model,
-        template: MouseHoverTemplate,
         id: "mousehoverpopup",
         initialize: function () {
             this.listenTo(this.model, "change:mhpresult", this.render);
