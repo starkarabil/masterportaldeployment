@@ -1,6 +1,7 @@
-.gfi-mobile {
+#gfi-mobil {
     color: rgb(85, 85, 85);
     font-size: 14px;
+    overflow-y: auto;
 }
 
 .gfi-mobile .modal-header {
@@ -20,10 +21,8 @@
     float: right;
     padding: 12px;
 }
-
 .gfi-mobile .modal-body {
     padding: 0;
-    overflow-y: auto;
 }
 
 .gfi-mobile table {

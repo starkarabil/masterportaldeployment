@@ -154,7 +154,7 @@ define(function (require) {
             this.setCoordinate(evt.coordinate);
 
             // Abbruch, wenn auf SerchMarker x geklcikt wird.
-            if (this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
+            if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
                 return;
             }
 

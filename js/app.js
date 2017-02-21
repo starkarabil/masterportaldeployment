@@ -176,6 +176,7 @@ define("app",
                 case "gfi": {
                     require(["modules/tools/gfi/model"], function (GfiModel) {
                         new GfiModel();
+                        decModulesLoading();
                     });
                     break;
                 }

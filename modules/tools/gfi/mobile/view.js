@@ -8,14 +8,14 @@ define(function (require) {
     GFIMobileView = GFIView.extend({
         className: "modal fade gfi-mobile",
         template: _.template(Template),
-
+        id: "gfi-mobil",
         /**
          * Zeichnet das Template und erstellt das Bootstrap Modal
          */
         render: function () {
             var attr = this.model.toJSON();
 
-            this.$el.html(this.template(attr));
+            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             this.$el.modal({
                 backdrop: "static",
                 show: false

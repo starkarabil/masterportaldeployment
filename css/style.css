@@ -52,6 +52,9 @@
   /*-------------------Selection/Settings----------------------*/
   /**************** Layer Settings ****************/
   /**************** Layer Settings Button Animation ****************/
+  /* Bootstrap Popover Klassen */
+  /* Desktop GFI */
+  /* Desktop Detached */
 }
 .lgv-container .colorpicker-saturation {
   width: 100px;
@@ -2266,6 +2269,146 @@
   width: 20px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.lgv-container .popover {
+  padding: 0;
+  max-width: 600px;
+  border: 0;
+}
+.lgv-container .popover-content {
+  padding: 0 !important;
+}
+.lgv-container .gfi .panel {
+  margin-bottom: 0;
+}
+.lgv-container .gfi {
+  border: 1px solid #e5e5e5;
+  color: #555555;
+  font-family: "UniversNextW01-Regular", sans-serif;
+}
+.lgv-container .gfi > .gfi-header {
+  font-size: 14px;
+  padding: 8px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #e7e7e7;
+  background: -moz-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -webkit-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -o-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -ms-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  color: #777;
+  height: 34px;
+  font-size: 16px;
+}
+.lgv-container .gfi > .gfi-header > .title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.lgv-container .gfi > .gfi-header > .buttons {
+  margin: 0 0 0 10px;
+  cursor: pointer;
+}
+.lgv-container .gfi > .gfi-content {
+  max-height: 40vh;
+  font-size: 13px;
+  overflow: auto;
+}
+.lgv-container .gfi table {
+  margin: 0;
+  margin-bottom: 4px;
+}
+.lgv-container .gfi-detached {
+  position: absolute;
+  min-width: 25%;
+  max-width: 40%;
+  top: 0;
+  margin: 1% 1% 1% 1%;
+  display: hide;
+  background-color: #ffffff;
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
+}
+.lgv-container .gfi-detached > .gfi-header > .title {
+  cursor: move;
+}
+.lgv-container .gfi-footer {
+  padding: 0;
+  color: #777777;
+  text-align: center;
+  font-size: 22px;
+}
+.lgv-container .gfi-footer > div {
+  background: #f3f3f3;
+  padding: 6px;
+  cursor: pointer;
+  width: 50%;
+}
+.lgv-container .gfi-footer > .disabled {
+  cursor: not-allowed;
+  background-color: #ffffff;
+  opacity: 0.2;
+}
+.lgv-container .gfi-footer > .pager-left {
+  float: left;
+  border-right: 1px solid #ddd;
+}
+.lgv-container .gfi-footer > .pager-right {
+  float: right;
+}
+.lgv-container .gfi-table-hover-link > tbody > tr:hover {
+  background-color: #337ab7;
+  color: #fff;
+  cursor: pointer;
+}
+.lgv-container #gfi-mobil {
+  color: #555555;
+  font-size: 14px;
+  overflow-y: auto;
+}
+.lgv-container .gfi-mobile .modal-header {
+  padding: 0;
+  border-bottom: 0;
+}
+.lgv-container .gfi-mobile .modal-title {
+  padding: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.lgv-container .gfi-mobile .glyphicon-remove {
+  font-size: 16px;
+  float: right;
+  padding: 12px;
+}
+.lgv-container .gfi-mobile .modal-body {
+  padding: 0;
+}
+.lgv-container .gfi-mobile table {
+  margin: 0;
+}
+.lgv-container .gfi-footer {
+  padding: 0;
+  color: #777777;
+  text-align: center;
+  font-size: 22px;
+}
+.lgv-container .gfi-footer > div {
+  background: #f3f3f3;
+  padding: 6px;
+  cursor: pointer;
+  width: 50%;
+}
+.lgv-container .gfi-footer > .disabled {
+  cursor: not-allowed;
+  background-color: #ffffff;
+  opacity: 0.2;
+}
+.lgv-container .gfi-footer > .pager-left {
+  float: left;
+  border-right: 1px solid #ddd;
+}
+.lgv-container .gfi-footer > .pager-right {
+  float: right;
 }
 .lgv-container .baselayerToggle {
   position: absolute;
