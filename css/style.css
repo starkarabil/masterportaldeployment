@@ -1672,20 +1672,35 @@
   height: 100%;
 }
 .lgv-container .mouseHover {
-  font-size: 12px;
-  text-align: left;
-  max-width: inherit;
-  padding: 8px;
-  background-color: #ffffff;
-  color: #777;
-  /*display: block;*/
-  white-space: pre;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  text-align: left !important;
+  max-width: inherit !important;
+  background-color: #ffffff !important;
+  color: #005ca9 !important;
+  white-space: pre !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
+  padding: 9px 14px 6px 14px !important;
+  opacity: 1 !important;
 }
-.lgv-container .mouseHover span:first-child {
-  font-size: 13px;
+.lgv-container .mouseHoverTitle {
+  font-family: HamburgSans;
+  font-size: 14px;
   font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.61;
+  letter-spacing: -0.4px;
+  color: #005ca9;
+}
+.lgv-container .mouseHoverText {
+  font-family: HamburgSans;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.14;
+  letter-spacing: -0.4px;
+  color: #005ca9;
 }
 .lgv-container .featurelist-list-table-th-sorted {
   color: black !important;
@@ -2309,9 +2324,7 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-.lgv-container {
-  /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-}
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 .lgv-container html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -8880,3 +8893,4 @@ https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
     opacity:0;
     width: 0px;
 }
+

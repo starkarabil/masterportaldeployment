@@ -1,62 +1,118 @@
 define([
     "openlayers",
+    "backbone.radio",
     "eventbus",
     "bootstrap/popover"
-], function (ol, EventBus) {
+], function (ol, Radio, EventBus) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {
+            cursor: "pointer",
+            previousCursor: undefined,
             // select interaction reagiert auf pointermove
             selectPointerMove: new ol.interaction.Select({
                 condition: ol.events.condition.pointerMove,
-                multi: true,
-                filter: function (feature) {
-                    if (feature.get("name") === "DragMarkerPoint") {
-                        return false;
-                    }
-                    return true;
-                }
+                multi: false,
+                filter: function (feature, layer) {
+                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
+                },
+                layers: function (ollayer) {
+                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
+                },
+                hitTolerance: 2
             }),
-            wfsList: [],
+            mouseHoverInfos: [],
             mhpresult: "",
             mhpcoordinates: [],
             oldSelection: "",
             GFIPopupVisibility: false
         },
         initialize: function () {
+            // Radio channel
+            var channel = Radio.channel("MouseHover");
+
+            channel.reply({
+                "isHoverLayer": this.isHoverLayer,
+                "hasHoverInfo": this.hasHoverInfo
+            }, this);
+
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
-
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
 
-            $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
 
+            // Erzeuge Overlay
+            $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
             this.set("mhpOverlay", new ol.Overlay({
                 element: $("#mousehoverpopup")[0]
             }));
-
-            this.filterWFSList();
             this.set("element", this.get("mhpOverlay").getElement());
-            // EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
+            Radio.trigger("Map", "addOverlay", this.get("mhpOverlay"));
+
+            // Lese MouseHover Definition aus config
+            this.getMouseHoverInfos();
+
+            // Listeners
             this.listenTo(Radio.channel("GFI"), {
                 "isVisible": this.GFIPopupVisibility
             }, this);
+
         },
 
-        filterWFSList: function () {
-            var wfsList = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
-                wfsListFiltered = [];
+        // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
+        hasHoverInfo: function (olfeature, ollayer) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                ollyerId = ollayer.get("id"),
+                hoverLayer = _.find(mouseHoverInfos, function (info) {
+                    return info.id === ollyerId;
+                }),
+                hoverAttribute = hoverLayer.mouseHoverField,
+                isClusterFeature = ollayer.getSource() instanceof ol.source.Cluster,
+                hasHoverValue;
 
-            _.each(wfsList, function (element) {
-                if (_.has(element, "mouseHoverField")) {
-                    wfsListFiltered.push({
-                        layerId: element.id,
-                        fieldname: element.mouseHoverField
-                    });
-                }
-            });
+            if (isClusterFeature) {
+                hasHoverValue = _.some(olfeature.get("features"), function (feature) {
+                    return feature.get(hoverAttribute) !== "";
+                })
+            }
+            else {
+                hasHoverValue = olfeature.get(hoverAttribute) !== "" ? true : false;
+            }
 
-            this.set("wfsList", wfsListFiltered);
+            return hasHoverValue;
+        },
+
+        // Reply-Funktion: Meldet true, wenn Layer in Liste "mouseHoverInfos" enthalten ist. Sonst false.
+        isHoverLayer: function (ollayer) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                ollyerId = ollayer.get("id"),
+                isHoverLayer = _.find(mouseHoverInfos, function (info) {
+                    if (info.id === ollyerId) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                });
+
+            return isHoverLayer;
+        },
+
+        /*
+         * Erstellt initial eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
+        */
+        getMouseHoverInfos: function () {
+            var wfsLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
+                geoJsonLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "GeoJSON"}),
+                vectorLayers = _.union(wfsLayers, geoJsonLayers),
+                mouseHoverLayers = _.filter(vectorLayers, function (layer) {
+                    return _.has(layer, "mouseHoverField") && layer.mouseHoverField !== "";
+                }),
+                mouseHoverInfos = _.map(mouseHoverLayers, function (layer) {
+                    return _.pick(layer, "id", "mouseHoverField");
+                });
+
+            this.set("mouseHoverInfos", mouseHoverInfos);
         },
 
         GFIPopupVisibility: function (GFIPopupVisibility) {
@@ -77,16 +133,52 @@ define([
         showPopup: function () {
             $(this.get("element")).tooltip("show");
         },
-        /**
-        * forEachFeatureAtPixel greift nur bei sichtbaren Features.
-        * wenn 2. Parameter (layer) == null, dann kein Layer
-        * Wertet an der aktuell getriggerten Position alle Features der
-        * Map aus, die über subfunction function(layer) zurückgegeben werden.
-        * pFeatureArray wird so mit allen darzustellenden Features gepusht.
-        * Nachdem die Selektion erstellt wurde, wird diese für initiale
-        * if-Bedingung gespeichert und abschließend wird das Aufbereiten dieser
-        * Selektion angestpßen.
-        */
+
+        // Setzt Cursor pointer, wenn Selektion vorliegt
+        setCursor: function (features) {
+            var element = $("#map")[0],
+                actualCursor = this.get("cursor"),
+                prevCursor = this.get("previousCursor");
+
+            if (features.length > 0) {
+                if (element.style.cursor !== actualCursor) {
+                    this.set("previousCursor", element.style.cursor);
+                    element.style.cursor = actualCursor;
+                }
+            }
+            else if (prevCursor !== undefined) {
+                element.style.cursor = prevCursor;
+                this.set("previousCursor", undefined);
+            }
+        },
+
+        // Vergrößert das Symbol
+        scaleFeaturesUp: function (features) {
+            features.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
+
+                newStyle.getImage().setScale(1.2);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                }
+                feature.setStyle([newStyle]);
+            });
+        },
+
+        // Verkleinert das Symbol
+        scaleFeaturesDown: function (features) {
+            features.forEach(function (feature) {
+                var newStyle = feature.getStyle()[0].clone();
+
+                newStyle.getImage().setScale(1);
+                if (_.isNull(newStyle.getText()) === false) {
+                    newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                }
+                feature.setStyle([newStyle]);
+            });
+        },
+
+        // Erzeuge Liste selektierter Features aus evt
         checkForEachFeatureAtPixel: function (evt) {
             if (evt.mapBrowserEvent.dragging) {
                 return;
@@ -94,79 +186,55 @@ define([
 
             var selected = evt.selected,
                 deselected = evt.deselected,
-                eventPixel = evt.mapBrowserEvent.pixel,
-                map = evt.mapBrowserEvent.map;
+                selectedFeatures = [];
 
-            if (selected.length) {
-                selected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
+            // Skaliert Vektorsymbol selektierter Features
+            this.scaleFeaturesUp(selected);
 
-                    newStyle.getImage().setScale(1.2);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
-                    }
-                    feature.setStyle([newStyle]);
-                });
-            }
-            else {
-                deselected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
+            // Deskaliert Vektorsymbol deselektierter Features
+            this.scaleFeaturesDown(deselected);
 
-                    newStyle.getImage().setScale(1);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
-                    }
-                    feature.setStyle([newStyle]);
-                });
-            }
+            // Setze Cursor Style
+            this.setCursor(selected);
 
-            var pFeatureArray = [],
-                featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
-                    return {
-                        feature: feature,
-                        layer: layer
-                    };
-            });
+            // Erzeuge Liste selektierter Features
+            _.each(selected, function (selFeature) {
+                var selLayer = evt.target.getLayer(selFeature),
+                    isClusterFeature = selLayer.getSource() instanceof ol.source.Cluster
 
-            // featuresAtPixel.layer !== null --> kleiner schneller Hack da sonst beim zeichnen die ganze Zeit versucht wird ein Popup zu zeigen?? SD 01.09.2015
-            if (featuresAtPixel !== undefined && featuresAtPixel.layer !== null) {
-                var selFeature = featuresAtPixel.feature;
-
-                map.getTargetElement().style.cursor = "pointer";
-                // Cluster-Features
-                if (selFeature.getProperties().features) {
-                    var list = selFeature.getProperties().features;
-
-                    _.each(list, function (element) {
-                        pFeatureArray.push({
-                            feature: element,
-                            layerId: featuresAtPixel.layer.get("id")
+                if (isClusterFeature) {
+                    _.each(selFeature.get("features"), function (feature) {
+                        selectedFeatures.push({
+                            feature: feature,
+                            layerId: selLayer.get("id")
                         });
                     });
                 }
                 else {
-                    pFeatureArray.push({
+                    selectedFeatures.push({
                         feature: selFeature,
-                        layerId: featuresAtPixel.layer.get("id")
-                    });
+                        layerId: selLayer.get("id")
+                    })
                 }
-                if (pFeatureArray.length > 0) {
-                    if (this.get("oldSelection") === "") {
-                        this.set("oldSelection", pFeatureArray);
-                        this.prepMouseHoverFeature(pFeatureArray);
-                    }
-                    else {
-                        if (this.compareArrayOfObjects(pFeatureArray, this.get("oldSelection")) === false) {
-                            this.destroyPopup(pFeatureArray);
-                            this.set("oldSelection", pFeatureArray);
-                                this.prepMouseHoverFeature(pFeatureArray);
-                        }
-                    }
-                }
+            });
+            this.checkSelektion(selectedFeatures);
+        },
+
+        // Prüft, ob sich die selectedFeatures verändert haben und zeichnet ggf. neu.
+        checkSelektion: function (selectedFeatures) {
+            if (selectedFeatures.length === 0) {
+                this.destroyPopup(selectedFeatures);
+            }
+            else if (this.get("oldSelection") === "") {
+                this.set("oldSelection", selectedFeatures);
+                this.prepMouseHoverFeature(selectedFeatures);
             }
             else {
-                map.getTargetElement().style.cursor = "";
-                this.removeMouseHoverFeatureIfSet();
+                if (this.compareArrayOfObjects(selectedFeatures, this.get("oldSelection")) === false) {
+                    this.destroyPopup(selectedFeatures);
+                    this.set("oldSelection", selectedFeatures);
+                    this.prepMouseHoverFeature(selectedFeatures);
+                }
             }
         },
 
@@ -186,21 +254,12 @@ define([
         },
 
         /**
-        * Diese Funktion prüft ob mhpresult = "" und falls nicht
-        * wird MouseHover destroyt
-        */
-        removeMouseHoverFeatureIfSet: function () {
-            if (this.get("mhpresult") && this.get("mhpresult") !== "") {
-                this.destroyPopup();
-            }
-        },
-        /**
         * Dies Funktion durchsucht das übergebene pFeatureArray und extrahiert den
         * anzuzeigenden Text sowie die Popup-Koordinate und setzt
         * mhpresult. Auf mhpresult lauscht die View, die daraufhin rendert
         */
         prepMouseHoverFeature: function (pFeatureArray) {
-            var wfsList = this.get("wfsList"),
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
                 value = "",
                 coord;
 
@@ -209,12 +268,12 @@ define([
                 _.each(pFeatureArray, function (element) {
                     var featureProperties = element.feature.getProperties(),
                         featureGeometry = element.feature.getGeometry(),
-                        listEintrag = _.find(wfsList, function (ele) {
-                            return ele.layerId === element.layerId;
-                    });
+                        listEintrag = _.find(mouseHoverInfos, function (mouseHoverInfo) {
+                            return mouseHoverInfo.id === element.layerId;
+                        });
 
                     if (listEintrag) {
-                        var mouseHoverField = listEintrag.fieldname;
+                        var mouseHoverField = listEintrag.mouseHoverField;
 
                         if (mouseHoverField && _.isString(mouseHoverField)) {
                             if (_.has(featureProperties, mouseHoverField)) {
@@ -225,6 +284,22 @@ define([
                             _.each(mouseHoverField, function (element) {
                                 value = value + "<span>" + _.values(_.pick(featureProperties, element)) + "</span></br>";
                             });
+                        }
+                        else if (mouseHoverField && _.isObject(mouseHoverField)) {
+                            var headerFields = mouseHoverField.header,
+                                textFields = mouseHoverField.text,
+                                hoverHeader = "",
+                                hoverText = "";
+
+                            _.each(headerFields, function (headerField) {
+                                hoverHeader = hoverHeader = "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
+                            });
+
+                            _.each(textFields, function (textField) {
+                                hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
+                            });
+
+                            value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
                         }
                         if (!coord) {
                             if (featureGeometry.getType() === "MultiPolygon" || featureGeometry.getType() === "Polygon") {
