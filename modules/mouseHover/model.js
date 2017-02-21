@@ -14,10 +14,12 @@ define([
                 condition: ol.events.condition.pointerMove,
                 multi: false,
                 filter: function (feature, layer) {
-                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
+                    // return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
+                    return true;
                 },
                 layers: function (ollayer) {
-                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
+                    // return Radio.request("MouseHover", "isHoverLayer", ollayer);
+                    return true;
                 },
                 hitTolerance: 2,
                 style: this.hoverStyleFunction
@@ -53,6 +55,20 @@ define([
             // Lese MouseHover Definition aus config
             this.getMouseHoverInfos();
 
+            // Hack für clusterFeatures
+            var mouseHoverInfos = this.get("mouseHoverInfos");
+
+            mouseHoverInfos.push(
+                    {
+                        id: "999998",
+                        mouseHoverField: {
+                            header: ["str", "hsnr"],
+                            text: "kat"
+                        }
+                    });
+            this.set("mouseHoverInfos", mouseHoverInfos);
+
+
             // Listeners
             this.listenTo(Radio.channel("GFI"), {
                 "isVisible": this.GFIPopupVisibility
@@ -62,6 +78,10 @@ define([
             }, this);
 
             this.setHoverLayer(Radio.request("Map", "createLayerIfNotExists", "hover_layer"));
+            // Hack für clusterFeatures
+            var hoverLayer = this.getHoverLayer();
+
+            hoverLayer.set("id", "999998");
         },
 
         // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
@@ -78,7 +98,7 @@ define([
             if (isClusterFeature) {
                 hasHoverValue = _.some(olfeature.get("features"), function (feature) {
                     return feature.get(hoverAttribute) !== "";
-                })
+                });
             }
             else {
                 hasHoverValue = olfeature.get(hoverAttribute) !== "" ? true : false;
@@ -191,13 +211,15 @@ define([
 
             var selected = evt.selected,
                 deselected = evt.deselected,
+                eventPixel = evt.mapBrowserEvent.pixel,
+                map = evt.mapBrowserEvent.map,
                 selectedFeatures = [];
 
             // Skaliert Vektorsymbol selektierter Features
-            this.scaleFeaturesUp(selected);
+            // this.scaleFeaturesUp(selected);
 
             // Deskaliert Vektorsymbol deselektierter Features
-            this.scaleFeaturesDown(deselected);
+            // this.scaleFeaturesDown(deselected);
 
             if (selected.length) {
                 selected.forEach(function (feature) {
@@ -252,15 +274,18 @@ define([
             // Erzeuge Liste selektierter Features
             _.each(selected, function (selFeature) {
                 var selLayer = evt.target.getLayer(selFeature),
-                    isClusterFeature = selLayer.getSource() instanceof ol.source.Cluster
+                    isClusterFeature = selLayer.getSource() instanceof ol.source.Cluster;
 
                 if (isClusterFeature) {
-                    _.each(selFeature.get("features"), function (feature) {
-                        selectedFeatures.push({
-                            feature: feature,
-                            layerId: selLayer.get("id")
+                    // hack für clusterFeatures
+                    if (selFeature.get("features").length <= 1) {
+                        _.each(selFeature.get("features"), function (feature) {
+                            selectedFeatures.push({
+                                feature: feature,
+                                layerId: selLayer.get("id")
+                            });
                         });
-                    });
+                    }
                 }
                 else {
                     selectedFeatures.push({
@@ -350,6 +375,15 @@ define([
                             _.each(textFields, function (textField) {
                                 hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
                             });
+
+                            // hack für clusterFeatures
+                            if (hoverHeader.length <= 2) {
+                                hoverHeader = "HoverHeader";
+                            }
+                            if (hoverText.length === 3) {
+                                hoverText = "HoverText";
+                            }
+
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
                         }

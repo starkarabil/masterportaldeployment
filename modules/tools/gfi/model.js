@@ -151,39 +151,39 @@ define(function (require) {
                 eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
                 isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
 
-            this.setCoordinate(evt.coordinate);
+                this.setCoordinate(evt.coordinate);
 
-            // Abbruch, wenn auf SerchMarker x geklcikt wird.
-            if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
-                return;
-            }
-
-            // Vector
-            Radio.trigger("ClickCounter", "gfi");
-            if (isFeatureAtPixel === true) {
-                Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.searchModelByFeature);
-            }
-
-            // WMS | GROUP
-            _.each(visibleLayerList, function (model) {
-                if (model.getGfiAttributes() !== "ignore") {
-                    if (model.getTyp() === "WMS") {
-                        model.attributes.gfiUrl = model.getGfiUrl();
-                        gfiParams.push(model.attributes);
-                    }
-                    else {
-                        model.get("backbonelayers").forEach(function (layer) {
-                            if (layer.get("gfiAttributes") !== "ignore") {
-                                model.attributes.gfiUrl = model.getGfiUrl();
-                                gfiParams.push(model.attributes);
-                            }
-                        });
-                    }
+                // Abbruch, wenn auf SerchMarker x geklcikt wird.
+                if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
+                    return;
                 }
-            }, this);
-            this.setThemeIndex(0);
-            this.getThemeList().reset(gfiParams);
-            gfiParams = [];
+
+                // Vector
+                Radio.trigger("ClickCounter", "gfi");
+                if (isFeatureAtPixel === true) {
+                    Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.searchModelByFeature);
+                }
+
+                // WMS | GROUP
+                _.each(visibleLayerList, function (model) {
+                    if (model.getGfiAttributes() !== "ignore") {
+                        if (model.getTyp() === "WMS") {
+                            model.attributes.gfiUrl = model.getGfiUrl();
+                            gfiParams.push(model.attributes);
+                        }
+                        else {
+                            model.get("backbonelayers").forEach(function (layer) {
+                                if (layer.get("gfiAttributes") !== "ignore") {
+                                    model.attributes.gfiUrl = model.getGfiUrl();
+                                    gfiParams.push(model.attributes);
+                                }
+                            });
+                        }
+                    }
+                }, this);
+                this.setThemeIndex(0);
+                this.getThemeList().reset(gfiParams);
+                gfiParams = [];
         },
 
         /**
@@ -196,6 +196,7 @@ define(function (require) {
 
             if (_.isUndefined(model) === false) {
                 var modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+
                 // Feature
                 if (_.has(featureAtPixel.getProperties(), "features") === false) {
                     modelAttributes.feature = featureAtPixel;
@@ -203,13 +204,21 @@ define(function (require) {
                 }
                 // Cluster Feature
                 else {
-                    _.each(featureAtPixel.get("features"), function (feature) {
-                        modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
-                        modelAttributes.feature = feature;
-                        gfiParams.push(modelAttributes);
-                    });
+                    if (featureAtPixel.get("features").length === 1) {
+                        _.each(featureAtPixel.get("features"), function (feature) {
+                            modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+                            modelAttributes.feature = feature;
+                            gfiParams.push(modelAttributes);
+                        });
+                    }
                 }
             }
+            // else {
+            //     var modelAttributes = {name: "Anliegen", gfiAttributes: "showAll", typ: "GeoJSON"};
+
+            //     modelAttributes.feature = featureAtPixel;
+            //     gfiParams.push(modelAttributes);
+            // }
         },
 
         // Setter
