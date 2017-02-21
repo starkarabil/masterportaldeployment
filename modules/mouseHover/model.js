@@ -288,7 +288,7 @@ define([
                                 hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
                             });
 
-                            value = "<span>" + hoverHeader + "</span></br>" + "<span>" + hoverText + "</span>";
+                            value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
                         }
                         if (!coord) {
                             if (featureGeometry.getType() === "MultiPolygon" || featureGeometry.getType() === "Polygon") {
