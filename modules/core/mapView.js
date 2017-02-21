@@ -155,9 +155,9 @@ define([
             this.setView();
 
             // Listener für ol.View
-            this.get("view").on("change:resolution", function (evt) {
-                this.set("resolution", this.get("view").getResolution());
-                channel.trigger("changedZoomLevel", this.getZoom());
+            this.get("view").on("change:resolution", function () {
+                    this.set("resolution", this.get("view").constrainResolution(this.get("view").getResolution()));
+                    channel.trigger("changedZoomLevel", this.getZoom());
             }, this);
             this.get("view").on("change:center", function () {
                 this.set("center", this.get("view").getCenter());
