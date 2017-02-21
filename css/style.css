@@ -18,6 +18,10 @@
 */
   /***** Destop *****/
   /***** Mobil *****/
+  /*mml template*/
+  /*mml template*/
+  /*mml template*/
+  /*mml template*/
   /***** ToggleButton *****/
   /***** ZoomButtons *****/
   /***** FullScreen *****/
@@ -1151,6 +1155,12 @@
   #searchInput {
     min-width: 200px;
   }
+  /*mml template*/
+  #searchForm-mml #searchInput {
+    max-width: 350px;
+    height: 55px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  }
   #searchInputUL {
     min-width: 200px;
   }
@@ -1167,6 +1177,12 @@
   #searchInput {
     max-width: 350px;
   }
+  /*mml template*/
+  #searchForm-mml #searchInput {
+    max-width: 350px;
+    height: 55px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  }
   #searchInputUL {
     min-width: 300px;
   }
@@ -1174,7 +1190,7 @@
 .lgv-container #searchbarInMap {
   position: absolute;
   left: 20px;
-  top: 150px;
+  top: 7px;
   max-width: 350px;
 }
 .lgv-container #searchInputLi {
@@ -1184,6 +1200,10 @@
   margin: 0;
 }
 .lgv-container #searchForm > .input-group {
+  width: 100%;
+  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
+}
+.lgv-container #searchForm-mml > .input-group {
   width: 100%;
   font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
@@ -1213,6 +1233,15 @@
 }
 .lgv-container #searchInput + span {
   right: 38px;
+  z-index: 3;
+  color: #777777;
+  display: none;
+  pointer-events: all;
+  cursor: pointer;
+}
+.lgv-container #searchForm-mml #searchInput + span {
+  right: 55px;
+  top: 11px;
   z-index: 3;
   color: #777777;
   display: none;
@@ -1273,6 +1302,18 @@
   background: -o-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -ms-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   /*border-left: 0;*/
+}
+.lgv-container #searchForm-mml .btn-search {
+  width: 55px;
+  height: 55px;
+  border-radius: 3px;
+  border-style: none;
+  background-color: #0f5cad;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.lgv-container #searchForm-mml .btn-search > .glyphicon-search {
+  font-size: 14px;
+  color: white;
 }
 .lgv-container .btn-search:hover {
   background: #ffffff;
@@ -2309,9 +2350,7 @@
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-.lgv-container {
-  /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-}
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 .lgv-container html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -8880,3 +8919,4 @@ https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
     opacity:0;
     width: 0px;
 }
+
