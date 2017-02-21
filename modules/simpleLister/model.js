@@ -8,6 +8,7 @@ define([
     SimpleLister = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
+            featuresPerPage: 20,
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -19,12 +20,13 @@ define([
         getParams: function () {
             var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
 
-            this.setLayerName(simpleLister.layerName);
+            this.setLayerId(simpleLister.layerId);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
+            this.setFeaturesPerPage(simpleLister.featuresPerPage);
         },
 
-        getLayerFeaturesInExtent: function (name) {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", name),
+        getLayerFeaturesInExtent: function () {
+            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 featuresObj = [];
 
             _.each(features, function (feature) {
@@ -61,15 +63,14 @@ define([
             this.set("display",value);
         },
 
-        // getter for layerName
-        getLayerName: function () {
-            return this.get("layerName");
+        // getter for layerId
+        getLayerId: function () {
+            return this.get("layerId");
         },
-        // setter for layerName
-        setLayerName: function (value) {
-            this.set("layerName", value);
+        // setter for layerId
+        setLayerId: function (value) {
+            this.set("layerId", value);
         },
-
         // getter for errortxt
         getErrortxt: function () {
             return this.get("errortxt");
@@ -77,6 +78,15 @@ define([
         // setter for errortxt
         setErrortxt: function (value) {
             this.set("errortxt", value);
+        },
+
+        // setter für featuresPerPage
+        setFeaturesPerPage: function (value) {
+            this.set("featuresPerPage", value);
+        },
+        // getter für featuresPerPage
+        getFeaturesPerPage: function () {
+            return this.get("featuresPerPage");
         }
     });
 

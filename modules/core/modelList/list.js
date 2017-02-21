@@ -39,8 +39,8 @@ define([
                 "getAllBaseLayers": function () {
                     return this.getAllBaseLayers();
                 },
-                "getLayerFeaturesInExtent": function (name) {
-                    return this.getLayerFeaturesInExtent(name);
+                "getLayerFeaturesInExtent": function (id) {
+                    return this.getLayerFeaturesInExtent(id);
                 }
             }, this);
 
@@ -343,10 +343,11 @@ define([
             // benÃ¶tigen, der ihre Reihenfolge in der Config Json entspricht und nicht der Reihenfolge
             // wie sie hinzugefÃ¼gt werden
             var paramLayers = Radio.request("ParametricURL", "getLayerParams"),
-                treeType = Radio.request("Parser", "getTreeType");
+                treeType = Radio.request("Parser", "getTreeType"),
+                lightModels;
 
             if (treeType === "light") {
-                var lightModels = Radio.request("Parser", "getItemsByAttributes", {type: "layer"});
+                lightModels = Radio.request("Parser", "getItemsByAttributes", {type: "layer"});
 
                 lightModels.reverse();
                 this.add(lightModels);
@@ -547,8 +548,8 @@ define([
             }, this);
             Radio.trigger("BaselayerToggle", "layerChanged");
         },
-        getLayerFeaturesInExtent: function (name) {
-            var layer = this.get(name),
+        getLayerFeaturesInExtent: function (id) {
+            var layer = this.findWhere({"id": id}),
                 source,
                 extent,
                 featuresInExtent,
