@@ -46,7 +46,7 @@ define([
                 element: $("#mousehoverpopup")[0]
             }));
             this.set("element", this.get("mhpOverlay").getElement());
-            Radio.trigger("Map", "addOverlay", this.model.get("mhpOverlay"));
+            Radio.trigger("Map", "addOverlay", this.get("mhpOverlay"));
 
             // Lese MouseHover Definition aus config
             this.getMouseHoverInfos();
