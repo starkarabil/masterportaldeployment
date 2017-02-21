@@ -37,17 +37,19 @@ define([
 
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
-
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
 
-            $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
 
+            // Erzeuge Overlay
+            $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
             this.set("mhpOverlay", new ol.Overlay({
                 element: $("#mousehoverpopup")[0]
             }));
-
-            this.getMouseHoverInfos();
             this.set("element", this.get("mhpOverlay").getElement());
+            Radio.trigger("Map", "addOverlay", this.model.get("mhpOverlay"));
+
+            // Lese MouseHover Definition aus config
+            this.getMouseHoverInfos();
             EventBus.on("GFIPopupVisibility", this.GFIPopupVisibility, this); // GFIPopupStatus auslösen. Trigger in GFIPopoupView
         },
 

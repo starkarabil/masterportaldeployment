@@ -7,7 +7,6 @@ define(function (require) {
         id: "mousehoverpopup",
         initialize: function () {
             this.listenTo(this.model, "change:mhpresult", this.render);
-            Radio.trigger("Map", "addOverlay", this.model.get("mhpOverlay"));
         },
         render: function () {
             $(this.model.get("element")).tooltip({
