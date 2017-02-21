@@ -15,7 +15,7 @@ define(function (require) {
         render: function () {
             var attr = this.model.toJSON();
 
-            this.$el.html(this.template(attr));
+            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             this.$el.modal({
                 backdrop: "static",
                 show: false
