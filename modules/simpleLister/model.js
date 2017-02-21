@@ -8,6 +8,7 @@ define([
     SimpleLister = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
+            featuresPerPage: 20,
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -21,6 +22,7 @@ define([
 
             this.setLayerName(simpleLister.layerName);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
+            this.setFeaturesPerPage(simpleLister.featuresPerPage);
         },
 
         getLayerFeaturesInExtent: function (name) {
@@ -77,6 +79,15 @@ define([
         // setter for errortxt
         setErrortxt: function (value) {
             this.set("errortxt", value);
+        },
+
+        // setter für featuresPerPage
+        setFeaturesPerPage: function (value) {
+            this.set("featuresPerPage", value);
+        },
+        // getter für featuresPerPage
+        getFeaturesPerPage: function () {
+            return this.get("featuresPerPage");
         }
     });
 
