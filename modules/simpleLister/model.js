@@ -9,7 +9,7 @@ define([
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
-            totalFeaturesInPage: 20, // Aktuelle Anzahl an Features in Liste
+            totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -33,6 +33,14 @@ define([
             this.setFeaturesInExtent(features, featuresPerPage);
         },
 
+        // put more Features in List
+        appendFeatures: function () {
+            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
+                number =  this.get("featuresPerPage") + this.get("totalFeaturesInPage");
+
+            this.setFeaturesInExtent(features, number);
+        },
+
         // getter for featuresInExtent
         getFeaturesInExtent: function () {
             return this.get("featuresInExtent");
@@ -40,14 +48,10 @@ define([
 
         // setter for featuresInExtent
         setFeaturesInExtent: function (features, number) {
-            var featuresObj = [];
+            var featuresObj = _.last(features, number);
 
-            _.each(features, function (feature, index) {
-                if (index < number) {
-                    featuresObj.push(JSON.parse(feature));
-                }
-            });
             this.set("featuresInExtent", featuresObj);
+            this.set("totalFeaturesInPage", number);
         },
 
         // getter for glyphicon
