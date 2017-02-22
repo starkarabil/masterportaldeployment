@@ -234,6 +234,13 @@ define([
             // Setze Cursor Style
             this.setCursor(selected);
 
+            // Triggere selektierte Elemente
+            Radio.trigger("MouseHover", "selectedFeatures", selected);
+
+            // Triggere deselektierte Elemente
+            Radio.trigger("MouseHover", "deselectedFeatures", deselected);
+
+
             // Erzeuge Liste selektierter Features
             _.each(selected, function (selFeature) {
                 var selLayer = evt.target.getLayer(selFeature),
