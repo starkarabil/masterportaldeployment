@@ -14,12 +14,10 @@ define([
                 condition: ol.events.condition.pointerMove,
                 multi: false,
                 filter: function (feature, layer) {
-                    // return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
-                    return true;
+                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
                 },
                 layers: function (ollayer) {
-                    // return Radio.request("MouseHover", "isHoverLayer", ollayer);
-                    return true;
+                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
                 },
                 hitTolerance: 2,
                 style: this.hoverStyleFunction
@@ -181,13 +179,20 @@ define([
         scaleFeaturesUp: function (features) {
             features.forEach(function (feature) {
                 var newStyle = feature.getStyle()[0].clone();
-
-                newStyle.getImage().setScale(1.2);
-                if (_.isNull(newStyle.getText()) === false) {
-                    newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                // bei ClusterFeatures
+                if (feature.get("features").length > 1) {
+                    newStyle.getImage().setOpacity(0.5);
+                    feature.setStyle([newStyle]);
+                    this.hoverOnClusterFeature(feature);
                 }
-                feature.setStyle([newStyle]);
-            });
+                else {
+                    newStyle.getImage().setScale(1.2);
+                    if (_.isNull(newStyle.getText()) === false) {
+                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                    }
+                    feature.setStyle([newStyle]);
+                }
+            }, this);
         },
 
         // Verkleinert das Symbol
@@ -195,12 +200,20 @@ define([
             features.forEach(function (feature) {
                 var newStyle = feature.getStyle()[0].clone();
 
-                newStyle.getImage().setScale(1);
-                if (_.isNull(newStyle.getText()) === false) {
-                    newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                // bei ClusterFeatures
+                if (feature.get("features").length > 1) {
+                    newStyle.getImage().setOpacity(1);
+                    feature.setStyle([newStyle]);
+                    // this.hoverOffClusterFeature();
                 }
-                feature.setStyle([newStyle]);
-            });
+                else {
+                    newStyle.getImage().setScale(1);
+                    if (_.isNull(newStyle.getText()) === false) {
+                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                    }
+                    feature.setStyle([newStyle]);
+                }
+            }, this);
         },
 
         // Erzeuge Liste selektierter Features aus evt
@@ -211,62 +224,13 @@ define([
 
             var selected = evt.selected,
                 deselected = evt.deselected,
-                eventPixel = evt.mapBrowserEvent.pixel,
-                map = evt.mapBrowserEvent.map,
                 selectedFeatures = [];
 
             // Skaliert Vektorsymbol selektierter Features
-            // this.scaleFeaturesUp(selected);
+            this.scaleFeaturesUp(selected);
 
             // Deskaliert Vektorsymbol deselektierter Features
-            // this.scaleFeaturesDown(deselected);
-
-            if (selected.length) {
-                selected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
-                    // bei ClusterFeatures
-                    if (feature.get("features").length > 1) {
-                        newStyle.getImage().setOpacity(0.5);
-                        feature.setStyle([newStyle]);
-                        this.hoverOnClusterFeature(feature);
-                    }
-                    else {
-                        newStyle.getImage().setScale(1.2);
-                        if (_.isNull(newStyle.getText()) === false) {
-                            newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
-                        }
-                        feature.setStyle([newStyle]);
-                    }
-                }, this);
-
-            }
-            else {
-                deselected.forEach(function (feature) {
-                    var newStyle = feature.getStyle()[0].clone();
-
-                    // bei ClusterFeatures
-                    if (feature.get("features").length > 1) {
-                        newStyle.getImage().setOpacity(1);
-                        feature.setStyle([newStyle]);
-                        // this.hoverOffClusterFeature();
-                    }
-                    else {
-                        newStyle.getImage().setScale(1);
-                        if (_.isNull(newStyle.getText()) === false) {
-                            newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
-                        }
-                        feature.setStyle([newStyle]);
-                    }
-                }, this);
-            }
-
-            var pFeatureArray = [],
-                featuresAtPixel = map.forEachFeatureAtPixel(eventPixel, function (feature, layer) {
-                    return {
-                        feature: feature,
-                        layer: layer
-                    };
-            });
+            this.scaleFeaturesDown(deselected);
 
             // Setze Cursor Style
             this.setCursor(selected);
@@ -383,7 +347,6 @@ define([
                             if (hoverText.length === 3) {
                                 hoverText = "HoverText";
                             }
-
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
                         }
