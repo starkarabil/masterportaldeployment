@@ -520,14 +520,20 @@ define([
             });
             return names;
         },
-        showLayers: function (layerNames) {
+        showLayers: function (layerNames, clearVisibleBaseLayers) {
             var layers = this.filter(function (layer) {
                     return _.contains(layerNames, layer.getName());
                 }, this);
 
+            if (clearVisibleBaseLayers) {
+                var visibleBaseLayers = this.getVisibleBaseLayers();
+
+                this.hideLayers(visibleBaseLayers);
+            }
             _.each(layers, function (layer) {
                     layer.setIsSelected(true);
             }, this);
+
             Radio.trigger("BaselayerToggle", "layerChanged");
         },
 
