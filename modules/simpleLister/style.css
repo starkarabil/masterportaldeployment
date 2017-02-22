@@ -1,6 +1,10 @@
+
+
 .simple-lister-view {
     position: absolute;
     top: 100px;
+    height: 100%;
+    width: 100%;
 }
 .simple-lister-button {
     margin-top: 20px;
@@ -13,6 +17,18 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 }
 .simple-lister-table {
-    left: 15px;
-    background-color: white;
+    display: block;
+    height: 50%;
+    overflow-x: auto;
+    width: 50%;
+    overflow-y: auto;
+    background: white;
 }
+
+.simple-lister-table .table {
+    td, tr {
+        border: 0 solid;
+    }
+}
+
+
