@@ -56,14 +56,13 @@ define([
             // Hack für clusterFeatures
             var mouseHoverInfos = this.get("mouseHoverInfos");
 
-            mouseHoverInfos.push(
-                    {
-                        id: "999998",
-                        mouseHoverField: {
-                            header: ["str", "hsnr"],
-                            text: "kat"
-                        }
-                    });
+            mouseHoverInfos.push({
+                id: "999998",
+                mouseHoverField: {
+                    header: ["str", "hsnr"],
+                    text: "kat"
+                }
+            });
             this.set("mouseHoverInfos", mouseHoverInfos);
 
 
@@ -175,8 +174,8 @@ define([
             }
         },
 
-        // Vergrößert das Symbol
-        scaleFeaturesUp: function (features) {
+        // Selected Features: Symbol anpassen
+        styleSelectedFeatures: function (features) {
             features.forEach(function (feature) {
                 var newStyle = feature.getStyle()[0].clone();
                 // bei ClusterFeatures
@@ -195,8 +194,8 @@ define([
             }, this);
         },
 
-        // Verkleinert das Symbol
-        scaleFeaturesDown: function (features) {
+        // Deselected Features: Symbol zurücksetzen
+        styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
                 var newStyle = feature.getStyle()[0].clone();
 
@@ -226,11 +225,11 @@ define([
                 deselected = evt.deselected,
                 selectedFeatures = [];
 
-            // Skaliert Vektorsymbol selektierter Features
-            this.scaleFeaturesUp(selected);
+            // Style selected Features
+            this.styleSelectedFeatures(selected);
 
-            // Deskaliert Vektorsymbol deselektierter Features
-            this.scaleFeaturesDown(deselected);
+            // Styling rückgängig machen
+            this.styleDeselectedFeatures(deselected);
 
             // Setze Cursor Style
             this.setCursor(selected);
