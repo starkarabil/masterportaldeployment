@@ -8,7 +8,7 @@ define(function (require) {
     GFIMobileView = GFIView.extend({
         className: "modal fade gfi-mobile",
         template: _.template(Template),
-        id: "gfi-mobil",
+        id: "gfi-mobile",
         /**
          * Zeichnet das Template und erstellt das Bootstrap Modal
          */
