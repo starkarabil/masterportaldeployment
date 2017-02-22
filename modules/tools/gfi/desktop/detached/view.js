@@ -15,10 +15,13 @@ define(function (require) {
         render: function () {
             var attr = this.model.toJSON();
 
-            $("body").append(this.$el.html(this.template(attr)));
+            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             this.$el.draggable({
                 containment: "#map",
-                handle: ".gfi-header"
+                handle: ".gfi-header",
+                stop: function (evt, ui) {
+                    $(".gfi").css("left", (ui.position.left / $("#lgv-container").width() * 100 + "%"));
+                }
             });
         },
 
@@ -28,10 +31,11 @@ define(function (require) {
         toggle: function () {
             if (this.model.getIsVisible() === true) {
                 this.$el.show();
-                $(".gfi").css("left", window.innerWidth - $(".gfi-content").width() - 50);
-                $(".gfi-content").css("width", $(".gfi-content").width());
+                this.setGfiLeftPosition();
                 Radio.trigger("MapMarker", "showMarker", this.model.getCoordinate());
-                Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker") {
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                }
             }
             else {
                 this.$el.hide();
@@ -49,6 +53,12 @@ define(function (require) {
         removeView: function () {
             Radio.trigger("MapMarker", "hideMarker");
             this.remove();
+        },
+        /**
+         * Setzt die Position des GFI Fenster vom linken Rand
+         */
+        setGfiLeftPosition: function () {
+            $(".gfi").css("left", ((($("#lgv-container").width() - $(".gfi-content").width()) - 50) / $("#lgv-container").width()) * 100 + "%");
         }
     });
 

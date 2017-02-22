@@ -39,7 +39,13 @@ define(function (require) {
         createLayer: function () {
             this.setLayer(new ol.layer.Vector({
                 source: (this.has("clusterLayerSource") === true) ? this.getClusterLayerSource() : this.getLayerSource(),
-                style: this.getStyle()
+                style: this.getStyle(),
+                name: this.get("name"),
+                typ: this.get("typ"),
+                gfiAttributes: this.get("gfiAttributes"),
+                routable: this.get("routable"),
+                gfiTheme: this.get("gfiTheme"),
+                id: this.getId()
             }));
         },
 

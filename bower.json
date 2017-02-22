@@ -31,7 +31,7 @@
     "underscore": "1.x",
     "underscore.string": "3.3.x",
     "jquery-ui": "1.x",
-    "lgv-config": "https://bitbucket.org/lgv-g12/lgv-config.git#mml_temp_geojson",
+    "lgv-config": "https://bitbucket.org/lgv-g12/lgv-config.git#master",
     "video.js": "4.x",
     "moment": "2.x",
     "openlayers": "https://github.com/openlayers/ol3/releases/download/v3.19.1/v3.19.1-dist.zip"
