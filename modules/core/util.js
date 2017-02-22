@@ -7,12 +7,12 @@ define([
         defaults: {
             isViewMobile: false
         },
-        initialize: function (Config) {
+        initialize: function () {
             var channel = Radio.channel("Util"),
                 context = this;
 
                 this.toggleIsViewMobile();
-            $("#lgv-container").append("<div id='loader'><img src='" + Config.imgProjektPath + "ajax-loader.gif'></div>");
+            $("#lgv-container").append("<div id='loader'><img src='" + this.get("imgProjektPath") + "ajax-loader.gif'></div>");
 
             channel.reply({
                 "isViewMobile": this.getIsViewMobile,
@@ -24,9 +24,9 @@ define([
                 "isWindows": this.isWindows,
                 "isChrome": this.isChrome,
                 "isAny": this.isAny,
-                "lgvConfigPath": Config.lgvConfigPath,
-                "getImgPath": Config.imgPath,
-                "getProjektImgPath": Config.imgProjektPath
+                "lgvConfigPath": this.get("lgvConfigPath"),
+                "getImgPath": this.get("imgPath"),
+                "getProjektImgPath": this.get("imgProjektPath")
             }, this);
 
             channel.on({
