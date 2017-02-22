@@ -235,11 +235,7 @@ define([
             this.setCursor(selected);
 
             // Triggere selektierte Elemente
-            Radio.trigger("MouseHover", "selectedFeatures", selected);
-
-            // Triggere deselektierte Elemente
-            Radio.trigger("MouseHover", "deselectedFeatures", deselected);
-
+            Radio.trigger("MouseHover", "selected", evt);
 
             // Erzeuge Liste selektierter Features
             _.each(selected, function (selFeature) {
