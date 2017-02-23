@@ -18,7 +18,9 @@ define([
         },
         initialize: function () {
             this.listenTo(this.model, {
-                "change:featuresInExtent": this.render
+                "change:featuresInExtent": this.render,
+                "highlightItem": this.highlightItem,
+                "lowlightItem": this.lowlightItem
             });
 
             this.render();
@@ -49,6 +51,18 @@ define([
             var attr = this.model.toJSON();
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
+        },
+        /**
+         * Hebt Zeilen mit dieser id hervor
+         */
+        highlightItem: function (id) {
+            console.log(id);
+        },
+        /**
+         * Aufhebung der Hervorhebung von Zeilen mit dieser id
+         */
+        lowlight: function () {
+            console.log(id);
         }
     });
 
