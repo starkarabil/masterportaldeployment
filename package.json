@@ -1,7 +1,7 @@
 {
-  "name": "LGV-Master",
-  "version": "1.2.1",
-  "description": "LGV Master",
+  "name": "LGV-MML",
+  "version": "mml_0.3",
+  "description": "LGV MML",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,5 +30,5 @@
     "postcss-prefix-selector": "1.5.0",
     "time-grunt": "1.0.0"
   },
-  "title": "LGV Master"
+  "title": "LGV MML"
 }
