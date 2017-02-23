@@ -1,11 +1,11 @@
 define([
-        "eventbus",
-
+    "eventbus",
+    "backbone.radio",
     "openlayers",
     "proj4",
-    "config",
+    "config"
 
-], function (EventBus, ol, proj4, Config) {
+], function (EventBus, Radio, ol, proj4, Config) {
 
     var OrientationModel = Backbone.Model.extend({
         defaults: {
@@ -19,10 +19,11 @@ define([
             tracking: false, // Flag, ob derzeit getrackt wird.
             geolocation: null, // ol.geolocation wird bei erstmaliger Nutzung initiiert.
             position: "",
-            isGeolocationDenied: false
+            isGeolocationDenied: false,
+            markerIcon: "geolocation_marker"
         },
         initialize: function () {
-            this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr);
+            this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).zoomMode);
             if (_.isUndefined(Radio.request("Parser", "getItemByAttributes", {id: "poi"})) === false) {
                 this.setIsPoiOn(Radio.request("Parser", "getItemByAttributes", {id: "poi"}).attr);
             }
@@ -37,6 +38,8 @@ define([
                 "getPOI": this.getPOI,
                 "sendPosition": this.sendPosition
             }, this);
+
+            this.setMarkerIcon();
         },
         /*
         * Triggert die Standpunktkoordinate auf Radio
@@ -87,10 +90,15 @@ define([
             }
         },
         positionMarker: function (position) {
-            try {
-                this.get("marker").setPosition(position);
+            if (this.getMarkerIcon() !== "geolocation_marker") {
+                Radio.trigger("DragMarker", "setPosition", position);
             }
-            catch (e) {
+            else {
+                try {
+                    this.get("marker").setPosition(position);
+                }
+                catch (e) {
+                }
             }
         },
         zoomAndCenter: function (position) {
@@ -214,7 +222,28 @@ define([
 
         getIsGeolocationDenied: function () {
           return this.get("isGeolocationDenied");
+        },
+
+        setOrientationMarkerIcon: function () {
+            if (this.get("markerIcon") !== "geolocation_marker") {
+                this.removeOverlay();
+                $("#geolocation_marker").hide();
+            }
+            else {
+                this.get("marker").setElement(document.getElementById("geolocation_marker"));
+            }
+        },
+
+        setMarkerIcon: function () {
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.markerIcon === "dragMarker") {
+                this.set("markerIcon", "dragMarker");
+            }
+        },
+
+        getMarkerIcon: function () {
+            return this.get("markerIcon");
         }
+
     });
 
     return new OrientationModel();
