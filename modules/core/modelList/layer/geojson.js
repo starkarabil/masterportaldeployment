@@ -14,10 +14,43 @@ define(function (require) {
          */
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.GeoJSON(),
-                url: this.get("url"),
-                features: this.getFeatures()
+                format: new ol.format.GeoJSON()
             }));
+        },
+        /**
+         * Lädt die JSON-Datei und startet parse
+         */
+        updateData: function () {
+            this.fetch({
+                url: this.get("url"),
+                cache: false,
+                error: function () {
+                    Radio.trigger("Alert", "alert", {text: "<strong>Layerdaten (JSON) konnten nicht geladen werden!</strong>", kategorie: "alert-danger"});
+                }
+            });
+        },
+        /**
+         * konvertiert die Daten in ol.features
+         */
+        parse: function (data) {
+            var vectorSource = new ol.source.Vector({
+                    format: new ol.format.GeoJSON()
+                });
+
+            this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
+        },
+
+        updateLayerSourceData(features) {
+            var count = 0;
+
+            features.forEach(function (feature) {
+                if (!feature.getId()) {
+                    feature.setId(count);
+                    count ++;
+                }
+            });
+            this.getLayerSource().clear();
+            this.getLayerSource().addFeatures(features);
         },
 
         /**
@@ -47,6 +80,8 @@ define(function (require) {
                 gfiTheme: this.get("gfiTheme"),
                 id: this.getId()
             }));
+
+            this.updateData();
         },
 
         /**
