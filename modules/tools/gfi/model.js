@@ -100,7 +100,6 @@ define(function (require) {
             }
             this.initView();
         },
-
         /**
          * Prüft ob GFI aktiviert ist und registriert entsprechend den Listener oder eben nicht
          * @param  {String} id - Tool Id
@@ -204,7 +203,7 @@ define(function (require) {
                 }
                 // Cluster Feature
                 else {
-                    if (featureAtPixel.get("features").length === 1) {
+                    if (Radio.request("MapView","getZoomLevel") === 9 && Radio.request("Util","isViewMobile")) {
                         _.each(featureAtPixel.get("features"), function (feature) {
                             modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
                             modelAttributes.feature = feature;
