@@ -2,37 +2,31 @@
     <span class="glyphicon <%= glyphicon %>"></span>
 </div>
 <div id="simple-lister-table" class="simple-lister-table" style="display: <%= display %>">
-    <table class="table">
+    <div class="table">
 
         <%if (featuresInExtent.length <1) {%>
-            <tr>
-                <td><%= errortxt%></td>
-            </tr>
+            <div>
+                <%= errortxt%>
+            </div>
+        <%} else { %>
+            <div class="heading">
+                Einträge x bis y von <%= featuresInExtent.length %>
+            </div>
+            <div class="line"></div>
         <%}%>
         <%_.each(featuresInExtent, function(feature){%>
-            <tr>
-                <td>
-                    <tr>
-                        <td><%= feature.properties.str %> <%= feature.properties.hsnr %></td>
-                    </tr>
-                     <tr>
-                        <td><%= feature.properties.kat %></td>
-                    </tr>
-                    <tr>
-                        <td><%= feature.properties.beschr %></td>
-                    </tr>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <tr>
-                        <td><%= feature.properties.str %> <%= feature.properties.hsnr %></td>
-                    </tr>
-                    <tr>
-                        <td><%= feature.properties.beschr %></td>
-                    </tr>
-                </td>
-            </tr>
+            <div class="entry">
+                <div class="address">
+                    <%= feature.properties.str %> <%= feature.properties.hsnr %>
+                </div>
+                 <div class="category">
+                    <%= feature.properties.kat %>
+                </div>
+                <div class="description">
+                    <%= feature.properties.beschr.length > 50? feature.properties.beschr.substring(0, 50) + "...": feature.properties.beschr%>
+                </div>
+            </div>
+            <div class="line"></div>
         <%});%>
-    </table>
+    </div>
 </div>

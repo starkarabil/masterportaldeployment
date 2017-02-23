@@ -1,13 +1,14 @@
 
 
 .simple-lister-view {
-    position: absolute;
-    top: 100px;
+    position: relative;
+    top: -100%;
     height: 100%;
     width: 100%;
 }
 .simple-lister-button {
-    margin-top: 20px;
+    position: absolute;
+    left: 41%;
 }
 .simple-lister-button > .glyphicon {
     font-size: 20px;
@@ -17,18 +18,37 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 }
 .simple-lister-table {
+    position: relative;
     display: block;
-    height: 50%;
+    height: 100%;
     overflow-x: auto;
-    width: 50%;
+    width: 41%;
     overflow-y: auto;
     background: white;
 }
 
 .simple-lister-table .table {
-    td, tr {
-        border: 0 solid;
+    .heading {
+        height: 68px;
     }
+    .line {
+        height: 5px;
+        background-color: #f7f7f7;
+    }
+    .entry{
+        padding: 18px 7px;
+        font-size: 15px;
+        line-height: 25px;
+        letter-spacing: -0.4;
+        height: 144px;
+        font-family: "HamburgSans-Bold";
+        color: #084798;
+    }
+    .description{
+        color: #333;
+    }
+
 }
+
 
 

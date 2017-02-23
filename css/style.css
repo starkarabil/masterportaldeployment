@@ -2287,13 +2287,14 @@
   /* Likely future */
 }
 .lgv-container .simple-lister-view {
-  position: absolute;
-  top: 100px;
+  position: relative;
+  top: -100%;
   height: 100%;
   width: 100%;
 }
 .lgv-container .simple-lister-button {
-  margin-top: 20px;
+  position: absolute;
+  left: 41%;
 }
 .lgv-container .simple-lister-button > .glyphicon {
   font-size: 20px;
@@ -2303,16 +2304,32 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 }
 .lgv-container .simple-lister-table {
+  position: relative;
   display: block;
-  height: 50%;
+  height: 100%;
   overflow-x: auto;
-  width: 50%;
+  width: 41%;
   overflow-y: auto;
   background: white;
 }
-.lgv-container .simple-lister-table .table td,
-.lgv-container .simple-lister-table .table tr {
-  border: 0 solid;
+.lgv-container .simple-lister-table .table .heading {
+  height: 68px;
+}
+.lgv-container .simple-lister-table .table .line {
+  height: 5px;
+  background-color: #f7f7f7;
+}
+.lgv-container .simple-lister-table .table .entry {
+  padding: 18px 7px;
+  font-size: 15px;
+  line-height: 25px;
+  letter-spacing: -0.4;
+  height: 144px;
+  font-family: "HamburgSans-Bold";
+  color: #084798;
+}
+.lgv-container .simple-lister-table .table .description {
+  color: #333;
 }
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
