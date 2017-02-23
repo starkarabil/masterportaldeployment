@@ -21,7 +21,12 @@ define([
             markerIcon: "geolocation_marker"
         },
         initialize: function () {
-            this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).zoomMode);
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.zoomMode) {
+              this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.zoomMode);
+            }
+            else {
+              this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr);
+            }
             if (_.isUndefined(Radio.request("Parser", "getItemByAttributes", {id: "poi"})) === false) {
                 this.setIsPoiOn(Radio.request("Parser", "getItemByAttributes", {id: "poi"}).attr);
             }
