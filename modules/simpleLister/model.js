@@ -1,11 +1,12 @@
 define([
+    "openlayers"
 
 ], function () {
 
-    var
-        SimpleLister;
+    var ol = require("openlayers"),
+        SimpleListerModel;
 
-    SimpleLister = Backbone.Model.extend({
+    SimpleListerModel = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
@@ -15,6 +16,7 @@ define([
         },
 
         initialize: function () {
+            Radio.on("MouseHover", "selected", this.mouseHoverSelected, this);
             Radio.trigger("Map", "registerListener", "moveend", this.getLayerFeaturesInExtent, this);
             this.getParams();
         },
@@ -96,8 +98,38 @@ define([
         // getter für featuresPerPage
         getFeaturesPerPage: function () {
             return this.get("featuresPerPage");
+        },
+
+        mouseHoverSelected: function (evt) {
+            _.each(evt.selected, function (feature) {
+                var selLayer = evt.target.getLayer(feature),
+                    isClusterFeature = selLayer ? selLayer.getSource() instanceof ol.source.Cluster : null;
+
+                if (isClusterFeature) {
+                    _.each(feature.get("features"), function (subfeature) {
+                        this.trigger("highlightItem", subfeature.getId());
+                    }, this);
+                }
+                else {
+                    this.trigger("highlightItem", feature.getId());
+                }
+            }, this);
+
+            _.each(evt.deselected, function (feature) {
+                var selLayer = evt.target.getLayer(feature),
+                    isClusterFeature = selLayer ? selLayer.getSource() instanceof ol.source.Cluster : null;
+
+                if (isClusterFeature) {
+                    _.each(feature.get("features"), function (subfeature) {
+                        this.trigger("lowlightItem", subfeature.getId());
+                    }, this);
+                }
+                else {
+                    this.trigger("lowlightItem", feature.getId());
+                }
+            }, this);
         }
     });
 
-    return SimpleLister;
+    return SimpleListerModel;
 });
