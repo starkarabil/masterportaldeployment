@@ -10,8 +10,6 @@ define(function (require) {
     DragMarkerModel = Backbone.Model.extend({
         defaults: {
             coordinate: [565754, 5933960], // Start-Koordinate
-            cursor: "pointer",
-            previousCursor: undefined,
             featureName: "DragMarkerPoint",
             dragMarkerLayer: new ol.layer.Vector({
                 source: new ol.source.Vector(),
@@ -28,8 +26,8 @@ define(function (require) {
                 visible: true
             }),
             dragInteraction: new ol.interaction.Pointer({
-                handleDownEvent: function () {
-                    return Radio.request("DragMarker", "handleDownEvent");
+                handleDownEvent: function (evt) {
+                    return Radio.request("DragMarker", "handleDownEvent", evt);
                 },
                 handleDragEvent: function (evt) {
                     Radio.trigger("DragMarker", "handleDragEvent", evt);
@@ -78,7 +76,6 @@ define(function (require) {
             // Prepare Map
             Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
             Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
-            Radio.trigger("Map", "registerListener", "pointerdrag", this.featureAtPixel, this);
 
             // Set defaults
             this.setPosition(this.get("coordinate"));
@@ -94,6 +91,10 @@ define(function (require) {
                 url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
 
             this.set("url", url);
+        },
+
+        checkInitialVisibility: function () {
+            var visible = Radio.request("Parser", "getPortalConfig").mapMarkerModul.visible;
 
             if (visible === false) {
                 this.hideMarker();
@@ -170,21 +171,6 @@ define(function (require) {
             this.set("nearestAddress", response);
         },
 
-        featureAtPixel: function (evt) {
-            if (this.get("featureAtPixel") === null) {
-                var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-                    return feature;
-                });
-
-                if (feature && feature.get("name") === this.get("featureName")) {
-                    this.set("featureAtPixel", feature);
-                }
-                else {
-                    this.set("featureAtPixel", null);
-                }
-            }
-        },
-
         // gets called when address gets selected
         searchbarhit: function (hit) {
             var coord = _.isArray(hit.coordinate) ? hit.coordinate : _.map(hit.coordinate.split(" "), function (t) {
@@ -223,7 +209,7 @@ define(function (require) {
 
         // Wird auf listenTo "change:nearestAddress" registriert. Liefert Adressobjekt bzw. Fehlerobjekt aus.
         sendNewAddress: function () {
-            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"))
+            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"));
         },
 
         // Wird auf Radio "requestAddress" ausgeführt. Prüft, ob gültige Adresse ermittelt wurde und triggert diese sofort bzw. initiiert eine neue Abfrage
@@ -243,50 +229,41 @@ define(function (require) {
 
         // INTERACTION EVENTS
         // start Event
-        handleDownEvent: function () {
-            var featureAtPixel = this.get("featureAtPixel");
+        handleDownEvent: function (evt) {
+            var hasFeaturesAtPixel = evt.map.hasFeatureAtPixel(evt.pixel);
 
-            if (featureAtPixel) {
-                this.set("coordinate", featureAtPixel.getGeometry().getCoordinates());
-                this.set("dragMarkerFeature", featureAtPixel);
+            if (hasFeaturesAtPixel === true) {
+                var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                    return feature;
+                });
+
+                if (feature.get("name") === this.get("featureName")) {
+                    this.set("featureAtPixel", feature);
+                    this.set("coordinate", feature.getGeometry().getCoordinates());
+                    this.set("dragMarkerFeature", feature);
+                }
             }
-            return !!featureAtPixel;
+
+            return hasFeaturesAtPixel;
         },
 
         // calculates move-vector
         handleDragEvent: function (evt) {
-            var evtCoordinate = evt.coordinate,
-                isInside = this.isInsideHH(evtCoordinate);
+            if (_.isNull(this.get("featureAtPixel")) === false) {
+                var evtCoordinate = evt.coordinate,
+                    isInside = this.isInsideHH(evtCoordinate);
 
-            if (isInside) {
-                this.set("coordinate", evtCoordinate);
-                this.get("dragMarkerFeature").getGeometry().setCoordinates([evtCoordinate[0], evtCoordinate[1]]);
-            }
-        },
-
-        // switch cursorstyles. Macht nur Sinn, wenn nicht mobileDevice
-        handleMoveEvent: function () {
-            if (_.isNull(Radio.request("Util", "isAny")) === false) {
-                var featureAtPixel = this.get("featureAtPixel"),
-                    element = $("#map")[0],
-                    actualCursor = this.get("cursor"),
-                    prevCursor = this.get("previousCursor");
-
-                if (featureAtPixel) {
-                    if (element.style.cursor !== actualCursor) {
-                        this.set("previousCursor", element.style.cursor);
-                        element.style.cursor = actualCursor;
-                    }
-                }
-                else if (prevCursor !== undefined) {
-                    element.style.cursor = prevCursor;
-                    this.set("previousCursor", undefined);
+                document.body.style.cursor = "pointer";
+                if (isInside) {
+                    this.set("coordinate", evtCoordinate);
+                    this.get("dragMarkerFeature").getGeometry().setCoordinates([evtCoordinate[0], evtCoordinate[1]]);
                 }
             }
         },
 
         // stop Event
         handleUpEvent: function () {
+            document.body.style.cursor = "default";
             this.requestNewAddress();
             this.set("dragMarkerFeature", null);
             this.set("featureAtPixel", null);
