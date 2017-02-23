@@ -6,7 +6,6 @@ define([
 
     var Template = require("text!modules/simpleLister/template.html"),
         SimpleLister = require("modules/simpleLister/model"),
-
         SimpleListerView;
 
     SimpleListerView = Backbone.View.extend({
