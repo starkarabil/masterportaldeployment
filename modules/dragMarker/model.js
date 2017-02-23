@@ -44,7 +44,7 @@ define(function (require) {
             dragMarkerFeature: null,
             featureAtPixel: null,
             sourceHH: null,
-            url: "../mml/landesgrenze_hh.json",
+            url: "",
             nearestAddress: null
         },
 
@@ -82,12 +82,18 @@ define(function (require) {
 
             // Set defaults
             this.setPosition(this.get("coordinate"));
+            this.readConfig();
             this.getBoundaryHH();
-            this.checkInitialVisibility();
         },
 
-        checkInitialVisibility: function () {
-            var visible = Radio.request("Parser","getPortalConfig").mapMarkerModul.visible;
+        readConfig: function () {
+            var config = Radio.request("Parser","getPortalConfig").mapMarkerModul,
+                visible = config.visible ? config.visible : false,
+                landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
+                landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
+                url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
+
+            this.set("url", url);
 
             if (visible === false) {
                 this.hideMarker();
@@ -111,7 +117,7 @@ define(function (require) {
         // liest die landesgrenze_hh.json ein und ruft dann parse auf
         getBoundaryHH: function () {
             this.fetch({
-                url: this.get("url"),
+                url: Radio.request("Util", "getPath", this.get("url")),
                 cache: false,
                 error: function () {
                     Radio.trigger("Alert", "alert", {text: "<strong>Landesgrenze kann nicht geladen werden!", kategorie: "alert-danger"});
