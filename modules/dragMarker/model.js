@@ -21,7 +21,7 @@ define(function (require) {
                         anchorXUnits: "pixels",
                         anchorYUnits: "pixels",
                         opacity: 0.7,
-                        src: "../../components/lgv-config/img/marker_red_small.png"
+                        src: Radio.request("Util", "getImgPath") + "marker_red_small.png"
                     })
                 }),
                 alwaysOnTop: true,
@@ -44,12 +44,12 @@ define(function (require) {
             dragMarkerFeature: null,
             featureAtPixel: null,
             sourceHH: null,
-            url: "",
-            nearestAddress: null
+            url: ""
         },
 
         initialize: function () {
             EventBus.on("searchbar:hit", this.searchbarhit, this);
+
 
             // Radio channel
             var channel = Radio.channel("DragMarker");
