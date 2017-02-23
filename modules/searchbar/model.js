@@ -21,14 +21,30 @@ define([
             if (Config.quickHelp) {
                 this.set("quickHelp", Config.quickHelp);
             }
+
+            var channel = Radio.channel("Searchbar");
+
+            channel.on({
+                "hide": this.hideSearchbar,
+                "show": this.showSearchbar
+            }, this);
+
+
             EventBus.on("createRecommendedList", this.createRecommendedList, this);
             EventBus.on("searchbar:pushHits", this.pushHits, this);
 
             if (_.isUndefined(Radio.request("ParametricURL", "getInitString")) === false) {
                 this.setInitSearchString(Radio.request("ParametricURL", "getInitString"));
             }
+
         },
 
+        hideSearchbar: function () {
+            $("#searchForm").hide();
+        },
+        showSearchbar: function () {
+            $("#searchForm").show();
+        },
         setInitSearchString: function (value) {
             this.set("initSearchString", value);
         },

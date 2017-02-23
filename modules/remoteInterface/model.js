@@ -33,11 +33,19 @@ define(function () {
                 "showLayers": this.showLayers,
                 "showDragMarker": this.showDragMarker,
                 "hideDragMarker": this.hideDragMarker,
-                "requestDragMarkerAddress": this.requestDragMarkerAddress
+                "requestDragMarkerAddress": this.requestDragMarkerAddress,
+                "hideSearchbar": this.hideSearchbar,
+                "showSearchbar": this.showSearchbar
             }, this);
 
             Radio.on("Map", "changedExtent", this.changedExtent);
             Radio.on("DragMarker", "newAddress", this.newDragMarkerAddress);
+        },
+        showSearchbar: function () {
+            Radio.trigger("Searchbar","show");
+        },
+        hideSearchbar: function () {
+            Radio.trigger("Searchbar","hide");
         },
 
         showDragMarker: function () {
