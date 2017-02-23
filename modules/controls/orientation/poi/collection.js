@@ -1,13 +1,16 @@
 define([
-
+    "backbone.radio",
     "modules/controls/orientation/poi/feature/model",
-    "eventbus",
     "openlayers"
-], function (PointOfInterest, EventBus, ol) {
+], function (Radio, PointOfInterest, ol) {
 
     var PointOfInterestList = Backbone.Collection.extend({
         initialize: function () {
-            EventBus.on("setModel", this.setModel, this);
+            var channel = Radio.channel("POICollection");
+
+            channel.on({
+                "setModel": this.setModel
+            }, this);
         },
         comparator: "distance",
         setModel: function (clusterFeature, maxDist, newCenter, layer) {
