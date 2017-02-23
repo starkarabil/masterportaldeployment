@@ -1,17 +1,33 @@
 .mouseHover {
-    font-size: 12px;
-    text-align: left;
-    max-width: inherit;
-    padding: 8px;
-    background-color: rgb(255, 255, 255);
-    color: #777;
-    /*display: block;*/
-    white-space: pre;
-    border: 1px solid rgba(0, 0, 0, .2);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    text-align: left !important;
+    max-width: inherit !important;
+    background-color: #ffffff !important;
+    color: #005ca9 !important;
+    white-space: pre !important;
+    border-radius: 3px !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
+    padding: 9px 14px 6px 14px !important;
+    opacity: 1 !important;
 }
 
-.mouseHover span:first-child {
-    font-size: 13px;
+.mouseHoverTitle {
+    font-family: HamburgSans;
+    font-size: 14px;
     font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.61;
+    letter-spacing: -0.4px;
+    color: #005ca9;
+}
+
+.mouseHoverText {
+    font-family: HamburgSans;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.14;
+    letter-spacing: -0.4px;
+    color: #005ca9;
 }
