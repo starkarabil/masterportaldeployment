@@ -95,6 +95,12 @@
     font-size: 12px;
     padding-right: 32.5px;
 }
+/*mml template*/
+#searchForm-mml #searchInput {
+    box-shadow: none;
+    font-size: 14px;
+    padding-right: 32.5px;
+}
 
 #searchInput::-ms-clear {
     display: none;

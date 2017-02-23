@@ -22,6 +22,7 @@
   /*mml template*/
   /*mml template*/
   /*mml template*/
+  /*mml template*/
   /***** ToggleButton *****/
   /***** ZoomButtons *****/
   /***** FullScreen *****/
@@ -1225,6 +1226,11 @@
 .lgv-container #searchInput {
   box-shadow: none;
   font-size: 12px;
+  padding-right: 32.5px;
+}
+.lgv-container #searchForm-mml #searchInput {
+  box-shadow: none;
+  font-size: 14px;
   padding-right: 32.5px;
 }
 .lgv-container #searchInput::-ms-clear {
