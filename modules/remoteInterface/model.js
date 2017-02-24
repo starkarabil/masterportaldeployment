@@ -26,7 +26,6 @@ define(function () {
                 "setZoomLevel": this.setZoomLevel,
                 "showAllFeatures": this.showAllFeatures,
                 "showFeatures": this.showFeatures,
-                "showLayer": this.showLayer,
                 "showMapMarker": this.showMapMarker,
                 "updateMapSize": this.updateMapSize,
                 "zoomToFeature": this.zoomToFeature,
@@ -121,16 +120,12 @@ define(function () {
             Radio.trigger("DragMarker", "setPosition", coordinate);
         },
 
-        showLayer: function (value) {
-            Radio.trigger("ModelList", "showLayer", value);
-        },
-
         showMarker: function (value) {
             Radio.trigger("MapMarker", "showMarker", value);
         },
 
-        showLayers: function (layerNames) {
-            Radio.trigger("ModelList", "showLayers", layerNames);
+        showLayers: function (layerNames, only) {
+            Radio.trigger("ModelList", "showLayers", layerNames, only);
         },
 
         updateMapSize: function () {
