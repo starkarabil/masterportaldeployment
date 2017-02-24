@@ -170,6 +170,9 @@ define(function (require) {
                         $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
                 }
             }
+            this.listenTo(Radio.channel("DragMarker"), {
+                "newAddress": this.newDragMarkerAddress
+            }, this);
         },
         events: {
             "paste input": "setSearchString",
@@ -575,6 +578,19 @@ define(function (require) {
 
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
+        },
+
+        /**
+        * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
+        */
+        newDragMarkerAddress: function (response) {
+            if (!response.error) {
+                this.model.set("searchString", response.streetname + " " + response.housenumber);
+            }
+            else {
+                this.model.set("searchString", "");
+            }
+            this.render();
         }
     });
 
