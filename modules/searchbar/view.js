@@ -591,6 +591,7 @@ define(function (require) {
                 this.model.set("searchString", "");
             }
             this.render();
+            $("#searchInput").blur();
         }
     });
 
