@@ -10,23 +10,25 @@
             </div>
         <%} else { %>
             <div class="heading">
-                Einträge x bis y von <%= featuresInExtent.length %>
+                1 - 20 von <%= featuresInExtent.length %>
             </div>
             <div class="line"></div>
         <%}%>
-        <%_.each(featuresInExtent, function(feature){%>
-            <div class="entry">
-                <div class="address">
-                    <%= feature.properties.str %> <%= feature.properties.hsnr %>
+        <div class="entries">
+            <%_.each(featuresInExtent, function(feature){%>
+                <div class="entry">
+                    <div class="address">
+                        <%= feature.properties.str %> <%= feature.properties.hsnr %>
+                    </div>
+                     <div class="category">
+                        <%= feature.properties.kat %>
+                    </div>
+                    <div class="description">
+                        <%= feature.properties.beschr.length > 50? feature.properties.beschr.substring(0, 50) + "...": feature.properties.beschr%>
+                    </div>
                 </div>
-                 <div class="category">
-                    <%= feature.properties.kat %>
-                </div>
-                <div class="description">
-                    <%= feature.properties.beschr.length > 50? feature.properties.beschr.substring(0, 50) + "...": feature.properties.beschr%>
-                </div>
-            </div>
-            <div class="line"></div>
-        <%});%>
+                <div class="line"></div>
+            <%});%>
+        </div>
     </div>
 </div>

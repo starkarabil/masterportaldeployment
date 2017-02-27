@@ -2307,20 +2307,30 @@
   position: relative;
   display: block;
   height: 100%;
-  overflow-x: auto;
   width: 41%;
-  overflow-y: auto;
   background: white;
 }
+.lgv-container .simple-lister-table .table {
+  height: 100%;
+  width: 100%;
+  margin-bottom: 0px;
+}
+.lgv-container .simple-lister-table .table .entries {
+  max-height: 89%;
+  overflow: auto;
+  width: 100%;
+}
 .lgv-container .simple-lister-table .table .heading {
-  height: 68px;
+  padding: 18px 26px;
+  height: 10%;
+  font-size: 15px;
 }
 .lgv-container .simple-lister-table .table .line {
   height: 5px;
   background-color: #f7f7f7;
 }
 .lgv-container .simple-lister-table .table .entry {
-  padding: 18px 7px;
+  padding: 18px 0 0 26px;
   font-size: 15px;
   line-height: 25px;
   letter-spacing: -0.4;

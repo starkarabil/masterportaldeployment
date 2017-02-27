@@ -21,22 +21,30 @@
     position: relative;
     display: block;
     height: 100%;
-    overflow-x: auto;
     width: 41%;
-    overflow-y: auto;
     background: white;
 }
 
 .simple-lister-table .table {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 0px;
+    .entries {
+        max-height: 89%;
+        overflow: auto;
+        width: 100%;
+    }
     .heading {
-        height: 68px;
+        padding: 18px 26px;
+        height: 10%;
+        font-size: 15px;
     }
     .line {
         height: 5px;
         background-color: #f7f7f7;
     }
     .entry{
-        padding: 18px 7px;
+        padding: 18px 0 0 26px;
         font-size: 15px;
         line-height: 25px;
         letter-spacing: -0.4;
