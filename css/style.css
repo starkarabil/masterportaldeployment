@@ -2336,16 +2336,17 @@
   height: 100%;
   width: 100%;
 }
-.lgv-container .simple-lister-button {
-  position: absolute;
-  left: 41%;
-}
+
 .lgv-container .simple-lister-button > .glyphicon {
+  top: 7px;
   font-size: 12px;
+  position: absolute;
   padding: 21px 12px 21px 12px;
   color: #999999;
   background-color: #fff;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+}
+.lgv-container .simple-lister-button  > .glyphicon-triangle-left {
+  left: 41%;
 }
 .lgv-container .simple-lister-table {
   position: relative;

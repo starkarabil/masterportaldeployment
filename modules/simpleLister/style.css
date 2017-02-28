@@ -6,16 +6,16 @@
     height: 100%;
     width: 100%;
 }
-.simple-lister-button {
-    position: absolute;
-    left: 41%;
-}
 .simple-lister-button > .glyphicon {
-    font-size: 12px;
-    padding: 21px 12px 21px 12px;
-    color:  #999999;
-    background-color: rgb(182, 0, 0);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+  top: 7px;
+  font-size: 12px;
+  position: absolute;
+  padding: 21px 12px 21px 12px;
+  color: #999999;
+  background-color: #fff;
+}
+.simple-lister-button  > .glyphicon-triangle-left {
+  left: 41%;
 }
 .simple-lister-table {
     position: relative;
