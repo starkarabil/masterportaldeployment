@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'HamburgSans-Regular';
+    src: url('woffs/HamburgSans-Regular.eot'); /* IE9 Compat Modes */
+    src: url('woffs/HamburgSans-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('woffs/HamburgSans-Regular.woff2') format('woff2'), /* Modern Browsers */
+         url('woffs/HamburgSans-Regular.woff') format('woff'), /* Modern Browsers */
+         url('woffs/HamburgSans-Regular.svg#woffs/HamburgSans-Regular') format('svg');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+    font-family: 'HamburgSans-Italic';
+    src: url('woffs/HamburgSans-Italic.eot'); /* IE9 Compat Modes */
+    src: url('woffs/HamburgSans-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('woffs/HamburgSans-Italic.woff2') format('woff2'), /* Modern Browsers */
+         url('woffs/HamburgSans-Italic.woff') format('woff'), /* Modern Browsers */
+         url('woffs/HamburgSans-Italic.svg#woffs/HamburgSans-Italic') format('svg');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+    font-family: 'HamburgSans-Bold';
+    src: url('woffs/HamburgSans-Bold.eot'); /* IE9 Compat Modes */
+    src: url('woffs/HamburgSans-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('woffs/HamburgSans-Bold.woff2') format('woff2'), /* Modern Browsers */
+         url('woffs/HamburgSans-Bold.woff') format('woff'), /* Modern Browsers */
+         url('woffs/HamburgSans-Bold.svg#woffs/HamburgSans-Bold') format('svg');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+    font-family: 'HamburgSans-BoldItalic';
+    src: url('woffs/HamburgSans-BoldItalic.eot'); /* IE9 Compat Modes */
+    src: url('woffs/HamburgSans-BoldItalic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('woffs/HamburgSans-BoldItalic.woff2') format('woff2'), /* Modern Browsers */
+         url('woffs/HamburgSans-BoldItalic.woff') format('woff'), /* Modern Browsers */
+         url('woffs/HamburgSans-BoldItalic.svg#woffs/HamburgSans-BoldItalic') format('svg');
+	font-weight: 700;
+	font-style: italic;
+}
