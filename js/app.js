@@ -28,7 +28,10 @@ define("app",
     // Core laden
     new Alert();
     new Autostarter();
-    new Util();
+    new Util({lgvConfigPath: Config.lgvConfigPath,
+              imgPath: Config.imgPath,
+              imgProjektPath: Config.imgProjektPath
+              });
     new RawLayerList();
     new Preparser();
     new ParametricURL();
@@ -176,6 +179,7 @@ define("app",
                 case "gfi": {
                     require(["modules/tools/gfi/model"], function (GfiModel) {
                         new GfiModel();
+                        decModulesLoading();
                     });
                     break;
                 }

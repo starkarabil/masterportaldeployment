@@ -1,21 +1,13 @@
-define([
+define(function (require) {
+    var Model = require("modules/mouseHover/model"),
+        MouseHoverView;
 
-    "modules/mouseHover/model",
-    "eventbus"
-], function (MouseHoverPopup, EventBus) {
-
-    var MouseHoverPopupView = Backbone.View.extend({
-        model: MouseHoverPopup,
+    MouseHoverView = Backbone.View.extend({
+        model: Model,
         id: "mousehoverpopup",
         initialize: function () {
             this.listenTo(this.model, "change:mhpresult", this.render);
-            EventBus.on("closeMouseHoverPopup", this.destroy, this);
-            Radio.trigger("Map", "addOverlay", this.model.get("mhpOverlay"));
         },
-        /**
-        * html = true damit </br> korrekt bei cluster
-        * erkannt werden
-        */
         render: function () {
             $(this.model.get("element")).tooltip({
                 html: true,
@@ -25,11 +17,8 @@ define([
                 animation: true
             });
             this.model.showPopup();
-        },
-        destroy: function () {
-            this.model.destroyPopup();
         }
     });
 
-    return MouseHoverPopupView;
+    return MouseHoverView;
 });

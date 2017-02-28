@@ -62,6 +62,11 @@
 */
   /***** Destop *****/
   /***** Mobil *****/
+  /*mml template*/
+  /*mml template*/
+  /*mml template*/
+  /*mml template*/
+  /*mml template*/
   /***** ToggleButton *****/
   /***** ZoomButtons *****/
   /***** FullScreen *****/
@@ -96,6 +101,9 @@
   /*-------------------Selection/Settings----------------------*/
   /**************** Layer Settings ****************/
   /**************** Layer Settings Button Animation ****************/
+  /* Bootstrap Popover Klassen */
+  /* Desktop GFI */
+  /* Desktop Detached */
 }
 .lgv-container .colorpicker-saturation {
   width: 100px;
@@ -1195,6 +1203,12 @@
   #searchInput {
     min-width: 200px;
   }
+  /*mml template*/
+  #searchForm-mml #searchInput {
+    max-width: 350px;
+    height: 55px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  }
   #searchInputUL {
     min-width: 200px;
   }
@@ -1211,6 +1225,11 @@
   #searchInput {
     max-width: 350px;
   }
+  /*mml template*/
+  #searchForm-mml #searchInput {
+    height: 55px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  }
   #searchInputUL {
     min-width: 300px;
   }
@@ -1218,7 +1237,7 @@
 .lgv-container #searchbarInMap {
   position: absolute;
   left: 20px;
-  top: 150px;
+  top: 7px;
   max-width: 350px;
 }
 .lgv-container #searchInputLi {
@@ -1228,6 +1247,10 @@
   margin: 0;
 }
 .lgv-container #searchForm > .input-group {
+  width: 100%;
+  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
+}
+.lgv-container #searchForm-mml > .input-group {
   width: 100%;
   font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
@@ -1252,11 +1275,25 @@
   font-size: 12px;
   padding-right: 32.5px;
 }
+.lgv-container #searchForm-mml #searchInput {
+  box-shadow: none;
+  font-size: 14px;
+  padding-right: 32.5px;
+}
 .lgv-container #searchInput::-ms-clear {
   display: none;
 }
 .lgv-container #searchInput + span {
   right: 38px;
+  z-index: 3;
+  color: #777777;
+  display: none;
+  pointer-events: all;
+  cursor: pointer;
+}
+.lgv-container #searchForm-mml #searchInput + span {
+  right: 55px;
+  top: 11px;
   z-index: 3;
   color: #777777;
   display: none;
@@ -1317,6 +1354,18 @@
   background: -o-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -ms-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   /*border-left: 0;*/
+}
+.lgv-container #searchForm-mml .btn-search {
+  width: 55px;
+  height: 55px;
+  border-radius: 3px;
+  border-style: none;
+  background-color: #0f5cad;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.lgv-container #searchForm-mml .btn-search > .glyphicon-search {
+  font-size: 14px;
+  color: white;
 }
 .lgv-container .btn-search:hover {
   background: #ffffff;
@@ -1716,20 +1765,35 @@
   height: 100%;
 }
 .lgv-container .mouseHover {
-  font-size: 12px;
-  text-align: left;
-  max-width: inherit;
-  padding: 8px;
-  background-color: #ffffff;
-  color: #777;
-  /*display: block;*/
-  white-space: pre;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  text-align: left !important;
+  max-width: inherit !important;
+  background-color: #ffffff !important;
+  color: #005ca9 !important;
+  white-space: pre !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
+  padding: 9px 14px 6px 14px !important;
+  opacity: 1 !important;
 }
-.lgv-container .mouseHover span:first-child {
-  font-size: 13px;
+.lgv-container .mouseHoverTitle {
+  font-family: HamburgSans;
+  font-size: 14px;
   font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.61;
+  letter-spacing: -0.4px;
+  color: #005ca9;
+}
+.lgv-container .mouseHoverText {
+  font-family: HamburgSans;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 2.14;
+  letter-spacing: -0.4px;
+  color: #005ca9;
 }
 .lgv-container .featurelist-list-table-th-sorted {
   color: black !important;
@@ -2295,6 +2359,146 @@
   width: 20px;
   height: 20px;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.lgv-container .popover {
+  padding: 0;
+  max-width: 600px;
+  border: 0;
+}
+.lgv-container .popover-content {
+  padding: 0;
+}
+.lgv-container .gfi .panel {
+  margin-bottom: 0;
+}
+.lgv-container .gfi {
+  border: 1px solid #e5e5e5;
+  color: #555555;
+  font-family: "UniversNextW01-Regular", sans-serif;
+}
+.lgv-container .gfi > .gfi-header {
+  font-size: 14px;
+  padding: 8px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #e7e7e7;
+  background: -moz-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -webkit-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -o-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background: -ms-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  color: #777;
+  height: 34px;
+  font-size: 16px;
+}
+.lgv-container .gfi > .gfi-header > .title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.lgv-container .gfi > .gfi-header > .buttons {
+  margin: 0 0 0 10px;
+  cursor: pointer;
+}
+.lgv-container .gfi > .gfi-content {
+  max-height: 40vh;
+  font-size: 13px;
+  overflow: auto;
+}
+.lgv-container .gfi table {
+  margin: 0;
+  margin-bottom: 4px;
+}
+.lgv-container .gfi-detached {
+  position: absolute;
+  min-width: 25%;
+  max-width: 40%;
+  top: 0;
+  margin: 1% 1% 1% 1%;
+  display: hide;
+  background-color: #ffffff;
+  box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.3);
+}
+.lgv-container .gfi-detached > .gfi-header > .title {
+  cursor: move;
+}
+.lgv-container .gfi-footer {
+  padding: 0;
+  color: #777777;
+  text-align: center;
+  font-size: 22px;
+}
+.lgv-container .gfi-footer > div {
+  background: #f3f3f3;
+  padding: 6px;
+  cursor: pointer;
+  width: 50%;
+}
+.lgv-container .gfi-footer > .disabled {
+  cursor: not-allowed;
+  background-color: #ffffff;
+  opacity: 0.2;
+}
+.lgv-container .gfi-footer > .pager-left {
+  float: left;
+  border-right: 1px solid #ddd;
+}
+.lgv-container .gfi-footer > .pager-right {
+  float: right;
+}
+.lgv-container .gfi-table-hover-link > tbody > tr:hover {
+  background-color: #337ab7;
+  color: #fff;
+  cursor: pointer;
+}
+.lgv-container #gfi-mobil {
+  color: #555555;
+  font-size: 14px;
+  overflow-y: auto;
+}
+.lgv-container .gfi-mobile .modal-header {
+  padding: 0;
+  border-bottom: 0;
+}
+.lgv-container .gfi-mobile .modal-title {
+  padding: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.lgv-container .gfi-mobile .glyphicon-remove {
+  font-size: 16px;
+  float: right;
+  padding: 12px;
+}
+.lgv-container .gfi-mobile .modal-body {
+  padding: 0;
+}
+.lgv-container .gfi-mobile table {
+  margin: 0;
+}
+.lgv-container .gfi-footer {
+  padding: 0;
+  color: #777777;
+  text-align: center;
+  font-size: 22px;
+}
+.lgv-container .gfi-footer > div {
+  background: #f3f3f3;
+  padding: 6px;
+  cursor: pointer;
+  width: 50%;
+}
+.lgv-container .gfi-footer > .disabled {
+  cursor: not-allowed;
+  background-color: #ffffff;
+  opacity: 0.2;
+}
+.lgv-container .gfi-footer > .pager-left {
+  float: left;
+  border-right: 1px solid #ddd;
+}
+.lgv-container .gfi-footer > .pager-right {
+  float: right;
 }
 .lgv-container .baselayerToggle {
   position: absolute;
@@ -8969,3 +9173,4 @@ https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
     opacity:0;
     width: 0px;
 }
+
