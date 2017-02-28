@@ -18,7 +18,7 @@ define([
             this.getParams();
         },
         getParams: function () {
-            var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
+            var simpleLister = Radio.request("Parser", "getPortalConfig").simpleLister;
 
             this.setLayerId(simpleLister.layerId);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
@@ -51,7 +51,7 @@ define([
         },
         // setter for glyphicon
         setGlyphicon: function (value) {
-            this.set("glyphicon",value);
+            this.set("glyphicon", value);
         },
 
         // getter for display
@@ -60,7 +60,7 @@ define([
         },
         // setter for display
         setDisplay: function (value) {
-            this.set("display",value);
+            this.set("display", value);
         },
 
         // getter for layerId

@@ -1236,8 +1236,9 @@
 }
 .lgv-container #searchbarInMap {
   position: absolute;
-  left: 20px;
+  left: 43px;
   top: 7px;
+  right: 28px;
   max-width: 350px;
 }
 .lgv-container #searchInputLi {
@@ -1248,11 +1249,11 @@
 }
 .lgv-container #searchForm > .input-group {
   width: 100%;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
+  font-family: "HamburgSans-Regular", Arial, sans-serif;
 }
 .lgv-container #searchForm-mml > .input-group {
   width: 100%;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
+  font-family: "HamburgSans-Regular", Arial, sans-serif;
 }
 .lgv-container #autoCompleteBody {
   border-top: 0 none;
@@ -2512,7 +2513,7 @@
 }
 .lgv-container .baselayerToggleText {
   color: white;
-  font-size: large;
+  font-family: "HamburgSans-Bold";
   text-align: center;
   line-height: 40px;
 }
@@ -2538,7 +2539,7 @@
   position: relative;
   top: -100%;
   height: 100%;
-  width: 100%;
+  width: 41%;
 }
 
 .lgv-container .simple-lister-button > .glyphicon {
@@ -2550,13 +2551,13 @@
   background-color: #fff;
 }
 .lgv-container .simple-lister-button  > .glyphicon-triangle-left {
-  left: 41%;
+  left: 100%;
 }
 .lgv-container .simple-lister-table {
   position: relative;
   display: block;
   height: 100%;
-  width: 41%;
+  width: 100%;
   background: white;
 }
 .lgv-container .simple-lister-table .table {
@@ -2571,9 +2572,9 @@
 }
 .lgv-container .simple-lister-table .table .heading {
   padding: 18px 26px;
+  width: 100%;
   height: 10%;
   font-size: 15px;
-  width: 319px;
   font-family: "HamburgSans-Bold";
   line-height: 2;
   letter-spacing: -0.5px;
@@ -9173,4 +9174,3 @@ https://github.com/videojs/video.js/blob/master/src/css/video-js.less */
     opacity:0;
     width: 0px;
 }
-
