@@ -38,6 +38,11 @@
         padding: 18px 26px;
         height: 10%;
         font-size: 15px;
+        width: 319px;
+        font-family: HamburgSans-Bold;
+        line-height: 2;
+        letter-spacing: -0.5px;
+        color: #333333;
     }
     .line {
         height: 5px;
@@ -54,9 +59,10 @@
     }
     .description{
         color: #333;
+        font-family: "HamburgSans";
+        font-size: 15px;
+        line-height: 1.67;
+        letter-spacing: -0.4px;
     }
 
 }
-
-
-

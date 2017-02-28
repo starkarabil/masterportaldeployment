@@ -27,13 +27,13 @@ define([
         toggleSimpleList: function () {
             var glyphicon = this.model.getGlyphicon();
 
-            if (glyphicon === "glyphicon-chevron-right") {
+            if (glyphicon === "glyphicon-triangle-right") {
                 this.getLayerFeaturesInExtent();
-                this.model.setGlyphicon("glyphicon-chevron-left");
+                this.model.setGlyphicon("glyphicon-triangle-left");
                 this.model.setDisplay("block");
             }
             else {
-                this.model.setGlyphicon("glyphicon-chevron-right");
+                this.model.setGlyphicon("glyphicon-triangle-right");
                 this.model.setDisplay("none");
             }
             this.render();

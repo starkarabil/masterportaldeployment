@@ -9,7 +9,7 @@ define([
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20,
-            glyphicon: "glyphicon-chevron-right",
+            glyphicon: "glyphicon-triangle-right",
             display: "none"
         },
 
