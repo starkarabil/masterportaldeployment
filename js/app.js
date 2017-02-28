@@ -164,6 +164,20 @@ define("app",
             });
         }
 
+        var mmlFilter = Radio.request("Parser","getPortalConfig").mmlFilter;
+
+        if (mmlFilter) {
+            incModulesLoading();
+            require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
+                if (Radio.request("Util", "isAny")) {
+                    new MobileMMLFilterView();
+                }
+                else {
+                    new MMLFilterView();
+                }
+            });
+        }
+
         // Tools
         _.each(Radio.request("Parser", "getItemsByAttributes", {type: "tool"}), function (tool) {
             incModulesLoading();
