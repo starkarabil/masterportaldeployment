@@ -11,9 +11,9 @@
     left: 41%;
 }
 .simple-lister-button > .glyphicon {
-    font-size: 20px;
-    padding: 7px 6px 6px 7px;
-    color: #f3f3f3;
+    font-size: 12px;
+    padding: 21px 12px 21px 12px;
+    color:  #999999;
     background-color: rgb(182, 0, 0);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
 }
