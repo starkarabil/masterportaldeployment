@@ -27,6 +27,7 @@ define(function () {
                 "showAllFeatures": this.showAllFeatures,
                 "showFeatures": this.showFeatures,
                 "showMapMarker": this.showMapMarker,
+                "updateMapSize": this.updateMapSize,
                 "zoomToFeature": this.zoomToFeature,
                 "zoomToFeatures": this.zoomToFeatures,
                 "showLayers": this.showLayers,
@@ -40,11 +41,11 @@ define(function () {
         },
 
         showDragMarker: function () {
-            Radio.trigger("DragMarker","show");
+            Radio.trigger("DragMarker", "show");
         },
 
         hideDragMarker: function () {
-            Radio.trigger("DragMarker","hide");
+            Radio.trigger("DragMarker", "hide");
         },
 
         getLayerFeaturesInExtent: function (name) {
@@ -52,19 +53,19 @@ define(function () {
         },
 
         showAllFeatures: function (name) {
-            Radio.trigger("ModelList","showAllFeatures", name);
+            Radio.trigger("ModelList", "showAllFeatures", name);
         },
 
         hideAllFeatures: function (name) {
-            Radio.trigger("ModelList","hideAllFeatures", name);
+            Radio.trigger("ModelList", "hideAllFeatures", name);
         },
 
         showFeatures: function (name, featureIds) {
-            Radio.trigger("ModelList","showFeaturesByIds", name, featureIds);
+            Radio.trigger("ModelList", "showFeaturesByIds", name, featureIds);
         },
 
         hideFeatures: function (name, featureIds) {
-            Radio.trigger("ModelList","hideFeaturesByIds", name, featureIds);
+            Radio.trigger("ModelList", "hideFeaturesByIds", name, featureIds);
         },
 
         addFeatures: function (features, name) {
@@ -125,6 +126,10 @@ define(function () {
 
         showLayers: function (layerNames, only) {
             Radio.trigger("ModelList", "showLayers", layerNames, only);
+        },
+
+        updateMapSize: function () {
+            Radio.trigger("Map", "updateSize");
         },
 
         zoomToFeature: function (feature) {

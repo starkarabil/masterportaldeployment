@@ -51,6 +51,7 @@ define(function (require) {
                 "removeInteraction": this.removeInteraction,
                 "setBBox": this.setBBox,
                 "render": this.render,
+                "updateSize": this.updateSize,
                 "zoomToExtent": this.zoomToExtent,
                 "updatePrintPage": this.updatePrintPage,
                 "createVectorLayer": this.createVectorLayer,
@@ -491,6 +492,14 @@ define(function (require) {
                  extent = view.calculateExtent(size);
 
              Radio.trigger("Map", "changedExtent", extent);
+         },
+
+         /**
+          * Berechnet den Viewport der Karte neu.
+          * http://openlayers.org/en/latest/apidoc/ol.Map.html#updateSize
+          */
+         updateSize: function () {
+             this.getMap().updateSize();
          }
     });
 
