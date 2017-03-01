@@ -203,12 +203,30 @@ define(function (require) {
                 }
                 // Cluster Feature
                 else {
-                    if (Radio.request("MapView","getZoomLevel") === 9 && Radio.request("Util","isViewMobile")) {
+                    // Cluster Feature hat nur ein Feature
+                    if (featureAtPixel.get("features").length === 1) {
                         _.each(featureAtPixel.get("features"), function (feature) {
                             modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
                             modelAttributes.feature = feature;
                             gfiParams.push(modelAttributes);
                         });
+                    }
+                    else {
+                        if (Radio.request("MapView", "getZoomLevel") === 9 && Radio.request("Util","isViewMobile")) {
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+                                modelAttributes.feature = feature;
+                                gfiParams.push(modelAttributes);
+                            });
+                        }
+                        else {
+                            var coords = [];
+
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                coords.push(feature.getGeometry().getCoordinates());
+                            });
+                            Radio.trigger("Map", "zoomToExtent", ol.extent.boundingExtent(coords));
+                        }
                     }
                 }
             }

@@ -55,7 +55,6 @@ define([
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
-            Radio.trigger("Map", "registerListener", "click", this.clickOnMap, this);
 
             // Erzeuge Overlay
             $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
@@ -401,9 +400,9 @@ define([
                 stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml"),
                 hasOnlyFeaturesWithSameExtent = this.hasOnlyFeaturesWithSameExtent(featureArray),
                 maxFeatures = 8;
-
+console.log(featureArray.length);
                 // source.clear();
-                if (hasOnlyFeaturesWithSameExtent) {
+                if (clusterFeature.get("features").length > 0) {
                     // console.log("Features liegen übereinander.");
                     this.createCircle(clusterFeature);
                 }
@@ -490,49 +489,6 @@ define([
         },
         getOverlayStyle: function () {
             return this.get("overlayStyle");
-        },
-        // listener-funktion, die bei click auf die Map aufgerufen wird.
-        clickOnMap: function (evt) {
-            var eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
-                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
-
-
-            if (isFeatureAtPixel === true) {
-                Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.featureClicked);
-            }
-            else {
-                this.hoverOffClusterFeature();
-            }
-        },
-        // zoomt bei Klick auf das Cluster Feature auf den extent aller geclusterten Features
-        featureClicked: function (feature) {
-            var extent = [];
-
-            if (feature.get("features") && feature.get("features").length > 1) {
-                _.each(feature.get("features"), function (feature) {
-                    if (extent.length === 0) {
-                        extent.push(feature.getGeometry().getExtent()[0]);
-                        extent.push(feature.getGeometry().getExtent()[1]);
-                        extent.push(feature.getGeometry().getExtent()[2]);
-                        extent.push(feature.getGeometry().getExtent()[3]);
-                    }
-                    else {
-                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
-                            extent[0] = feature.getGeometry().getExtent()[0];
-                        }
-                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
-                            extent[1] = feature.getGeometry().getExtent()[1];
-                        }
-                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
-                            extent[2] = feature.getGeometry().getExtent()[2];
-                        }
-                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
-                            extent[3] = feature.getGeometry().getExtent()[3];
-                        }
-                    }
-                });
-                Radio.trigger("Map","zoomToExtent", extent);
-            }
         }
     });
 
