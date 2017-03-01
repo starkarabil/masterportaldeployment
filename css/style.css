@@ -1174,7 +1174,7 @@
   width: 15px;
   margin-right: 5px;
 }
-@element "#map" and (max-width: 767px) {
+@element "#map" and and (max-width: 767px) {
   #searchbar {
     margin-top: 8px;
     margin-bottom: 8px;
@@ -1203,7 +1203,7 @@
     font-size: 14px;
   }
 }
-@element "#map" and (min-width: 768px) {
+@element "#map" and and (min-width: 768px) {
   #searchbar {
     float: right;
     padding-left: 10px;
@@ -3948,7 +3948,7 @@ a.lgv-container .bg-danger:focus {
 .lgv-container dd {
   margin-left: 0;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .dl-horizontal dt {
     float: left;
     width: 160px;
@@ -4030,17 +4030,17 @@ a.lgv-container .bg-danger:focus {
   padding-left: 15px;
   padding-right: 15px;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .container {
     width: 750px;
   }
 }
-@element "#map" (min-width: 992px) {
+@element "#map" and (min-width: 992px) {
   .lgv-container .container {
     width: 970px;
   }
 }
-@element "#map" (min-width: 1200px) {
+@element "#map" and (min-width: 1200px) {
   .lgv-container .container {
     width: 1170px;
   }
@@ -4275,7 +4275,7 @@ a.lgv-container .bg-danger:focus {
 .lgv-container .col-xs-offset-0 {
   margin-left: 0%;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .col-sm-1,
   .col-sm-2,
   .col-sm-3,
@@ -4444,7 +4444,7 @@ a.lgv-container .bg-danger:focus {
     margin-left: 0%;
   }
 }
-@element "#map" (min-width: 992px) {
+@element "#map" and (min-width: 992px) {
   .lgv-container .col-md-1,
   .col-md-2,
   .col-md-3,
@@ -4613,7 +4613,7 @@ a.lgv-container .bg-danger:focus {
     margin-left: 0%;
   }
 }
-@element "#map" (min-width: 1200px) {
+@element "#map" and (min-width: 1200px) {
   .lgv-container .col-lg-1,
   .col-lg-2,
   .col-lg-3,
@@ -4977,7 +4977,7 @@ a.lgv-container .bg-danger:focus {
   overflow-x: auto;
   min-height: 0.01%;
 }
-@element "#map" and (max-width: 767px) {
+@element "#map" and and (max-width: 767px) {
   .lgv-container .table-responsive {
     width: 100%;
     margin-bottom: 15px;
@@ -5134,7 +5134,7 @@ textarea.lgv-container .form-control {
 .lgv-container input[type="search"] {
   -webkit-appearance: none;
 }
-@element "#map" and (-webkit-min-device-pixel-ratio: 0) {
+@element "#map" and and (-webkit-min-device-pixel-ratio: 0) {
   .lgv-container input[type="date"].form-control,
   .lgv-container input[type="time"].form-control,
   .lgv-container input[type="datetime-local"].form-control,
@@ -5446,7 +5446,7 @@ select[multiple].lgv-container .input-lg {
   margin-bottom: 10px;
   color: #737373;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -5512,7 +5512,7 @@ select[multiple].lgv-container .input-lg {
   margin-left: -15px;
   margin-right: -15px;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .form-horizontal .control-label {
     text-align: right;
     margin-bottom: 0;
@@ -5522,13 +5522,13 @@ select[multiple].lgv-container .input-lg {
 .lgv-container .form-horizontal .has-feedback .form-control-feedback {
   right: 15px;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .form-horizontal .form-group-lg .control-label {
     padding-top: 11px;
     font-size: 18px;
   }
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .form-horizontal .form-group-sm .control-label {
     padding-top: 6px;
     font-size: 12px;
@@ -6158,7 +6158,7 @@ tbody.lgv-container .collapse.in {
   bottom: 100%;
   margin-bottom: 2px;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .navbar-right .dropdown-menu {
     left: auto;
     right: 0;
@@ -6581,7 +6581,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .nav-tabs.nav-justified > li {
     display: table-cell;
     width: 1%;
@@ -6599,7 +6599,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .nav-tabs.nav-justified > .active > a:focus {
   border: 1px solid #dddddd;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .nav-tabs.nav-justified > li > a {
     border-bottom: 1px solid #dddddd;
     border-radius: 4px 4px 0 0;
@@ -6646,7 +6646,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
   top: auto;
   left: auto;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .nav-justified > li {
     display: table-cell;
     width: 1%;
@@ -6667,7 +6667,7 @@ select[multiple].lgv-container .input-group-sm > .input-group-btn > .btn {
 .lgv-container .nav-tabs-justified > .active > a:focus {
   border: 1px solid #dddddd;
 }
-@element "#map" (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   .lgv-container .nav-tabs-justified > li > a {
     border-bottom: 1px solid #dddddd;
     border-radius: 4px 4px 0 0;
@@ -8097,7 +8097,7 @@ button.lgv-container .close {
 .lgv-container .visible-lg-inline-block {
   display: none !important;
 }
-@element "#map" (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   .lgv-container .visible-xs {
     display: block !important;
   }
@@ -8112,22 +8112,22 @@ button.lgv-container .close {
     display: table-cell !important;
   }
 }
-@element "#map" (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   .lgv-container .visible-xs-block {
     display: block !important;
   }
 }
-@element "#map" (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   .lgv-container .visible-xs-inline {
     display: inline !important;
   }
 }
-@element "#map" (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   .lgv-container .visible-xs-inline-block {
     display: inline-block !important;
   }
 }
-@element "#map" (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   .lgv-container .hidden-xs {
     display: none !important;
   }
@@ -8148,4 +8148,3 @@ button.lgv-container .close {
     opacity:0;
     width: 0px;
 }
-
