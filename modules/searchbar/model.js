@@ -11,7 +11,9 @@ define([
             quickHelp: false,
             searchString: "", // der aktuelle String in der Suchmaske
             hitList: [],
-            minChars: ""
+            minChars: "",
+            // Ist die Suchbar sichtbar oder nicht
+            isVisible: true
             // isHitListReady: true
         },
         /**
@@ -40,10 +42,14 @@ define([
         },
 
         hideSearchbar: function () {
-            $("#searchForm").hide();
+            this.setIsVisible(false);
+            // this.$el.hide();
+            // $("#searchForm").hide();
         },
         showSearchbar: function () {
-            $("#searchForm").show();
+            this.setIsVisible(true);
+            // this.$el.show();
+            // $("#searchForm").show();
         },
         setInitSearchString: function (value) {
             this.set("initSearchString", value);
@@ -125,6 +131,22 @@ define([
                 this.set("recommendedList", _.sortBy(recommendedList, "name"));
                 // this.set("isHitListReady", true);
             // }
+        },
+
+        /**
+         * Setter für das Attribut "isVisible".
+         * @param {boolean} value
+         */
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        /**
+         * Getter für das Attribut "isVisible".
+         * @return {boolean}
+         */
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 

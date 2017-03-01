@@ -89,8 +89,9 @@ define(function (require) {
             EventBus.on("searchInput:deleteSearchString", this.deleteSearchString, this);
 
             // this.listenTo(this.model, "change:searchString", this.render);
-            this.listenTo(this.model, "change:recommendedList", function () {
-                this.renderRecommendedList();
+            this.listenTo(this.model, {
+                "change:recommendedList": this.renderRecommendedList,
+                "change:isVisible": this.toggle
             });
 
             this.listenTo(Radio.channel("MenuLoader"), {
@@ -573,6 +574,19 @@ define(function (require) {
 
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
+        },
+
+        /**
+         * Abhängig vom Attribut "isVisible" wird
+         * die Searchbar angezeigt oder versteckt.
+         */
+        toggle: function () {
+            if (this.model.getIsVisible() === false) {
+                this.$el.hide();
+            }
+            else {
+                this.$el.show();
+            }
         }
     });
 
