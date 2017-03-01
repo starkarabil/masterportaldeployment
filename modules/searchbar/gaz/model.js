@@ -252,14 +252,14 @@ define([
             var address;
 
             // Adressuche über Copy/Paste
+            Radio.trigger("Searchbar", "setHitList", []);
             if (this.get("pastedHouseNumber") !== undefined) {
                 _.each(this.get("houseNumbers"), function (houseNumber) {
                     address = houseNumber.name.replace(/ /g, "");
                     var number = houseNumber.adress.housenumber + houseNumber.adress.affix;
 
-                    if (number === this.get("pastedHouseNumber")) {
-                        Radio.trigger("Searchbar", "setHitList", [houseNumber]);
-                        Radio.trigger("Searchbar", "createRecommendedList");
+                    if (number.startsWith(this.get("pastedHouseNumber"))) {
+                        Radio.trigger("Searchbar", "pushHits", "hitList", houseNumber);
                     }
                 }, this);
                 this.unset("pastedHouseNumber");
@@ -269,10 +269,10 @@ define([
                     address = houseNumber.name.replace(/ /g, "");
                     if (address.search(this.get("searchStringRegExp")) !== -1) {
                         EventBus.trigger("searchbar:pushHits", "hitList", houseNumber);
-                        Radio.trigger("Searchbar", "createRecommendedList");
                     }
                 }, this);
             }
+            Radio.trigger("Searchbar", "createRecommendedList");
             this.setSearchStringRegExp("");
         },
         /**

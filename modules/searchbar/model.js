@@ -21,6 +21,7 @@ define([
             var channel = Radio.channel("Searchbar");
 
             channel.on({
+                "pushHits": this.pushHits,
                 "setHitList": this.setHitList,
                 "createRecommendedList": this.createRecommendedList
             }, this);
