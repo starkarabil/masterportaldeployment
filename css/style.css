@@ -1174,7 +1174,7 @@
   width: 15px;
   margin-right: 5px;
 }
-@element "#map" and and (max-width: 767px) {
+@element "#map" and (max-width: 767px) {
   #searchbar {
     margin-top: 8px;
     margin-bottom: 8px;
@@ -1203,7 +1203,7 @@
     font-size: 14px;
   }
 }
-@element "#map" and and (min-width: 768px) {
+@element "#map" and (min-width: 768px) {
   #searchbar {
     float: right;
     padding-left: 10px;
@@ -2526,7 +2526,7 @@
   position: relative;
   top: -100%;
   height: 100%;
-  width: 100%;
+  width: 0%;
 }
 .lgv-container .simple-lister-button > .glyphicon {
   top: 7px;
@@ -8148,3 +8148,4 @@ button.lgv-container .close {
     opacity:0;
     width: 0px;
 }
+
