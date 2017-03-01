@@ -258,7 +258,7 @@ define([
                     address = houseNumber.name.replace(/ /g, "");
                     var number = houseNumber.adress.housenumber + houseNumber.adress.affix;
 
-                    if (number.startsWith(this.get("pastedHouseNumber"))) {
+                    if (number.indexOf(this.get("pastedHouseNumber")) === 0) {
                         Radio.trigger("Searchbar", "pushHits", "hitList", houseNumber);
                     }
                 }, this);
