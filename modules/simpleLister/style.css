@@ -13,6 +13,7 @@
   padding: 21px 12px 21px 12px;
   color: #999999;
   background-color: #fff;
+  cursor: pointer;
 }
 .simple-lister-button  > .glyphicon-triangle-left {
   left: 100%;
