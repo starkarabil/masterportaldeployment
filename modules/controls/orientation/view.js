@@ -1,9 +1,8 @@
 define([
         "text!modules/controls/orientation/template.html",
-    "modules/controls/orientation/model",
-    "config",
+    "modules/controls/orientation/model"
 
-], function (OrientationTemplate, OrientationModel, Config) {
+], function (OrientationTemplate, OrientationModel) {
     "use strict";
     var OrientationView = Backbone.View.extend({
         className: "row",
@@ -43,7 +42,7 @@ define([
 
                 this.render();
                 // erst nach render kann auf document.getElementById zugegriffen werden
-                this.model.get("marker").setElement(document.getElementById("geolocation_marker"));
+                this.model.setOrientationMarkerIcon();
                 if (this.model.get("isPoiOn")) {
                     require(["modules/controls/orientation/poi/view"], function (POIView) {
                         new POIView();
