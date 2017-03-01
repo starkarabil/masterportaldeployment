@@ -172,8 +172,11 @@ define(function (require) {
             }
         },
         events: {
-            "paste input": "setSearchString",
-            "keyup input": "setSearchString",
+            "paste": "sthPasted",
+             "paste input": "setSearchString",
+            "keyup input": function (event) {
+                _.debounce (this.setSearchString(event), 100);
+            },
             "focusin input": "toggleStyleForRemoveIcon",
             "focusout input": "toggleStyleForRemoveIcon",
             "click .form-control-feedback": "deleteSearchString",
@@ -215,7 +218,6 @@ define(function (require) {
                     $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
                 }
             }
-
             this.focusOnEnd($("#searchInput"));
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");
@@ -258,9 +260,9 @@ define(function (require) {
         /**
         *
         */
-        renderHitList: function () {
+        renderHitList: function (evt) {
             // if (this.model.get("isHitListReady") === true) {
-                if (this.model.get("hitList").length === 1) {
+                if (evt.type !== "click" && _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}) || this.model.get("hitList").length === 1) {
                     this.hitSelected(); // erster und einziger Eintrag in Liste
                 }
                 else {
@@ -475,9 +477,9 @@ define(function (require) {
                         that.model.setSearchString(evt.target.value, evt.type);
                     }, 0);
                 }
-                else if (evt.keyCode !== 37 && evt.keyCode !== 38 && evt.keyCode !== 39 && evt.keyCode !== 40 && !(this.getSelectedElement("#searchInputUL").length > 0 && this.getSelectedElement("#searchInputUL").hasClass("type"))) {
+                else if (evt.keyCode !== 17 && evt.keyCode !== 37 && evt.keyCode !== 38 && evt.keyCode !== 39 && evt.keyCode !== 40 && !(this.getSelectedElement("#searchInputUL").length > 0 && this.getSelectedElement("#searchInputUL").hasClass("type"))) {
                     if (evt.key === "Enter" || evt.keyCode === 13) {
-                        if (this.model.get("hitList").length === 1) {
+                        if (_.findWhere(this.model.get("hitList"), {name: evt.target.value}) || this.model.get("hitList").length === 1) {
                             this.hitSelected(); // erster und einziger Eintrag in Liste
                         }
                         else {
@@ -575,6 +577,19 @@ define(function (require) {
 
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
+        },
+
+        /**
+        * Wird auf Paste ausgeführt. Timeout dient dafür, dass in der Variable auch wirklich der Wert steht
+        */
+        sthPasted: function (evt) {
+            var pasteString,
+            that = this;
+
+            setTimeout(function () {
+                pasteString = evt.target.value;
+                that.model.setSearchString(pasteString, evt.type);
+            }, 100);
         }
     });
 
