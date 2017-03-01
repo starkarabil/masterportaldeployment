@@ -15,13 +15,13 @@
   background-color: #fff;
 }
 .simple-lister-button  > .glyphicon-triangle-left {
-  left: 41%;
+  left: 100%;
 }
 .simple-lister-table {
     position: relative;
     display: block;
     height: 100%;
-    width: 41%;
+    width: 100%;
     background: white;
 }
 
