@@ -1,9 +1,8 @@
 define([
-
     "eventbus",
     "config"
 ], function (EventBus, Config) {
-    "use strict";
+
     var SearchbarModel = Backbone.Model.extend({
         defaults: {
             placeholder: "Suche",
@@ -12,7 +11,7 @@ define([
             searchString: "", // der aktuelle String in der Suchmaske
             hitList: [],
             minChars: "",
-            // Ist die Suchbar sichtbar oder nicht
+            // Ist die Searchbar sichtbar oder nicht
             isVisible: true
             // isHitListReady: true
         },
@@ -20,17 +19,20 @@ define([
         *
         */
         initialize: function () {
-            if (Config.quickHelp) {
-                this.set("quickHelp", Config.quickHelp);
-            }
-
             var channel = Radio.channel("Searchbar");
 
             channel.on({
-                "hide": this.hideSearchbar,
-                "show": this.showSearchbar
+                "hide": function () {
+                    this.setIsVisible(false);
+                },
+                "show": function () {
+                    this.setIsVisible(true);
+                }
             }, this);
 
+            if (Config.quickHelp) {
+                this.set("quickHelp", Config.quickHelp);
+            }
 
             EventBus.on("createRecommendedList", this.createRecommendedList, this);
             EventBus.on("searchbar:pushHits", this.pushHits, this);
@@ -41,16 +43,6 @@ define([
 
         },
 
-        hideSearchbar: function () {
-            this.setIsVisible(false);
-            // this.$el.hide();
-            // $("#searchForm").hide();
-        },
-        showSearchbar: function () {
-            this.setIsVisible(true);
-            // this.$el.show();
-            // $("#searchForm").show();
-        },
         setInitSearchString: function (value) {
             this.set("initSearchString", value);
         },
