@@ -262,7 +262,7 @@ define(function (require) {
         */
         renderHitList: function (evt) {
             // if (this.model.get("isHitListReady") === true) {
-                if (evt.type !== "click" && _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}) || this.model.get("hitList").length === 1) {
+                if (evt.type !== "click" || _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}) || this.model.get("hitList").length === 1) {
                     this.hitSelected(); // erster und einziger Eintrag in Liste
                 }
                 else {
