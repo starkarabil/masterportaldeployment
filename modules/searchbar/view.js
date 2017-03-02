@@ -585,13 +585,16 @@ define(function (require) {
         */
         newDragMarkerAddress: function (response) {
             if (!response.error) {
-                this.model.set("searchString", response.streetname + " " + response.housenumber);
+                this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                this.render();
+                $("#searchInput + span").show();
+
             }
             else {
                 this.model.set("searchString", "");
+                $("#searchInput").blur();
             }
-            this.render();
-            $("#searchInput").blur();
+
         }
     });
 
