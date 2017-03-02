@@ -1,9 +1,8 @@
 define([
     "openlayers",
     "backbone.radio",
-    "eventbus",
     "bootstrap/popover"
-], function (ol, Radio, EventBus) {
+], function (ol, Radio) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {
@@ -201,7 +200,7 @@ define([
                     newStyle.getImage().setOpacity(0.5);
                     feature.setStyle([newStyle]);
                     if (zoom === 9) {
-                        this.hoverOnClusterFeature(feature);
+                        this.createCircle(feature);
                     }
                 }
                 else {
@@ -248,9 +247,8 @@ define([
 
             var selected = evt.selected,
                 deselected = evt.deselected,
-                eventPixel = Radio.request("Map", "getEventPixel", evt.mapBrowserEvent.pixel),
                 selectedFeatures = [];
-
+console.log(deselected);
             // Style selected Features
             this.styleSelectedFeatures(selected, evt);
 
@@ -325,6 +323,7 @@ define([
             var mouseHoverInfos = this.get("mouseHoverInfos"),
                 value = "",
                 coord;
+
             if (pFeatureArray.length > 0) {
                 // für jedes gehoverte Feature...
                 _.each(pFeatureArray, function (element) {
@@ -393,23 +392,7 @@ define([
                 }
             }
         },
-        // prüft die anzahl der geclusterten Features und ob die Features übereinander liegen
-        hoverOnClusterFeature: function (clusterFeature) {
-            var featureArray = clusterFeature.get("features"),
-                source = this.getHoverLayer().getSource(),
-                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml"),
-                hasOnlyFeaturesWithSameExtent = this.hasOnlyFeaturesWithSameExtent(featureArray),
-                maxFeatures = 8;
-console.log(featureArray.length);
-                // source.clear();
-                if (clusterFeature.get("features").length > 0) {
-                    // console.log("Features liegen übereinander.");
-                    this.createCircle(clusterFeature);
-                }
-                else {
-                    console.log("Features liegen NICHT übereinander.");
-                }
-        },
+
         // erstellt um die Clusterkooridnate die Features mit dem gleichen Extent
         createCircle: function (clusterFeature) {
             var featureArray = clusterFeature.get("features"),
@@ -424,8 +407,9 @@ console.log(featureArray.length);
 
                 _.each(featureArray, function (feature, index) {
                     var newClusterFeature = clusterFeature.clone(),
-                        geom = newClusterFeature.getGeometry();
+                        geom = newClusterFeature.getGeometry(),
                         oldFeature = source.getFeatureById(index);
+
                     if (oldFeature) {
                         source.removeFeature(oldFeature);
                     }
@@ -433,7 +417,7 @@ console.log(featureArray.length);
                     geom.setCoordinates([anchor[0], anchor[1] + (options.scale / 100)]);
                     geom.rotate(index * radians, anchor);
                     // feature.setGeometry(geom);
-                    newClusterFeature.set("features",[feature]);
+                    newClusterFeature.set("features", [feature]);
                     newClusterFeature.setGeometry(geom);
                     // console.log(newClusterFeature.getGeometry().getCoordinates());
                     newClusterFeature.setId(index);
@@ -444,14 +428,13 @@ console.log(featureArray.length);
         },
         // prüft über den Extent ob Features übereinander liegen
         hasOnlyFeaturesWithSameExtent: function (featureArray) {
-            xMinArray = [],
-            yMinArray = [],
-            xMaxArray = [],
-            yMaxArray = [],
-            size = featureArray.length,
-            hasFeaturesWithSameExtent = false;
+            var xMinArray = [],
+                yMinArray = [],
+                xMaxArray = [],
+                yMaxArray = [],
+                hasFeaturesWithSameExtent = false;
 
-            _.each(featureArray, function (feature, index) {
+            _.each(featureArray, function (feature) {
                     xMinArray.push(feature.getGeometry().getExtent()[0]);
                     yMinArray.push(feature.getGeometry().getExtent()[1]);
                     xMaxArray.push(feature.getGeometry().getExtent()[2]);

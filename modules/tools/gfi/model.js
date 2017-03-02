@@ -211,8 +211,10 @@ define(function (require) {
                             gfiParams.push(modelAttributes);
                         });
                     }
+                    // Cluster Feature mit mehr als einen Feature
                     else {
-                        if (Radio.request("MapView", "getZoomLevel") === 9 && Radio.request("Util","isViewMobile")) {
+                        // In der letzten/größten Zoomstufe (ganz reingezoomt)
+                        if (Radio.request("MapView", "isLastZoomLevel") === true && Radio.request("Util", "isViewMobile")) {
                             _.each(featureAtPixel.get("features"), function (feature) {
                                 modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
                                 modelAttributes.feature = feature;
