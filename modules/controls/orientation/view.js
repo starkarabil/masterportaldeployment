@@ -71,7 +71,7 @@ define([
             }
         },
 
-        toggleLocateRemoveClass: function() {
+        toggleLocateRemoveClass: function () {
             $("#geolocate").removeClass("toggleButtonPressed");
         },
         /*
