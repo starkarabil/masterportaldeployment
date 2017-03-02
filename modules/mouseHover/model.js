@@ -248,7 +248,7 @@ define([
             var selected = evt.selected,
                 deselected = evt.deselected,
                 selectedFeatures = [];
-console.log(deselected);
+
             // Style selected Features
             this.styleSelectedFeatures(selected, evt);
 
