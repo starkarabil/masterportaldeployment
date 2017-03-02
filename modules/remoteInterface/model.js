@@ -12,7 +12,8 @@ define(function () {
                 "getZoomLevel": this.getZoomLevel,
                 "getVisibleBaseLayers": this.getVisibleBaseLayers,
                 "getAllBaseLayers": this.getAllBaseLayers,
-                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent
+                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent,
+                "getExtent": this.getExtent
             }, this);
 
             channel.on({
@@ -50,6 +51,10 @@ define(function () {
 
         getLayerFeaturesInExtent: function (name) {
             return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
+        },
+
+        getExtent: function () {
+            return Radio.request("Map", "getExtent");
         },
 
         showAllFeatures: function (name) {
