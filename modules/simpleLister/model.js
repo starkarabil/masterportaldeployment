@@ -10,6 +10,7 @@ define([
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
+            totalFeatures: 0, // Anzahl aller Features im Extent
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -29,8 +30,10 @@ define([
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
         getLayerFeaturesInExtent: function () {
             var featuresPerPage =  this.get("featuresPerPage"),
-                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
+                totalFeatures = jsonfeatures.length;
 
+            this.set("totalFeatures", totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
