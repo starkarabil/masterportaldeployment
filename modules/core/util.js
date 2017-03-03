@@ -12,7 +12,7 @@ define([
                 context = this;
 
                 this.toggleIsViewMobile();
-            $("#lgv-container").append("<div id='loader'><img src='../../../img/ajax-loader.gif'></div>");
+            $("#lgv-container").append("<div id='loader'><img src='" + this.get("imgProjektPath") + "ajax-loader.gif'></div>");
 
             channel.reply({
                 "isViewMobile": this.getIsViewMobile,
@@ -24,7 +24,10 @@ define([
                 "isWindows": this.isWindows,
                 "isChrome": this.isChrome,
                 "isInternetExplorer": this.isInternetExplorer,
-                "isAny": this.isAny
+                "isAny": this.isAny,
+                "lgvConfigPath": this.get("lgvConfigPath"),
+                "getImgPath": this.get("imgPath"),
+                "getProjektImgPath": this.get("imgProjektPath")
             }, this);
 
             channel.on({
