@@ -22,10 +22,6 @@ define([
         },
 
         initialize: function () {
-            this.listenTo(this.model, {
-//                "change:featuresInExtent": this.render
-            });
-
             this.render();
         },
 

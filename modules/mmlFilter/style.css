@@ -121,3 +121,7 @@ Hilfsklassen
     height: 30px;
     margin-right: 90px;
 }
+
+.checkbox-zoom {
+    zoom: 1.3
+}
