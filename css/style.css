@@ -2546,6 +2546,9 @@
   width: 100%;
   background: white;
 }
+.lgv-container .simple-lister-highlight {
+    background-color: rgba(15, 92, 173, 0.1);
+}
 .lgv-container .simple-lister-table .table {
   height: 100%;
   width: 100%;

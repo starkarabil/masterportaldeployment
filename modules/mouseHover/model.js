@@ -37,6 +37,10 @@ define([
                 "hasHoverInfo": this.hasHoverInfo
             }, this);
 
+            channel.on({
+                "hoverByCoordinates": this.hoverByCoordinates
+            }, this);
+
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
@@ -495,6 +499,10 @@ define([
                 });
                 Radio.trigger("Map","zoomToExtent", extent);
             }
+        },
+        // hovert Feature über Radio
+        hoverByCoordinates: function (attr) {
+            console.log(attr);
         }
     });
 

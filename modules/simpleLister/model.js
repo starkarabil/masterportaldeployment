@@ -114,8 +114,7 @@ define([
 
         mouseHoverSelected: function (evt) {
             _.each(evt.selected, function (feature) {
-                var selLayer = evt.target.getLayer(feature),
-                    isClusterFeature = selLayer ? selLayer.getSource() instanceof ol.source.Cluster : null;
+                var isClusterFeature = feature.get("features") ? true : null;
 
                 if (isClusterFeature) {
                     _.each(feature.get("features"), function (subfeature) {
@@ -128,8 +127,7 @@ define([
             }, this);
 
             _.each(evt.deselected, function (feature) {
-                var selLayer = evt.target.getLayer(feature),
-                    isClusterFeature = selLayer ? selLayer.getSource() instanceof ol.source.Cluster : null;
+                var isClusterFeature = feature.get("features") ? true : null;
 
                 if (isClusterFeature) {
                     _.each(feature.get("features"), function (subfeature) {
@@ -140,8 +138,20 @@ define([
                     this.trigger("lowlightItem", feature.getId());
                 }
             }, this);
-        }
-    });
+        },
+
+        triggerMouseHoverById: function (id) {
+                var features = this.get("featuresInExtent"),
+                    feature = _.find(features, function (feat) {
+                        return feat.id.toString() === id;
+                    }),
+                    coord = feature ? feature.geometry.coordinates : null;
+
+                if (coord) {
+                    Radio.trigger("MouseHover", "hoverByCoordinates", coord);
+                }
+            }
+        });
 
     return SimpleListerModel;
 });

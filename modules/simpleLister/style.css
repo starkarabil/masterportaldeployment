@@ -25,7 +25,9 @@
     width: 100%;
     background: white;
 }
-
+.simple-lister-highlight {
+    background-color: rgba(15, 92, 173, 0.1);
+}
 .simple-lister-table .table {
     height: 100%;
     width: 100%;

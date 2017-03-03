@@ -14,12 +14,13 @@ define([
         template: _.template(Template),
         events: {
             "click .simple-lister-button": "toggleSimpleList",
-            "click #div-simpleLister-extentList": "appendMoreFeatures"
+            "click #div-simpleLister-extentList": "appendMoreFeatures",
+            "mouseover .entry": "mouseoverEntry"
         },
         initialize: function () {
             this.listenTo(this.model, {
-                "highlightItem": this.highlightItem,
-                "lowlightItem": this.lowlightItem,
+                "highlightItem": this.highlightItemInList,
+                "lowlightItem": this.lowlightItemInList,
                 "render": this.render
             });
 
@@ -59,14 +60,27 @@ define([
         /**
          * Hebt Zeilen mit dieser id hervor
          */
-        highlightItem: function (id) {
-            console.log(id);
+        highlightItemInList: function (id) {
+            $("#simple-lister-table").find("#" + id.toString()).each(function (index, item) {
+                $(item).addClass("simple-lister-highlight");
+            });
         },
         /**
          * Aufhebung der Hervorhebung von Zeilen mit dieser id
          */
-        lowlight: function () {
-            console.log(id);
+        lowlightItemInList: function (id) {
+            $("#simple-lister-table").find("#" + id.toString()).each(function (index, item) {
+                $(item).removeClass("simple-lister-highlight");
+            });
+        },
+
+        /**
+         * Starten des Triggers für MouseHover
+         */
+        mouseoverEntry: function (evt) {
+            var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
+
+            this.model.triggerMouseHoverById(id);
         }
     });
 
