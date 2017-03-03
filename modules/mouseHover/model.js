@@ -501,8 +501,24 @@ define([
             }
         },
         // hovert Feature über Radio
-        hoverByCoordinates: function (attr) {
-            console.log(attr);
+        hoverByCoordinates: function (coordinate) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                selectedFeatures = [];
+
+            _.each(mouseHoverInfos, function (mhinfo) {
+                var layerid = mhinfo.id,
+                    layer = Radio.request("ModelList", "getModelByAttributes", {id: layerid});
+
+                if (layer) {
+                    var feature = layer.get("layerSource").getClosestFeatureToCoordinate(coordinate);
+                    selectedFeatures.push({
+                        feature: feature,
+                        layerId: layerid
+                    });
+                }
+            });
+
+            this.checkSelektion(selectedFeatures);
         }
     });
 
