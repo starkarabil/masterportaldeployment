@@ -29,7 +29,7 @@ define([
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
         getLayerFeaturesInExtent: function () {
-            var featuresPerPage =  this.get("featuresPerPage"),
+            var featuresPerPage = this.get("featuresPerPage"),
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
 
@@ -52,7 +52,9 @@ define([
 
         // setter for featuresInExtent
         setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
-            var jsonFeatures = _.last(jsonFeaturesInExtent, number),
+            var totalFeatures = jsonFeaturesInExtent.length,
+                number = totalFeatures < number ? totalFeatures : number,
+                jsonFeatures = _.last(jsonFeaturesInExtent, number),
                 features = [];
 
             _.each(jsonFeatures, function (jsonFeature) {
@@ -61,6 +63,7 @@ define([
 
             this.set("featuresInExtent", features);
             this.set("totalFeaturesInPage", number);
+            this.trigger("render");
         },
 
         // getter for glyphicon

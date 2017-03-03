@@ -19,7 +19,7 @@ define([
         },
         initialize: function () {
             this.listenTo(this.model, {
-                "change:totalFeaturesInPage": this.render
+                "render": this.render
             });
 
             this.render();
