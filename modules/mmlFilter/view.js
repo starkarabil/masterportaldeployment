@@ -17,7 +17,8 @@ define([
             "click #btn-mmlFilter-toggle": "toggleMMLFilter",
             "click .filterHeader": "toggleMMLFilterSection",
             "click #div-mmlFilter-reset": "resetKategorien",
-            "click #div-mmlFilter-execute": "executeFilter"
+            "click #div-mmlFilter-execute": "executeFilter",
+            "click .div-mmlFilter-filter-time": "toggleTimeMode"
         },
 
         initialize: function () {
@@ -72,12 +73,47 @@ define([
             }
         },
 
+        toggleTimeMode: function (evt) {
+            var timeModeId = evt.target.id,
+                isUserdefined = timeModeId === "userdefined" ? true : false;
+
+            $(evt.target).parent().find(".row").each(function (index, row) {
+                if (isUserdefined) {
+                    $(row).show();
+                }
+                else {
+                    $(row).hide();
+                }
+            });
+        },
+
         resetKategorien: function () {
-            console.log("reset");
+            $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                $(kategorie).prop("checked", false);
+            });
         },
 
         executeFilter: function () {
-            console.log("Execute");
+            var selectedKat = [],
+                selectedStatus = [],
+                selectedTimeId = $(".div-mmlFilter-filter-time").children(":checked")[0].id,
+                date = new Date(),
+                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
+                timeDiff = daysDiff*24*3600*1000,
+                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)).toISOString().split("T")[0] : $("#fromDate").val(),
+                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val()
+
+            $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
+                selectedKat.push(kategorie.id);
+            });
+
+            $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
+                selectedStatus.push(status.id);
+            });
+            console.log(selectedKat);
+            console.log(selectedStatus);
+            console.log(toDate);
+            console.log(fromDate);
         }
     });
 

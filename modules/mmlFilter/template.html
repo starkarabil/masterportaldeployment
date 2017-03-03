@@ -43,8 +43,8 @@
     </div>
     <div class="div-mmlFilter-filter" style="display:none; max-height:<%= filterMaxHeight %>px;">
         <div class="div-mmlFilter-filter-status">
-            <input id="workInProgress" class="margin-right-only" type="checkbox">In Bearbeitung<br>
-            <input id="finished" class="margin-right-only" type="checkbox">Bearbeitet<br>
+            <input id="0" class="margin-right-only" type="checkbox">In Bearbeitung<br>
+            <input id="1" class="margin-right-only" type="checkbox">Bearbeitet<br>
         </div>
     </div>
     <div class="div-mmlFilter-filter-header">
@@ -53,17 +53,17 @@
     </div>
     <div class="div-mmlFilter-filter" style="display:none; max-height:<%= filterMaxHeight %>px;">
         <div class="div-mmlFilter-filter-time">
-            <input id="7days" class="margin-right-only" type="radio" name="zeitraum" value="7days" checked> Die letzten 7 Tage<br>
-            <input id="30days" class="margin-right-only" type="radio" name="zeitraum" value="30days"> Die letzten 30 Tage<br>
-            <input id="userdefined" class="margin-right-only" type="radio" name="zeitraum" value="userdefined"> Zeitraum wählen<br>
-            <div class="row">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon3">Von</span>
-                <input id="fromDate" class="datepicker" type="date" name="from" aria-describedby="basic-addon3">
+            <input id="7days" class="margin-leftright" type="radio" name="zeitraum" value="7days" checked> Die letzten 7 Tage<br>
+            <input id="30days" class="margin-leftright" type="radio" name="zeitraum" value="30days"> Die letzten 30 Tage<br>
+            <input id="userdefined" class="margin-leftright" type="radio" name="zeitraum" value="userdefined"> Zeitraum wählen<br>
+            <div class="row" style="display:none;">
+                <span class="margin-leftright" id="basic-addon3">Von</span>
+                <input id="fromDate" class="datepicker float-right" type="date" name="from" placeholder="tt.mm.yyyy">
             </div>
+            <div class="row" style="display:none;">
+                <span class="margin-leftright" id="basic-addon4">Bis</span>
+                <input id="toDate" class="datepicker float-right" type="date" name="bis" placeholder="tt.mm.yyyy">
             </div>
-            <br>
-            Bis <input id="toDate" class="datepicker" type="date" name="bis">
         </div>
     </div>
     <div id="div-mmlFilter-execute" title="Filter anwenden">
