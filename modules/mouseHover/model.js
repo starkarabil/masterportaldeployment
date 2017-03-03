@@ -1,9 +1,8 @@
 define([
     "openlayers",
     "backbone.radio",
-    "eventbus",
     "bootstrap/popover"
-], function (ol, Radio, EventBus) {
+], function (ol, Radio) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {
@@ -15,7 +14,22 @@ define([
             mhpresult: "",
             mhpcoordinates: [],
             oldSelection: "",
-            GFIPopupVisibility: false
+            GFIPopupVisibility: false,
+            hoverLayer: {},
+            zoom: 0,
+            overlayStyle: new ol.style.Style ({
+                image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                                color: "#005ca9"
+                        }),
+                        stroke: new ol.style.Stroke({
+                                color: "#005ca9",
+                                width: 1
+                        }),
+                        opacity: 0.5
+                      })
+                })
         },
         initialize: function () {
             this.set("selectPointerMove", this.createInteraction());
@@ -36,7 +50,6 @@ define([
             // select interaction Listener
             this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
             Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
-            Radio.trigger("Map", "registerListener", "click", this.clickOnMap, this);
 
             // Erzeuge Overlay
             $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
@@ -49,20 +62,22 @@ define([
             // Lese MouseHover Definition aus config
             this.getMouseHoverInfos();
 
-
             // Listeners
             this.listenTo(Radio.channel("GFI"), {
                 "isVisible": this.GFIPopupVisibility
             }, this);
             this.listenTo(Radio.channel("MapView"), {
-                "changedZoomLevel": this.hoverOffClusterFeature
+                "changedZoomLevel": function () {
+                    this.hoverOffClusterFeature();
+                    this.setZoom(Radio.request("MapView", "getZoomLevel"));
+                }
             }, this);
-
-            this.setHoverLayer(Radio.request("Map", "createLayerIfNotExists", "hover_layer"));
-            // Hack für clusterFeatures
-            hoverLayer = this.getHoverLayer();
-
-            hoverLayer.set("id", "999998");
+            this.listenTo(Radio.channel("Map"), {
+                "changedExtent": function () {
+                    this.hoverOffClusterFeature();
+                }
+            }, this);
+            this.setZoom(Radio.request("MapView", "getZoomLevel"));
         },
         createInteraction: function () {
             var context = this;
@@ -121,7 +136,7 @@ define([
         },
 
         /*
-         * Erstellt initial eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
+         * Erstellt eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
         */
         getMouseHoverInfos: function () {
             var wfsLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
@@ -133,14 +148,6 @@ define([
                 mouseHoverInfos = _.map(mouseHoverLayers, function (layer) {
                     return _.pick(layer, "id", "mouseHoverField");
                 });
-                // Hack für cluster
-                mouseHoverInfos.push({
-                id: "999998",
-                mouseHoverField: {
-                    header: ["str", "hsnr"],
-                    text: "kat"
-                }
-            });
 
             this.set("mouseHoverInfos", mouseHoverInfos);
         },
@@ -183,14 +190,30 @@ define([
         },
 
         // Selected Features: Symbol anpassen
-        styleSelectedFeatures: function (features) {
+        styleSelectedFeatures: function (features, evt) {
+            var zoom = this.getZoom(),
+                layer;
+
+            if (features.length > 0) {
+                layer = evt.target.getLayer(features[0]);
+                this.setHoverLayer(layer);
+            }
             features.forEach(function (feature) {
-                var newStyle = feature.getStyle()[0].clone();
+                var newStyle;
+
+                if (feature.getStyle().length > 0) {
+                    newStyle = feature.getStyle()[0].clone();
+                }
+                else {
+                    newStyle = feature.getStyle();
+                }
                 // bei ClusterFeatures
                 if (feature.get("features").length > 1) {
                     newStyle.getImage().setOpacity(0.5);
                     feature.setStyle([newStyle]);
-                    this.hoverOnClusterFeature(feature);
+                    if (zoom === 9) {
+                        this.createCircle(feature);
+                    }
                 }
                 else {
                     newStyle.getImage().setScale(1.2);
@@ -205,13 +228,18 @@ define([
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-                var newStyle = feature.getStyle()[0].clone();
+                var newStyle;
 
+                if (feature.getStyle().length > 0) {
+                    newStyle = feature.getStyle()[0].clone();
+                }
+                else {
+                    newStyle = feature.getStyle();
+                }
                 // bei ClusterFeatures
                 if (feature.get("features").length > 1) {
                     newStyle.getImage().setOpacity(1);
                     feature.setStyle([newStyle]);
-                    // this.hoverOffClusterFeature();
                 }
                 else {
                     newStyle.getImage().setScale(1);
@@ -234,7 +262,7 @@ define([
                 selectedFeatures = [];
 
             // Style selected Features
-            this.styleSelectedFeatures(selected);
+            this.styleSelectedFeatures(selected, evt);
 
             // Styling rückgängig machen
             this.styleDeselectedFeatures(deselected);
@@ -247,16 +275,13 @@ define([
                 var selLayer = evt.target.getLayer(selFeature),
                     isClusterFeature = selLayer.getSource() instanceof ol.source.Cluster;
 
-                if (isClusterFeature) {
-                    // hack für clusterFeatures
-                    if (selFeature.get("features").length <= 1) {
-                        _.each(selFeature.get("features"), function (feature) {
-                            selectedFeatures.push({
-                                feature: feature,
-                                layerId: selLayer.get("id")
-                            });
+                if (isClusterFeature && selFeature.get("features").length <= 1) {
+                    _.each(selFeature.get("features"), function (feature) {
+                        selectedFeatures.push({
+                            feature: feature,
+                            layerId: selLayer.get("id")
                         });
-                    }
+                    });
                 }
                 else {
                     selectedFeatures.push({
@@ -315,6 +340,7 @@ define([
                 // für jedes gehoverte Feature...
                 _.each(pFeatureArray, function (element) {
                     var featureProperties = element.feature.getProperties(),
+                        isClusterFeature = (element.feature.get("features") && element.feature.get("features").length > 1) === true ? true : false,
                         featureGeometry = element.feature.getGeometry(),
                         listEintrag = _.find(mouseHoverInfos, function (mouseHoverInfo) {
                             return mouseHoverInfo.id === element.layerId;
@@ -338,36 +364,37 @@ define([
                                 textFields = mouseHoverField.text,
                                 hoverHeader = "",
                                 hoverText = "";
-
                             _.each(headerFields, function (headerField) {
-                                hoverHeader = hoverHeader = "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
+                                hoverHeader = hoverHeader === "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
                             });
 
                             _.each(textFields, function (textField) {
-                                hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
+                                hoverText = hoverText === "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
                             });
 
-                            // hack für clusterFeatures
-                            if (hoverHeader.length <= 2) {
-                                hoverHeader = "HoverHeader";
-                            }
-                            if (hoverText.length === 3) {
-                                hoverText = "HoverText";
+                            if (isClusterFeature) {
+                                hoverHeader = "Mehrere Features";
+                                hoverText = "Klick zum Zoomen";
                             }
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
+
+                            if (isClusterFeature && this.getZoom() === 9) {
+                                value = "";
+                            }
+
                         }
                         if (!coord) {
                             if (featureGeometry.getType() === "MultiPolygon" || featureGeometry.getType() === "Polygon") {
                                 coord = _.flatten(featureGeometry.getInteriorPoints().getCoordinates());
                             }
                             else {
+
                                 coord = featureGeometry.getCoordinates();
                             }
                         }
                     }
                 }, this);
-
                 if (value !== "") {
                     this.get("mhpOverlay").setPosition(coord);
                     this.get("mhpOverlay").setOffset([10, -15]);
@@ -376,62 +403,49 @@ define([
                 }
             }
         },
-        // prüft die anzahl der geclusterten Features und ob die Features übereinander liegen
-        hoverOnClusterFeature: function (clusterFeature) {
-            var featureArray = clusterFeature.get("features"),
-                source = this.getHoverLayer().getSource(),
-                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml"),
-                hasFeaturesWithSameExtent = false,
-                maxFeatures = 8;
 
-            source.clear();
-            hasFeaturesWithSameExtent = this.hasFeaturesWithSameExtent(featureArray);
-            if (!hasFeaturesWithSameExtent) {
-                if (featureArray.length <= maxFeatures) {
-                    this.createCircle(clusterFeature);
-                }
-                else {
-                    console.log("Mehr als " + maxFeatures + " Features. Klicken zum Zoomen");
-                }
-            }
-            else {
-                console.log("gleicher extent");
-                this.createCircle(clusterFeature);
-            }
-        },
-        // erstellt um die Clusterkooridnate die geclusterten Features
+        // erstellt um die Clusterkooridnate die Features mit dem gleichen Extent
         createCircle: function (clusterFeature) {
             var featureArray = clusterFeature.get("features"),
                 anchor = clusterFeature.getGeometry().getCoordinates(),
                 source = this.getHoverLayer().getSource(),
-                options = Radio.request("MapView", "getOptions");
+                options = Radio.request("MapView", "getOptions"),
                 size = featureArray.length,
-                radians = (360 / size) * (Math.PI / 180);
-                stylelistmodel = Radio.request("StyleList", "returnModelByValue", "mml");
+                radians = (360 / size) * (Math.PI / 180),
+                newStyle = this.getOverlayStyle();
+
+                newStyle.getImage().setOpacity(0.5);
 
                 _.each(featureArray, function (feature, index) {
                     var newClusterFeature = clusterFeature.clone(),
-                        geom = newClusterFeature.getGeometry();
+                        geom = newClusterFeature.getGeometry(),
+                        oldFeature = source.getFeatureById(index);
 
-                    geom.setCoordinates([anchor[0], anchor[1] + (options.scale / 150)]);
+                    if (oldFeature) {
+                        source.removeFeature(oldFeature);
+                    }
+
+                    geom.setCoordinates([anchor[0], anchor[1] + (options.scale / 100)]);
                     geom.rotate(index * radians, anchor);
-                    newClusterFeature.set("features",[feature]);
+                    // feature.setGeometry(geom);
+                    newClusterFeature.set("features", [feature]);
                     newClusterFeature.setGeometry(geom);
-                    newClusterFeature.setStyle(stylelistmodel.getClusterStyle(newClusterFeature));
-                    source.addFeature(newClusterFeature);
-                });
+                    // console.log(newClusterFeature.getGeometry().getCoordinates());
+                    newClusterFeature.setId(index);
+                    newClusterFeature.setStyle(newStyle);
 
+                    source.addFeature(newClusterFeature);
+                }, this);
         },
         // prüft über den Extent ob Features übereinander liegen
-        hasFeaturesWithSameExtent: function (featureArray) {
-            xMinArray = [],
-            yMinArray = [],
-            xMaxArray = [],
-            yMaxArray = [],
-            size = featureArray.length,
-            hasFeaturesWithSameExtent = false;
+        hasOnlyFeaturesWithSameExtent: function (featureArray) {
+            var xMinArray = [],
+                yMinArray = [],
+                xMaxArray = [],
+                yMaxArray = [],
+                hasFeaturesWithSameExtent = false;
 
-            _.each(featureArray, function (feature, index) {
+            _.each(featureArray, function (feature) {
                     xMinArray.push(feature.getGeometry().getExtent()[0]);
                     yMinArray.push(feature.getGeometry().getExtent()[1]);
                     xMaxArray.push(feature.getGeometry().getExtent()[2]);
@@ -450,7 +464,10 @@ define([
         },
 
         hoverOffClusterFeature: function () {
-            this.getHoverLayer().getSource().clear();
+            if (!_.isEmpty(this.getHoverLayer())) {
+                this.getHoverLayer().getSource().getSource().refresh();
+            }
+
         },
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
@@ -458,48 +475,14 @@ define([
         getHoverLayer: function () {
             return this.get("hoverLayer");
         },
-        // listener-funktion, die bei click auf die Map aufgerufen wird.
-        clickOnMap: function (evt) {
-            var eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
-                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
-
-
-            if (isFeatureAtPixel === true) {
-                Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.featureClicked);
-            }
-            else {
-                this.hoverOffClusterFeature();
-            }
+        setZoom: function (value) {
+            this.set("zoom", value);
         },
-        // zoomt bei Klick auf das Cluster Feature auf den extent aller geclusterten Features
-        featureClicked: function (feature) {
-            var extent = [];
-
-            if (feature.get("features") && feature.get("features").length > 1) {
-                _.each(feature.get("features"), function (feature) {
-                    if (extent.length === 0) {
-                        extent.push(feature.getGeometry().getExtent()[0]);
-                        extent.push(feature.getGeometry().getExtent()[1]);
-                        extent.push(feature.getGeometry().getExtent()[2]);
-                        extent.push(feature.getGeometry().getExtent()[3]);
-                    }
-                    else {
-                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
-                            extent[0] = feature.getGeometry().getExtent()[0];
-                        }
-                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
-                            extent[1] = feature.getGeometry().getExtent()[1];
-                        }
-                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
-                            extent[2] = feature.getGeometry().getExtent()[2];
-                        }
-                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
-                            extent[3] = feature.getGeometry().getExtent()[3];
-                        }
-                    }
-                });
-                Radio.trigger("Map","zoomToExtent", extent);
-            }
+        getZoom: function () {
+            return this.get("zoom");
+        },
+        getOverlayStyle: function () {
+            return this.get("overlayStyle");
         }
     });
 
