@@ -11,6 +11,7 @@ define([
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
+            totalFeatures: 0, // Anzahl aller Features im Extent
             glyphicon: "glyphicon-chevron-right",
             display: "none"
         },
@@ -21,26 +22,29 @@ define([
             this.getParams();
         },
         getParams: function () {
-            var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
+            var simpleLister = Radio.request("Parser", "getPortalConfig").simpleLister;
 
             this.setLayerId(simpleLister.layerId);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
             this.setFeaturesPerPage(simpleLister.featuresPerPage);
         },
 
+        // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
         getLayerFeaturesInExtent: function () {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
-                featuresPerPage =  this.get("featuresPerPage");
+            var featuresPerPage = this.get("featuresPerPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
+                totalFeatures = jsonfeatures.length;
 
-            this.setFeaturesInExtent(features, featuresPerPage);
+            this.set("totalFeatures", totalFeatures);
+            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
-        // put more Features in List
+        // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
         appendFeatures: function () {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
-                number =  this.get("featuresPerPage") + this.get("totalFeaturesInPage");
+            var featuresPerPage = this.get("featuresPerPage") + this.get("totalFeaturesInPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
 
-            this.setFeaturesInExtent(features, number);
+            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
         // getter for featuresInExtent
@@ -49,11 +53,19 @@ define([
         },
 
         // setter for featuresInExtent
-        setFeaturesInExtent: function (features, number) {
-            var featuresObj = _.last(features, number);
+        setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
+            var totalFeatures = jsonFeaturesInExtent.length,
+                number = totalFeatures < number ? totalFeatures : number,
+                jsonFeatures = _.last(jsonFeaturesInExtent, number),
+                features = [];
 
-            this.set("featuresInExtent", featuresObj);
+            _.each(jsonFeatures, function (jsonFeature) {
+                features.push(JSON.parse(jsonFeature));
+            });
+
+            this.set("featuresInExtent", features);
             this.set("totalFeaturesInPage", number);
+            this.trigger("render");
         },
 
         // getter for glyphicon
@@ -62,7 +74,7 @@ define([
         },
         // setter for glyphicon
         setGlyphicon: function (value) {
-            this.set("glyphicon",value);
+            this.set("glyphicon", value);
         },
 
         // getter for display
@@ -71,7 +83,7 @@ define([
         },
         // setter for display
         setDisplay: function (value) {
-            this.set("display",value);
+            this.set("display", value);
         },
 
         // getter for layerId

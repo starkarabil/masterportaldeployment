@@ -1,21 +1,39 @@
-<div class="simple-lister-button col-md-1" title="Anliegen anzeigen">
+<div class="simple-lister-button" title="Anliegen anzeigen">
     <span class="glyphicon <%= glyphicon %>"></span>
 </div>
-<div id="simple-lister-table" class="simple-lister-table col-md-1" style="display: <%= display %>">
-    <table class="table">
+<div id="simple-lister-table" class="simple-lister-table" style="display: <%= display %>">
+    <div class="table">
 
         <%if (featuresInExtent.length <1) {%>
-            <tr>
-                <td><%= errortxt%></td>
-            </tr>
+            <div class="heading">
+                <%= errortxt%>
+            </div>
+        <%} else { %>
+            <div class="heading">
+                1 - <%= totalFeaturesInPage %> von <%= totalFeatures %> Einträgen
+            </div>
+            <div class="line"></div>
         <%}%>
-        <% _.each(featuresInExtent, function(feature){%>
-            <tr>
-                <%_.each(feature.properties, function(prop){%>
-                <td><%= prop%></td>
-                <%});%>
-            </tr>
-        <%});%>
-    </table>
-    <button class="btn btn-default simple-lister-append-button" type="submit">Button</button>
+        <div class="entries">
+            <%_.each(featuresInExtent, function(feature){ %>
+                <div class="entry">
+                    <div class="address">
+                        <%= feature.properties.str %> <%= feature.properties.hsnr %>
+                    </div>
+                     <div class="category">
+                        <%= feature.properties.kat %>
+                    </div>
+                    <div class="description">
+                        <%= feature.properties.beschr.length > 50? feature.properties.beschr.substring(0, 50) + "...": feature.properties.beschr%>
+                    </div>
+                </div>
+                <div class="line"></div>
+            <%});%>
+            <% if (totalFeaturesInPage < totalFeatures) { %>
+            <div id="div-simpleLister-extentList" title="Liste erweitern">
+                <span id="div-simpleLister-extentList-text">Liste erweitern</span>
+            </div>
+            <% } %>
+        </div>
+    </div>
 </div>

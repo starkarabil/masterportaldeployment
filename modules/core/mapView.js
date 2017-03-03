@@ -8,7 +8,6 @@ define([
         ol = require("openlayers"),
         Config = require("config"),
         MapView;
-
     MapView = Backbone.Model.extend({
         /**
          *
@@ -137,7 +136,7 @@ define([
                         $("#map").css("background", "white");
                     }
                     else {
-                        $("#map").css("background", "url('" + value + "') repeat scroll 0 0 rgba(0, 0, 0, 0)");
+                        $("#map").css("background", "url('" + Radio.request("Util", "getImgPath") + value + "') repeat scroll 0 0 rgba(0, 0, 0, 0)");
                     }
                 }
             });
@@ -176,7 +175,7 @@ define([
             _.each(Radio.request("Parser", "getItemsByAttributes", {type: "mapView"}), function (setting) {
                 switch (setting.id) {
                     case "backgroundImage": {
-                        this.set("backgroundImage", setting.attr);
+                        this.set("backgroundImage", Radio.request("Util", "getImgPath") + setting.attr);
 
                         this.setBackground(setting.attr);
                         break;

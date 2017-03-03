@@ -6,6 +6,7 @@ define(function (require) {
         TreeModel = require("modules/searchbar/tree/model"),
         LayerSearch = require("modules/searchbar/layer/model"),
         SearchbarTemplate = require("text!modules/searchbar/template.html"),
+        SearchbarTemplateMML = require("text!modules/searchbar/template_mml.html"),
         SearchbarRecommendedListTemplate = require("text!modules/searchbar/templateRecommendedList.html"),
         SearchbarHitListTemplate = require("text!modules/searchbar/templateHitList.html"),
         Searchbar = require("modules/searchbar/model"),
@@ -73,7 +74,9 @@ define(function (require) {
             //     that.render();
             // });
             this.config = config;
-
+            if (this.config.searchbarTemplate === "mml") {
+                this.template = _.template(SearchbarTemplateMML); //
+            }
             if (config.recommandedListLength) {
                 this.model.set("recommandedListLength", config.recommandedListLength);
             }
@@ -159,7 +162,7 @@ define(function (require) {
             }
             if (config.renderToDOM) {
                 if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form col-xs-9\"></div");
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form \"></div");
                 }
                 this.setElement(config.renderToDOM);
                 this.render();
@@ -167,6 +170,9 @@ define(function (require) {
                         $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
                 }
             }
+            this.listenTo(Radio.channel("DragMarker"), {
+                "newAddress": this.newDragMarkerAddress
+            }, this);
         },
         events: {
             "paste input": "setSearchString",
@@ -201,7 +207,6 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-
             if (this.config.renderToDOM === "#searchbarInMap") {
                 $(this.config.renderToDOM).append(this.$el); // rendern am DOM, das übergeben wird
             }
@@ -573,6 +578,20 @@ define(function (require) {
 
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
+        },
+
+        /**
+        * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
+        */
+        newDragMarkerAddress: function (response) {
+            if (!response.error) {
+                this.model.set("searchString", response.streetname + " " + response.housenumber);
+            }
+            else {
+                this.model.set("searchString", "");
+            }
+            this.render();
+            $("#searchInput").blur();
         }
     });
 
