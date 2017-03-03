@@ -15,11 +15,11 @@ define([
         template: _.template(Template),
         events: {
             "click .simple-lister-button": "toggleSimpleList",
-            "click .simple-lister-append-button": "appendMoreFeatures"
+            "click #div-simpleLister-extentList": "appendMoreFeatures"
         },
         initialize: function () {
             this.listenTo(this.model, {
-                "change:featuresInExtent": this.render
+                "change:totalFeaturesInPage": this.render
             });
 
             this.render();
