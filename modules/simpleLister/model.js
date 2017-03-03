@@ -141,17 +141,21 @@ define([
         },
 
         triggerMouseHoverById: function (id) {
-                var features = this.get("featuresInExtent"),
-                    feature = _.find(features, function (feat) {
-                        return feat.id.toString() === id;
-                    }),
-                    coord = feature ? feature.geometry.coordinates : null;
+            var features = this.get("featuresInExtent"),
+                feature = _.find(features, function (feat) {
+                    return feat.id.toString() === id;
+                }),
+                coord = feature ? feature.geometry.coordinates : null;
 
-                if (coord) {
-                    Radio.trigger("MouseHover", "hoverByCoordinates", coord);
-                }
+            if (coord) {
+                Radio.trigger("MouseHover", "hoverByCoordinates", coord);
             }
-        });
+        },
+
+        triggerMouseHoverLeave: function () {
+            Radio.trigger("MouseHover", "destroy");
+        }
+    });
 
     return SimpleListerModel;
 });

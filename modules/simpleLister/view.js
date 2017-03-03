@@ -15,7 +15,8 @@ define([
         events: {
             "click .simple-lister-button": "toggleSimpleList",
             "click #div-simpleLister-extentList": "appendMoreFeatures",
-            "mouseover .entry": "mouseoverEntry"
+            "mouseover .entry": "mouseoverEntry",
+            "mouseleave .entry": "mouseleaveEntry"
         },
         initialize: function () {
             this.listenTo(this.model, {
@@ -81,6 +82,10 @@ define([
             var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
 
             this.model.triggerMouseHoverById(id);
+        },
+
+        mouseleaveEntry: function () {
+            this.model.triggerMouseHoverLeave();
         }
     });
 

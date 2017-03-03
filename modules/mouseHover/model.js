@@ -38,7 +38,8 @@ define([
             }, this);
 
             channel.on({
-                "hoverByCoordinates": this.hoverByCoordinates
+                "hoverByCoordinates": this.hoverByCoordinates,
+                "destroy": this.destroyPopup
             }, this);
 
             // select interaction Listener
@@ -500,7 +501,8 @@ define([
                 Radio.trigger("Map","zoomToExtent", extent);
             }
         },
-        // hovert Feature über Radio
+
+        // hovert nächstgelegenes Feature an coordinate
         hoverByCoordinates: function (coordinate) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
                 selectedFeatures = [];
