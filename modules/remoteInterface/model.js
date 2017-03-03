@@ -68,8 +68,8 @@ define(function () {
             Radio.trigger("ModelList", "hideFeaturesByIds", name, featureIds);
         },
 
-        addFeatures: function (features, name) {
-            Radio.trigger("AddGeoJSON", "addFeatures", features, name);
+        addFeatures: function (features, name, layerHoverInfo) {
+            Radio.trigger("AddGeoJSON", "addFeatures", features, name, layerHoverInfo);
         },
 
         getVisibleBaseLayers: function () {

@@ -10,18 +10,7 @@ define([
             cursor: "pointer",
             previousCursor: undefined,
             // select interaction reagiert auf pointermove
-            selectPointerMove: new ol.interaction.Select({
-                condition: ol.events.condition.pointerMove,
-                multi: false,
-                filter: function (feature, layer) {
-                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
-                },
-                layers: function (ollayer) {
-                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
-                },
-                hitTolerance: 2,
-                style: this.hoverStyleFunction
-            }),
+            selectPointerMove: {},
             mouseHoverInfos: [],
             mhpresult: "",
             mhpcoordinates: [],
@@ -29,12 +18,19 @@ define([
             GFIPopupVisibility: false
         },
         initialize: function () {
+            this.set("selectPointerMove", this.createInteraction());
             // Radio channel
-            var channel = Radio.channel("MouseHover");
+            var channel = Radio.channel("MouseHover"),
+                hoverLayer = {};
 
+            channel.on({
+                "refreshMouseHoverInfos": this.getMouseHoverInfos
+            }, this);
             channel.reply({
                 "isHoverLayer": this.isHoverLayer,
-                "hasHoverInfo": this.hasHoverInfo
+                "hasHoverInfo": function () {
+                    this.hasHoverInfo();
+                }
             }, this);
 
             // select interaction Listener
@@ -53,18 +49,6 @@ define([
             // Lese MouseHover Definition aus config
             this.getMouseHoverInfos();
 
-            // Hack für clusterFeatures
-            var mouseHoverInfos = this.get("mouseHoverInfos");
-
-            mouseHoverInfos.push({
-                id: "999998",
-                mouseHoverField: {
-                    header: ["str", "hsnr"],
-                    text: "kat"
-                }
-            });
-            this.set("mouseHoverInfos", mouseHoverInfos);
-
 
             // Listeners
             this.listenTo(Radio.channel("GFI"), {
@@ -76,11 +60,27 @@ define([
 
             this.setHoverLayer(Radio.request("Map", "createLayerIfNotExists", "hover_layer"));
             // Hack für clusterFeatures
-            var hoverLayer = this.getHoverLayer();
+            hoverLayer = this.getHoverLayer();
 
             hoverLayer.set("id", "999998");
         },
+        createInteraction: function () {
+            var context = this;
 
+            return new ol.interaction.Select({
+                condition: ol.events.condition.pointerMove,
+                multi: false,
+                filter: function (feature, layer) {
+                    return context.hasHoverInfo(feature, layer);
+                },
+               layers: function (ollayer) {
+                    return context.isHoverLayer(ollayer);
+                },
+                hitTolerance: 2,
+                style: this.hoverStyleFunction,
+                context: this
+            });
+        },
         // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
         hasHoverInfo: function (olfeature, ollayer) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
@@ -133,6 +133,14 @@ define([
                 mouseHoverInfos = _.map(mouseHoverLayers, function (layer) {
                     return _.pick(layer, "id", "mouseHoverField");
                 });
+                // Hack für cluster
+                mouseHoverInfos.push({
+                id: "999998",
+                mouseHoverField: {
+                    header: ["str", "hsnr"],
+                    text: "kat"
+                }
+            });
 
             this.set("mouseHoverInfos", mouseHoverInfos);
         },

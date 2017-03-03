@@ -45,7 +45,8 @@ define(function (require) {
                 gfiAttributes: this.get("gfiAttributes"),
                 routable: this.get("routable"),
                 gfiTheme: this.get("gfiTheme"),
-                id: this.getId()
+                id: this.getId(),
+                mouseHoverField: this.get("mouseHoverField")
             }));
         },
 
