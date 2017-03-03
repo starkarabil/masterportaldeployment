@@ -171,9 +171,11 @@ define("app",
             require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
                 if (Radio.request("Util", "isAny")) {
                     new MobileMMLFilterView();
+                    decModulesLoading();
                 }
                 else {
                     new MMLFilterView();
+                    decModulesLoading();
                 }
             });
         }
