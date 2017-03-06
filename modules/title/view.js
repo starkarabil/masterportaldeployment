@@ -6,6 +6,7 @@ define([
     var TitleView = Backbone.View.extend({
         className: "visible-lg-block portal-title",
         id: "portalTitle",
+        projektImgPath: Radio.request("Util", "getProjektImgPath"),
         template: _.template(TitleTemplate),
         initialize: function (title) {
             var channel = Radio.channel("Title");
@@ -31,7 +32,7 @@ define([
         render: function (portalTitle) {
             this.$el.html(this.template({
                 title: portalTitle,
-                logo: Radio.request("Util", "getPath", this.getLogo()),
+                logo: this.getLogo(),
                 logoLink: Radio.request("Parser", "getPortalConfig").LogoLink || "http://geoinfo.hamburg.de",
                 logoTooltip: Radio.request("Parser", "getPortalConfig").LogoToolTip || "Landesbetrieb Geoinformation und Vermessung"
             }));
@@ -47,10 +48,10 @@ define([
                result = null;
             }
             else if (_.isUndefined(logo)) {
-                result = "../img/hh-logo.png";
+                result = this.projektImgPath + "hh-logo.png";
             }
             else {
-                result = logo;
+                result = this.projektImgPath + logo;
             }
             this.logo = result;
         },

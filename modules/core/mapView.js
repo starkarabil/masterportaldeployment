@@ -8,7 +8,6 @@ define([
         ol = require("openlayers"),
         Config = require("config"),
         MapView;
-
     MapView = Backbone.Model.extend({
         /**
          *
@@ -95,7 +94,7 @@ define([
                     return this.getCenter();
                 },
                 "getZoomLevel": function () {
-                    return this.getZoom();
+                    return this.getZoomLevel();
                 },
                 "getResolutions": function () {
                     return this.getResolutions();
@@ -104,7 +103,8 @@ define([
                     return _.findWhere(this.get("options"), {resolution: this.get("resolution")});
                 },
                 "getResoByScale": this.getResoByScale,
-                "getScales": this.getScales
+                "getScales": this.getScales,
+                "isLastZoomLevel": this.isLastZoomLevel
             }, this);
 
             channel.on({
@@ -137,7 +137,7 @@ define([
                         $("#map").css("background", "white");
                     }
                     else {
-                        $("#map").css("background", "url('" + value + "') repeat scroll 0 0 rgba(0, 0, 0, 0)");
+                        $("#map").css("background", "url('" + Radio.request("Util", "getImgPath") + value + "') repeat scroll 0 0 rgba(0, 0, 0, 0)");
                     }
                 }
             });
@@ -157,7 +157,7 @@ define([
             // Listener für ol.View
             this.get("view").on("change:resolution", function () {
                     this.set("resolution", this.get("view").constrainResolution(this.get("view").getResolution()));
-                    channel.trigger("changedZoomLevel", this.getZoom());
+                    channel.trigger("changedZoomLevel", this.getZoomLevel());
             }, this);
             this.get("view").on("change:center", function () {
                 this.set("center", this.get("view").getCenter());
@@ -176,7 +176,7 @@ define([
             _.each(Radio.request("Parser", "getItemsByAttributes", {type: "mapView"}), function (setting) {
                 switch (setting.id) {
                     case "backgroundImage": {
-                        this.set("backgroundImage", setting.attr);
+                        this.set("backgroundImage", Radio.request("Util", "getImgPath") + setting.attr);
 
                         this.setBackground(setting.attr);
                         break;
@@ -345,14 +345,14 @@ define([
          *
          */
         setZoomLevelUp: function () {
-            this.get("view").setZoom(this.getZoom() + 1);
+            this.get("view").setZoom(this.getZoomLevel() + 1);
         },
 
         /**
          *
          */
         setZoomLevelDown: function () {
-            this.get("view").setZoom(this.getZoom() - 1);
+            this.get("view").setZoom(this.getZoomLevel() - 1);
         },
 
         /**
@@ -413,7 +413,7 @@ define([
          *
          * @return {[type]} [description]
          */
-        getZoom: function () {
+        getZoomLevel: function () {
             return this.get("view").getZoom();
         },
 
@@ -426,6 +426,21 @@ define([
 
         setZoomLevel: function (value) {
             this.get("view").setZoom(value);
+        },
+
+        getOptions: function () {
+            return this.get("options");
+        },
+
+        isLastZoomLevel: function () {
+            var indexOf = this.getOptions().length - 1;
+
+            if (this.getZoomLevel() === this.getOptions()[indexOf].zoomLevel) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     });
 
