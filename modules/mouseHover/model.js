@@ -187,28 +187,18 @@ define([
                 this.setHoverLayer(layer);
             }
             features.forEach(function (feature) {
-                var newStyle;
-
-                if (feature.getStyle().length > 0) {
-                    newStyle = feature.getStyle()[0].clone();
-                }
-                else {
-                    newStyle = feature.getStyle();
-                }
                 // bei ClusterFeatures
                 if (feature.get("features").length > 1) {
-                    newStyle.getImage().setOpacity(0.5);
-                    feature.setStyle([newStyle]);
+                    feature.getStyle()[0].getImage().setScale(1.2);
                     if (zoom === 9) {
                         this.createCircle(feature);
                     }
                 }
                 else {
-                    newStyle.getImage().setScale(1.2);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(1.2 * newStyle.getText().getOffsetY());
+                    feature.getStyle()[0].getImage().setScale(1.2);
+                    if (_.isNull(feature.getStyle()[0].getText()) === false) {
+                        feature.getStyle()[0].getText().setOffsetY(1.2 * feature.getStyle()[0].getText().getOffsetY());
                     }
-                    feature.setStyle([newStyle]);
                 }
             }, this);
         },
@@ -216,25 +206,16 @@ define([
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-                var newStyle;
 
-                if (feature.getStyle().length > 0) {
-                    newStyle = feature.getStyle()[0].clone();
-                }
-                else {
-                    newStyle = feature.getStyle();
-                }
                 // bei ClusterFeatures
                 if (feature.get("features").length > 1) {
-                    newStyle.getImage().setOpacity(1);
-                    feature.setStyle([newStyle]);
+                    feature.getStyle()[0].getImage().setOpacity(1);
                 }
                 else {
-                    newStyle.getImage().setScale(1);
-                    if (_.isNull(newStyle.getText()) === false) {
-                        newStyle.getText().setOffsetY(newStyle.getText().getOffsetY() / 1.2);
+                    feature.getStyle()[0].getImage().setScale(1);
+                    if (_.isNull(feature.getStyle()[0].getText()) === false) {
+                        feature.getStyle()[0].getText().setOffsetY(feature.getStyle()[0].getText().getOffsetY() / 1.2);
                     }
-                    feature.setStyle([newStyle]);
                 }
             }, this);
         },
