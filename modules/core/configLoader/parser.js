@@ -242,7 +242,7 @@ define([
             this.addItem(layer);
         },
 
-        addGeoJSONLayer: function (name, id, features) {
+        addGeoJSONLayer: function (name, id, features, additionalProperties) {
             var layer = {
                 type: "layer",
                 name: name,
@@ -263,7 +263,12 @@ define([
                 styleId: "mml"
             };
 
+            if (!_.isUndefined(additionalProperties)) {
+                _.extend(layer, additionalProperties);
+            }
             this.addItem(layer);
+
+            Radio.trigger("MouseHover", "refreshMouseHoverInfos");
         },
 
         /**

@@ -9,18 +9,7 @@ define([
             cursor: "pointer",
             previousCursor: undefined,
             // select interaction reagiert auf pointermove
-            selectPointerMove: new ol.interaction.Select({
-                condition: ol.events.condition.pointerMove,
-                multi: false,
-                filter: function (feature, layer) {
-                    return Radio.request("MouseHover", "hasHoverInfo", feature, layer);
-                },
-                layers: function (ollayer) {
-                    return Radio.request("MouseHover", "isHoverLayer", ollayer);
-                },
-                hitTolerance: 2,
-                style: this.hoverStyleFunction
-            }),
+            selectPointerMove: {},
             mouseHoverInfos: [],
             mhpresult: "",
             mhpcoordinates: [],
@@ -43,12 +32,19 @@ define([
                 })
         },
         initialize: function () {
+            this.set("selectPointerMove", this.createInteraction());
             // Radio channel
-            var channel = Radio.channel("MouseHover");
+            var channel = Radio.channel("MouseHover"),
+                hoverLayer = {};
 
+            channel.on({
+                "refreshMouseHoverInfos": this.getMouseHoverInfos
+            }, this);
             channel.reply({
                 "isHoverLayer": this.isHoverLayer,
-                "hasHoverInfo": this.hasHoverInfo
+                "hasHoverInfo": function () {
+                    this.hasHoverInfo();
+                }
             }, this);
 
             // select interaction Listener
@@ -83,7 +79,23 @@ define([
             }, this);
             this.setZoom(Radio.request("MapView", "getZoomLevel"));
         },
+        createInteraction: function () {
+            var context = this;
 
+            return new ol.interaction.Select({
+                condition: ol.events.condition.pointerMove,
+                multi: false,
+                filter: function (feature, layer) {
+                    return context.hasHoverInfo(feature, layer);
+                },
+               layers: function (ollayer) {
+                    return context.isHoverLayer(ollayer);
+                },
+                hitTolerance: 2,
+                style: this.hoverStyleFunction,
+                context: this
+            });
+        },
         // Reply-Funktion: Meldet true, wenn Featureattribut mit MouseHoverInformation gefüllt ist. Sonst false.
         hasHoverInfo: function (olfeature, ollayer) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
@@ -124,7 +136,7 @@ define([
         },
 
         /*
-         * Erstellt initial eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
+         * Erstellt eine Liste aller Vektorlayer mit Definition eines mouseHoverFields.
         */
         getMouseHoverInfos: function () {
             var wfsLayers = Radio.request("Parser", "getItemsByAttributes", {typ: "WFS"}),
@@ -333,13 +345,12 @@ define([
                                 textFields = mouseHoverField.text,
                                 hoverHeader = "",
                                 hoverText = "";
-
                             _.each(headerFields, function (headerField) {
-                                hoverHeader = hoverHeader = "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
+                                hoverHeader = hoverHeader === "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
                             });
 
                             _.each(textFields, function (textField) {
-                                hoverText = hoverText = "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
+                                hoverText = hoverText === "" ? _.values(_.pick(featureProperties, textField)) : hoverText + " " + _.values(_.pick(featureProperties, textField));
                             });
 
                             if (isClusterFeature) {
