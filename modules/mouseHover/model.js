@@ -189,7 +189,7 @@ define([
             features.forEach(function (feature) {
                 // bei ClusterFeatures
                 if (feature.get("features").length > 1) {
-                    feature.getStyle()[0].getImage().setScale(1.2);
+                    feature.getStyle()[0].getImage().setOpacity(0.5);
                     if (zoom === 9) {
                         this.createCircle(feature);
                     }
