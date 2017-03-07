@@ -207,9 +207,11 @@ define([
                     }
                 }
                 else {
-                    feature.getStyle()[0].getImage().setScale(1.2);
-                    if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                        feature.getStyle()[0].getText().setOffsetY(1.2 * feature.getStyle()[0].getText().getOffsetY());
+                    if (_.isUndefined(feature.getStyle()[0]) === false) {
+                        feature.getStyle()[0].getImage().setScale(1.2);
+                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
+                            feature.getStyle()[0].getText().setOffsetY(1.2 * feature.getStyle()[0].getText().getOffsetY());
+                        }
                     }
                 }
             }, this);
@@ -224,9 +226,11 @@ define([
                     feature.getStyle()[0].getImage().setOpacity(1);
                 }
                 else {
-                    feature.getStyle()[0].getImage().setScale(1);
-                    if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                        feature.getStyle()[0].getText().setOffsetY(feature.getStyle()[0].getText().getOffsetY() / 1.2);
+                    if (_.isUndefined(feature.getStyle()[0]) === false) {
+                        feature.getStyle()[0].getImage().setScale(1);
+                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
+                            feature.getStyle()[0].getText().setOffsetY(feature.getStyle()[0].getText().getOffsetY() / 1.2);
+                        }
                     }
                 }
             }, this);
