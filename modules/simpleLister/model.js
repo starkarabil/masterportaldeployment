@@ -11,7 +11,7 @@ define([
             featuresPerPage: 20, // Anzahl initialer Features in Liste
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
             totalFeatures: 0, // Anzahl aller Features im Extent
-            glyphicon: "glyphicon-chevron-right",
+            glyphicon: "glyphicon-triangle-right",
             display: "none"
         },
 
