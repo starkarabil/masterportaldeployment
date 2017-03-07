@@ -95,9 +95,9 @@ define([
                 selectedTimeId = $(".div-mmlFilter-filter-time").children(":checked")[0].id,
                 date = new Date(),
                 daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
-                timeDiff = daysDiff*24*3600*1000,
+                timeDiff = daysDiff * 24 * 3600 * 1000,
                 fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)).toISOString().split("T")[0] : $("#fromDate").val(),
-                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val()
+                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val();
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
