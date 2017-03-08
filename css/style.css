@@ -4266,6 +4266,27 @@ Hilfsklassen
   right: 0px;
   z-index: 100;
 }
+.lgv-container .ui-datepicker-header {
+  background-color: white;
+}
+.lgv-container .ui-state-default {
+  width: 34px !important;
+  height: 31px !important;
+  border-radius: 3px !important;
+  border-color: white !important;
+  background: white !important;
+  line-height: 2.29 !important;
+  letter-spacing: normal !important;
+  text-align: center !important;
+  color: #212121 !important;
+}
+.lgv-container .ui-state-highlight {
+  background: #ddd !important;
+}
+.lgv-container .ui-state-active {
+  background: #666666 !important;
+  color: #fff !important;
+}
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

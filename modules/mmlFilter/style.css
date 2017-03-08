@@ -144,3 +144,24 @@ Hilfsklassen
     right: 0px;
     z-index: 100;
 }
+.ui-datepicker-header {
+    background-color: white
+}
+.ui-state-default {
+    width: 34px !important;
+    height: 31px !important;
+    border-radius: 3px !important;
+    border-color: white !important;
+    background: white !important;
+    line-height: 2.29 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #212121 !important;
+}
+.ui-state-highlight {
+    background: #ddd !important;
+}
+.ui-state-active {
+    background: #666666 !important;
+    color: #fff !important;
+}

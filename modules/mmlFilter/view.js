@@ -103,7 +103,12 @@ define([
                         onSelect: function (dateTxt) {
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
-                        }
+                        },
+                        dateFormat: "dd-mm-yyyy",
+                        dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                        monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
                     });
                 }
             }
