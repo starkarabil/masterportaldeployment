@@ -1,6 +1,7 @@
 define([
     "text!modules/mmlFilter/template.html",
-    "modules/mmlFilter/model"
+    "modules/mmlFilter/model",
+    "jqueryui/widgets/datepicker"
 
 ], function () {
 
@@ -18,7 +19,9 @@ define([
             "click .filterHeader": "toggleMMLFilterSection",
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
-            "click .div-mmlFilter-filter-time": "toggleTimeMode"
+            "click .div-mmlFilter-filter-time": "toggleTimeMode",
+            "click #btn-fromDate": "btnFromDateClicked",
+            "click #btn-toDate": "btnToDateClicked"
         },
 
         initialize: function () {
@@ -82,7 +85,52 @@ define([
                 }
             });
         },
+        btnFromDateClicked: function () {
+            var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
 
+            // wenn Kalender schon offen ist, verstecke ihn
+            if (calAlreadyOpen === true) {
+                $("#fromDateDiv .ui-datepicker").hide();
+            }
+            else {
+                // wenn es schon einen Kalender gibt, zeige ihn an
+                if ($("#fromDateDiv").find(".ui-datepicker").length !== 0) {
+                    $("#fromDateDiv .ui-datepicker").show();
+                }
+                // wenn es noch keinen Kalender gibt, erstelle einen
+                else {
+                    $("#fromDateDiv").datepicker({
+                        onSelect: function (dateTxt) {
+                            $("#fromDateDiv .ui-datepicker").hide();
+                            $("#fromDate").val(dateTxt);
+                        }
+                    });
+                }
+            }
+        },
+        btnToDateClicked: function () {
+            var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
+
+            // wenn Kalender schon offen ist, verstecke ihn
+            if (calAlreadyOpen === true) {
+                $("#toDateDiv .ui-datepicker").hide();
+            }
+            else {
+                // wenn es schon einen Kalender gibt, zeige ihn an
+                if ($("#toDateDiv").find(".ui-datepicker").length !== 0) {
+                    $("#toDateDiv .ui-datepicker").show();
+                }
+                // wenn es noch keinen Kalender gibt, erstelle einen
+                else {
+                    $("#toDateDiv").datepicker({
+                        onSelect: function (dateTxt) {
+                            $("#toDateDiv .ui-datepicker").hide();
+                            $("#toDate").val(dateTxt);
+                        }
+                    });
+                }
+            }
+        },
         resetKategorien: function () {
             $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
                 $(kategorie).prop("checked", false);
@@ -108,8 +156,8 @@ define([
             });
             console.log(selectedKat);
             console.log(selectedStatus);
-            console.log(toDate);
             console.log(fromDate);
+            console.log(toDate);
         }
     });
 

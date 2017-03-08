@@ -58,11 +58,25 @@
             <input id="userdefined" class="margin-leftright checkbox-zoom" type="radio" name="zeitraum" value="userdefined"> Zeitraum wählen<br>
             <div class="row" style="display:none;">
                 <span class="margin-leftright" id="basic-addon3">Von</span>
-                <input id="fromDate" class="datepicker float-right" type="date" name="from" placeholder="tt.mm.yyyy">
+                <div id="fromDateDiv" class="input-group float-right" name="from">
+                    <input id="fromDate" class="datepicker float-right form-control" type="text" name="from" placeholder="tt.mm.yyyy">
+                    <span class="input-group-btn">
+                        <button id="btn-fromDate" class="btn btn-default btn-calendar" type="button" title="Kalender öffnen">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </button>
+                    </span>
+                </div>
             </div>
             <div class="row" style="display:none;">
                 <span class="margin-leftright" id="basic-addon4">Bis</span>
-                <input id="toDate" class="datepicker float-right" type="date" name="bis" placeholder="tt.mm.yyyy">
+                <div id="toDateDiv" class="input-group float-right" name="bis">
+                    <input id="toDate" class="datepicker float-right form-control" type="text" name="bis" placeholder="tt.mm.yyyy">
+                    <span class="input-group-btn">
+                        <button id="btn-toDate" class="btn btn-default btn-calendar" type="button" title="Kalender öffnen">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
