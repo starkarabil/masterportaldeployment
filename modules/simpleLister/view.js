@@ -14,14 +14,19 @@ define([
         className: "simple-lister-view",
         template: _.template(Template),
         events: {
-            "click .simple-lister-button": "toggleSimpleList"
+            "click .simple-lister-button": "toggleSimpleList",
+            "click #div-simpleLister-extentList": "appendMoreFeatures"
         },
         initialize: function () {
             this.listenTo(this.model, {
-                "change:featuresInExtent": this.render
+                "render": this.render
             });
 
             this.render();
+        },
+
+        appendMoreFeatures: function () {
+            this.model.appendFeatures();
         },
 
         toggleSimpleList: function () {
@@ -49,7 +54,6 @@ define([
             var attr = this.model.toJSON();
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
-
         }
     });
 
