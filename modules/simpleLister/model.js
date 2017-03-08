@@ -8,7 +8,9 @@ define([
     SimpleLister = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
-            featuresPerPage: 20,
+            featuresPerPage: 20, // Anzahl initialer Features in Liste
+            totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
+            totalFeatures: 0, // Anzahl aller Features im Extent
             glyphicon: "glyphicon-triangle-right",
             display: "none"
         },
@@ -25,14 +27,22 @@ define([
             this.setFeaturesPerPage(simpleLister.featuresPerPage);
         },
 
+        // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
         getLayerFeaturesInExtent: function () {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
-                featuresObj = [];
+            var featuresPerPage = this.get("featuresPerPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
+                totalFeatures = jsonfeatures.length;
 
-            _.each(features, function (feature) {
-                featuresObj.push(JSON.parse(feature));
-            });
-            this.setFeaturesInExtent(featuresObj);
+            this.set("totalFeatures", totalFeatures);
+            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+        },
+
+        // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
+        appendFeatures: function () {
+            var featuresPerPage = this.get("featuresPerPage") + this.get("totalFeaturesInPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
+
+            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
         // getter for featuresInExtent
@@ -41,8 +51,19 @@ define([
         },
 
         // setter for featuresInExtent
-        setFeaturesInExtent: function (value) {
-            this.set("featuresInExtent", value);
+        setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
+            var totalFeatures = jsonFeaturesInExtent.length,
+                number = totalFeatures < number ? totalFeatures : number,
+                jsonFeatures = _.last(jsonFeaturesInExtent, number),
+                features = [];
+
+            _.each(jsonFeatures, function (jsonFeature) {
+                features.push(JSON.parse(jsonFeature));
+            });
+
+            this.set("featuresInExtent", features);
+            this.set("totalFeaturesInPage", number);
+            this.trigger("render");
         },
 
         // getter for glyphicon
