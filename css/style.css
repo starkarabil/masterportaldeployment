@@ -59,6 +59,9 @@
   /* Bootstrap Popover Klassen */
   /* Desktop GFI */
   /* Desktop Detached */
+  /*
+Knopf zum Nachladen
+*/
 }
 .lgv-container .colorpicker-saturation {
   width: 100px;
@@ -544,6 +547,18 @@
   font-weight: 700;
   font-style: italic;
 }
+.lgv-container > * {
+  font-family: "HamburgSans-Regular", Arial, sans-serif;
+  font-size: 12px;
+}
+.lgv-container h1 {
+  font-family: "HamburgSans-Bold", Arial, sans-serif;
+  font-size: 32px;
+  color: #003063;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: normal;
+}
 .lgv-container html,
 .lgv-container body {
   height: 100%;
@@ -896,7 +911,6 @@
   background: linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -o-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -ms-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   bottom: 0;
   color: #555555;
   position: absolute;
@@ -1032,7 +1046,6 @@
 }
 .lgv-container #coord-popup {
   min-width: 250px;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container #coord-popup > .header {
   padding-left: 10px;
@@ -1134,7 +1147,6 @@
     background: -ms-linear-gradient(top , white , #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);*/
   color: #555555;
   border-bottom: 1px solid #e5e5e5;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   padding: 10px;
 }
 .lgv-container .legendModal > button {
@@ -1152,11 +1164,9 @@
   background: -ms-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: #555555;
   cursor: pointer;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .tdLegend {
   padding: 3px;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .tdLegend > img {
   max-height: 35px;
@@ -1581,7 +1591,6 @@
   color: #ffffff;
 }
 .lgv-container .dropdown-menu > li > a {
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   font-size: 12px;
   color: #353535;
 }
@@ -1622,7 +1631,6 @@
 }
 .lgv-container .record-label {
   font-size: 11px;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .record-form {
   padding-top: 86px;
@@ -1895,7 +1903,6 @@
     background: -ms-linear-gradient(top , white , #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);*/
   color: #555555;
   border-bottom: 1px solid #e5e5e5;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   padding: 10px;
 }
 .lgv-container .featurelistModal > button {
@@ -1913,11 +1920,9 @@
   background: -ms-linear-gradient(top, white, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: #555555;
   cursor: pointer;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .tdfeaturelist {
   padding: 3px;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .tdfeaturelist > img {
   max-height: 35px;
@@ -2034,7 +2039,6 @@
 }
 .lgv-container ul#Themen {
   border: none;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   padding: 0px 0;
   min-width: 380px;
 }
@@ -2089,7 +2093,6 @@
   font-size: 14px;
 }
 .lgv-container ul#Themen ul .title {
-  font-family: UniversNextW01-Regular, "Arial Narrow", Arial, sans-serif;
   font-size: 12px;
   cursor: pointer;
 }
@@ -2271,7 +2274,6 @@
   color: #ffffff;
 }
 .lgv-container .breadcrumb-mobile span.title {
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   padding-left: 6px;
   font-size: 14px;
 }
@@ -2286,7 +2288,6 @@
   min-height: 50px;
 }
 .lgv-container .mobile span.title {
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
   font-size: 14px;
   padding-left: 6px;
   vertical-align: text-bottom;
@@ -2307,7 +2308,6 @@
   margin-top: 34px;
   border-top: 1px solid #ddd;
   padding-top: 8px;
-  font-family: "UniversNextW01-Regular", "Arial Narrow", Arial, sans-serif;
 }
 .lgv-container .item-settings > .form-inline > .form-group > label {
   font-size: 12px;
@@ -2362,7 +2362,6 @@
 .lgv-container .gfi {
   border: 1px solid #e5e5e5;
   color: #555555;
-  font-family: "UniversNextW01-Regular", sans-serif;
 }
 .lgv-container .gfi > .gfi-header {
   font-size: 14px;
@@ -2535,6 +2534,7 @@
   padding: 21px 12px 21px 12px;
   color: #999999;
   background-color: #fff;
+  cursor: pointer;
 }
 .lgv-container .simple-lister-button > .glyphicon-triangle-left {
   left: 100%;
@@ -2584,6 +2584,27 @@
   font-family: "HamburgSans";
   font-size: 15px;
   line-height: 1.67;
+  letter-spacing: -0.4px;
+}
+.lgv-container #div-simpleLister-extentList {
+  height: 45px;
+  border-radius: 3px !important;
+  border: solid 1px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  color: white;
+  background-color: #005ca9;
+  margin: 5px 20px 5px 20px;
+}
+.lgv-container #div-simpleLister-extentList:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.lgv-container #div-simpleLister-extentList-text {
+  font-size: 14px;
+  line-height: 3.3;
+  font-family: HamburgSans;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
   letter-spacing: -0.4px;
 }
 /*!
@@ -8149,24 +8170,3 @@ button.lgv-container .close {
     width: 0px;
 }
 
-.lgv-container #div-simpleLister-extentList {
-  height: 45px;
-  border-radius: 3px !important;
-  border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
-  color: white;
-  background-color: #005ca9;
-  margin: 5px 20px 5px 20px;
-}
-.lgv-container #div-simpleLister-extentList:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.lgv-container #div-simpleLister-extentList-text {
-  font-size: 14px;
-  line-height: 3.3;
-  font-family: HamburgSans;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: -0.4px;
-}
