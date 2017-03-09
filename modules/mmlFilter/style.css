@@ -5,6 +5,7 @@ neben Filterfenster
 #btn-mmlFilter-toggle {
     position: absolute;
     right: 0px;
+    /*right: 334px;*/
     cursor: pointer;
     top: 8px;
     width: 45px;
@@ -86,22 +87,33 @@ gesamtes Filterwindow
     font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
+    line-height: 2.73;
     position: absolute;
     right: 0px;
     top: 0px;
     background-color: white;
     width: 0px;
+    color: #333333;
     border-radius: 1px !important;
 }
+
 #fromDateDiv {
     width: 200px;
 }
 #toDateDiv {
     width: 200px;
 }
-
+.mml-white {
+    background: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+}
 .ui-widget-content .ui-icon {
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
+}
+.panel-collapse {
+    max-height: 357px;
+    overflow: auto;
 }
 
 /**********************************
@@ -135,7 +147,7 @@ Hilfsklassen
     width: 34px;
 }
 .checkbox-zoom {
-    zoom: 1.3
+    zoom: 1.5
 }
 
 .ui-datepicker {

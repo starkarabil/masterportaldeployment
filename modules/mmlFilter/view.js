@@ -1,12 +1,14 @@
 define([
     "text!modules/mmlFilter/template.html",
     "modules/mmlFilter/model",
-    "jqueryui/widgets/datepicker"
+    "jqueryui/widgets/datepicker",
+    "bootstrap/collapse"
 
 ], function () {
 
     var Template = require("text!modules/mmlFilter/template.html"),
         Model = require("modules/mmlFilter/model"),
+        bootstrap = require("bootstrap/collapse"),
 
         MMLFilterView;
 
@@ -16,22 +18,34 @@ define([
         template: _.template(Template),
         events: {
             "click #btn-mmlFilter-toggle": "toggleMMLFilter",
-            "click .filterHeader": "toggleMMLFilterSection",
+            // "click .filterHeader": "toggleMMLFilterSection",
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
             "click #btn-fromDate": "btnFromDateClicked",
-            "click #btn-toDate": "btnToDateClicked"
+            "click #btn-toDate": "btnToDateClicked",
+            "click .div-mmlFilter-filter-header": "changeGlyph"
         },
 
         initialize: function () {
+            $(".lgv-container").append("<div id = \"mmlFilter\"></div>");
             this.render();
         },
+        changeGlyph: function (evt) {
+            // console.log(evt.target);
 
+            $("#mmlFilter").find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+
+            // if ($(evt.target).parent().find(".glyphicon-triangle-top").length === 0) {
+                $(evt.target).parent().find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            // }
+            console.log($(evt.target).parent().find(".glyphicon-triangle-top"));
+        },
         render: function () {
             var attr = this.model.toJSON();
 
-            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            // $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            $("#mmlFilter").append(this.$el.html(this.template(attr)));
         },
 
         toggleMMLFilter: function () {
@@ -50,27 +64,27 @@ define([
             });
         },
 
-        toggleMMLFilterSection: function (evt) {
-            var isClosed = $(evt.target).hasClass("glyphicon-chevron-down");
+        // toggleMMLFilterSection: function (evt) {
+        //     var isClosed = $(evt.target).hasClass("glyphicon-chevron-down");
 
-            // alle Filter einklappen
-            $(evt.target).parent().parent().find(".div-mmlFilter-filter").each(function (index, filter) {
-                $(filter).prev().children().addClass("glyphicon-chevron-down");
-                $(filter).prev().children().removeClass("glyphicon-chevron-up");
-                $(filter).hide();
-            });
-            // Wenn speziellen Filter wieder ausklappen
-            if (isClosed) {
-                $(evt.target).parent().next().show();
-                $(evt.target).addClass("glyphicon-chevron-up");
-                $(evt.target).removeClass("glyphicon-chevron-down");
-            }
-            else {
-                $(evt.target).parent().next().hide();
-                $(evt.target).addClass("glyphicon-chevron-down");
-                $(evt.target).removeClass("glyphicon-chevron-up");
-            }
-        },
+        //     // alle Filter einklappen
+        //     $(evt.target).parent().parent().find(".div-mmlFilter-filter").each(function (index, filter) {
+        //         $(filter).prev().children().addClass("glyphicon-chevron-down");
+        //         $(filter).prev().children().removeClass("glyphicon-chevron-up");
+        //         $(filter).hide();
+        //     });
+        //     // Wenn speziellen Filter wieder ausklappen
+        //     if (isClosed) {
+        //         $(evt.target).parent().next().show();
+        //         $(evt.target).addClass("glyphicon-chevron-up");
+        //         $(evt.target).removeClass("glyphicon-chevron-down");
+        //     }
+        //     else {
+        //         $(evt.target).parent().next().hide();
+        //         $(evt.target).addClass("glyphicon-chevron-down");
+        //         $(evt.target).removeClass("glyphicon-chevron-up");
+        //     }
+        // },
 
         toggleTimeMode: function (evt) {
             var timeModeId = evt.target.id,
@@ -131,7 +145,12 @@ define([
                         onSelect: function (dateTxt) {
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
-                        }
+                        },
+                        dateFormat: "dd-mm-yyyy",
+                        dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                        monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
                     });
                 }
             }
