@@ -14,7 +14,7 @@ define(function (require) {
                 title: this.model.get("mhpresult"),
                 placement: "auto",
                 template: "<div class='tooltip' role='tooltip'><div class='tooltip-inner mouseHover'></div></div>",
-                animation: true
+                animation: false
             });
             this.model.showPopup();
         }

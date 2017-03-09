@@ -446,6 +446,7 @@ define(function (require) {
                 var source = new ol.source.Vector({useSpatialIndex: false}),
                     layer = new ol.layer.Vector({
                     name: name,
+                    id: name,
                     source: source,
                     alwaysOnTop: true
                 });

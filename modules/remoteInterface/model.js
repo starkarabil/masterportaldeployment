@@ -12,7 +12,8 @@ define(function () {
                 "getZoomLevel": this.getZoomLevel,
                 "getVisibleBaseLayers": this.getVisibleBaseLayers,
                 "getAllBaseLayers": this.getAllBaseLayers,
-                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent
+                "getLayerFeaturesInExtent": this.getLayerFeaturesInExtent,
+                "getExtent": this.getExtent
             }, this);
 
             channel.on({
@@ -33,11 +34,19 @@ define(function () {
                 "showLayers": this.showLayers,
                 "showDragMarker": this.showDragMarker,
                 "hideDragMarker": this.hideDragMarker,
-                "requestDragMarkerAddress": this.requestDragMarkerAddress
+                "requestDragMarkerAddress": this.requestDragMarkerAddress,
+                "hideSearchbar": this.hideSearchbar,
+                "showSearchbar": this.showSearchbar
             }, this);
 
             Radio.on("Map", "changedExtent", this.changedExtent);
             Radio.on("DragMarker", "newAddress", this.newDragMarkerAddress);
+        },
+        showSearchbar: function () {
+            Radio.trigger("Searchbar","show");
+        },
+        hideSearchbar: function () {
+            Radio.trigger("Searchbar","hide");
         },
 
         showDragMarker: function () {
@@ -50,6 +59,10 @@ define(function () {
 
         getLayerFeaturesInExtent: function (name) {
             return Radio.request("ModelList", "getLayerFeaturesInExtent", name);
+        },
+
+        getExtent: function () {
+            return Radio.request("Map", "getExtent");
         },
 
         showAllFeatures: function (name) {
@@ -68,8 +81,8 @@ define(function () {
             Radio.trigger("ModelList", "hideFeaturesByIds", name, featureIds);
         },
 
-        addFeatures: function (features, name) {
-            Radio.trigger("AddGeoJSON", "addFeatures", features, name);
+        addFeatures: function (features, name, layerHoverInfo) {
+            Radio.trigger("AddGeoJSON", "addFeatures", features, name, layerHoverInfo);
         },
 
         getVisibleBaseLayers: function () {

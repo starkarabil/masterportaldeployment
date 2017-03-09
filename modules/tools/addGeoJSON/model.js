@@ -16,30 +16,25 @@ define(function (require) {
             this.listenTo(channel, {
                 "addFeaturesFromGBM": function (hits, id, layerName) {
                     this.setLayerId(id);
-                    this.setLayerName(layerName);
+                    if (this.getLayerName !== name) {
+                        this.addLayer();
+                        this.setLayerName(layerName);
+                    }
+
                     this.createFeaturesFromGBM(hits);
                 }
             });
 
             channel.on({
-                "addFeatures": function (features, name) {
+                "addFeatures": function (features, name, hoverInfos) {
                     this.setLayerId(name);
-                    this.setLayerName(name);
                     this.createFeaturesFromGeoJson(features);
+                    if (this.getLayerName !== name) {
+                        this.addLayer(hoverInfos);
+                        this.setLayerName(name);
+                    }
                 }
             }, this);
-
-            this.listenTo(this, {
-                "change:features": this.addLayer
-            });
-
-            // this.fetch({
-            //     url: this.url,
-            //     context: this,
-            //     error: function () {
-            //         Radio.trigger("Alert", "alert", {text: "<strong>Anliegen kann nicht geladen werden!", kategorie: "alert-danger"});
-            //     }
-            // });
         },
 
         parse: function (response, options) {
@@ -47,8 +42,10 @@ define(function (require) {
             options.context.setLayerName(response.name);
             options.context.createFeaturesFromGeoJson(response);
         },
-        addLayer: function () {
-            Radio.trigger("Parser", "addGeoJSONLayer", this.getLayerName(), this.getLayerId(), this.getFeatures());
+        addLayer: function (hoverInfos) {
+            // Im Parser die Layer erzeugen
+            Radio.trigger("Parser", "addGeoJSONLayer", this.getLayerName(), this.getLayerId(), this.getFeatures(), hoverInfos);
+            // Der Modellist sagen sie soll sich den Layer vom Parser holen
             Radio.trigger("ModelList", "addModelsByAttributes", {id: this.getLayerId()});
         },
 
