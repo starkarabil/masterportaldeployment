@@ -40,13 +40,13 @@ define(function (require) {
             this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
         },
 
-        updateLayerSourceData(features) {
+        updateLayerSourceData: function (features) {
             var count = 0;
 
             features.forEach(function (feature) {
                 if (!feature.getId()) {
                     feature.setId(count);
-                    count ++;
+                    count++;
                 }
             });
             this.getLayerSource().clear();
