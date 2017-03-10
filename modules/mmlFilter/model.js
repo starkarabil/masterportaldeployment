@@ -4,7 +4,8 @@ define([
     var MMLFilter = Backbone.Model.extend({
 
         defaults: {
-            mapHeight: $("#map").height(), // Filterwindow-Höhe
+            mapHeight: $("#map").height(), // Map-Höhe
+            mapWidth: $("#map").width(), // Map-Breite
             filterMaxHeight: $("#map").height() - 238
         },
 

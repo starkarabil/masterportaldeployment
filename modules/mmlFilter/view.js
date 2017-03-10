@@ -32,19 +32,22 @@ define([
             this.render();
         },
         changeGlyph: function (evt) {
-            // console.log(evt.target);
+            var parent = $(evt.target).parent(),
+                isCollapsed = _.isUndefined(parent.find(".glyphicon-triangle-top")[0]);
 
             $("#mmlFilter").find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+            if (isCollapsed) {
+               parent.find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            }
+            else {
+                parent.find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+            }
 
-            // if ($(evt.target).parent().find(".glyphicon-triangle-top").length === 0) {
-                $(evt.target).parent().find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
-            // }
-            console.log($(evt.target).parent().find(".glyphicon-triangle-top"));
+
         },
         render: function () {
             var attr = this.model.toJSON();
 
-            // $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             $("#mmlFilter").append(this.$el.html(this.template(attr)));
         },
 
@@ -52,39 +55,22 @@ define([
             var startWidth = $("#div-mmlFilter-content").css("width"),
                 endWidth = startWidth === "0px" ? "334px" : "0px";
 
+
+            $("#div-mmlFilter-content").css("left", $("#map").css("width"));
+
             $("#div-mmlFilter-content").animate({
                 width: endWidth
             }, {
                 duration: "slow",
                 progress: function () {
-                    var divWidth = $("#div-mmlFilter-content").css("width");
+                    var newLeftToggle = String($("#map").width() - 45 - $("#div-mmlFilter-content").width()) + "px",
+                        newLeftContent = String($("#map").width() - $("#div-mmlFilter-content").width()) + "px";
 
-                    $("#btn-mmlFilter-toggle").css("right", divWidth);
+                    $("#div-mmlFilter-content").css("left",newLeftContent);
+                    $("#btn-mmlFilter-toggle").css("left", newLeftToggle);
                 }
-            });
+            }, this);
         },
-
-        // toggleMMLFilterSection: function (evt) {
-        //     var isClosed = $(evt.target).hasClass("glyphicon-chevron-down");
-
-        //     // alle Filter einklappen
-        //     $(evt.target).parent().parent().find(".div-mmlFilter-filter").each(function (index, filter) {
-        //         $(filter).prev().children().addClass("glyphicon-chevron-down");
-        //         $(filter).prev().children().removeClass("glyphicon-chevron-up");
-        //         $(filter).hide();
-        //     });
-        //     // Wenn speziellen Filter wieder ausklappen
-        //     if (isClosed) {
-        //         $(evt.target).parent().next().show();
-        //         $(evt.target).addClass("glyphicon-chevron-up");
-        //         $(evt.target).removeClass("glyphicon-chevron-down");
-        //     }
-        //     else {
-        //         $(evt.target).parent().next().hide();
-        //         $(evt.target).addClass("glyphicon-chevron-down");
-        //         $(evt.target).removeClass("glyphicon-chevron-up");
-        //     }
-        // },
 
         toggleTimeMode: function (evt) {
             var timeModeId = evt.target.id,
