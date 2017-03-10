@@ -13,9 +13,18 @@ define(function (require) {
          * @return {[type]} [description]
          */
         createLayerSource: function () {
-            this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.GeoJSON()
-            }));
+            if (_.isUndefined(this.getFeatures())) {
+                this.setLayerSource(new ol.source.Vector({
+                    format: new ol.format.GeoJSON()
+                }));
+            }
+            else {
+                this.setLayerSource(new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: this.get("url"),
+                    features: this.getFeatures()
+                }));
+            }
         },
         /**
          * Lädt die JSON-Datei und startet parse
@@ -82,7 +91,9 @@ define(function (require) {
                 mouseHoverField: this.get("mouseHoverField")
             }));
 
-            this.updateData();
+            if (_.isUndefined(this.get("url")) === false) {
+                this.updateData();
+            }
         },
 
         /**
