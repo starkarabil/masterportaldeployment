@@ -59,6 +59,9 @@
   /* Bootstrap Popover Klassen */
   /* Desktop GFI */
   /* Desktop Detached */
+  /*
+Knopf zum Nachladen
+*/
 }
 .lgv-container .colorpicker-saturation {
   width: 100px;
@@ -2535,6 +2538,7 @@
   padding: 21px 12px 21px 12px;
   color: #999999;
   background-color: #fff;
+  cursor: pointer;
 }
 .lgv-container .simple-lister-button > .glyphicon-triangle-left {
   left: 100%;
@@ -2547,7 +2551,7 @@
   background: white;
 }
 .lgv-container .simple-lister-highlight {
-    background-color: rgba(15, 92, 173, 0.1);
+  background-color: #f7f7f7;
 }
 .lgv-container .simple-lister-table .table {
   height: 100%;
@@ -2558,6 +2562,7 @@
   max-height: 89%;
   overflow: auto;
   width: 100%;
+  cursor: pointer;
 }
 .lgv-container .simple-lister-table .table .heading {
   padding: 18px 26px;
@@ -2587,6 +2592,27 @@
   font-family: "HamburgSans";
   font-size: 15px;
   line-height: 1.67;
+  letter-spacing: -0.4px;
+}
+.lgv-container #div-simpleLister-extentList {
+  height: 45px;
+  border-radius: 3px !important;
+  border: solid 1px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  color: white;
+  background-color: #005ca9;
+  margin: 5px 20px 5px 20px;
+}
+.lgv-container #div-simpleLister-extentList:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.lgv-container #div-simpleLister-extentList-text {
+  font-size: 14px;
+  line-height: 3.3;
+  font-family: HamburgSans;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
   letter-spacing: -0.4px;
 }
 /*!
@@ -8152,24 +8178,3 @@ button.lgv-container .close {
     width: 0px;
 }
 
-.lgv-container #div-simpleLister-extentList {
-  height: 45px;
-  border-radius: 3px !important;
-  border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
-  color: white;
-  background-color: #005ca9;
-  margin: 5px 20px 5px 20px;
-}
-.lgv-container #div-simpleLister-extentList:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.lgv-container #div-simpleLister-extentList-text {
-  font-size: 14px;
-  line-height: 3.3;
-  font-family: HamburgSans;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: -0.4px;
-}

@@ -15,17 +15,22 @@ define([
         events: {
             "click .simple-lister-button": "toggleSimpleList",
             "click #div-simpleLister-extentList": "appendMoreFeatures",
-            "mouseover .entry": "mouseoverEntry",
+            "mouseenter .entry": "mouseenterEntry",
             "mouseleave .entry": "mouseleaveEntry"
         },
+
         initialize: function () {
             this.listenTo(this.model, {
-                "highlightItem": this.highlightItemInList,
-                "lowlightItem": this.lowlightItemInList,
                 "render": this.render
             });
 
             this.render();
+        },
+
+        render: function () {
+            var attr = this.model.toJSON();
+
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
         appendMoreFeatures: function () {
@@ -53,11 +58,7 @@ define([
         getLayerFeaturesInExtent: function () {
             this.model.getLayerFeaturesInExtent();
         },
-        render: function () {
-            var attr = this.model.toJSON();
 
-            $("#lgv-container").append(this.$el.html(this.template(attr)));
-        },
         /**
          * Hebt Zeilen mit dieser id hervor
          */
@@ -66,6 +67,7 @@ define([
                 $(item).addClass("simple-lister-highlight");
             });
         },
+
         /**
          * Aufhebung der Hervorhebung von Zeilen mit dieser id
          */
@@ -78,14 +80,21 @@ define([
         /**
          * Starten des Triggers für MouseHover
          */
-        mouseoverEntry: function (evt) {
+        mouseenterEntry: function (evt) {
             var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
 
+            this.highlightItemInList(id);
             this.model.triggerMouseHoverById(id);
         },
 
-        mouseleaveEntry: function () {
-            this.model.triggerMouseHoverLeave();
+        /**
+         * Starten des Triggers für Mouseleave
+         */
+        mouseleaveEntry: function (evt) {
+            var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
+
+            this.lowlightItemInList(id);
+            this.model.triggerMouseHoverLeave(id);
         }
     });
 

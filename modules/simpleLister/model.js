@@ -17,7 +17,6 @@ define([
         },
 
         initialize: function () {
-            Radio.on("MouseHover", "selected", this.mouseHoverSelected, this);
             Radio.trigger("Map", "registerListener", "moveend", this.getLayerFeaturesInExtent, this);
             this.getParams();
         },
@@ -112,48 +111,42 @@ define([
             return this.get("featuresPerPage");
         },
 
-        mouseHoverSelected: function (evt) {
-            _.each(evt.selected, function (feature) {
-                var isClusterFeature = feature.get("features") ? true : null;
-
-                if (isClusterFeature) {
-                    _.each(feature.get("features"), function (subfeature) {
-                        this.trigger("highlightItem", subfeature.getId());
-                    }, this);
-                }
-                else {
-                    this.trigger("highlightItem", feature.getId());
-                }
-            }, this);
-
-            _.each(evt.deselected, function (feature) {
-                var isClusterFeature = feature.get("features") ? true : null;
-
-                if (isClusterFeature) {
-                    _.each(feature.get("features"), function (subfeature) {
-                        this.trigger("lowlightItem", subfeature.getId());
-                    }, this);
-                }
-                else {
-                    this.trigger("lowlightItem", feature.getId());
-                }
-            }, this);
-        },
-
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte anzupassen.
+         */
         triggerMouseHoverById: function (id) {
-            var features = this.get("featuresInExtent"),
-                feature = _.find(features, function (feat) {
-                    return feat.id.toString() === id;
-                }),
-                coord = feature ? feature.geometry.coordinates : null;
+            var coord = this.getFeatureCoordById(id);
 
             if (coord) {
                 Radio.trigger("MouseHover", "hoverByCoordinates", coord);
             }
         },
 
-        triggerMouseHoverLeave: function () {
-            Radio.trigger("MouseHover", "destroy");
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste zuletzt gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte zurück zu setzen.
+         */
+        triggerMouseHoverLeave: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "resetStyle", coord);
+            }
+        },
+
+        /**
+         * Gibt die Koordinate zu der Feature Id zurück.
+         */
+        getFeatureCoordById: function (id) {
+            var features = this.getFeaturesInExtent(),
+                coord,
+                feature;
+
+                feature = _.find(features, function (feat) {
+                    return feat.id.toString() === id;
+                }),
+                coord = feature ? feature.geometry.coordinates : null;
+
+                return coord;
         }
     });
 

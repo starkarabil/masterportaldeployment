@@ -48,7 +48,7 @@ define([
 
             channel.on({
                 "hoverByCoordinates": this.hoverByCoordinates,
-                "destroy": this.destroyPopup
+                "resetStyle": this.resetStyle
             }, this);
 
             // select interaction Listener
@@ -204,40 +204,54 @@ define([
             }
             features.forEach(function (feature) {
                 // bei ClusterFeatures
-                if (feature.get("features").length > 1) {
-                    feature.getStyle()[0].getImage().setOpacity(0.5);
-                    if (zoom === 9) {
-                        this.createCircle(feature);
-                    }
-                }
-                else {
-                    if (_.isUndefined(feature.getStyle()[0]) === false) {
-                        feature.getStyle()[0].getImage().setScale(1.2);
-                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                            feature.getStyle()[0].getText().setOffsetY(1.2 * feature.getStyle()[0].getText().getOffsetY());
-                        }
-                    }
-                }
+                this. styleSelFunc(feature, zoom);
             }, this);
+        },
+
+        /**
+         * Setzt den Style eines einzelnen Features/ClusterFeatures auf den hoverStyle.
+         */
+        styleSelFunc: function (feature, zoom) {
+        var hoverStyle;
+
+            if (feature.get("features").length > 1) {
+                hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
+                feature.setStyle(hoverStyle.getHoverClusterStyle(feature));
+                if (zoom === 9) {
+                    this.createCircle(feature);
+                }
+            }
+            else {
+                hoverStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
+                if (_.isUndefined(feature.getStyle()[0]) === false) {
+                    feature.setStyle(hoverStyle.getHoverStyle());
+                }
+            }
         },
 
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-
-                // bei ClusterFeatures
-                if (feature.get("features").length > 1) {
-                    feature.getStyle()[0].getImage().setOpacity(1);
-                }
-                else {
-                    if (_.isUndefined(feature.getStyle()[0]) === false) {
-                        feature.getStyle()[0].getImage().setScale(1);
-                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                            feature.getStyle()[0].getText().setOffsetY(feature.getStyle()[0].getText().getOffsetY() / 1.2);
-                        }
-                    }
-                }
+                this.styleDeselFunc(feature);
             }, this);
+        },
+
+        /**
+         * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
+         */
+        styleDeselFunc: function (feature) {
+        var normalStyle;
+            // bei ClusterFeatures
+            if (feature.get("features").length > 1) {
+                normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                feature.setStyle(normalStyle.getClusterStyle(feature));
+            }
+            else {
+                if (_.isUndefined(feature.getStyle()[0]) === false) {
+                    normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                    feature.setStyle(normalStyle.getSimpleStyle());
+                }
+            }
         },
 
         // Erzeuge Liste selektierter Features aus evt
@@ -258,9 +272,6 @@ define([
 
             // Setze Cursor Style
             this.setCursor(selected);
-
-            // Triggere selektierte Elemente
-            Radio.trigger("MouseHover", "selected", evt);
 
             // Erzeuge Liste selektierter Features
             _.each(selected, function (selFeature) {
@@ -502,32 +513,52 @@ define([
             }
         },
 
-        // hovert nächstgelegenes Feature an coordinate
+        /**
+         * hovert nächstgelegenes Feature an coordinate
+         */
         hoverByCoordinates: function (coordinate) {
+            var feature,
+                zoom = this.getZoom();
+
+            feature = this.getFeatureByCoord(coordinate);
+            this.styleSelFunc(feature, zoom);
+        },
+
+        /**
+         * Setzt den Style des an der übergebenen Koordinate gefundenen Features zurück.
+         */
+        resetStyle: function (coordinate) {
+            var feature;
+
+            feature = this.getFeatureByCoord(coordinate);
+            this.styleDeselFunc(feature);
+        },
+
+        getZoom: function () {
+            return this.get("zoom");
+        },
+
+        getOverlayStyle: function () {
+            return this.get("overlayStyle");
+        },
+
+        /**
+         * Holt sich das nächstgelegene Feature zur übergebenen Koordinate.
+         */
+        getFeatureByCoord: function (coordinate) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
-                selectedFeatures = [];
+                feature;
 
             _.each(mouseHoverInfos, function (mhinfo) {
                 var layerid = mhinfo.id,
                     layer = Radio.request("ModelList", "getModelByAttributes", {id: layerid});
 
                 if (layer) {
-                    var feature = layer.get("layerSource").getClosestFeatureToCoordinate(coordinate);
-
-                    selectedFeatures.push({
-                        feature: feature,
-                        layerId: layerid
-                    });
+                    feature = layer.get("layer").getSource().getClosestFeatureToCoordinate(coordinate);
                 }
-            });
 
-            this.checkSelektion(selectedFeatures);
-        },
-        getZoom: function () {
-            return this.get("zoom");
-        },
-        getOverlayStyle: function () {
-            return this.get("overlayStyle");
+            }, this);
+            return feature;
         }
     });
 
