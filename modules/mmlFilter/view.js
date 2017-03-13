@@ -24,7 +24,7 @@ define([
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
             "click #btn-fromDate": "btnFromDateClicked",
             "click #btn-toDate": "btnToDateClicked",
-            "click .div-mmlFilter-filter-header": "changeGlyph"
+            "click .panel-title": "changeGlyph"
         },
 
         initialize: function () {
@@ -32,15 +32,15 @@ define([
             this.render();
         },
         changeGlyph: function (evt) {
-            var parent = $(evt.target).parent(),
-                isCollapsed = _.isUndefined(parent.find(".glyphicon-triangle-top")[0]);
+            var target = $(evt.target),
+                isCollapsed = _.isUndefined(target.find(".glyphicon-triangle-top")[0]);
 
             $("#mmlFilter").find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
             if (isCollapsed) {
-               parent.find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+               target.find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
             }
             else {
-                parent.find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+                target.find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
             }
 
 
@@ -104,7 +104,7 @@ define([
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yyyy",
+                        dateFormat: "dd-mm-yy",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -132,7 +132,7 @@ define([
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yyyy",
+                        dateFormat: "dd-mm-yy",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
