@@ -6,7 +6,6 @@ define([
 
     var Template = require("text!modules/simpleLister/template.html"),
         SimpleLister = require("modules/simpleLister/model"),
-
         SimpleListerView;
 
     SimpleListerView = Backbone.View.extend({
@@ -15,14 +14,23 @@ define([
         template: _.template(Template),
         events: {
             "click .simple-lister-button": "toggleSimpleList",
-            "click #div-simpleLister-extentList": "appendMoreFeatures"
+            "click #div-simpleLister-extentList": "appendMoreFeatures",
+            "mouseenter .entry": "mouseenterEntry",
+            "mouseleave .entry": "mouseleaveEntry"
         },
+
         initialize: function () {
             this.listenTo(this.model, {
                 "render": this.render
             });
 
             this.render();
+        },
+
+        render: function () {
+            var attr = this.model.toJSON();
+
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
         appendMoreFeatures: function () {
@@ -50,10 +58,43 @@ define([
         getLayerFeaturesInExtent: function () {
             this.model.getLayerFeaturesInExtent();
         },
-        render: function () {
-            var attr = this.model.toJSON();
 
-            $("#lgv-container").append(this.$el.html(this.template(attr)));
+        /**
+         * Hebt Zeilen mit dieser id hervor
+         */
+        highlightItemInList: function (id) {
+            $("#simple-lister-table").find("#" + id.toString()).each(function (index, item) {
+                $(item).addClass("simple-lister-highlight");
+            });
+        },
+
+        /**
+         * Aufhebung der Hervorhebung von Zeilen mit dieser id
+         */
+        lowlightItemInList: function (id) {
+            $("#simple-lister-table").find("#" + id.toString()).each(function (index, item) {
+                $(item).removeClass("simple-lister-highlight");
+            });
+        },
+
+        /**
+         * Starten des Triggers für MouseHover
+         */
+        mouseenterEntry: function (evt) {
+            var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
+
+            this.highlightItemInList(id);
+            this.model.triggerMouseHoverById(id);
+        },
+
+        /**
+         * Starten des Triggers für Mouseleave
+         */
+        mouseleaveEntry: function (evt) {
+            var id = evt.target.id ? evt.target.id : $(evt.target).parent()[0].id;
+
+            this.lowlightItemInList(id);
+            this.model.triggerMouseHoverLeave(id);
         }
     });
 

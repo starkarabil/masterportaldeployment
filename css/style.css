@@ -2547,6 +2547,9 @@ Knopf zum Nachladen
   width: 100%;
   background: white;
 }
+.lgv-container .simple-lister-highlight {
+  background-color: #f7f7f7;
+}
 .lgv-container .simple-lister-table .table {
   height: 100%;
   width: 100%;
@@ -2556,6 +2559,7 @@ Knopf zum Nachladen
   max-height: 89%;
   overflow: auto;
   width: 100%;
+  cursor: pointer;
 }
 .lgv-container .simple-lister-table .table .heading {
   padding: 18px 26px;

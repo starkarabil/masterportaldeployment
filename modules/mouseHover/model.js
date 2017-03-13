@@ -34,8 +34,7 @@ define([
         initialize: function () {
             this.set("selectPointerMove", this.createInteraction());
             // Radio channel
-            var channel = Radio.channel("MouseHover"),
-                hoverLayer = {};
+            var channel = Radio.channel("MouseHover");
 
             channel.on({
                 "refreshMouseHoverInfos": this.getMouseHoverInfos
@@ -45,6 +44,11 @@ define([
                 "hasHoverInfo": function () {
                     this.hasHoverInfo();
                 }
+            }, this);
+
+            channel.on({
+                "hoverByCoordinates": this.hoverByCoordinates,
+                "resetStyle": this.resetStyle
             }, this);
 
             // select interaction Listener
@@ -200,40 +204,54 @@ define([
             }
             features.forEach(function (feature) {
                 // bei ClusterFeatures
-                if (feature.get("features").length > 1) {
-                    feature.getStyle()[0].getImage().setOpacity(0.5);
-                    if (zoom === 9) {
-                        this.createCircle(feature);
-                    }
-                }
-                else {
-                    if (_.isUndefined(feature.getStyle()[0]) === false) {
-                        feature.getStyle()[0].getImage().setScale(1.2);
-                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                            feature.getStyle()[0].getText().setOffsetY(1.2 * feature.getStyle()[0].getText().getOffsetY());
-                        }
-                    }
-                }
+                this. styleSelFunc(feature, zoom, evt);
             }, this);
+        },
+
+        /**
+         * Setzt den Style eines einzelnen Features/ClusterFeatures auf den hoverStyle.
+         */
+        styleSelFunc: function (feature, zoom, evt) {
+        var hoverStyle;
+
+            if (feature.get("features").length > 1) {
+                hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
+                feature.setStyle(hoverStyle.getHoverClusterStyle(feature));
+                if (zoom === 9 && _.isUndefined(evt) === false) {
+                    this.createCircle(feature);
+                }
+            }
+            else {
+                hoverStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
+                if (_.isUndefined(feature.getStyle()[0]) === false) {
+                    feature.setStyle(hoverStyle.getHoverStyle());
+                }
+            }
         },
 
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-
-                // bei ClusterFeatures
-                if (feature.get("features").length > 1) {
-                    feature.getStyle()[0].getImage().setOpacity(1);
-                }
-                else {
-                    if (_.isUndefined(feature.getStyle()[0]) === false) {
-                        feature.getStyle()[0].getImage().setScale(1);
-                        if (_.isNull(feature.getStyle()[0].getText()) === false) {
-                            feature.getStyle()[0].getText().setOffsetY(feature.getStyle()[0].getText().getOffsetY() / 1.2);
-                        }
-                    }
-                }
+                this.styleDeselFunc(feature);
             }, this);
+        },
+
+        /**
+         * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
+         */
+        styleDeselFunc: function (feature) {
+        var normalStyle;
+            // bei ClusterFeatures
+            if (feature.get("features").length > 1) {
+                normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                feature.setStyle(normalStyle.getClusterStyle(feature));
+            }
+            else {
+                if (_.isUndefined(feature.getStyle()[0]) === false) {
+                    normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                    feature.setStyle(normalStyle.getSimpleStyle());
+                }
+            }
         },
 
         // Erzeuge Liste selektierter Features aus evt
@@ -349,6 +367,7 @@ define([
                                 textFields = mouseHoverField.text,
                                 hoverHeader = "",
                                 hoverText = "";
+
                             _.each(headerFields, function (headerField) {
                                 hoverHeader = hoverHeader === "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
                             });
@@ -463,11 +482,83 @@ define([
         setZoom: function (value) {
             this.set("zoom", value);
         },
+        // zoomt bei Klick auf das Cluster Feature auf den extent aller geclusterten Features
+        featureClicked: function (feature) {
+            var extent = [];
+
+            if (feature.get("features") && feature.get("features").length > 1) {
+                _.each(feature.get("features"), function (feature) {
+                    if (extent.length === 0) {
+                        extent.push(feature.getGeometry().getExtent()[0]);
+                        extent.push(feature.getGeometry().getExtent()[1]);
+                        extent.push(feature.getGeometry().getExtent()[2]);
+                        extent.push(feature.getGeometry().getExtent()[3]);
+                    }
+                    else {
+                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
+                            extent[0] = feature.getGeometry().getExtent()[0];
+                        }
+                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
+                            extent[1] = feature.getGeometry().getExtent()[1];
+                        }
+                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
+                            extent[2] = feature.getGeometry().getExtent()[2];
+                        }
+                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
+                            extent[3] = feature.getGeometry().getExtent()[3];
+                        }
+                    }
+                });
+                Radio.trigger("Map", "zoomToExtent", extent);
+            }
+        },
+
+        /**
+         * hovert nächstgelegenes Feature an coordinate
+         */
+        hoverByCoordinates: function (coordinate) {
+            var feature,
+                zoom = this.getZoom();
+
+            feature = this.getFeatureByCoord(coordinate);
+            this.styleSelFunc(feature, zoom);
+        },
+
+        /**
+         * Setzt den Style des an der übergebenen Koordinate gefundenen Features zurück.
+         */
+        resetStyle: function (coordinate) {
+            var feature;
+
+            feature = this.getFeatureByCoord(coordinate);
+            this.styleDeselFunc(feature);
+        },
+
         getZoom: function () {
             return this.get("zoom");
         },
+
         getOverlayStyle: function () {
             return this.get("overlayStyle");
+        },
+
+        /**
+         * Holt sich das nächstgelegene Feature zur übergebenen Koordinate.
+         */
+        getFeatureByCoord: function (coordinate) {
+            var mouseHoverInfos = this.get("mouseHoverInfos"),
+                feature;
+
+            _.each(mouseHoverInfos, function (mhinfo) {
+                var layerid = mhinfo.id,
+                    layer = Radio.request("ModelList", "getModelByAttributes", {id: layerid});
+
+                if (layer) {
+                    feature = layer.get("layer").getSource().getClosestFeatureToCoordinate(coordinate);
+                }
+
+            }, this);
+            return feature;
         }
     });
 

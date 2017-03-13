@@ -25,7 +25,9 @@
     width: 100%;
     background: white;
 }
-
+.simple-lister-highlight {
+    background-color: #f7f7f7;
+}
 .simple-lister-table .table {
     height: 100%;
     width: 100%;
@@ -34,6 +36,7 @@
         max-height: 89%;
         overflow: auto;
         width: 100%;
+        cursor: pointer;
     }
     .heading {
         padding: 18px 26px;

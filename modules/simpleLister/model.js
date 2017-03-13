@@ -1,11 +1,12 @@
 define([
+    "openlayers"
 
 ], function () {
 
-    var
-        SimpleLister;
+    var ol = require("openlayers"),
+        SimpleListerModel;
 
-    SimpleLister = Backbone.Model.extend({
+    SimpleListerModel = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
@@ -108,8 +109,46 @@ define([
         // getter für featuresPerPage
         getFeaturesPerPage: function () {
             return this.get("featuresPerPage");
+        },
+
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte anzupassen.
+         */
+        triggerMouseHoverById: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "hoverByCoordinates", coord);
+            }
+        },
+
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste zuletzt gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte zurück zu setzen.
+         */
+        triggerMouseHoverLeave: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "resetStyle", coord);
+            }
+        },
+
+        /**
+         * Gibt die Koordinate zu der Feature Id zurück.
+         */
+        getFeatureCoordById: function (id) {
+            var features = this.getFeaturesInExtent(),
+                coord,
+                feature;
+
+                feature = _.find(features, function (feat) {
+                    return feat.id.toString() === id;
+                }),
+                coord = feature ? feature.geometry.coordinates : null;
+
+                return coord;
         }
     });
 
-    return SimpleLister;
+    return SimpleListerModel;
 });
