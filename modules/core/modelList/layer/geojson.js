@@ -127,6 +127,25 @@ define(function (require) {
             }, this);
             this.setFeaturesToHide(featuresToHide);
         },
+        /**
+         * Zeigt nur die Features an, deren Attr übergeben wird
+         * @param  {string[]} featureAttrList
+         * @param  {string} attr
+         */
+        showFeaturesByAttr: function (featureAttrList, attr) {
+            var source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide();
+
+            _.each(featureAttrList, function (id) {
+                _.each(featuresToHide, function (feature) {
+                    if (String(feature.get(attr)) === id) {
+                        source.addFeature(feature);
+                        featuresToHide = _.without(featuresToHide, feature);
+                    }
+                }, this);
+            }, this);
+            this.setFeaturesToHide(featuresToHide);
+        },
 
         /**
          * Versteckt nur die Features an, deren Id übergeben wird

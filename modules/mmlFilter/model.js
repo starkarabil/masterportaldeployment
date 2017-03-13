@@ -11,9 +11,9 @@ define([
             selectedStatus: [],
             fromDate: "",
             toDate: "",
-            features: []
+            features: [],
+            selFeatures: []
         },
-
         initialize: function () {
             var layer = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}).get("layer"),
                 source = layer.getSource();
@@ -28,30 +28,25 @@ define([
             var features = this.getFeatures(),
                 prepFeatures = [];
 
+
             _.each(features, function (feature, index) {
 
-                // if (index === 1) {
-                //     console.log(feature.getProperties());
-                // }
-                var von = feature.get("start").slice(0,4) + "-" + feature.get("start").slice(4,6) + "-" + feature.get("start").slice(6,8),
-                    bis = feature.get("ende").slice(0,4) + "-" + feature.get("ende").slice(4,6) + "-" + feature.get("ende").slice(6,8);
+                var datum = feature.get("start").slice(0,4) + "-" + feature.get("start").slice(4,6) + "-" + feature.get("start").slice(6,8);
 
                 prepFeatures.push({
                     "id": feature.get("mmlid"),
                     "kat": feature.get("skat"),
                     "status": feature.get("statu"),
-                    "von": von,
-                    "bis": bis
+                    "datum": datum
                 });
             });
             this.setFeatures(prepFeatures);
-
-            // status = ["abgeschlossen", "In Bearbeitung"]
-            // console.log(prepFeatures[0].kat);
         },
         executeFilter: function () {
             this.filterByKat();
             this.filterByStatus();
+            this.filterByDate();
+            this.showFilteredFeatures();
         },
         filterByKat: function () {
             var selectedKat = this.getSelectedKat(),
@@ -65,15 +60,52 @@ define([
                     }
                 });
             });
-            this.setFeatures(filteredFeatures);
+            this.setSelFeatures(filteredFeatures);
         },
         filterByStatus: function () {
             var selectedStatus = this.getSelectedStatus(),
-                features = this.getFeatures(),
+                features = this.getSelFeatures(),
                 filteredFeatures = [];
 
-            console.log(features);
+             _.each(selectedStatus, function (status) {
+                _.each(features, function (feature) {
+                    if (feature.status === status) {
+                        filteredFeatures.push(feature);
+                    }
+                });
+            });
+            this.setSelFeatures(filteredFeatures);
         },
+        filterByDate: function () {
+            var fromDate = this.getFromDate().getTime(),
+                toDate = this.getToDate().getTime(),
+                features = this.getSelFeatures(),
+                filteredFeatures = [];
+
+                _.each(features, function (feature) {
+                    var datum = new Date(feature.datum).getTime();
+
+                    if ((datum >= fromDate && datum <= toDate)) {
+                        filteredFeatures.push(feature);
+                    }
+                });
+
+            this.setSelFeatures(filteredFeatures);
+        },
+        showFilteredFeatures: function () {
+            var selFeatures = this.getSelFeatures(),
+                layer = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}),
+                idList = [];
+
+
+            _.each(selFeatures, function (feature) {
+                idList.push(feature.id);
+            });
+
+            layer.hideAllFeatures();
+            layer.showFeaturesByAttr(idList, "mmlid");
+        },
+
         // getter setter
         setSelectedKat: function (value) {
             this.set("selectedKat", value);
@@ -104,6 +136,12 @@ define([
         },
         getFeatures: function () {
             return this.get("features");
+        },
+        setSelFeatures: function (value) {
+            this.set("selFeatures", value);
+        },
+        getSelFeatures: function () {
+            return this.get("selFeatures");
         }
     });
 

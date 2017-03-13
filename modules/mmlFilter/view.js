@@ -104,7 +104,7 @@ define([
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yyyy",
+                        dateFormat: "dd-mm-yy",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -132,7 +132,7 @@ define([
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yyyy",
+                        dateFormat: "dd-mm-yy",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -154,8 +154,8 @@ define([
                 date = new Date(),
                 daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
                 timeDiff = daysDiff * 24 * 3600 * 1000,
-                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)).toISOString().split("T")[0] : $("#fromDate").val(),
-                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val();
+                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)) : new Date($("#fromDate").val()),
+                toDate = selectedTimeId !== "userdefined" ? date : new Date($("#toDate").val());
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
