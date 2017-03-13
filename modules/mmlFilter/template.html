@@ -2,10 +2,10 @@
 <button id="btn-mmlFilter-toggle" class="btn btn-default" style="left: <%=mapWidth - 45%>px;" type="button" title="Filter ein- / ausklappen">
     <span class="glyphicon glyphicon-filter"></span>
 </button>
-<div id="div-mmlFilter-content" style="height:<%= mapHeight%>px;">
+<div id="div-mmlFilter-content" style="height:<%= mapHeight - 8 %>px;">
     <div class="panel-group" id="mmlFilter-accordion">
 
-        <div class="panel panel-default mml-white panel-collapse">
+        <div class="panel panel-default mml-white">
             <div class="panel-heading mml-white" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlKategorien">
                 <h4 class="panel-title">
                     <a class="div-mmlFilter-filter-header">Kategorien
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default mml-white panel-collapse">
+        <div class="panel panel-default mml-white">
             <div class="panel-heading mml-white" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlBearbStatus">
                 <h4 class="panel-title">
                     <a class="div-mmlFilter-filter-header">Bearbeitungsstatus
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default mml-white panel-collapse">
+        <div class="panel panel-default mml-white">
             <div class="panel-heading mml-white" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlZeitraum">
                 <h4 class="panel-title">
                     <a class="div-mmlFilter-filter-header">Zeitraum

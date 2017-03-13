@@ -18,7 +18,6 @@ define([
         template: _.template(Template),
         events: {
             "click #btn-mmlFilter-toggle": "toggleMMLFilter",
-            // "click .filterHeader": "toggleMMLFilterSection",
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
