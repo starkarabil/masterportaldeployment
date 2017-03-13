@@ -204,20 +204,20 @@ define([
             }
             features.forEach(function (feature) {
                 // bei ClusterFeatures
-                this. styleSelFunc(feature, zoom);
+                this. styleSelFunc(feature, zoom, evt);
             }, this);
         },
 
         /**
          * Setzt den Style eines einzelnen Features/ClusterFeatures auf den hoverStyle.
          */
-        styleSelFunc: function (feature, zoom) {
+        styleSelFunc: function (feature, zoom, evt) {
         var hoverStyle;
 
             if (feature.get("features").length > 1) {
                 hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
                 feature.setStyle(hoverStyle.getHoverClusterStyle(feature));
-                if (zoom === 9) {
+                if (zoom === 9 && _.isUndefined(evt) === false) {
                     this.createCircle(feature);
                 }
             }
