@@ -164,10 +164,11 @@ define([
             $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
                 selectedStatus.push(status.id);
             });
-            console.log(selectedKat);
-            console.log(selectedStatus);
-            console.log(fromDate);
-            console.log(toDate);
+            this.model.setSelectedKat(selectedKat);
+            this.model.setSelectedStatus(selectedStatus);
+            this.model.setFromDate(fromDate);
+            this.model.setToDate(toDate);
+            this.model.executeFilter();
         }
     });
 
