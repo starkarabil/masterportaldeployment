@@ -100,7 +100,6 @@ define(function (require) {
             }
             this.initView();
         },
-
         /**
          * Prüft ob GFI aktiviert ist und registriert entsprechend den Listener oder eben nicht
          * @param  {String} id - Tool Id
@@ -204,12 +203,32 @@ define(function (require) {
                 }
                 // Cluster Feature
                 else {
+                    // Cluster Feature hat nur ein Feature
                     if (featureAtPixel.get("features").length === 1) {
                         _.each(featureAtPixel.get("features"), function (feature) {
                             modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
                             modelAttributes.feature = feature;
                             gfiParams.push(modelAttributes);
                         });
+                    }
+                    // Cluster Feature mit mehr als einen Feature
+                    else {
+                        // In der letzten/größten Zoomstufe (ganz reingezoomt)
+                        if (Radio.request("MapView", "isLastZoomLevel") === true && Radio.request("Util", "isViewMobile")) {
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+                                modelAttributes.feature = feature;
+                                gfiParams.push(modelAttributes);
+                            });
+                        }
+                        else {
+                            var coords = [];
+
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                coords.push(feature.getGeometry().getCoordinates());
+                            });
+                            Radio.trigger("Map", "zoomToExtent", ol.extent.boundingExtent(coords));
+                        }
                     }
                 }
             }

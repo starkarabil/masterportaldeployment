@@ -48,8 +48,9 @@
 }
 #searchbarInMap {
     position: absolute;
-    left: 20px;
+    left: 43px;
     top: 7px;
+    right: 28px;
     max-width: 350px;
 }
 
@@ -63,12 +64,12 @@
 
 #searchForm > .input-group {
     width: 100%;
-    font-family: "UniversNextW01-Regular","Arial Narrow",Arial,sans-serif;
+    font-family: "HamburgSans-Regular", Arial, sans-serif;
 }
 /*mml template*/
 #searchForm-mml > .input-group {
     width: 100%;
-    font-family: "UniversNextW01-Regular","Arial Narrow",Arial,sans-serif;
+    font-family: "HamburgSans-Regular", Arial, sans-serif;
 }
 
 #autoCompleteBody {
