@@ -41,3 +41,17 @@
 	font-weight: 700;
 	font-style: italic;
 }
+
+> * {
+  font-family: "HamburgSans-Regular",Arial, sans-serif;
+  font-size: 12px;
+}
+
+h1{
+  font-family: "HamburgSans-Bold",Arial,sans-serif;
+  font-size: 32px;
+  color: #003063;
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: normal;
+}

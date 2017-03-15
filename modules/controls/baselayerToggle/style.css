@@ -11,6 +11,7 @@
 .baselayerToggleText {
     color: white;
     font-family: "HamburgSans-Bold";
+    font-size: 15px;
     text-align: center;
     line-height: 40px;
 }
