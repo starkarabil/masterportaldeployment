@@ -99,11 +99,9 @@ define(function (require) {
             var source = this.getLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
-                _.each(featuresToHide, function (feature) {
-                    source.addFeature(feature);
-                    featuresToHide = _.without(featuresToHide, feature);
-                });
-                this.setFeaturesToHide(featuresToHide);
+            source.addFeatures(featuresToHide);
+            featuresToHide = [];
+            this.setFeaturesToHide(featuresToHide);
         },
 
         /**
@@ -112,7 +110,6 @@ define(function (require) {
         hideAllFeatures: function () {
             var collection = this.getLayerSource().getFeatures(),
                 source = this.getLayerSource(),
-                clusterSource = this.getClusterLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
             collection.forEach(function (feature) {
@@ -129,14 +126,11 @@ define(function (require) {
             var source = this.getLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
-            _.each(featureIdList, function (id) {
-                _.each(featuresToHide, function (feature) {
-                    if (String(feature.getId()) === id) {
-                        source.addFeature(feature);
-                        featuresToHide = _.without(featuresToHide, feature);
-                    }
-                }, this);
-            }, this);
+            features = _.filter(featuresToHide, function (feature) {
+                return _.contains(featureAttrList, String(feature.getId()));
+            });
+            source.addFeatures(features);
+            featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
         },
         /**
@@ -146,16 +140,14 @@ define(function (require) {
          */
         showFeaturesByAttr: function (featureAttrList, attr) {
             var source = this.getLayerSource(),
-                featuresToHide = this.getFeaturesToHide();
+                featuresToHide = this.getFeaturesToHide(),
+                features;
 
-            _.each(featureAttrList, function (id) {
-                _.each(featuresToHide, function (feature) {
-                    if (String(feature.get(attr)) === id) {
-                        source.addFeature(feature);
-                        featuresToHide = _.without(featuresToHide, feature);
-                    }
-                }, this);
-            }, this);
+            features = _.filter(featuresToHide, function (feature) {
+                return _.contains(featureAttrList, String(feature.get(attr)));
+            });
+            source.addFeatures(features);
+            featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
         },
 
