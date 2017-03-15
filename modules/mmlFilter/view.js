@@ -21,15 +21,13 @@ define(function (require) {
             "click #btn-toDate": "btnToDateClicked",
             "click .panel-heading": "togglePanel",
             // Dieses Ereignis wird sofort ausgelöst, wenn die Methode show aufgerufen wird.
+            // Löst aus wenn ein Panel ausgeklappt wird.
             // http://holdirbootstrap.de/javascript/#collapse-events
-            "show.bs.collapse .panel-collapse": function (evt) {
-                $(evt.target).parent().find(".glyphicon").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
-            },
+            "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
             // Dieses Ereignis wird sofort ausgelöst, wenn die Methode hide aufgerufen wird.
+            // Löst aus wenn ein Panel eingeklappt wird.
             // http://holdirbootstrap.de/javascript/#collapse-events
-            "hide.bs.collapse .panel-collapse": function (evt) {
-                $(evt.target).parent().find(".glyphicon").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
-            }
+            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
         },
 
         initialize: function () {
@@ -42,16 +40,32 @@ define(function (require) {
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
         },
 
+        /**
+         * Panels werden aus- und eingeklappt.
+         * @param {MouseEvent} evt - Click auf .panel-heading
+         */
         togglePanel: function (evt) {
-            // eventuell anderes geöffnetes Panel wird geschlossen
+            // eventuell anderes geöffnetes Panel wird eingeklappt
             this.$el.find(".in").collapse("hide");
-            // aktuelles Panel wird geschlossen oder geöffnet
+            // aktuelles Panel wird aus- oder eingeklappt
             $(evt.currentTarget).next().collapse("toggle");
         },
 
+        toggleTriangleGlyphicon: function (evt) {
+            var glyphiconDom = $(evt.target).parent().find(".glyphicon");
+
+            if (evt.type === "show") {
+                glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            }
+            else if (evt.type === "hide") {
+                glyphiconDom.removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+            }
+        },
+
         toggleMMLFilter: function () {
-            var startWidth = $("#div-mmlFilter-content").css("width"),
-                endWidth = startWidth === "0px" ? ($("#map").width() / 3) + "px" : "0px";
+            var mapWidth = $("#map").width(),
+                startWidth = $("#div-mmlFilter-content").css("width"),
+                endWidth = startWidth === "0px" ? (mapWidth / 3) + "px" : "0px";
 
             $("#div-mmlFilter-content").css("left", $("#map").css("width"));
 
@@ -60,8 +74,8 @@ define(function (require) {
             }, {
                 duration: "slow",
                 progress: function () {
-                    var newLeftToggle = String($("#map").width() - 45 - $("#div-mmlFilter-content").width()) + "px",
-                        newLeftContent = String($("#map").width() - $("#div-mmlFilter-content").width()) + "px";
+                    var newLeftToggle = String(mapWidth - 45 - $("#div-mmlFilter-content").width()) + "px",
+                        newLeftContent = String(mapWidth - $("#div-mmlFilter-content").width()) + "px";
 
                     $("#div-mmlFilter-content").css("left", newLeftContent);
                     $("#btn-mmlFilter-toggle").css("left", newLeftToggle);
