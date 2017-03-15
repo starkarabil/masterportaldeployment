@@ -1,0 +1,233 @@
+#mmlFilter .panel-heading {
+    padding: 15px 20px 15px 0px;
+}
+
+#mmlFilter .panel-body {
+    border: 0;
+    padding-left: 25px;
+    padding-top: 0px;
+}
+/**********************************
+Blauer Filterknopf links
+neben Filterfenster
+**********************************/
+#btn-mmlFilter-toggle {
+    position: absolute;
+    right: 0px;
+    cursor: pointer;
+    top: 7px;
+    width: 45px;
+    height: 55px;
+    border-radius: 3px !important;
+    background-color: #0f5cad;
+    color: white;
+}
+
+/**********************************
+Reset-Knopf in Kategorien
+**********************************/
+#div-mmlFilter-reset {
+    height: 45px;
+    border-radius: 3px !important;
+    border: solid 1px rgba(0, 0, 0, 0.18);
+    text-align: center;
+    color: black;
+    margin-bottom: 10px;
+}
+
+#div-mmlFilter-reset:hover{
+    background-color: #0f5cad;
+    color: white;
+    cursor: pointer;
+}
+
+#div-mmlFilter-reset-text {
+    font-size: 14px;
+    line-height: 3.3;
+}
+
+/**********************************
+Filter-Knopf für Execute
+**********************************/
+#div-mmlFilter-execute {
+    height: 45px;
+    border-radius: 3px !important;
+    border: solid 1px rgba(0, 0, 0, 0.18);
+    text-align: center;
+    color: white;
+    background-color: #005ca9;
+    margin-left: 25px;
+    position: absolute;
+    bottom: 7px;
+    padding: 0px 75px;
+}
+
+#div-mmlFilter-execute:hover{
+    cursor: pointer;
+}
+
+#div-mmlFilter-execute-text {
+    font-size: 14px;
+    line-height: 3.3;
+}
+
+/**********************************
+Filterabschnitte
+**********************************/
+.div-mmlFilter-filter {
+    line-height: 2.73;
+    color: #333333;
+    display: block;
+}
+
+#mmlFilter .div-mmlFilter-filter-header {
+    font-weight: bold;
+    line-height: 24px;
+    color: #003063;
+    min-width: 200px;
+    font-size: 15px;
+    letter-spacing: -0.4px;
+    text-align: center;
+    padding: 0px 25px;
+    font-family: HamburgSans;
+    text-decoration: none;
+}
+
+/**********************************
+gesamtes Filterwindow
+**********************************/
+#div-mmlFilter-content {
+    overflow: hidden;
+    height: 100%;
+    font-family: HamburgSans;
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: -0.4px;
+    line-height: 2.73;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-color: white;
+    width: 0px;
+    color: #333333;
+    border-radius: 1px !important;
+    max-width: 400px;
+}
+
+#fromDateDiv {
+    width: 200px;
+}
+#toDateDiv {
+    width: 200px;
+}
+.mml-white {
+    background: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+}
+.ui-widget-content .ui-icon {
+    background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
+}
+.panel-collapse {
+    max-height: 28vh;
+    overflow: auto;
+}
+
+#mmlZeitraum {
+    overflow: visible;
+}
+/**********************************
+Checkbox
+**********************************/
+.mml-checkbox {
+    -webkit-appearance: none;
+    border: 1px solid #cacece;
+    padding: 9px;
+    opacity: 0.5;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    height: 20px;
+    width: 20px;
+}
+.mml-checkbox:hover {
+    cursor: pointer;
+}
+.mml-checkbox:checked {
+    color: #99a1a7;
+    opacity: 1;
+}
+.mml-checkbox:checked:after {
+    content: '\2714';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    height:100%;
+    border-radius: 2px
+    border: solid 2px #333333;
+    color: #333333;
+}
+/**********************************
+Hilfsklassen
+**********************************/
+.unselectable {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+.mml-blue {
+    color: #003063;
+}
+.float-right {
+    float: right;
+}
+.margin-right-only {
+    margin: 0px 20px -3px 0px !important;
+}
+
+.margin-leftright {
+    margin: 0px 20px 0px 0px !important;
+}
+
+.datepicker {
+    height: 30px;
+}
+.btn-calendar {
+    float: left;
+    height: 34px;
+    width: 34px;
+}
+.zoom {
+    zoom: 1.5;
+}
+
+.ui-datepicker {
+    position: absolute;
+    top: 34px;
+    right: 0px;
+    z-index: 100;
+}
+.ui-datepicker-header {
+    background-color: white
+}
+.ui-state-default {
+    width: 34px !important;
+    height: 31px !important;
+    border-radius: 3px !important;
+    border-color: white !important;
+    background: white !important;
+    line-height: 2.29 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #212121 !important;
+}
+.ui-state-highlight {
+    background: #ddd !important;
+}
+.ui-state-active {
+    background: #666666 !important;
+    color: #fff !important;
+}
