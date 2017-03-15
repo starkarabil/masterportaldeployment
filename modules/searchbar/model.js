@@ -1,9 +1,8 @@
 define([
-
     "eventbus",
     "config"
 ], function (EventBus, Config) {
-    "use strict";
+
     var SearchbarModel = Backbone.Model.extend({
         defaults: {
             placeholder: "Suche",
@@ -11,22 +10,37 @@ define([
             quickHelp: false,
             searchString: "", // der aktuelle String in der Suchmaske
             hitList: [],
-            minChars: ""
+            minChars: "",
+            // Ist die Searchbar sichtbar oder nicht
+            isVisible: true
             // isHitListReady: true
         },
         /**
         *
         */
         initialize: function () {
+            var channel = Radio.channel("Searchbar");
+
+            channel.on({
+                "hide": function () {
+                    this.setIsVisible(false);
+                },
+                "show": function () {
+                    this.setIsVisible(true);
+                }
+            }, this);
+
             if (Config.quickHelp) {
                 this.set("quickHelp", Config.quickHelp);
             }
+
             EventBus.on("createRecommendedList", this.createRecommendedList, this);
             EventBus.on("searchbar:pushHits", this.pushHits, this);
 
             if (_.isUndefined(Radio.request("ParametricURL", "getInitString")) === false) {
                 this.setInitSearchString(Radio.request("ParametricURL", "getInitString"));
             }
+
         },
 
         setInitSearchString: function (value) {
@@ -109,6 +123,22 @@ define([
                 this.set("recommendedList", _.sortBy(recommendedList, "name"));
                 // this.set("isHitListReady", true);
             // }
+        },
+
+        /**
+         * Setter für das Attribut "isVisible".
+         * @param {boolean} value
+         */
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        /**
+         * Getter für das Attribut "isVisible".
+         * @return {boolean}
+         */
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 

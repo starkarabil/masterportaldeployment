@@ -92,8 +92,9 @@ define(function (require) {
             EventBus.on("searchInput:deleteSearchString", this.deleteSearchString, this);
 
             // this.listenTo(this.model, "change:searchString", this.render);
-            this.listenTo(this.model, "change:recommendedList", function () {
-                this.renderRecommendedList();
+            this.listenTo(this.model, {
+                "change:recommendedList": this.renderRecommendedList,
+                "change:isVisible": this.toggle
             });
 
             this.listenTo(Radio.channel("MenuLoader"), {
@@ -162,7 +163,7 @@ define(function (require) {
             }
             if (config.renderToDOM) {
                 if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form col-xs-9\"></div");
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form \"></div");
                 }
                 this.setElement(config.renderToDOM);
                 this.render();
@@ -579,19 +580,31 @@ define(function (require) {
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
         },
-
         /**
+         * Abhängig vom Attribut "isVisible" wird
+         * die Searchbar angezeigt oder versteckt.
+         */
+        toggle: function () {
+            if (this.model.getIsVisible() === false) {
+                this.$el.hide();
+            }
+            else {
+                this.$el.show();
+            }
+        },
+        /*
         * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
         */
         newDragMarkerAddress: function (response) {
             if (!response.error) {
-                this.model.set("searchString", response.streetname + " " + response.housenumber);
+                this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                this.render();
+                $("#searchInput + span").show();
             }
             else {
                 this.model.set("searchString", "");
+                $("#searchInput").blur();
             }
-            this.render();
-            $("#searchInput").blur();
         }
     });
 

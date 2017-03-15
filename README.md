@@ -159,12 +159,14 @@ Ein Portal für die Veröffentlichung fertig machen.
 ```
 // grunt build --path=<pfad-zum-portal> --name=<Portalname> --url=<Server> --dev=<boolean> [--env=internet| default:fhhnet]
 # grunt build --path=portal/master --name=Master --url=http://geoportal-hamburg.de/master --dev=false
+# grunt build --path=portalconfigs/mml --name=mml --url=http://localhost:3000/lgv-cors --dev=true
 ```
 
 - baut das Portal und alles, was es braucht in den Ordner dist/<pkg.version>
 - Pfade in index.html werden automatisch ersetzt
- - Pfade zu *Conf in config.js werden automatisch ersetzt
+- Pfade zu *Conf in config.js werden automatisch ersetzt
 - components/lgv-config, also Konfigs, die zwischen den Portalen geteilt werden, werden in den Ordner /lgv-config kopiert, da wird die auch auf den 'echten' Servern erwartet
+- beim Bauen für anderen Server muss der Name und der letzte agegebene Ordner im URL Parameter gleich sein.
 
 ## grunt doc
 Die Dokumentation erzeugen. Zurzeit nur für portale/master/config.js.
