@@ -97,7 +97,7 @@ Filterabschnitte
 gesamtes Filterwindow
 **********************************/
 #div-mmlFilter-content {
-    overflow: auto;
+    overflow: hidden;
     height: 100%;
     font-family: HamburgSans;
     font-size: 15px;
