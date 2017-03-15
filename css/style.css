@@ -4154,11 +4154,19 @@ Hilfsklassen
   left: 15px;
   background-color: white;
 }
+.lgv-container #mmlFilter .panel-heading {
+  padding: 15px 20px 15px 0px;
+}
+.lgv-container #mmlFilter .panel-body {
+  border: 0;
+  padding-left: 25px;
+  padding-top: 0px;
+}
 .lgv-container #btn-mmlFilter-toggle {
   position: absolute;
-  left: 0px;
+  right: 0px;
   cursor: pointer;
-  top: 8px;
+  top: 7px;
   width: 45px;
   height: 55px;
   border-radius: 3px !important;
@@ -4174,8 +4182,9 @@ Hilfsklassen
   margin-bottom: 10px;
 }
 .lgv-container #div-mmlFilter-reset:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #0f5cad;
   color: white;
+  cursor: pointer;
 }
 .lgv-container #div-mmlFilter-reset-text {
   font-size: 14px;
@@ -4188,10 +4197,13 @@ Hilfsklassen
   text-align: center;
   color: white;
   background-color: #005ca9;
-  margin: 30px 22px 23px 25px;
+  margin-left: 25px;
+  position: absolute;
+  bottom: 7px;
+  padding: 0px 75px;
 }
 .lgv-container #div-mmlFilter-execute:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
 }
 .lgv-container #div-mmlFilter-execute-text {
   font-size: 14px;
@@ -4200,21 +4212,23 @@ Hilfsklassen
 .lgv-container .div-mmlFilter-filter {
   line-height: 2.73;
   color: #333333;
-  padding: 20px 25px 0px 25px;
-  overflow: auto;
   display: block;
 }
-.lgv-container .div-mmlFilter-filter-header {
+.lgv-container #mmlFilter .div-mmlFilter-filter-header {
   font-weight: bold;
-  line-height: 1.6;
+  line-height: 24px;
   color: #003063;
   min-width: 200px;
   font-size: 15px;
   letter-spacing: -0.4px;
   text-align: center;
-  padding: 22px 25px 0px 25px;
+  padding: 0px 25px;
+  font-family: HamburgSans;
+  text-decoration: none;
 }
 .lgv-container #div-mmlFilter-content {
+  overflow: auto;
+  height: 100%;
   font-family: HamburgSans;
   font-size: 15px;
   font-weight: normal;
@@ -4229,6 +4243,7 @@ Hilfsklassen
   width: 0px;
   color: #333333;
   border-radius: 1px !important;
+  max-width: 400px;
 }
 .lgv-container #fromDateDiv {
   width: 200px;
@@ -4245,8 +4260,11 @@ Hilfsklassen
   background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
 .lgv-container .panel-collapse {
-  max-height: 357px;
+  max-height: 28vh;
   overflow: auto;
+}
+.lgv-container #mmlZeitraum {
+  overflow: visible;
 }
 .lgv-container .mml-checkbox {
   -webkit-appearance: none;
@@ -4258,6 +4276,9 @@ Hilfsklassen
   position: relative;
   height: 20px;
   width: 20px;
+}
+.lgv-container .mml-checkbox:hover {
+  cursor: pointer;
 }
 .lgv-container .mml-checkbox:checked {
   color: #99a1a7;
@@ -4290,10 +4311,10 @@ Hilfsklassen
   float: right;
 }
 .lgv-container .margin-right-only {
-  margin: 0px 20px 0px 0px !important;
+  margin: 0px 20px -3px 0px !important;
 }
 .lgv-container .margin-leftright {
-  margin: 0px 20px 0px 25px !important;
+  margin: 0px 20px 0px 0px !important;
 }
 .lgv-container .datepicker {
   height: 30px;
