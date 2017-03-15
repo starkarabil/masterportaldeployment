@@ -9,7 +9,7 @@ define(function (require) {
         className: "mobileHeader",
         events: {
             "click .filter": function () {
-                Radio.trigger("MMLFilter", "showFilter");
+                Radio.trigger("MMLFilter", "toggleFilter");
             },
             "click .arrow": "TODO"
         },
