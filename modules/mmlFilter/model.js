@@ -89,7 +89,6 @@ define([
                         filteredFeatures.push(feature);
                     }
                 });
-
             this.setSelFeatures(filteredFeatures);
         },
         showFilteredFeatures: function () {
@@ -101,7 +100,6 @@ define([
             _.each(selFeatures, function (feature) {
                 idList.push(feature.id);
             });
-
             layer.hideAllFeatures();
             layer.showFeaturesByAttr(idList, "mmlid");
         },

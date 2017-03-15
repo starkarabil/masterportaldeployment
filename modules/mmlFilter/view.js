@@ -18,7 +18,6 @@ define([
         template: _.template(Template),
         events: {
             "click #btn-mmlFilter-toggle": "toggleMMLFilter",
-            // "click .filterHeader": "toggleMMLFilterSection",
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
@@ -104,7 +103,7 @@ define([
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yy",
+                        dateFormat: "yy-mm-dd",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -132,7 +131,7 @@ define([
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yy",
+                        dateFormat: "yy-mm-dd",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],

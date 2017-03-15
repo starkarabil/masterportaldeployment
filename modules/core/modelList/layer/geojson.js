@@ -15,11 +15,22 @@ define(function (require) {
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
                 format: new ol.format.GeoJSON(),
-                url: this.get("url"),
-                features: this.getFeatures()
-            }));
+                // url: this.get("url"),
+                loader: this.loaderFunction()
+            }, this));
         },
+        loaderFunction: function () {
+            var features;
 
+            $.ajax({
+              url: this.get("url"),
+              dataType: "json",
+              context: this
+            }).then(function (response) {
+                features = new ol.format.GeoJSON().readFeatures(response);
+                this.getLayerSource().addFeatures(features);
+            });
+        },
         /**
          * [createClusterLayerSource description]
          * @return {[type]} [description]
@@ -101,12 +112,13 @@ define(function (require) {
         hideAllFeatures: function () {
             var collection = this.getLayerSource().getFeatures(),
                 source = this.getLayerSource(),
+                clusterSource = this.getClusterLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
             collection.forEach(function (feature) {
                 featuresToHide.push(feature);
-                source.removeFeature(feature);
-            }, this);
+            });
+            source.clear();
         },
 
         /**
