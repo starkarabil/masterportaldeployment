@@ -147,6 +147,13 @@ define("app",
                  decModulesLoading();
              });
         }
+        if (Config.mmlMobileHeader) {
+            incModulesLoading();
+            require(["modules/mmlMobileHeader/view"], function (mmlMobileHeaderView) {
+                new mmlMobileHeaderView();
+                decModulesLoading();
+            });
+        }
 
         incModulesLoading();
          require(["modules/window/view"], function (WindowView) {

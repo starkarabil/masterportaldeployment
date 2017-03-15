@@ -4259,6 +4259,29 @@ Hilfsklassen
   font-stretch: normal;
   letter-spacing: -0.4px;
 }
+.lgv-container .mobileHeader {
+  background-color: #353535;
+  height: 55px;
+  padding: 16px 18px 24px 18px;
+  color: #fff;
+  width: 100%;
+  font-size: 16px;
+}
+.lgv-container .mobileHeader div {
+  float: left;
+}
+.lgv-container .mobileHeader div.filter {
+  float: right;
+}
+.lgv-container .mobileHeader img {
+  cursor: pointer;
+}
+.lgv-container .mobileHeader img.filter {
+  float: right;
+}
+.lgv-container .mobileHeader .title {
+  margin-left: 21px;
+}
 .lgv-container #mmlFilter .panel-heading {
   padding: 15px 20px 15px 0px;
 }

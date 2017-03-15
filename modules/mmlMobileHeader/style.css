@@ -1,0 +1,23 @@
+.mobileHeader {
+    background-color: #353535;
+    height: 55px;
+    padding: 16px 18px 24px 18px;
+    color: #fff;
+    width: 100%;
+    font-size: 16px;
+}
+.mobileHeader div {
+    float: left;
+}
+.mobileHeader div.filter {
+    float:right;
+}
+.mobileHeader  img {
+    cursor: pointer;
+}
+.mobileHeader  img.filter {
+    float: right;
+}
+.mobileHeader .title {
+    margin-left: 21px;
+}
