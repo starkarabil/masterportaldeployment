@@ -1,12 +1,21 @@
+#mmlFilter .panel-heading {
+    padding: 15px 20px 15px 0px;
+}
+
+#mmlFilter .panel-body {
+    border: 0;
+    padding-left: 25px;
+    padding-top: 0px;
+}
 /**********************************
 Blauer Filterknopf links
 neben Filterfenster
 **********************************/
 #btn-mmlFilter-toggle {
     position: absolute;
-    left: 0px;
+    right: 0px;
     cursor: pointer;
-    top: 8px;
+    top: 7px;
     width: 45px;
     height: 55px;
     border-radius: 3px !important;
@@ -27,8 +36,9 @@ Reset-Knopf in Kategorien
 }
 
 #div-mmlFilter-reset:hover{
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #0f5cad;
     color: white;
+    cursor: pointer;
 }
 
 #div-mmlFilter-reset-text {
@@ -46,11 +56,14 @@ Filter-Knopf für Execute
     text-align: center;
     color: white;
     background-color: #005ca9;
-    margin: 30px 22px 23px 25px;
+    margin-left: 25px;
+    position: absolute;
+    bottom: 7px;
+    padding: 0px 75px;
 }
 
 #div-mmlFilter-execute:hover{
-    background-color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
 }
 
 #div-mmlFilter-execute-text {
@@ -64,26 +77,28 @@ Filterabschnitte
 .div-mmlFilter-filter {
     line-height: 2.73;
     color: #333333;
-    padding: 20px 25px 0px 25px;
-    overflow: auto;
     display: block;
 }
 
-.div-mmlFilter-filter-header {
+#mmlFilter .div-mmlFilter-filter-header {
     font-weight: bold;
-    line-height: 1.6;
+    line-height: 24px;
     color: #003063;
     min-width: 200px;
     font-size: 15px;
     letter-spacing: -0.4px;
     text-align: center;
-    padding: 22px 25px 0px 25px;
+    padding: 0px 25px;
+    font-family: HamburgSans;
+    text-decoration: none;
 }
 
 /**********************************
 gesamtes Filterwindow
 **********************************/
 #div-mmlFilter-content {
+    overflow: auto;
+    height: 100%;
     font-family: HamburgSans;
     font-size: 15px;
     font-weight: normal;
@@ -93,11 +108,12 @@ gesamtes Filterwindow
     line-height: 2.73;
     position: absolute;
     left: 0px;
-    top: 8px;
+    top: 0px;
     background-color: white;
     width: 0px;
     color: #333333;
     border-radius: 1px !important;
+    max-width: 400px;
 }
 
 #fromDateDiv {
@@ -115,8 +131,12 @@ gesamtes Filterwindow
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
 .panel-collapse {
-    max-height: 357px;
+    max-height: 28vh;
     overflow: auto;
+}
+
+#mmlZeitraum {
+    overflow: visible;
 }
 /**********************************
 Checkbox
@@ -131,6 +151,9 @@ Checkbox
     position: relative;
     height: 20px;
     width: 20px;
+}
+.mml-checkbox:hover {
+    cursor: pointer;
 }
 .mml-checkbox:checked {
     color: #99a1a7;
@@ -162,11 +185,11 @@ Hilfsklassen
     float: right;
 }
 .margin-right-only {
-    margin: 0px 20px 0px 0px !important;
+    margin: 0px 20px -3px 0px !important;
 }
 
 .margin-leftright {
-    margin: 0px 20px 0px 25px !important;
+    margin: 0px 20px 0px 0px !important;
 }
 
 .datepicker {
