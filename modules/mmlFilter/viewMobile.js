@@ -31,7 +31,6 @@ define([
             }, this);
 
             this.render();
-            Radio.trigger("MMLFilter", "toggleFilter");
         },
 
         render: function () {
