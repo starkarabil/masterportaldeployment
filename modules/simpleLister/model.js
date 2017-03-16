@@ -21,11 +21,15 @@ define([
             this.getParams();
         },
         getParams: function () {
-            var simpleLister = Radio.request("Parser", "getPortalConfig").simpleLister;
+            var configJSON = Radio.request("Parser", "getPortalConfig"),
+                simpleLister;
 
-            this.setLayerId(simpleLister.layerId);
-            this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
-            this.setFeaturesPerPage(simpleLister.featuresPerPage);
+            if (configJSON && configJSON.simpleLister) {
+                simpleLister = configJSON.simpleLister;
+                this.setLayerId(simpleLister.layerId);
+                this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
+                this.setFeaturesPerPage(simpleLister.featuresPerPage);
+            }
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
@@ -33,7 +37,6 @@ define([
             var featuresPerPage = this.get("featuresPerPage"),
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
-
             this.set("totalFeatures", totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
@@ -66,7 +69,11 @@ define([
             this.set("totalFeaturesInPage", number);
             this.trigger("render");
         },
+        triggerGFI: function (id) {
+            var feature = _.findWhere(this.getFeaturesInExtent(),{id: id});
 
+            Radio.trigger("GFI", "createGFI", feature);
+        },
         // getter for glyphicon
         getGlyphicon: function () {
             return this.get("glyphicon");
