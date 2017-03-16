@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- Modal -->
+<div class="modal fade" id="div-mmlFilter-content-mobile" tabindex="-1" role="dialog" aria-labelledby="modalLabel-mmlFilter-content" style="height:<%= mapHeight - 40 %>px;">
+    <div id="div-mmlFilter-modal-dialog" class="modal-dialog" role="document">
+        <div class="div-mmlFilter-header-mobile">
+            <button type="button" class="div-mmlFilter-header-close-mobile" data-dismiss="modal" aria-label="Schließen"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+            <span class="div-mmlFilter-header-text-mobile">Filtern nach...</span>
+        </div>
+        <div class="panel panel-default div-mmlFilter-panel-mobile">
+            <div class="panel-heading div-mmlFilter-panel-heading-mobile" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlKategorien">
+                <h4 class="panel-title">
+                    <a class="div-mmlFilter-filter-header-mobile">Kategorien
+                        <span class="glyphicon glyphicon-triangle-top div-mmlFilter-filter-header-span-mobile"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="mmlKategorien" class="panel-collapse collapse in">
+                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+                    <div id="div-mmlFilter-reset-mobile" title="Alle Kategorien deaktivieren">
+                        <span id="div-mmlFilter-reset-text-mobile">Alle Kategorien deaktivieren</span>
+                    </div>
+                    <div class="div-mmlFilter-filter-kategorien">
+                        <input id="202" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Ampelschaden</span><br>
+                        <input id="401" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Baumschaden</span><br>
+                        <input id="203" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beleuchtetes Schild beschädigt</span><br>
+                        <input id="105" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigte Brücke, Tunnel, Mauer, Treppe</span><br>
+                        <input id="106" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigte Geländer, Poller, Fahrradständer, Sitzgelegenheit</span><br>
+                        <input id="107" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigte Haltestelle</span><br>
+                        <input id="108" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigter Parkscheinautomat</span><br>
+                        <input id="109" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigter Stromkasten</span><br>
+                        <input id="104" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Beschädigtes Verkehrszeichen</span><br>
+                        <input id="503" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Gewässerverunreinigung</span><br>
+                        <input id="502" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Graben</span><br>
+                        <input id="400" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Grünanlagen und Spielplätze</span><br>
+                        <input id="501" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Gully-Schaden</span><br>
+                        <input id="110" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Hundekot</span><br>
+                        <input id="200" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Laternen und beleuchtete Verkehrszeichen</span><br>
+                        <input id="101" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Schlagloch und Wegeschaden</span><br>
+                        <input id="300" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Schnee und Eis</span><br>
+                        <input id="500" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Siele und Gewässer</span><br>
+                        <input id="402" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Spielgeräteschaden</span><br>
+                        <input id="201" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Straßenbeleuchtung beschädigt</span><br>
+                        <input id="102" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Verunreinigung und Vandalismus</span><br>
+                        <input id="100" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Wege und Straßen</span><br>
+                        <input id="103" class="margin-topright mml-checkbox" type="checkbox"><span class="mmlFilter-checkbox-span">Wildwuchs und Überwuchs</span><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default div-mmlFilter-panel-mobile">
+            <div class="panel-heading div-mmlFilter-panel-heading-mobile" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlBearbStatus">
+                <h4 class="panel-title">
+                    <a class="div-mmlFilter-filter-header-mobile">Bearbeitungsstatus
+                        <span class="glyphicon glyphicon-triangle-bottom div-mmlFilter-filter-header-span-mobile"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="mmlBearbStatus" class="panel-collapse collapse">
+                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+                    <div class="div-mmlFilter-filter-status">
+                        <input id="0" class="margin-topright mml-checkbox" type="checkbox" checked="true">In Bearbeitung<br>
+                        <input id="1" class="margin-topright mml-checkbox" type="checkbox" checked="true">Bearbeitet<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default div-mmlFilter-panel-mobile">
+            <div class="panel-heading div-mmlFilter-panel-heading-mobile" data-toggle="collapse" data-parent="#mmlFilter-accordion" href="#mmlZeitraum">
+                <h4 class="panel-title">
+                    <a class="div-mmlFilter-filter-header-mobile">Zeitraum
+                        <span class="glyphicon glyphicon-triangle-bottom div-mmlFilter-filter-header-span-mobile"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="mmlZeitraum" class="panel-collapse collapse">
+                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+                    <input id="7days" class="input-mmlFilter-filter-time margin-topright" type="radio" name="zeitraum" value="7days" checked>Die letzten 7 Tage<br>
+                    <input id="30days" class="input-mmlFilter-filter-time margin-topright" type="radio" name="zeitraum" value="30days">Die letzten 30 Tage<br>
+                    <input id="userdefined" class="input-mmlFilter-filter-time margin-topright" type="radio" name="zeitraum" value="userdefined">Zeitraum wählen<br>
+                    <div class="row" style="display:none;">
+                        <span class="mmlFilter-datetype-span">Von</span>
+                        <input id="fromDate" class="mmlFilter-datetype" type="date" name="from" placeholder="Datum TT.MM.JJJJ">
+                    </div>
+                    <div class="row" style="display:none;">
+                        <span class="mmlFilter-datetype-span">Bis</span>
+                        <input id="toDate" class="mmlFilter-datetype" type="date" name="bis" placeholder="Datum TT.MM.JJJJ">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="div-mmlFilter-execute-mobile" title="Filter anwenden" style="width: <%= mapWidth - 60 %>px;">
+        <span id="div-mmlFilter-execute-text-mobile">Filter anwenden</span>
+    </div>
+</div>
