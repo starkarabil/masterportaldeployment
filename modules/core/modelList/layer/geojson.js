@@ -129,6 +129,14 @@ define(function (require) {
             features = _.filter(featuresToHide, function (feature) {
                 return _.contains(featureAttrList, String(feature.getId()));
             });
+            features.sort(function (a, b) {
+                var a_id = parseInt(a.getId()),
+                    b_id = parseInt(b.getId());
+
+                if (a_id < b_id) {return -1;}
+                if (a_id > b_id) {return 1;}
+                return 0;
+            });
             source.addFeatures(features);
             featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
@@ -145,6 +153,14 @@ define(function (require) {
 
             features = _.filter(featuresToHide, function (feature) {
                 return _.contains(featureAttrList, String(feature.get(attr)));
+            });
+            features.sort(function (a, b) {
+                var a_id = parseInt(a.get(attr)),
+                    b_id = parseInt(b.get(attr));
+
+                if (a_id < b_id) {return -1;}
+                if (a_id > b_id) {return 1;}
+                return 0;
             });
             source.addFeatures(features);
             featuresToHide = _.difference(featuresToHide, features);
