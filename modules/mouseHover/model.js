@@ -24,8 +24,8 @@ define([
                                 color: "#005ca9"
                         }),
                         stroke: new ol.style.Stroke({
-                                color: "#005ca9",
-                                width: 1
+                                color: "#ffffff",
+                                width: 2
                         }),
                         opacity: 0.5
                       })
@@ -240,7 +240,8 @@ define([
          * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
          */
         styleDeselFunc: function (feature) {
-        var normalStyle;
+            var normalStyle;
+
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
                 normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
@@ -315,12 +316,15 @@ define([
         },
 
         compareArrayOfObjects: function (arr1, arr2) {
+            var obj1,
+                obj2;
+
             if (arr1.length !== arr2.length) {
                 return false;
             }
-            for (var i = 0; i < arr1.length; i++) {
-                var obj1 = arr1[i],
-                    obj2 = arr2[i];
+            for (i = 0; i < arr1.length; i++) {
+                obj1 = arr1[i],
+                obj2 = arr2[i];
 
                 if (_.isEqual(obj1, obj2) === false) {
                     return false;
@@ -337,7 +341,12 @@ define([
         prepMouseHoverFeature: function (pFeatureArray) {
             var mouseHoverInfos = this.get("mouseHoverInfos"),
                 value = "",
-                coord;
+                coord,
+                mouseHoverField,
+                headerFields,
+                textFields,
+                hoverHeader,
+                hoverText;
 
             if (pFeatureArray.length > 0) {
                 // für jedes gehoverte Feature...
@@ -350,7 +359,7 @@ define([
                         });
 
                     if (listEintrag) {
-                        var mouseHoverField = listEintrag.mouseHoverField;
+                        mouseHoverField = listEintrag.mouseHoverField;
 
                         if (mouseHoverField && _.isString(mouseHoverField)) {
                             if (_.has(featureProperties, mouseHoverField)) {
@@ -363,10 +372,10 @@ define([
                             });
                         }
                         else if (mouseHoverField && _.isObject(mouseHoverField)) {
-                            var headerFields = mouseHoverField.header,
-                                textFields = mouseHoverField.text,
-                                hoverHeader = "",
-                                hoverText = "";
+                            headerFields = mouseHoverField.header,
+                            textFields = mouseHoverField.text,
+                            hoverHeader = "",
+                            hoverText = "";
 
                             _.each(headerFields, function (headerField) {
                                 hoverHeader = hoverHeader === "" ? _.values(_.pick(featureProperties, headerField)) : hoverHeader + " " + _.values(_.pick(featureProperties, headerField));
@@ -383,7 +392,7 @@ define([
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";
 
-                            if (isClusterFeature && this.getZoom() === 9) {
+                            if ((isClusterFeature && this.getZoom() === 9)) {
                                 value = "";
                             }
 
@@ -401,45 +410,48 @@ define([
                 }, this);
                 if (value !== "") {
                     this.get("mhpOverlay").setPosition(coord);
-                    this.get("mhpOverlay").setOffset([10, -15]);
+                    // this.get("mhpOverlay").setOffset([10, -15]);
+                    this.get("mhpOverlay").setOffset([30, -45]);
                     this.set("mhpcoordinates", coord);
                     this.set("mhpresult", value);
                 }
             }
         },
 
-        // erstellt um die Clusterkooridnate die Features mit dem gleichen Extent
+        // erstellt um die Clusterkoordinate die Features mit dem gleichen Extent
         createCircle: function (clusterFeature) {
-            var featureArray = clusterFeature.get("features"),
+            var arrayLength = clusterFeature.get("features").length,
                 anchor = clusterFeature.getGeometry().getCoordinates(),
                 source = this.getHoverLayer().getSource(),
                 options = Radio.request("MapView", "getOptions"),
-                size = featureArray.length,
-                radians = (360 / size) * (Math.PI / 180),
-                newStyle = this.getOverlayStyle();
+                radians = (360 / arrayLength) * (Math.PI / 180),
+                newStyle = this.getOverlayStyle(),
+                newClusterFeature,
+                geom,
+                oldFeature,
+                feature;
 
-                newStyle.getImage().setOpacity(0.5);
+            newStyle.getImage().setOpacity(0.5);
 
-                _.each(featureArray, function (feature, index) {
-                    var newClusterFeature = clusterFeature.clone(),
-                        geom = newClusterFeature.getGeometry(),
-                        oldFeature = source.getFeatureById(index);
+            for (i = 0; i < arrayLength; i++) {
+                newClusterFeature = clusterFeature.clone();
+                geom = newClusterFeature.getGeometry();
+                oldFeature = source.getFeatureById(i);
+                feature = newClusterFeature.get("features")[i].clone();
 
-                    if (oldFeature) {
-                        source.removeFeature(oldFeature);
-                    }
+                if (oldFeature) {
+                    source.removeFeature(oldFeature);
+                }
 
-                    geom.setCoordinates([anchor[0], anchor[1] + (options.scale / 100)]);
-                    geom.rotate(index * radians, anchor);
-                    // feature.setGeometry(geom);
-                    newClusterFeature.set("features", [feature]);
-                    newClusterFeature.setGeometry(geom);
-                    // console.log(newClusterFeature.getGeometry().getCoordinates());
-                    newClusterFeature.setId(index);
-                    newClusterFeature.setStyle(newStyle);
-
-                    source.addFeature(newClusterFeature);
-                }, this);
+                geom.setCoordinates([anchor[0], anchor[1] + ((options.scale / 100) * 1.5)]); // 1.5% vom Maßstab
+                geom.rotate(i * radians, anchor);
+                feature.setGeometry(geom);
+                newClusterFeature.setGeometry(geom);
+                newClusterFeature.set("features", [feature]);
+                newClusterFeature.setId(i);
+                newClusterFeature.setStyle(newStyle);
+                source.addFeature(newClusterFeature);
+            }
         },
         // prüft über den Extent ob Features übereinander liegen
         hasOnlyFeaturesWithSameExtent: function (featureArray) {
