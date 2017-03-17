@@ -4482,6 +4482,31 @@ Hilfsklassen
   background: #666666 !important;
   color: #fff !important;
 }
+.lgv-container .theme-wrapper {
+  font-size: 15px;
+  color: #333333;
+}
+.lgv-container .theme-wrapper div {
+  padding: 0px 26px 32px 34px;
+}
+.lgv-container .theme-wrapper div.heading {
+  padding-top: 0px;
+  padding-bottom: 10px;
+  font-weight: bold;
+}
+.lgv-container .theme-wrapper .backArrow {
+  display: none;
+}
+.lgv-container .theme-wrapper .top-picture {
+  width: 100%;
+  margin-bottom: 25px;
+}
+.lgv-container .theme-wrapper .heading {
+  font-size: 16px;
+}
+.lgv-container .theme-wrapper .gemeldet-am {
+  padding-bottom: 10px;
+}
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
