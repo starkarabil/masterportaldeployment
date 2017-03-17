@@ -148,12 +148,19 @@ define(function (require) {
                 visibleGroupLayerList = Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, isOutOfRange: false, typ: "GROUP"}),
                 visibleLayerList = _.union(visibleWMSLayerList, visibleGroupLayerList),
                 eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
-                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
+                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel),
+                config,
+                marker;
 
                 this.setCoordinate(evt.coordinate);
 
                 // Abbruch, wenn auf SerchMarker x geklcikt wird.
-                if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
+
+                config = Radio.request("Parser", "getPortalConfig");
+                if (config) {
+                    marker = config.mapMarkerModul;
+                }
+                if (!_.isUndefined(marker) && marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
                     return;
                 }
 
@@ -180,6 +187,7 @@ define(function (require) {
                         }
                     }
                 }, this);
+
                 this.setThemeIndex(0);
                 this.getThemeList().reset(gfiParams);
                 gfiParams = [];

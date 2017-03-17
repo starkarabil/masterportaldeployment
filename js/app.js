@@ -39,10 +39,9 @@ define("app",
     new Map();
     new RestReaderList();
     // Module laden
+    var configJSON = Radio.request("Parser","getPortalConfig");
 
-    var menu = Radio.request("Parser","getPortalConfig").menu;
-
-    if (menu.hide !== true) {
+    if (configJSON && configJSON.menu && configJSON.menu.hide !== true) {
         incModulesLoading();
         require(["modules/menu/menuLoader"], function (MenuLoader) {
             new MenuLoader();
@@ -161,9 +160,9 @@ define("app",
              decModulesLoading();
          });
 
-        var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
 
-        if (simpleLister) {
+
+        if (configJSON && configJSON.simpleLister) {
             incModulesLoading();
             require(["modules/simpleLister/view"], function (SimpleListerView) {
                 new SimpleListerView();
@@ -171,9 +170,7 @@ define("app",
             });
         }
 
-        var mmlFilter = Radio.request("Parser","getPortalConfig").mmlFilter;
-
-        if (mmlFilter) {
+        if (configJSON && configJSON.mmlFilter) {
             incModulesLoading();
             require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
                 if (Radio.request("Util", "isAny")) {
@@ -421,42 +418,45 @@ define("app",
             decModulesLoading();
         });
 
-        var marker = Radio.request("Parser","getPortalConfig").mapMarkerModul;
 
         // Prüfung, ob MapMarker geladen werden soll. In MML disabled.
-        if (_.isUndefined(marker) === true || marker.marker !== "dragMarker") {
-            incModulesLoading();
-            require(["modules/mapMarker/view"], function (MapMarkerView) {
-                new MapMarkerView();
-                decModulesLoading();
-            });
+        if (configJSON && configJSON.mapMarkerModul) {
+            if (_.isUndefined(configJSON.mapMarkerModul) === true || configJSON.mapMarkerModul.marker !== "dragMarker") {
+                incModulesLoading();
+                require(["modules/mapMarker/view"], function (MapMarkerView) {
+                    new MapMarkerView();
+                    decModulesLoading();
+                });
+            }
+            else {
+                incModulesLoading();
+                require(["modules/dragMarker/model", "modules/reverseGeocoder/model"], function (DragMarkerModel, reverseGeocoder) {
+                    new reverseGeocoder();
+                    new DragMarkerModel();
+                    decModulesLoading();
+                });
+            }
         }
-        else {
-            incModulesLoading();
-            require(["modules/dragMarker/model", "modules/reverseGeocoder/model"], function (DragMarkerModel, reverseGeocoder) {
-                new reverseGeocoder();
-                new DragMarkerModel();
-                decModulesLoading();
-            });
-        }
+        searchbar = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"});
+        if (searchbar) {
+            var sbconfig = searchbar[0].attr;
 
-        var sbconfig = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+            if (sbconfig) {
+                incModulesLoading();
+                 require(["modules/searchbar/view"], function (SearchbarView) {
+                    var title = Radio.request("Parser", "getPortalConfig").PortalTitle;
 
-        if (sbconfig) {
-            incModulesLoading();
-             require(["modules/searchbar/view"], function (SearchbarView) {
-                var title = Radio.request("Parser", "getPortalConfig").PortalTitle;
-
-                new SearchbarView(sbconfig);
-                if (title) {
-                    incModulesLoading();
-                     require(["modules/title/view"], function (TitleView) {
-                         new TitleView(title);
-                         decModulesLoading();
-                     });
-                }
-                decModulesLoading();
-            });
+                    new SearchbarView(sbconfig);
+                    if (title) {
+                        incModulesLoading();
+                         require(["modules/title/view"], function (TitleView) {
+                             new TitleView(title);
+                             decModulesLoading();
+                         });
+                    }
+                    decModulesLoading();
+                });
+            }
         }
 
         incModulesLoading();
