@@ -12,15 +12,22 @@ define(function (require) {
             "click": "assistentCall"
         },
         initialize: function () {
+            this.listenTo(this.model, "change:visible", this.render);
             this.render();
         },
         render: function () {
-            var attr = this.model.toJSON();
+            var visible = this.model.getVisible(),
+                attr = this.model.toJSON();
 
-            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            if (visible === true) {
+                $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            }
+            else {
+                this.$el.remove();
+            }
         },
         assistentCall: function () {
-            this.model.baselayerToggle();
+            this.model.getParameterValues();
         }
     });
 
