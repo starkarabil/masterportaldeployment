@@ -12,7 +12,6 @@ define(function (require) {
             "click": "assistentCall"
         },
         initialize: function () {
-            console.log("tt");
             this.render();
         },
         render: function () {
