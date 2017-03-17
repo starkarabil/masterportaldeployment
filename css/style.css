@@ -22,6 +22,7 @@
   /*mml template*/
   /*mml template*/
   /*mml template*/
+  /* MML-Mobil*/
   /***** ToggleButton *****/
   /***** ZoomButtons *****/
   /***** FullScreen *****/
@@ -59,6 +60,9 @@
   /* Bootstrap Popover Klassen */
   /* Desktop GFI */
   /* Desktop Detached */
+  /*
+Knopf zum Nachladen
+*/
 }
 .lgv-container .colorpicker-saturation {
   width: 100px;
@@ -1221,7 +1225,7 @@
     min-width: 300px;
   }
 }
-.lgv-container #searchbarInMap {
+.lgv-container .searchbarInMap {
   position: absolute;
   left: 43px;
   top: 7px;
@@ -1261,7 +1265,7 @@
 .lgv-container #searchInput {
   box-shadow: none;
   font-size: 12px;
-  padding-right: 32.5px;
+  padding-right: 65px;
 }
 .lgv-container #searchForm-mml #searchInput {
   box-shadow: none;
@@ -1412,6 +1416,74 @@
 }
 .lgv-container #searchInputUL .selected #searchInputLi {
   color: #fff;
+}
+.lgv-container #searchForm-mmlMobil {
+  height: 55px;
+  width: 100%;
+  background-color: #4c4c4c;
+}
+.lgv-container #searchForm-mmlMobil .adresseEingeben {
+  background-color: #4c4c4c;
+  line-height: 1.6;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  top: 16.5px;
+  height: 24px;
+  border: none;
+}
+.lgv-container #searchForm-mmlMobil .btn-search > .glyphicon-search {
+  font-size: 14px;
+  color: white;
+}
+.lgv-container #searchForm-mmlMobil .btn-search {
+  width: 55px;
+  height: 55px;
+  border-radius: 3px;
+  border-style: none;
+  background-color: #0f5cad;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.lgv-container .adresseEingeben::-webkit-input-placeholder {
+  opacity: 0.51;
+}
+.lgv-container #searchForm-mmlMobil #searchInput + span {
+  z-index: 3;
+  color: #ffffff;
+  display: none;
+  pointer-events: all;
+  cursor: pointer;
+  background-color: #4c4c4c;
+  top: 16.5px;
+  width: 22px;
+  height: 22px;
+  right: 110px;
+}
+.lgv-container #removeSearchbarIcon {
+  vertical-align: inherit;
+}
+.lgv-container #searchForm-mmlMobil .orientationButtons {
+  margin: 0 0 0 0;
+  float: right;
+  position: relative;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.lgv-container #searchForm-mmlMobil .btn-orientation {
+  height: 55px;
+  right: 55px;
+  position: absolute;
+  z-index: 3;
+  background-color: #4c4c4c;
+  border: none;
+}
+.lgv-container .searchbarInMapMobil {
+  position: absolute;
+  top: 0;
+  z-index: 3;
+}
+.lgv-container #searchForm-mmlMobil .orientationMMLMobil {
+  height: 22px;
+  width: 22px;
 }
 .lgv-container .tooltip-default-circle {
   background: #ffffff;
@@ -2535,6 +2607,7 @@
   padding: 21px 12px 21px 12px;
   color: #999999;
   background-color: #fff;
+  cursor: pointer;
 }
 .lgv-container .simple-lister-button > .glyphicon-triangle-left {
   left: 100%;
@@ -2584,6 +2657,27 @@
   font-family: "HamburgSans";
   font-size: 15px;
   line-height: 1.67;
+  letter-spacing: -0.4px;
+}
+.lgv-container #div-simpleLister-extentList {
+  height: 45px;
+  border-radius: 3px !important;
+  border: solid 1px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  color: white;
+  background-color: #005ca9;
+  margin: 5px 20px 5px 20px;
+}
+.lgv-container #div-simpleLister-extentList:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.lgv-container #div-simpleLister-extentList-text {
+  font-size: 14px;
+  line-height: 3.3;
+  font-family: HamburgSans;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
   letter-spacing: -0.4px;
 }
 /*!
@@ -8149,24 +8243,3 @@ button.lgv-container .close {
     width: 0px;
 }
 
-.lgv-container #div-simpleLister-extentList {
-  height: 45px;
-  border-radius: 3px !important;
-  border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
-  color: white;
-  background-color: #005ca9;
-  margin: 5px 20px 5px 20px;
-}
-.lgv-container #div-simpleLister-extentList:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-.lgv-container #div-simpleLister-extentList-text {
-  font-size: 14px;
-  line-height: 3.3;
-  font-family: HamburgSans;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: -0.4px;
-}

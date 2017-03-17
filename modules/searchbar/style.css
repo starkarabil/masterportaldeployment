@@ -46,7 +46,7 @@
         min-width: 300px;
     }
 }
-#searchbarInMap {
+.searchbarInMap {
     position: absolute;
     left: 43px;
     top: 7px;
@@ -94,7 +94,7 @@
 #searchInput {
     box-shadow: none;
     font-size: 12px;
-    padding-right: 32.5px;
+    padding-right: 65px;
 }
 /*mml template*/
 #searchForm-mml #searchInput {
@@ -270,4 +270,75 @@ li.results:hover {
 }
 #searchInputUL .selected #searchInputLi {
     color: #fff;
+}
+
+/* MML-Mobil*/
+#searchForm-mmlMobil {
+    height: 55px;
+    width: 100%;
+    background-color: #4c4c4c;
+}
+
+#searchForm-mmlMobil .adresseEingeben {
+  background-color: #4c4c4c;
+  line-height: 1.6;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+  top: 16.5px;
+  height: 24px;
+  border: none;
+}
+#searchForm-mmlMobil .btn-search > .glyphicon-search {
+    font-size: 14px;
+    color: white;
+}
+#searchForm-mmlMobil .btn-search {
+    width: 55px;
+    height: 55px;
+    border-radius: 3px;
+    border-style: none;
+    background-color: #0f5cad;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.adresseEingeben::-webkit-input-placeholder {
+    opacity: 0.51;
+}
+#searchForm-mmlMobil #searchInput + span {
+    z-index: 3;
+    color: #ffffff;
+    display: none;
+    pointer-events: all;
+    cursor: pointer;
+    background-color: #4c4c4c;
+    top: 16.5px;
+    width: 22px;
+    height: 22px;
+    right: 110px;
+}
+#removeSearchbarIcon {
+    vertical-align: inherit;
+}
+#searchForm-mmlMobil .orientationButtons {
+    margin: 0 0 0 0;
+    float: right;
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+#searchForm-mmlMobil .btn-orientation {
+    height: 55px;
+    right: 55px;
+    position: absolute;
+    z-index: 3;
+    background-color: #4c4c4c;
+    border: none;
+}
+.searchbarInMapMobil {
+    position: absolute;
+    top: 0;
+    z-index: 3;
+}
+#searchForm-mmlMobil .orientationMMLMobil {
+    height:22px;
+    width:22px;
 }
