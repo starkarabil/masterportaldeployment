@@ -5,8 +5,8 @@ define(function (require) {
 
     MmlAssistantCallerModel = Backbone.Model.extend({
         defaults: {
-            visible: false,
-            assistantURL: ""
+            visible: false, // shows / hides control
+            assistantURL: "" // URL to open
         },
         initialize: function () {
             this.getConfiguration();
@@ -31,10 +31,11 @@ define(function (require) {
             var url = this.getAssitentURL(),
                 center = Radio.request("MapView", "getCenter"),
                 centerString = center.join(),
-                zoomlevel = Radio.request("MapView", "getZoomLevel"),
+                zoomlevel = Radio.request("MapView", "getZoomLevel").toString(),
                 activeBaseLayer = Radio.request("ModelList", "getModelsByAttributes", {isBaseLayer: true, isVisibleInMap: true}),
                 activeBaseLayerString = "";
 
+            // erstellt kommaseparierten String der aktiven Baselayer
             _.each(activeBaseLayer, function (layer) {
                 var name = layer.get("name");
 
