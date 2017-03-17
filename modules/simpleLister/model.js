@@ -37,6 +37,7 @@ define([
             var featuresPerPage = this.get("featuresPerPage"),
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
+
             this.set("totalFeatures", totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
@@ -70,7 +71,7 @@ define([
             this.trigger("render");
         },
         triggerGFI: function (id) {
-            var feature = _.findWhere(this.getFeaturesInExtent(),{id: id});
+            var feature = _.find(this.getFeaturesInExtent(),{id: id});
 
             Radio.trigger("GFI", "createGFI", feature);
         },
