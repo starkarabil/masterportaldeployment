@@ -147,6 +147,13 @@ define("app",
                  decModulesLoading();
              });
         }
+        if (Config.mmlMobileHeader) {
+            incModulesLoading();
+            require(["modules/mmlMobileHeader/view"], function (mmlMobileHeaderView) {
+                new mmlMobileHeaderView();
+                decModulesLoading();
+            });
+        }
 
         incModulesLoading();
          require(["modules/window/view"], function (WindowView) {
@@ -161,6 +168,22 @@ define("app",
             require(["modules/simpleLister/view"], function (SimpleListerView) {
                 new SimpleListerView();
                 decModulesLoading();
+            });
+        }
+
+        var mmlFilter = Radio.request("Parser","getPortalConfig").mmlFilter;
+
+        if (mmlFilter) {
+            incModulesLoading();
+            require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
+                if (Radio.request("Util", "isAny")) {
+                    new MobileMMLFilterView();
+                    decModulesLoading();
+                }
+                else {
+                    new MMLFilterView();
+                    decModulesLoading();
+                }
             });
         }
 

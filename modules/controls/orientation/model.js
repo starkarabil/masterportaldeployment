@@ -66,8 +66,10 @@ define([
         untrack: function () {
             var geolocation = this.get("geolocation");
 
-            geolocation.un ("change", this.positioning, this);
-            geolocation.un ("error", this.onError, this);
+            if (geolocation !== null) {
+                geolocation.un ("change", this.positioning, this);
+                geolocation.un ("error", this.onError, this);
+            }
             this.set("firstGeolocation", true);
             this.set("tracking", false);
             this.removeOverlay();
@@ -265,6 +267,7 @@ define([
         */
         stopTrack: function () {
             this.set("tracking", false);
+            this.untrack();
         }
     });
 

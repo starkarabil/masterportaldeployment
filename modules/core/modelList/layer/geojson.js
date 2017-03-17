@@ -13,11 +13,53 @@ define(function (require) {
          * @return {[type]} [description]
          */
         createLayerSource: function () {
-            this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.GeoJSON(),
+            if (_.isUndefined(this.getFeatures())) {
+                this.setLayerSource(new ol.source.Vector({
+                    format: new ol.format.GeoJSON()
+                }));
+            }
+            else {
+                this.setLayerSource(new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: this.get("url"),
+                    features: this.getFeatures()
+                }));
+            }
+        },
+        /**
+         * Lädt die JSON-Datei und startet parse
+         */
+        updateData: function () {
+            this.fetch({
                 url: this.get("url"),
-                features: this.getFeatures()
-            }));
+                cache: false,
+                error: function () {
+                    Radio.trigger("Alert", "alert", {text: "<strong>Layerdaten (JSON) konnten nicht geladen werden!</strong>", kategorie: "alert-danger"});
+                }
+            });
+        },
+        /**
+         * konvertiert die Daten in ol.features
+         */
+        parse: function (data) {
+            var vectorSource = new ol.source.Vector({
+                    format: new ol.format.GeoJSON()
+                });
+
+            this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
+        },
+
+        updateLayerSourceData: function (features) {
+            var count = 0;
+
+            features.forEach(function (feature) {
+                if (!feature.getId()) {
+                    feature.setId(count);
+                    count++;
+                }
+            });
+            this.getLayerSource().clear();
+            this.getLayerSource().addFeatures(features);
         },
 
         /**
@@ -48,6 +90,10 @@ define(function (require) {
                 id: this.getId(),
                 mouseHoverField: this.get("mouseHoverField")
             }));
+
+            if (_.isUndefined(this.get("url")) === false) {
+                this.updateData();
+            }
         },
 
         /**

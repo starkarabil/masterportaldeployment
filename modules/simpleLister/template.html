@@ -1,4 +1,4 @@
-<div class="simple-lister-button" title="Anliegen anzeigen">
+<div class="simple-lister-button hidden-xs" title="Anliegen anzeigen">
     <span class="glyphicon <%= glyphicon %>"></span>
 </div>
 <div id="simple-lister-table" class="simple-lister-table" style="display: <%= display %>">
@@ -16,12 +16,12 @@
         <%}%>
         <div class="entries">
             <%_.each(featuresInExtent, function(feature){ %>
-                <div class="entry">
+                <div id="<%= feature.id%>" class="entry">
                     <div class="address">
                         <%= feature.properties.str %> <%= feature.properties.hsnr %>
                     </div>
                      <div class="category">
-                        <%= feature.properties.kat %>
+                        <%= feature.properties.kat_text %>
                     </div>
                     <div class="description">
                         <%= feature.properties.beschr.length > 50? feature.properties.beschr.substring(0, 50) + "...": feature.properties.beschr%>
