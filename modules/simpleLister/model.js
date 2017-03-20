@@ -13,7 +13,8 @@ define([
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
             totalFeatures: 0, // Anzahl aller Features im Extent
             glyphicon: "glyphicon-triangle-right",
-            display: "none"
+            display: "none",
+            sortProperty: "ende"
         },
 
         initialize: function () {
@@ -26,6 +27,7 @@ define([
             this.setLayerId(simpleLister.layerId);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
             this.setFeaturesPerPage(simpleLister.featuresPerPage);
+            this.setSortProperty(simpleLister.sortProperty);
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
@@ -46,6 +48,48 @@ define([
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte anzupassen.
+         */
+        triggerMouseHoverById: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "hoverByCoordinates", coord);
+            }
+        },
+
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste zuletzt gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte zurück zu setzen.
+         */
+        triggerMouseHoverLeave: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "resetStyle", coord);
+            }
+        },
+
+        /**
+         * Gibt die Koordinate zu der Feature Id zurück.
+         */
+        getFeatureCoordById: function (id) {
+            var features = this.getFeaturesInExtent(),
+                coord,
+                feature;
+
+                feature = _.find(features, function (feat) {
+                    return feat.id.toString() === id;
+                }),
+                coord = feature ? feature.geometry.coordinates : null;
+
+                return coord;
+        },
+
+        /*
+         * GETTTER / SETTER - Methoden
+         */
+
         // getter for featuresInExtent
         getFeaturesInExtent: function () {
             return this.get("featuresInExtent");
@@ -53,16 +97,21 @@ define([
 
         // setter for featuresInExtent
         setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
-            var totalFeatures = jsonFeaturesInExtent.length,
+            var sortProperty = this.getSortProperty(),
+                totalFeatures = jsonFeaturesInExtent.length,
                 number = totalFeatures < number ? totalFeatures : number,
-                jsonFeatures = _.last(jsonFeaturesInExtent, number),
-                features = [];
+                featuresInExtent = _.map(jsonFeaturesInExtent, function (feat) {
+                    return JSON.parse(feat);
+                }),
+                featuresSorted = _.sortBy(featuresInExtent, function (feat) {
+                    if (feat.properties && _.has(feat.properties, sortProperty) === true) {
+                        return _.values(_.pick(feat.properties, sortProperty))[0];
+                    }
+                }),
+                featuresSelected = _.last(featuresSorted, number), // aktuellste Features in umgekehrter Reihenfolge
+                featuresReversed = featuresSelected.reverse();
 
-            _.each(jsonFeatures, function (jsonFeature) {
-                features.push(JSON.parse(jsonFeature));
-            });
-
-            this.set("featuresInExtent", features);
+            this.set("featuresInExtent", featuresReversed);
             this.set("totalFeaturesInPage", number);
             this.trigger("render");
         },
@@ -111,42 +160,13 @@ define([
             return this.get("featuresPerPage");
         },
 
-        /**
-         * Holt sich die Coordinate zur Id des in der Liste gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte anzupassen.
-         */
-        triggerMouseHoverById: function (id) {
-            var coord = this.getFeatureCoordById(id);
-
-            if (coord) {
-                Radio.trigger("MouseHover", "hoverByCoordinates", coord);
-            }
+        // getter for SortProperty
+        getSortProperty: function () {
+            return this.get("sortProperty");
         },
-
-        /**
-         * Holt sich die Coordinate zur Id des in der Liste zuletzt gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte zurück zu setzen.
-         */
-        triggerMouseHoverLeave: function (id) {
-            var coord = this.getFeatureCoordById(id);
-
-            if (coord) {
-                Radio.trigger("MouseHover", "resetStyle", coord);
-            }
-        },
-
-        /**
-         * Gibt die Koordinate zu der Feature Id zurück.
-         */
-        getFeatureCoordById: function (id) {
-            var features = this.getFeaturesInExtent(),
-                coord,
-                feature;
-
-                feature = _.find(features, function (feat) {
-                    return feat.id.toString() === id;
-                }),
-                coord = feature ? feature.geometry.coordinates : null;
-
-                return coord;
+        // setter for SortProperty
+        setSortProperty: function (value) {
+            this.set("sortProperty", value);
         }
     });
 
