@@ -33,7 +33,7 @@ define([
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
 
-            this.set("totalFeatures", totalFeatures);
+            this.setTotalFeatures(totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
         },
 
@@ -109,26 +109,13 @@ define([
                 featuresReversed = featuresSelected.reverse();
 
             this.set("featuresInExtent", featuresReversed);
+            this.unset("totalFeaturesInPage", {silent: true});
             this.set("totalFeaturesInPage", number);
-            this.trigger("render");
         },
 
-        // getter for glyphicon
-        getGlyphicon: function () {
-            return this.get("glyphicon");
-        },
-        // setter for glyphicon
-        setGlyphicon: function (value) {
-            this.set("glyphicon", value);
-        },
-
-        // getter for display
-        getDisplay: function () {
-            return this.get("display");
-        },
-        // setter for display
-        setDisplay: function (value) {
-            this.set("display", value);
+        // getter for totalFeaturesInPage
+        getTotalFeaturesInPage: function () {
+            return this.get("totalFeaturesInPage");
         },
 
         // getter for layerId
@@ -164,6 +151,15 @@ define([
         // setter for SortProperty
         setSortProperty: function (value) {
             this.set("sortProperty", value);
+        },
+
+        // getter for totalFeatures
+        getTotalFeatures: function () {
+            return this.get("totalFeatures");
+        },
+        // setter for totalFeatures
+        setTotalFeatures: function (value) {
+            this.set("totalFeatures", value);
         }
     });
 
