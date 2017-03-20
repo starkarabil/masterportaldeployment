@@ -80,7 +80,8 @@ define([
             this.set("searchString", searchString);
             if (searchString.length >= this.get("minChars")) {
                 if (this.get("searchStreets") === true) {
-                    searchString = searchString.replace(/[()]/g, '\\$&');
+                    searchString = searchString.replace(/[()]/g, "\\$&");
+                    Radio.trigger("Searchbar", "setSingelStreeName", "");
                     this.set("searchStringRegExp", new RegExp(searchString.replace(/ /g, ""), "i")); // Erst join dann als regulärer Ausdruck
                     this.set("onlyOneStreetName", "");
                     this.setTypeOfRequest("searchStreets");
@@ -178,26 +179,29 @@ define([
             var hits = $("wfs\\:member,member", data),
                 coordinates,
                 hitNames = [],
-                hitName;
+                hitName,
+                hitObject;
 
             _.each(hits, function (hit) {
                 coordinates = $(hit).find("gml\\:posList,posList")[0].textContent;
                 hitName = $(hit).find("dog\\:strassenname, strassenname")[0].textContent;
                 hitNames.push(hitName);
                 // "Hitlist-Objekte"
-                EventBus.trigger("searchbar:pushHits", "hitList", {
+                hitObject = {
                     name: hitName,
                     type: "Straße",
                     coordinate: coordinates,
                     glyphicon: "glyphicon-road",
                     id: hitName.replace(/ /g, "") + "Straße"
-                });
+                };
+                EventBus.trigger("searchbar:pushHits", "hitList", hitObject);
             }, this);
             if (this.get("searchHouseNumbers") === true) {
                 if (hits.length === 1) {
                     this.set("prevSearchString", hitName.replace(/\ /g, ""));
                     this.set("onlyOneStreetName", hitName);
                     this.setTypeOfRequest("searchHouseNumbers1");
+                    Radio.trigger("Searchbar", "setSingelStreeName", hitObject);
                     this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(hitName), this.getHouseNumbers, false, this.getTypeOfRequest());
                 }
                 else if (hits.length === 0) {

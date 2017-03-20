@@ -11,7 +11,8 @@ define([
             quickHelp: false,
             searchString: "", // der aktuelle String in der Suchmaske
             hitList: [],
-            minChars: ""
+            minChars: "",
+            singleStreetName: ""
             // isHitListReady: true
         },
         /**
@@ -23,7 +24,8 @@ define([
             channel.on({
                 "pushHits": this.pushHits,
                 "setHitList": this.setHitList,
-                "createRecommendedList": this.createRecommendedList
+                "createRecommendedList": this.createRecommendedList,
+                "setSingelStreeName": this.setSingleStreetName
             }, this);
 
             if (Config.quickHelp) {
@@ -89,7 +91,7 @@ define([
                 singleTypes,
                 splitNameArray;
 
-            _.each(this.get("hitList"), function (hit) {
+            _.each(this.getHitList(), function (hit) {
                 splitNameArray = hit.name.split(/(\d+)/).filter(Boolean);
 
                 if (splitNameArray[2] === undefined) {
@@ -105,6 +107,9 @@ define([
                 hitListNew.push(hit);
             });
             sortedHitList = _.chain(hitListNew).sortBy("secondString").sortBy("secondInt").sortBy("firstInt").sortBy("firstString").value();
+            if (this.getSingleStreetName() !== "") {
+                sortedHitList.unshift(this.getSingleStreetName());
+            }
             this.set("hitList", sortedHitList);
             if (sortedHitList.length > max) {
                 singleTypes = _.reject(sortedHitList, function (hit) {
@@ -138,8 +143,23 @@ define([
         * Holt die Hitlist
         */
         getHitList: function () {
-            this.get("hitList");
+            return this.get("hitList");
+        },
+
+        /**
+        * Setzt die HitList
+        */
+        setSingleStreetName: function (value) {
+            this.set("singleStreetName", value);
+        },
+
+        /**
+        * Holt die Hitlist
+        */
+        getSingleStreetName: function () {
+            return this.get("singleStreetName");
         }
+
     });
 
     return new SearchbarModel();
