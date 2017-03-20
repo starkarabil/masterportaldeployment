@@ -21,7 +21,8 @@ define([
 
         initialize: function () {
             this.listenTo(this.model, {
-                "render": this.render
+                "render": this.render,
+                "show": this.show
             });
 
             this.render();
@@ -37,26 +38,31 @@ define([
             this.model.appendFeatures();
         },
 
+        show: function () {
+            this.model.setGlyphicon("glyphicon-triangle-left");
+            this.model.setDisplay("block");
+            this.$el.css({width: "41%"});
+            $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+            this.render();
+        },
+
+        hide: function () {
+            this.model.setGlyphicon("glyphicon-triangle-right");
+            this.model.setDisplay("none");
+            this.$el.css({width: "0%"});
+            $("#searchbarInMap").css({left: "43px"});
+            this.render();
+        },
+
         toggleSimpleList: function () {
             var glyphicon = this.model.getGlyphicon();
 
             if (glyphicon === "glyphicon-triangle-right") {
-                this.getLayerFeaturesInExtent();
-                this.model.setGlyphicon("glyphicon-triangle-left");
-                this.model.setDisplay("block");
-                this.$el.css({width: "41%"});
-                $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+                this.show();
             }
             else {
-                this.model.setGlyphicon("glyphicon-triangle-right");
-                this.model.setDisplay("none");
-                this.$el.css({width: "0%"});
-                $("#searchbarInMap").css({left: "43px"});
+                this.hide();
             }
-            this.render();
-        },
-        getLayerFeaturesInExtent: function () {
-            this.model.getLayerFeaturesInExtent();
         },
 
         /**

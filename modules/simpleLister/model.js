@@ -17,6 +17,17 @@ define([
         },
 
         initialize: function () {
+            var channel = Radio.channel("SimpleLister");
+
+            channel.on({
+                "show": function () {
+                    this.trigger("show");
+                },
+                "render": function () {
+                    this.trigger("render");
+                }
+            }, this);
+
             Radio.trigger("Map", "registerListener", "moveend", this.getLayerFeaturesInExtent, this);
             this.getParams();
         },
@@ -29,13 +40,15 @@ define([
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
-        getLayerFeaturesInExtent: function () {
-            var featuresPerPage = this.get("featuresPerPage"),
+        getLayerFeaturesInExtent: function (evt) {
+            // Soll nur ausgeführt werden, wenn nicht gerade das GFI sichtbar ist
+            if (Radio.request("GFI", "getIsVisible") === false) {
+                var featuresPerPage = this.get("featuresPerPage"),
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
-
-            this.set("totalFeatures", totalFeatures);
-            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+                this.set("totalFeatures", totalFeatures);
+                this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+            }
         },
 
         // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
