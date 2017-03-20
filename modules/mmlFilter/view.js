@@ -154,10 +154,24 @@ define(function (require) {
                 }
             }
         },
-        resetKategorien: function () {
-            $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
-                $(kategorie).prop("checked", false);
-            });
+        resetKategorien: function (evt) {
+            var status = $("#div-mmlFilter-reset").attr("value");
+
+            if (status === "deaktivieren") {
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", false);
+                });
+                $("#div-mmlFilter-reset-text").html("Alle Kategorien aktivieren");
+                $("#div-mmlFilter-reset").attr("value","aktivieren");
+            }
+            else {
+                $("#div-mmlFilter-reset").attr("value", "deaktivieren");
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", true);
+                });
+                $("#div-mmlFilter-reset-text").html("Alle Kategorien deaktivieren");
+            }
+
         },
 
         executeFilter: function () {
@@ -165,35 +179,48 @@ define(function (require) {
                 selectedStatus = [],
                 selectedTimeId = $(".div-mmlFilter-filter-time").children(":checked")[0].id,
                 date = new Date(),
-                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
-                timeDiff = daysDiff * 24 * 3600 * 1000,
-                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)) : new Date($("#fromDate").val()),
-                toDate = selectedTimeId !== "userdefined" ? date : new Date($("#toDate").val());
+                daysDiff,
+                timeDiff,
+                fromDate,
+                toDate;
 
-            if (fromDate.getTime() <= toDate.getTime()) {
-                $("#fromDateDiv").removeClass("has-error");
-                $("#toDateDiv").removeClass("has-error");
-                $("#toDateDiv").next().remove();
-                $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
-                    selectedKat.push(kategorie.id);
-                });
+            $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
+                selectedKat.push(kategorie.id);
+            });
 
-                $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
-                    selectedStatus.push(status.id);
-                });
-                this.model.setSelectedKat(selectedKat);
-                this.model.setSelectedStatus(selectedStatus);
-                this.model.setFromDate(fromDate);
-                this.model.setToDate(toDate);
-                this.model.executeFilter();
+            $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
+                selectedStatus.push(status.id);
+            });
+
+            if (selectedTimeId !== "ignore-time") {
+
+                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0;
+                timeDiff = daysDiff * 24 * 3600 * 1000;
+                fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
+                toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
+
+                if (fromDate.getTime() <= toDate.getTime()) {
+                    $("#fromDateDiv").removeClass("has-error");
+                    $("#toDateDiv").removeClass("has-error");
+                    $("#toDateDiv").next().remove();
+                    this.model.setSelectedKat(selectedKat);
+                    this.model.setSelectedStatus(selectedStatus);
+                    this.model.setFromDate(fromDate);
+                    this.model.setToDate(toDate);
+                    this.model.executeFilter(false);
+                }
+                else {
+                    $("#toDateDiv").next().remove();
+                    $("#fromDateDiv").addClass("has-error");
+                    $("#toDateDiv").addClass("has-error");
+                    $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
+                }
             }
             else {
-                $("#toDateDiv").next().remove();
-                $("#fromDateDiv").addClass("has-error");
-                $("#toDateDiv").addClass("has-error");
-                $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.executeFilter(true);
             }
-
         }
     });
 

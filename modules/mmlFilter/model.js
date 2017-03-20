@@ -42,10 +42,12 @@ define([
             });
             this.setFeatures(prepFeatures);
         },
-        executeFilter: function () {
+        executeFilter: function (ignoreTime) {
             this.filterByKat();
             this.filterByStatus();
-            this.filterByDate();
+            if (ignoreTime === false) {
+                this.filterByDate();
+            }
             this.showFilteredFeatures();
         },
         filterByKat: function () {
