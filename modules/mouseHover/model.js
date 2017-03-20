@@ -92,7 +92,7 @@ define([
                 filter: function (feature, layer) {
                     return context.hasHoverInfo(feature, layer);
                 },
-               layers: function (ollayer) {
+                layers: function (ollayer) {
                     return context.isHoverLayer(ollayer);
                 },
                 hitTolerance: 2,
@@ -119,7 +119,6 @@ define([
             else {
                 hasHoverValue = olfeature.get(hoverAttribute) !== "" ? true : false;
             }
-
             return hasHoverValue;
         },
 
@@ -212,7 +211,7 @@ define([
          * Setzt den Style eines einzelnen Features/ClusterFeatures auf den hoverStyle.
          */
         styleSelFunc: function (feature, zoom, evt) {
-        var hoverStyle;
+            var hoverStyle;
 
             if (feature.get("features").length > 1) {
                 hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
@@ -483,7 +482,6 @@ define([
             if (!_.isEmpty(this.getHoverLayer())) {
                 this.getHoverLayer().getSource().getSource().refresh();
             }
-
         },
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
