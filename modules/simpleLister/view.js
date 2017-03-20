@@ -21,7 +21,8 @@ define([
 
         initialize: function () {
             this.listenTo(this.model, {
-                "change:totalFeaturesInPage": this.changedTotalFeaturesInPage
+                "newFeaturesInExtent": this.newFeaturesInExtent,
+                "appendFeaturesInExtent": this.appendFeaturesInExtent
             });
 
             this.render();
@@ -56,40 +57,38 @@ define([
             $("#searchbarInMap").css({left: "43px"});
         },
 
-        changedTotalFeaturesInPage: function () {
-            var totalFeaturesInPage = this.model.getTotalFeaturesInPage(), // neue Anzahl an Features
-                features = this.model.getFeaturesInExtent(),
-                totalOld = $(".entry").length; // aktuelle Anzahl
+        newFeaturesInExtent: function () {
+            var features = this.model.getFeaturesInExtent();
 
-            if (totalOld === 0) {
-                // erstmalige Füllung: Alle Features eintragen
-                _.each(features, function (feature) {
-                    this.addEntry(feature);
-                }, this);
-            }
-            else if (totalFeaturesInPage > totalOld) {
-                // Features nachgeladen: nur neue Features hinzufügen
-                var lastEntry = $(".entry").last()[0],
-                    lastId = lastEntry.id,
-                    indexLastId = _.findIndex(features, function (feat) {
-                        var featId = feat.id.toString();
+            $(".entries").empty();
 
-                        return featId === lastId;
-                    }),
-                    restFeatures = indexLastId !== -1 ? _.rest(features, indexLastId + 1) : null;
+            _.each(features, function (feature) {
+                this.addEntry(feature);
+            }, this);
 
-                _.each(restFeatures, function (feature) {
-                    this.addEntry(feature);
-                }, this);
-            }
-            else {
-                // verschobener Ausschnitt: Liste leeren und neu füllen
-                $(".entries").empty();
-                // alle Features hinzufügen
-                _.each(features, function (feature) {
-                    this.addEntry(feature);
-                }, this);
-            }
+            // toggle ggf. AppendFeatures Button
+            this.updateAppendFeaturesButton();
+
+            // update Heading
+            this.updateListHeading();
+        },
+
+        appendFeaturesInExtent: function () {
+            var features = this.model.getFeaturesInExtent();
+
+            // Features nachgeladen: nur neue Features hinzufügen
+            var lastEntry = $(".entry").last()[0],
+                lastId = lastEntry.id,
+                indexLastId = _.findIndex(features, function (feat) {
+                    var featId = feat.id.toString();
+
+                    return featId === lastId;
+                }),
+                restFeatures = indexLastId !== -1 ? _.rest(features, indexLastId + 1) : null;
+
+            _.each(restFeatures, function (feature) {
+                this.addEntry(feature);
+            }, this);
 
             // toggle ggf. AppendFeatures Button
             this.updateAppendFeaturesButton();

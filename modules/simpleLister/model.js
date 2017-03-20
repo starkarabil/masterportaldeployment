@@ -33,6 +33,7 @@ define([
 
             this.setTotalFeatures(totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+            this.trigger("newFeaturesInExtent");
         },
 
         // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
@@ -41,6 +42,7 @@ define([
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
 
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+            this.trigger("appendFeaturesInExtent");
         },
 
         /**
@@ -107,7 +109,6 @@ define([
                 featuresReversed = featuresSelected.reverse();
 
             this.set("featuresInExtent", featuresReversed);
-            this.unset("totalFeaturesInPage", {silent: true});
             this.set("totalFeaturesInPage", number);
         },
 
