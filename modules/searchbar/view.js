@@ -221,6 +221,11 @@ define(function (require) {
                 this.renderWhere();
             }
             this.$el.html(this.template(attr));
+            if (window.location.protocol !== "https:") {
+                $("#mmlOrientaiton").remove();
+                $("#geolocation_marker").remove();
+                $("#mmlMobilRemove").css({"right": "70px"});
+            }
             this.focusOnEnd($("#searchInput"));
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");

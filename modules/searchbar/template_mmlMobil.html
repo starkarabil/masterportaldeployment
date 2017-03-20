@@ -2,16 +2,14 @@
 <div id="searchForm-mmlMobil" class="form-group visible-xs" role="search">
     <div  class="input-group has-feedback">
         <input id="searchInput" class="form-control adresseEingeben band" type="text" name="text" placeholder="<%= placeholder %>" value="<%= searchString %>" autocomplete="off">
-        <span class="form-control-feedback mmlMobilRemove">
+        <span id = "mmlMobilRemove" class="form-control-feedback mmlMobilRemove">
             <img id="removeSearchbarIcon" class="mmlMobilRemove" src= "<%= Radio.request('Util', 'getImgPath')+'removeSearchbar.svg' %>"  />
         </span>
         <div id = "input-group-btn-Mobil" class="input-group-btn">
-            <% if (window.location.protocol === "https:") { %>
             <span id="geolocation_marker" class="glyphicon glyphicon-map-marker geolocation_marker" />
             <button id="mmlOrientaiton" class="btn btn-default btn-orientation" type="button">
                 <img class="orientationMMLMobil" src="<%= Radio.request('Util', 'getImgPath') + 'orientation_mml.svg' %>" />
             </button>
-            <% } %>
             <button class="btn btn-default btn-search" type="button" title="Suchen">
                 <span class="glyphicon glyphicon-search"></span>
             </button>
