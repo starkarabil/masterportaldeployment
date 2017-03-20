@@ -5,9 +5,9 @@ define(function (require) {
         mmlThemeModel;
 
     mmlThemeModel = Theme.extend({
-        defaults: {
+        defaults: _.extend({}, Theme.prototype.defaults, {
             startTime: ""
-        },
+        }),
 
         initialize: function () {
             this.listenTo(this, {
