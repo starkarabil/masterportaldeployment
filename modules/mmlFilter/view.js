@@ -52,7 +52,7 @@ define(function (require) {
         },
 
         toggleTriangleGlyphicon: function (evt) {
-            var glyphiconDom = $(evt.target).parent().find(".glyphicon");
+            var glyphiconDom = $(evt.target).parent().find(".mml-triangle-glyph");
 
             if (evt.type === "show") {
                 glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
@@ -99,6 +99,7 @@ define(function (require) {
         btnFromDateClicked: function () {
             var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
 
+            $("#toDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#fromDateDiv .ui-datepicker").hide();
@@ -127,6 +128,7 @@ define(function (require) {
         btnToDateClicked: function () {
             var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
 
+            $("#fromDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#toDateDiv .ui-datepicker").hide();
@@ -168,18 +170,30 @@ define(function (require) {
                 fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)) : new Date($("#fromDate").val()),
                 toDate = selectedTimeId !== "userdefined" ? date : new Date($("#toDate").val());
 
-            $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
-                selectedKat.push(kategorie.id);
-            });
+            if (fromDate.getTime() <= toDate.getTime()) {
+                $("#fromDateDiv").removeClass("has-error");
+                $("#toDateDiv").removeClass("has-error");
+                $("#toDateDiv").next().remove();
+                $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
+                    selectedKat.push(kategorie.id);
+                });
 
-            $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
-                selectedStatus.push(status.id);
-            });
-            this.model.setSelectedKat(selectedKat);
-            this.model.setSelectedStatus(selectedStatus);
-            this.model.setFromDate(fromDate);
-            this.model.setToDate(toDate);
-            this.model.executeFilter();
+                $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
+                    selectedStatus.push(status.id);
+                });
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter();
+            }
+            else {
+                $("#toDateDiv").next().remove();
+                $("#fromDateDiv").addClass("has-error");
+                $("#toDateDiv").addClass("has-error");
+                $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
+            }
+
         }
     });
 
