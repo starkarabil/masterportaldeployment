@@ -1,10 +1,7 @@
 define([
-    "openlayers"
-
 ], function () {
 
-    var ol = require("openlayers"),
-        SimpleListerModel;
+    var SimpleListerModel;
 
     SimpleListerModel = Backbone.Model.extend({
         defaults: {
