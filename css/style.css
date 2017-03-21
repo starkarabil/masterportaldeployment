@@ -103,6 +103,7 @@
   /* Bootstrap Popover Klassen */
   /* Desktop GFI */
   /* Desktop Detached */
+  /* Desktop SimpleLister */
   /*
 Knopf zum Nachladen
 */
@@ -3073,7 +3074,6 @@ Hilfsklassen
 }
 .lgv-container #searchForm-mmlMobil {
   height: 55px;
-  width: 100%;
   background-color: #4c4c4c;
 }
 .lgv-container #searchForm-mmlMobil .adresseEingeben {
@@ -3134,6 +3134,7 @@ Hilfsklassen
   position: absolute;
   top: 0;
   z-index: 3;
+  width: 100%;
 }
 .lgv-container #searchForm-mmlMobil .orientationMMLMobil {
   height: 22px;
@@ -4151,6 +4152,23 @@ Hilfsklassen
 .lgv-container .gfi-table-hover-link > tbody > tr:hover {
   background-color: #337ab7;
   color: #fff;
+  cursor: pointer;
+}
+.lgv-container #simple-lister img {
+  /*padding: 26px 12px;*/
+}
+.lgv-container #simple-lister img:hover {
+  /*cursor: pointer;*/
+}
+.lgv-container #simple-lister span {
+  font-size: 18px;
+  letter-spacing: -0.4px;
+  color: #003063;
+}
+.lgv-container #simple-lister p {
+  padding: 22px 12px;
+}
+.lgv-container #simple-lister p:first-child:hover {
   cursor: pointer;
 }
 .lgv-container #gfi-mobile {

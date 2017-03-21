@@ -22,7 +22,9 @@ define([
         initialize: function () {
             this.listenTo(this.model, {
                 "newFeaturesInExtent": this.newFeaturesInExtent,
-                "appendFeaturesInExtent": this.appendFeaturesInExtent
+                "appendFeaturesInExtent": this.appendFeaturesInExtent,
+                "render": this.render,
+                "show": this.show
             });
 
             this.render();
@@ -38,8 +40,8 @@ define([
             this.model.appendFeatures();
         },
 
-        show: function (evt) {
-            var glyphiconDom = $(evt.target);
+        show: function () {
+            var glyphiconDom = $(".simple-lister-button > span");
 
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
@@ -48,8 +50,8 @@ define([
             this.model.getLayerFeaturesInExtent();
         },
 
-        hide: function (evt) {
-            var glyphiconDom = $(evt.target);
+        hide: function () {
+            var glyphiconDom = $(".simple-lister-button > span");
 
             glyphiconDom.removeClass("glyphicon-triangle-left").addClass("glyphicon-triangle-right");
             $("#simple-lister-table").hide();
@@ -137,10 +139,10 @@ define([
             var glyphiconDom = $(evt.target);
 
             if (glyphiconDom.hasClass("glyphicon-triangle-right") === true) {
-                this.show(evt);
+                this.show();
             }
             else {
-                this.hide(evt);
+                this.hide();
             }
         },
 
