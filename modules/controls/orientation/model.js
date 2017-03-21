@@ -1,11 +1,9 @@
 define([
-        "eventbus",
-
+    "backbone.radio",
     "openlayers",
     "proj4",
-    "config",
-
-], function (EventBus, ol, proj4, Config) {
+    "config"
+], function (Radio, ol, proj4, Config) {
 
     var OrientationModel = Backbone.Model.extend({
         defaults: {
@@ -19,10 +17,16 @@ define([
             tracking: false, // Flag, ob derzeit getrackt wird.
             geolocation: null, // ol.geolocation wird bei erstmaliger Nutzung initiiert.
             position: "",
-            isGeolocationDenied: false
+            isGeolocationDenied: false,
+            markerIcon: "geolocation_marker"
         },
         initialize: function () {
-            this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr);
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.zoomMode) {
+              this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.zoomMode);
+            }
+            else {
+              this.setZoomMode(Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr);
+            }
             if (_.isUndefined(Radio.request("Parser", "getItemByAttributes", {id: "poi"})) === false) {
                 this.setIsPoiOn(Radio.request("Parser", "getItemByAttributes", {id: "poi"}).attr);
             }
@@ -30,13 +34,16 @@ define([
                 "updateVisibleInMapList": this.checkWFS
             });
 
-            var channel = Radio.channel("geolocation");
+            var channel = Radio.channel("Geolocation");
 
             channel.on({
                 "removeOverlay": this.removeOverlay,
                 "getPOI": this.getPOI,
-                "sendPosition": this.sendPosition
+                "sendPosition": this.sendPosition,
+                "stopTrack": this.stopTrack
             }, this);
+
+            this.setMarkerIcon();
         },
         /*
         * Triggert die Standpunktkoordinate auf Radio
@@ -44,13 +51,13 @@ define([
         sendPosition: function () {
             if (this.get("tracking") === false) {
                 this.listenToOnce(this, "change:position", function () {
-                    Radio.trigger("geolocation", "position", this.get("position"));
+                    Radio.trigger("Geolocation", "position", this.get("position"));
                     this.untrack();
                 });
                 this.track();
             }
             else {
-                Radio.trigger("geolocation", "position", this.get("position"));
+                Radio.trigger("Geolocation", "position", this.get("position"));
             }
         },
         removeOverlay: function () {
@@ -59,8 +66,10 @@ define([
         untrack: function () {
             var geolocation = this.get("geolocation");
 
-            geolocation.un ("change", this.positioning, this);
-            geolocation.un ("error", this.onError, this);
+            if (geolocation !== null) {
+                geolocation.un ("change", this.positioning, this);
+                geolocation.un ("error", this.onError, this);
+            }
             this.set("firstGeolocation", true);
             this.set("tracking", false);
             this.removeOverlay();
@@ -87,10 +96,15 @@ define([
             }
         },
         positionMarker: function (position) {
-            try {
-                this.get("marker").setPosition(position);
+            if (this.getMarkerIcon() !== "geolocation_marker") {
+                Radio.trigger("DragMarker", "setPosition", position);
             }
-            catch (e) {
+            else {
+                try {
+                    this.get("marker").setPosition(position);
+                }
+                catch (e) {
+                }
             }
         },
         zoomAndCenter: function (position) {
@@ -184,7 +198,7 @@ define([
                 _.each(visibleWFSLayers, function (layer) {
                     if (layer.has("layerSource") === true) {
                         layer.get("layer").getSource().forEachFeatureInExtent(this.get("circleExtent"), function (feature) {
-                            EventBus.trigger("setModel", feature, this.get("distance"), this.get("newCenter"), layer);
+                            Radio.trigger("POICollection", "setModel", feature, this.get("distance"), this.get("newCenter"), layer);
                         }, this);
                     }
                 }, this);
@@ -214,6 +228,46 @@ define([
 
         getIsGeolocationDenied: function () {
           return this.get("isGeolocationDenied");
+        },
+
+        setOrientationMarkerIcon: function () {
+            if (this.get("markerIcon") !== "geolocation_marker") {
+                this.removeOverlay();
+                $("#geolocation_marker").hide();
+            }
+            else {
+                this.get("marker").setElement(document.getElementById("geolocation_marker"));
+            }
+        },
+
+        setMarkerIcon: function () {
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.markerIcon === "dragMarker") {
+                this.set("markerIcon", "dragMarker");
+            }
+        },
+
+        getMarkerIcon: function () {
+            return this.get("markerIcon");
+        },
+
+        /**
+        * Fügt der Orientation eine Klasse über die config.js hinzu, für mml genutzt um Orientation nur Mobil anzuzeigen
+        */
+        addGeolocationClass: function () {
+            var className;
+
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.addClass) {
+                className = Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.addClass;
+                $("#orientation").addClass(className);
+            }
+        },
+
+        /**
+        * Setzt den Parameter tracking auf false für mml mobil, damit die Lokalisierung bei jedem klick auf den Button funktiniert
+        */
+        stopTrack: function () {
+            this.set("tracking", false);
+            this.untrack();
         }
     });
 

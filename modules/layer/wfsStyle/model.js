@@ -215,6 +215,28 @@ define([
 
             return style;
         },
+
+        /**
+         * Holt den SimpleStyle und skaliert fürs Hovern
+         */
+        getHoverStyle: function () {
+            var style;
+
+            style = this. getSimpleStyle();
+            style[0].getImage().setScale(1.5);
+            return style;
+        },
+
+        /**
+         * Holt den ClusterStyle und skaliert fürs Hovern
+         */
+        getHoverClusterStyle: function (feature) {
+            var style;
+
+            style = this.getClusterStyle(feature);
+            style[0].getImage().setScale(1.5);
+            return style;
+        },
         initialize: function () {
             var style = this.getSimpleStyle(),
                 styleCache = [];

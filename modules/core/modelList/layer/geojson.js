@@ -15,21 +15,59 @@ define(function (require) {
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
                 format: new ol.format.GeoJSON(),
-                // url: this.get("url"),
-                loader: this.loaderFunction()
+                loader: this.loaderFunction
             }, this));
+            this.getLayerSource().set("context", this);
         },
         loaderFunction: function () {
-            var features;
-
-            $.ajax({
-              url: this.get("url"),
-              dataType: "json",
-              context: this
-            }).then(function (response) {
-                features = new ol.format.GeoJSON().readFeatures(response);
-                this.getLayerSource().addFeatures(features);
+            var features = this.get("context").getFeatures();
+            if (_.isUndefined(features)) {
+                $.ajax({
+                  url: this.get("url"),
+                  dataType: "json"
+                }).then(function (response) {
+                    features = new ol.format.GeoJSON().readFeatures(response);
+                    this.addFeatures(features);
+                });
+            }
+            else {
+                this.addFeatures(features);
+            }
+        },
+        /**
+         * Lädt die JSON-Datei und startet parse
+         */
+        updateData: function () {
+            this.fetch({
+                url: this.get("url"),
+                cache: false,
+                error: function () {
+                    Radio.trigger("Alert", "alert", {text: "<strong>Layerdaten (JSON) konnten nicht geladen werden!</strong>", kategorie: "alert-danger"});
+                }
             });
+        },
+        /**
+         * konvertiert die Daten in ol.features
+         */
+        parse: function (data) {
+            var vectorSource = new ol.source.Vector({
+                    format: new ol.format.GeoJSON()
+                });
+
+            this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
+        },
+
+        updateLayerSourceData: function (features) {
+            var count = 0;
+
+            features.forEach(function (feature) {
+                if (!feature.getId()) {
+                    feature.setId(count);
+                    count++;
+                }
+            });
+            this.getLayerSource().clear();
+            this.getLayerSource().addFeatures(features);
         },
         /**
          * [createClusterLayerSource description]
@@ -56,8 +94,13 @@ define(function (require) {
                 gfiAttributes: this.get("gfiAttributes"),
                 routable: this.get("routable"),
                 gfiTheme: this.get("gfiTheme"),
-                id: this.getId()
+                id: this.getId(),
+                mouseHoverField: this.get("mouseHoverField")
             }));
+
+            if (_.isUndefined(this.get("url")) === false) {
+                this.updateData();
+            }
         },
 
         /**

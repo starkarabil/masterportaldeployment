@@ -7,6 +7,7 @@ define(function (require) {
         LayerSearch = require("modules/searchbar/layer/model"),
         SearchbarTemplate = require("text!modules/searchbar/template.html"),
         SearchbarTemplateMML = require("text!modules/searchbar/template_mml.html"),
+        SearchbarTemplateMMLMobil = require("text!modules/searchbar/template_mmlMobil.html"),
         SearchbarRecommendedListTemplate = require("text!modules/searchbar/templateRecommendedList.html"),
         SearchbarHitListTemplate = require("text!modules/searchbar/templateHitList.html"),
         Searchbar = require("modules/searchbar/model"),
@@ -74,9 +75,6 @@ define(function (require) {
             //     that.render();
             // });
             this.config = config;
-            if (this.config.searchbarTemplate === "mml") {
-                this.template = _.template(SearchbarTemplateMML); //
-            }
             if (config.recommandedListLength) {
                 this.model.set("recommandedListLength", config.recommandedListLength);
             }
@@ -92,8 +90,9 @@ define(function (require) {
             EventBus.on("searchInput:deleteSearchString", this.deleteSearchString, this);
 
             // this.listenTo(this.model, "change:searchString", this.render);
-            this.listenTo(this.model, "change:recommendedList", function () {
-                this.renderRecommendedList();
+            this.listenTo(this.model, {
+                "change:recommendedList": this.renderRecommendedList,
+                "change:isVisible": this.toggle
             });
 
             this.listenTo(Radio.channel("MenuLoader"), {
@@ -162,7 +161,7 @@ define(function (require) {
             }
             if (config.renderToDOM) {
                 if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form col-xs-9\"></div");
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form \"></div");
                 }
                 this.setElement(config.renderToDOM);
                 this.render();
@@ -181,6 +180,10 @@ define(function (require) {
             "focusout input": "toggleStyleForRemoveIcon",
             "click .form-control-feedback": "deleteSearchString",
             "click .btn-search": "renderHitList",
+            "click #mmlOrientaiton": function () {
+                Radio.trigger("Geolocation", "stopTrack");
+                Radio.trigger("Orientation", "getOrientation");
+            },
             "click .list-group-item.hit": "hitSelected",
             "click .list-group-item.results": "renderHitList",
             "mouseover .list-group-item.hit": "showMarker",
@@ -206,7 +209,35 @@ define(function (require) {
         render: function () {
             var attr = this.model.toJSON();
 
+            this.removeMobilDesktopClass();
+            if (this.config.searchbarTemplate === "mml" && Radio.request("Util", "isViewMobile")) {
+                this.template = _.template(SearchbarTemplateMMLMobil);
+            }
+            else if (this.config.searchbarTemplate === "mml") {
+                this.template = _.template(SearchbarTemplateMML);
+                this.renderWhere();
+            }
+            else {
+                this.renderWhere();
+            }
             this.$el.html(this.template(attr));
+            if (window.location.protocol !== "https:") {
+                $("#mmlOrientaiton").remove();
+                $("#geolocation_marker").remove();
+                $("#mmlMobilRemove").css({"right": "70px"});
+            }
+            this.focusOnEnd($("#searchInput"));
+            if (this.model.get("searchString").length !== 0) {
+                $("#searchInput:focus").css("border-right-width", "0");
+            }
+            this.delegateEvents(this.events);
+            Radio.trigger("Title", "setSize");
+        },
+
+        /**
+        * Über die Config kann die Searchbar in ein anderes DOM gerendert werden.
+        */
+        renderWhere: function () {
             if (this.config.renderToDOM === "#searchbarInMap") {
                 $(this.config.renderToDOM).append(this.$el); // rendern am DOM, das übergeben wird
             }
@@ -218,14 +249,22 @@ define(function (require) {
                     $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
                 }
             }
-
-            this.focusOnEnd($("#searchInput"));
-            if (this.model.get("searchString").length !== 0) {
-                $("#searchInput:focus").css("border-right-width", "0");
-            }
-            this.delegateEvents(this.events);
-            Radio.trigger("Title", "setSize");
         },
+
+        /**
+        * Hier wird speziell für mml die Klasse hinzugefügt/entfernt für Mobil/Desktop.
+        **/
+        removeMobilDesktopClass: function () {
+            if (Radio.request("Util", "isViewMobile")) {
+                    $("#searchbarInMap").addClass("searchbarInMapMobil");
+                    $("#searchbarInMap").removeClass("searchbarInMap");
+            }
+            else {
+                    $("#searchbarInMap").addClass("searchbarInMap");
+                    $("#searchbarInMap").removeClass("searchbarInMapMobil");
+            }
+        },
+
         /**
         * @description Methode, um den Searchstring über den Eventbus zu steuern ohne Event auszulösen
         * @param {string} searchstring - Der einzufügende Searchstring
@@ -579,19 +618,31 @@ define(function (require) {
             element.focus();
             element[0].setSelectionRange(strLength, strLength);
         },
-
         /**
+         * Abhängig vom Attribut "isVisible" wird
+         * die Searchbar angezeigt oder versteckt.
+         */
+        toggle: function () {
+            if (this.model.getIsVisible() === false) {
+                this.$el.hide();
+            }
+            else {
+                this.$el.show();
+            }
+        },
+        /*
         * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
         */
         newDragMarkerAddress: function (response) {
             if (!response.error) {
-                this.model.set("searchString", response.streetname + " " + response.housenumber);
+                this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                this.render();
+                $("#searchInput + span").show();
             }
             else {
                 this.model.set("searchString", "");
+                $("#searchInput").blur();
             }
-            this.render();
-            $("#searchInput").blur();
         }
     });
 

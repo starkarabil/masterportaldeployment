@@ -147,6 +147,13 @@ define("app",
                  decModulesLoading();
              });
         }
+        if (Config.mmlMobileHeader) {
+            incModulesLoading();
+            require(["modules/mmlMobileHeader/view"], function (mmlMobileHeaderView) {
+                new mmlMobileHeaderView();
+                decModulesLoading();
+            });
+        }
 
         incModulesLoading();
          require(["modules/window/view"], function (WindowView) {
@@ -396,16 +403,23 @@ define("app",
                         decModulesLoading();
                         break;
                     }
-                    default: {
-                        decModulesLoading();
-                        break;
-                    }
                     case "toggleBaselayer": {
                         if (control.attr === true) {
                             require(["modules/controls/baselayerToggle/view"], function (BaselayerView) {
                                 new BaselayerView();
                             });
                         }
+                        decModulesLoading();
+                        break;
+                    }
+                    case "mmlNewIssueButton": {
+                        require(["modules/controls/mmlAssistentCaller/view"], function (MmlAssistentCallerView) {
+                            new MmlAssistentCallerView();
+                        });
+                        decModulesLoading();
+                        break;
+                    }
+                    default: {
                         decModulesLoading();
                         break;
                     }
