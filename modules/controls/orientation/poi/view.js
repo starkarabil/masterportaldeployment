@@ -58,19 +58,19 @@ define([
             this.$el.modal("hide");
         },
         onClick500m: function () {
-            Radio.trigger("geolocation", "getPOI", 500);
+            Radio.trigger("Geolocation", "getPOI", 500);
             $("#500m a[href='#500Meter']").tab("show");
         },
         onClick1000m: function () {
-            Radio.trigger("geolocation", "getPOI", 1000);
+            Radio.trigger("Geolocation", "getPOI", 1000);
             $("#1000m a[href='#1000Meter']").tab("show");
         },
         onClick2000m: function () {
-            Radio.trigger("geolocation", "getPOI", 2000);
+            Radio.trigger("Geolocation", "getPOI", 2000);
             $("#2000m a[href='#2000Meter']").tab("show");
         },
         destroy: function () {
-            Radio.trigger("geolocation", "removeOverlay");
+            Radio.trigger("Geolocation", "removeOverlay");
         }
     });
 

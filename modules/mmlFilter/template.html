@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<button id="btn-mmlFilter-toggle" class="btn btn-default" style="left: <%=mapWidth - 45%>px;" type="button" title="Filter ein- / ausklappen">
+<button id="btn-mmlFilter-toggle" class="btn btn-default hidden-xs" type="button" title="Filter ein- / ausklappen">
     <span class="glyphicon glyphicon-filter"></span>
 </button>
-<div id="div-mmlFilter-content" style="height:<%= mapHeight - 8 %>px;">
+<div id="div-mmlFilter-content">
     <div class="panel-group" id="mmlFilter-accordion">
 
         <div class="panel panel-default mml-white">
@@ -80,8 +80,8 @@
                             <input id="7days" class="margin-leftright zoom" type="radio" name="zeitraum" value="7days" checked>Die letzten 7 Tage<br>
                             <input id="30days" class="margin-leftright zoom" type="radio" name="zeitraum" value="30days"> Die letzten 30 Tage<br>
                             <input id="userdefined" class="margin-leftright zoom" type="radio" name="zeitraum" value="userdefined"> Zeitraum wählen<br>
-                            <div class="row" style="display:none;">
-                                <span class="margin-leftright" id="basic-addon3">Von</span>
+                            <div class="rowDate" style="display:none;">
+                                <span id="basic-addon3">Von</span>
                                 <div id="fromDateDiv" class="input-group float-right" name="from">
                                     <input id="fromDate" class="datepicker float-right form-control" type="text" name="from" placeholder="tt.mm.yyyy">
                                     <span class="input-group-btn">
@@ -91,8 +91,8 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row" style="display:none;">
-                                <span class="margin-leftright" id="basic-addon4">Bis</span>
+                            <div class="rowDate" style="display:none;">
+                                <span id="basic-addon4">Bis</span>
                                 <div id="toDateDiv" class="input-group float-right" name="bis">
                                     <input id="toDate" class="datepicker float-right form-control" type="text" name="bis" placeholder="tt.mm.yyyy">
                                     <span class="input-group-btn">
@@ -107,10 +107,8 @@
                 </div>
             </div>
         </div>
-        <div class="panel-collapse">
-            <div id="div-mmlFilter-execute" title="Filter anwenden">
-                <span id="div-mmlFilter-execute-text">Filter anwenden</span>
-            </div>
-        </div>
+    </div>
+    <div id="div-mmlFilter-execute" title="Filter anwenden">
+        <span id="div-mmlFilter-execute-text">Filter anwenden</span>
     </div>
 </div>

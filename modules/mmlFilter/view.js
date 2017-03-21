@@ -1,18 +1,14 @@
-define([
-    "text!modules/mmlFilter/template.html",
-    "modules/mmlFilter/model",
-    "jqueryui/widgets/datepicker",
-    "bootstrap/collapse"
-
-], function () {
+define(function (require) {
+    require("bootstrap/transition");
+    require("bootstrap/collapse");
+    require("jqueryui/widgets/datepicker");
 
     var Template = require("text!modules/mmlFilter/template.html"),
         Model = require("modules/mmlFilter/model"),
-        bootstrap = require("bootstrap/collapse"),
-
         MMLFilterView;
 
     MMLFilterView = Backbone.View.extend({
+        id: "mmlFilter",
         model: new Model(),
         className: "unselectable",
         template: _.template(Template),
@@ -23,37 +19,53 @@ define([
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
             "click #btn-fromDate": "btnFromDateClicked",
             "click #btn-toDate": "btnToDateClicked",
-            "click .panel-title": "changeGlyph"
+            "click .panel-heading": "togglePanel",
+            // Dieses Ereignis wird sofort ausgelöst, wenn die Methode show aufgerufen wird.
+            // Löst aus wenn ein Panel ausgeklappt wird.
+            // http://holdirbootstrap.de/javascript/#collapse-events
+            "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
+            // Dieses Ereignis wird sofort ausgelöst, wenn die Methode hide aufgerufen wird.
+            // Löst aus wenn ein Panel eingeklappt wird.
+            // http://holdirbootstrap.de/javascript/#collapse-events
+            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
         },
 
         initialize: function () {
-            $(".lgv-container").append("<div id = \"mmlFilter\"></div>");
             this.render();
         },
-        changeGlyph: function (evt) {
-            var target = $(evt.target),
-                isCollapsed = _.isUndefined(target.find(".glyphicon-triangle-top")[0]);
 
-            $("#mmlFilter").find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
-            if (isCollapsed) {
-               target.find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
-            }
-            else {
-                target.find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
-            }
-
-
-        },
         render: function () {
             var attr = this.model.toJSON();
 
-            $("#mmlFilter").append(this.$el.html(this.template(attr)));
+            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+        },
+
+        /**
+         * Panels werden aus- und eingeklappt.
+         * @param {MouseEvent} evt - Click auf .panel-heading
+         */
+        togglePanel: function (evt) {
+            // eventuell anderes geöffnetes Panel wird eingeklappt
+            this.$el.find(".in").collapse("hide");
+            // aktuelles Panel wird aus- oder eingeklappt
+            $(evt.currentTarget).next().collapse("toggle");
+        },
+
+        toggleTriangleGlyphicon: function (evt) {
+            var glyphiconDom = $(evt.target).prev().find(".glyphicon");
+
+            if (evt.type === "show") {
+                glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            }
+            else if (evt.type === "hide") {
+                glyphiconDom.removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+            }
         },
 
         toggleMMLFilter: function () {
-            var startWidth = $("#div-mmlFilter-content").css("width"),
-                endWidth = startWidth === "0px" ? "334px" : "0px";
-
+            var mapWidth = $("#map").width(),
+                startWidth = $("#div-mmlFilter-content").css("width"),
+                endWidth = startWidth === "0px" ? (mapWidth / 3) + "px" : "0px";
 
             $("#div-mmlFilter-content").css("left", $("#map").css("width"));
 
@@ -62,10 +74,10 @@ define([
             }, {
                 duration: "slow",
                 progress: function () {
-                    var newLeftToggle = String($("#map").width() - 45 - $("#div-mmlFilter-content").width()) + "px",
-                        newLeftContent = String($("#map").width() - $("#div-mmlFilter-content").width()) + "px";
+                    var newLeftToggle = String(mapWidth - 45 - $("#div-mmlFilter-content").width()) + "px",
+                        newLeftContent = String(mapWidth - $("#div-mmlFilter-content").width()) + "px";
 
-                    $("#div-mmlFilter-content").css("left",newLeftContent);
+                    $("#div-mmlFilter-content").css("left", newLeftContent);
                     $("#btn-mmlFilter-toggle").css("left", newLeftToggle);
                 }
             }, this);
@@ -75,7 +87,7 @@ define([
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
-            $(evt.target).parent().find(".row").each(function (index, row) {
+            $(evt.target).parent().find(".rowDate").each(function (index, row) {
                 if (isUserdefined) {
                     $(row).show();
                 }
@@ -163,10 +175,6 @@ define([
             $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
                 selectedStatus.push(status.id);
             });
-            console.log(selectedKat);
-            console.log(selectedStatus);
-            console.log(fromDate);
-            console.log(toDate);
         }
     });
 
