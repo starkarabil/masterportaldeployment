@@ -14,6 +14,13 @@ define(function (require) {
         SearchbarView;
 
     SearchbarView = Backbone.View.extend({
+        // Konstanten
+        constants: {
+            "enter": 13,
+            "arrowUp": 38,
+            "arrowDown": 40,
+            "ctrl": 17
+        },
         model: Searchbar,
         id: "searchbar", // wird ignoriert, bei renderToDOM
         className: "navbar-form col-xs-9", // wird ignoriert, bei renderToDOM
@@ -173,8 +180,7 @@ define(function (require) {
         },
         events: {
             "paste": "sthPasted",
-             "paste input": "setSearchString",
-            "keyup input": function (event) {
+            "keyup #searchInput.active": function (event) {
                 _.debounce (this.setSearchString(event), 100);
             },
             "focusin input": "toggleStyleForRemoveIcon",
@@ -218,7 +224,7 @@ define(function (require) {
                     $(".navbar-collapse").append(this.$el); // rechts in der Menuebar
                 }
             }
-            this.focusOnEnd($("#searchInput"));
+
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");
             }
@@ -252,7 +258,10 @@ define(function (require) {
                 $("ul.dropdown-menu-search").html(template(attr));
             // }
             // Wird gerufen
-            if (this.model.getInitSearchString() !== undefined && this.model.get("hitList").length === 1) { // workaround für die initiale Suche von B-Plänen
+            if ((this.model.getInitSearchString() !== undefined &&
+                this.model.get("hitList").length === 1) ||
+                this.model.get("pasted") === true
+            ) { // workaround für die initiale Suche von B-Plänen
                 this.hitSelected();
             }
             this.model.unset("initSearchString", true);
@@ -262,8 +271,11 @@ define(function (require) {
         */
         renderHitList: function (evt) {
             // if (this.model.get("isHitListReady") === true) {
-                if (evt.type !== "click" || _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}) || this.model.get("hitList").length === 1) {
-                    this.hitSelected(); // erster und einziger Eintrag in Liste
+                if (evt.type !== "click" || this.model.get("hitList").length === 1) {
+                    this.hitSelected(evt); // erster und einziger Eintrag in Liste
+                }
+                else if (_.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
+                  this.hitSelected(evt);
                 }
                 else {
                     this.model.set("typeList", _.uniq(_.pluck(this.model.get("hitList"), "type")));
@@ -291,27 +303,44 @@ define(function (require) {
 
             // Ermittle Hit
             if (_.has(evt, "cid")) { // in diesem Fall ist evt = model
-                hit = _.values(_.pick(this.model.get("hitList"), "0"))[0];
+              hit = _.values(_.pick(this.model.get("hitList"), "0"))[0];
             }
-            else if (_.has(evt, "currentTarget") === true && evt.currentTarget.id) {
-                hitID = evt.currentTarget.id;
-                hit = _.findWhere(this.model.get("hitList"), {id: hitID});
+            else if (_.has(evt, "currentTarget") === true && evt.currentTarget.id && evt.type !== "keyup") {
+              hitID = evt.currentTarget.id;
+              hit = _.findWhere(this.model.get("hitList"), {id: hitID});
             }
-            else {
-                hit = this.model.get("hitList")[0];
+            else if (this.model.get("pasted") === true && this.model.get("hitList").length > 1) { // Für Straßensuche direkt über paste
+              hit = _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()});
+            }
+            else if (_.isUndefined(evt) === false &&
+              (this.model.get("hitList")[0].name.toLowerCase() === evt.target.value ||
+              this.model.get("hitList")[0].name === evt.target.value)
+            ) { // wenn der erste Eintrag zu dem suchstring passt nicht case sensitive und über keyup event
+              hit = this.model.get("hitList")[0];
+            }
+            else if (evt.type === "click") { // bei direkter auswahl per click
+              hit = this.model.get("hitList")[0];
             }
             // 1. Schreibe Text in Searchbar
-            this.setSearchbarString(hit.name);
-            // 2. Verberge Suchmenü
-            this.hideMenu();
-            // 3. Zoome ggf. auf Ergebnis
-            EventBus.trigger("mapHandler:zoomTo", hit);
-            // 4. Triggere Treffer über Eventbus
-            // Wird benötigt für IDA und sgv-online, ...
-            EventBus.trigger("searchbar:hit", hit);
-            // 5. Beende Event
-            if (evt) {
-                evt.stopPropagation();
+            if (hit) {
+                this.setSearchbarString(hit.name);
+                // 2. Verberge Suchmenü
+                if (this.model.get("pasted") === false) {
+
+                    this.hideMenu();
+                }
+                // 3. Zoome ggf. auf Ergebnis
+                EventBus.trigger("mapHandler:zoomTo", hit);
+                // 4. Triggere Treffer über Eventbus
+                // Wird benötigt für IDA und sgv-online, ...
+                    EventBus.trigger("searchbar:hit", hit);
+                // 5. Beende Event
+                    if (evt) {
+                        evt.stopPropagation();
+                    }
+                else {
+                    this.model.set("pasted", false);
+                }
             }
         },
         navigateList: function (e) {
@@ -342,8 +371,13 @@ define(function (require) {
                         this.collapseHits(selected);
                     }
                     else {
+                        $("#searchInput").addClass("active");
                         selected.click();
                     }
+                }
+                else if (event.keyCode === 13 && _.isUndefined(selected) === false) {
+                    $("#searchInput").addClass("active");
+                    selected.click();
                 }
             }
         },
@@ -439,6 +473,7 @@ define(function (require) {
                 }
                 else {
                     // Folder
+                    $("#searchInput").addClass("active");
                     return;
                 }
             }
@@ -477,13 +512,26 @@ define(function (require) {
                         that.model.setSearchString(evt.target.value, evt.type);
                     }, 0);
                 }
-                else if (evt.keyCode !== 17 && evt.keyCode !== 37 && evt.keyCode !== 38 && evt.keyCode !== 39 && evt.keyCode !== 40 && !(this.getSelectedElement("#searchInputUL").length > 0 && this.getSelectedElement("#searchInputUL").hasClass("type"))) {
-                    if (evt.key === "Enter" || evt.keyCode === 13) {
-                        if (_.findWhere(this.model.get("hitList"), {name: evt.target.value}) || this.model.get("hitList").length === 1) {
-                            this.hitSelected(); // erster und einziger Eintrag in Liste
+                else if (evt.keyCode === this.constants.arrowDown) {
+                    var el = $("#searchInput:focus");
+
+                    if (el.size() !== 0) {
+                        $("#searchInput").removeClass("active");
+                    }
+                }
+                else if (evt.keyCode !== 17 &&
+                        evt.keyCode !== this.constants.arrowUp &&
+                        evt.keyCode !== this.constants.arrowDown &&
+                        !(this.getSelectedElement("#searchInputUL").length > 0 &&
+                        this.getSelectedElement("#searchInputUL").hasClass("type"))
+                ) {
+                    if (evt.key === "Enter" || evt.keyCode === this.constants.enter) {
+                        if (_.findWhere(this.model.get("hitList"), {name: evt.target.value}) ||
+                            this.model.get("hitList").length === 1) {
+                            this.hitSelected(evt); // erster und einziger Eintrag in Liste
                         }
                         else {
-                            this.renderHitList();
+                            this.renderHitList(evt);
                         }
                     }
                     else {
@@ -586,6 +634,7 @@ define(function (require) {
             var pasteString,
             that = this;
 
+            this.model.set("pasted", true);
             setTimeout(function () {
                 pasteString = evt.target.value;
                 that.model.setSearchString(pasteString, evt.type);

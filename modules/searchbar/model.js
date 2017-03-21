@@ -12,7 +12,8 @@ define([
             searchString: "", // der aktuelle String in der Suchmaske
             hitList: [],
             minChars: "",
-            singleStreetName: ""
+            singleStreetName: "",
+            pasted: false
             // isHitListReady: true
         },
         /**
