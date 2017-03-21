@@ -1,10 +1,7 @@
 define([
-    "openlayers"
-
 ], function () {
 
-    var ol = require("openlayers"),
-        SimpleListerModel;
+    var SimpleListerModel;
 
     SimpleListerModel = Backbone.Model.extend({
         defaults: {
@@ -12,8 +9,7 @@ define([
             featuresPerPage: 20, // Anzahl initialer Features in Liste
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
             totalFeatures: 0, // Anzahl aller Features im Extent
-            glyphicon: "glyphicon-triangle-right",
-            display: "none"
+            sortProperty: "ende"
         },
 
         initialize: function () {
@@ -26,6 +22,7 @@ define([
             this.setLayerId(simpleLister.layerId);
             this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
             this.setFeaturesPerPage(simpleLister.featuresPerPage);
+            this.setSortProperty(simpleLister.sortProperty);
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
@@ -34,8 +31,9 @@ define([
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
                 totalFeatures = jsonfeatures.length;
 
-            this.set("totalFeatures", totalFeatures);
+            this.setTotalFeatures(totalFeatures);
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+            this.trigger("newFeaturesInExtent");
         },
 
         // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
@@ -44,71 +42,7 @@ define([
                 jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
 
             this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
-        },
-
-        // getter for featuresInExtent
-        getFeaturesInExtent: function () {
-            return this.get("featuresInExtent");
-        },
-
-        // setter for featuresInExtent
-        setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
-            var totalFeatures = jsonFeaturesInExtent.length,
-                number = totalFeatures < number ? totalFeatures : number,
-                jsonFeatures = _.last(jsonFeaturesInExtent, number),
-                features = [];
-
-            _.each(jsonFeatures, function (jsonFeature) {
-                features.push(JSON.parse(jsonFeature));
-            });
-
-            this.set("featuresInExtent", features);
-            this.set("totalFeaturesInPage", number);
-            this.trigger("render");
-        },
-
-        // getter for glyphicon
-        getGlyphicon: function () {
-            return this.get("glyphicon");
-        },
-        // setter for glyphicon
-        setGlyphicon: function (value) {
-            this.set("glyphicon", value);
-        },
-
-        // getter for display
-        getDisplay: function () {
-            return this.get("display");
-        },
-        // setter for display
-        setDisplay: function (value) {
-            this.set("display", value);
-        },
-
-        // getter for layerId
-        getLayerId: function () {
-            return this.get("layerId");
-        },
-        // setter for layerId
-        setLayerId: function (value) {
-            this.set("layerId", value);
-        },
-        // getter for errortxt
-        getErrortxt: function () {
-            return this.get("errortxt");
-        },
-        // setter for errortxt
-        setErrortxt: function (value) {
-            this.set("errortxt", value);
-        },
-
-        // setter für featuresPerPage
-        setFeaturesPerPage: function (value) {
-            this.set("featuresPerPage", value);
-        },
-        // getter für featuresPerPage
-        getFeaturesPerPage: function () {
-            return this.get("featuresPerPage");
+            this.trigger("appendFeaturesInExtent");
         },
 
         /**
@@ -147,6 +81,84 @@ define([
                 coord = feature ? feature.geometry.coordinates : null;
 
                 return coord;
+        },
+
+        /*
+         * GETTTER / SETTER - Methoden
+         */
+
+        // getter for featuresInExtent
+        getFeaturesInExtent: function () {
+            return this.get("featuresInExtent");
+        },
+
+        // setter for featuresInExtent
+        setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
+            var sortProperty = this.getSortProperty(),
+                totalFeatures = jsonFeaturesInExtent.length,
+                number = totalFeatures < number ? totalFeatures : number,
+                featuresInExtent = _.map(jsonFeaturesInExtent, function (feat) {
+                    return JSON.parse(feat);
+                }),
+                featuresSorted = _.sortBy(featuresInExtent, function (feat) {
+                    if (feat.properties && _.has(feat.properties, sortProperty) === true) {
+                        return _.values(_.pick(feat.properties, sortProperty))[0];
+                    }
+                }),
+                featuresSelected = _.last(featuresSorted, number), // aktuellste Features in umgekehrter Reihenfolge
+                featuresReversed = featuresSelected.reverse();
+
+            this.set("featuresInExtent", featuresReversed);
+            this.set("totalFeaturesInPage", number);
+        },
+
+        // getter for totalFeaturesInPage
+        getTotalFeaturesInPage: function () {
+            return this.get("totalFeaturesInPage");
+        },
+
+        // getter for layerId
+        getLayerId: function () {
+            return this.get("layerId");
+        },
+        // setter for layerId
+        setLayerId: function (value) {
+            this.set("layerId", value);
+        },
+        // getter for errortxt
+        getErrortxt: function () {
+            return this.get("errortxt");
+        },
+        // setter for errortxt
+        setErrortxt: function (value) {
+            this.set("errortxt", value);
+        },
+
+        // setter für featuresPerPage
+        setFeaturesPerPage: function (value) {
+            this.set("featuresPerPage", value);
+        },
+        // getter für featuresPerPage
+        getFeaturesPerPage: function () {
+            return this.get("featuresPerPage");
+        },
+
+        // getter for SortProperty
+        getSortProperty: function () {
+            return this.get("sortProperty");
+        },
+        // setter for SortProperty
+        setSortProperty: function (value) {
+            this.set("sortProperty", value);
+        },
+
+        // getter for totalFeatures
+        getTotalFeatures: function () {
+            return this.get("totalFeatures");
+        },
+        // setter for totalFeatures
+        setTotalFeatures: function (value) {
+            this.set("totalFeatures", value);
         }
     });
 
