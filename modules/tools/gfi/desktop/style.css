@@ -107,3 +107,26 @@
     color: #fff;
     cursor: pointer;
 }
+
+/* Desktop SimpleLister */
+#simple-lister img {
+    /*padding: 26px 12px;*/
+}
+
+#simple-lister img:hover {
+    /*cursor: pointer;*/
+}
+
+#simple-lister span {
+    font-size: 18px;
+    letter-spacing: -0.4px;
+    color: #003063;
+}
+
+#simple-lister p {
+    padding: 22px 12px;
+}
+
+#simple-lister p:first-child:hover {
+        cursor: pointer;
+}

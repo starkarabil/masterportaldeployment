@@ -160,8 +160,6 @@ define("app",
              decModulesLoading();
          });
 
-
-
         if (configJSON && configJSON.simpleLister) {
             incModulesLoading();
             require(["modules/simpleLister/view"], function (SimpleListerView) {
@@ -400,16 +398,23 @@ define("app",
                         decModulesLoading();
                         break;
                     }
-                    default: {
-                        decModulesLoading();
-                        break;
-                    }
                     case "toggleBaselayer": {
                         if (control.attr === true) {
                             require(["modules/controls/baselayerToggle/view"], function (BaselayerView) {
                                 new BaselayerView();
                             });
                         }
+                        decModulesLoading();
+                        break;
+                    }
+                    case "mmlNewIssueButton": {
+                        require(["modules/controls/mmlAssistentCaller/view"], function (MmlAssistentCallerView) {
+                            new MmlAssistentCallerView();
+                        });
+                        decModulesLoading();
+                        break;
+                    }
+                    default: {
                         decModulesLoading();
                         break;
                     }

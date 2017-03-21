@@ -21,7 +21,10 @@ define([
 
         initialize: function () {
             this.listenTo(this.model, {
-                "render": this.render
+                "newFeaturesInExtent": this.newFeaturesInExtent,
+                "appendFeaturesInExtent": this.appendFeaturesInExtent,
+                "render": this.render,
+                "show": this.show
             });
 
             this.render();
@@ -37,26 +40,110 @@ define([
             this.model.appendFeatures();
         },
 
-        toggleSimpleList: function () {
-            var glyphicon = this.model.getGlyphicon();
+        show: function () {
+            var glyphiconDom = $(".simple-lister-button > span");
 
-            if (glyphicon === "glyphicon-triangle-right") {
-                this.getLayerFeaturesInExtent();
-                this.model.setGlyphicon("glyphicon-triangle-left");
-                this.model.setDisplay("block");
-                this.$el.css({width: "41%"});
-                $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+            glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
+            $("#simple-lister-table").show();
+            this.$el.css({width: "41%"});
+            $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+            this.model.getLayerFeaturesInExtent();
+        },
+
+        hide: function () {
+            var glyphiconDom = $(".simple-lister-button > span");
+
+            glyphiconDom.removeClass("glyphicon-triangle-left").addClass("glyphicon-triangle-right");
+            $("#simple-lister-table").hide();
+            this.$el.css({width: "0%"});
+            $("#searchbarInMap").css({left: "43px"});
+        },
+
+        newFeaturesInExtent: function () {
+            var features = this.model.getFeaturesInExtent();
+
+            $(".entries").empty();
+
+            _.each(features, function (feature) {
+                this.addEntry(feature);
+            }, this);
+
+            // toggle ggf. AppendFeatures Button
+            this.updateAppendFeaturesButton();
+
+            // update Heading
+            this.updateListHeading();
+        },
+
+        appendFeaturesInExtent: function () {
+            var features = this.model.getFeaturesInExtent();
+
+            // Features nachgeladen: nur neue Features hinzufügen
+            var lastEntry = $(".entry").last()[0],
+                lastId = lastEntry.id,
+                indexLastId = _.findIndex(features, function (feat) {
+                    var featId = feat.id.toString();
+
+                    return featId === lastId;
+                }),
+                restFeatures = indexLastId !== -1 ? _.rest(features, indexLastId + 1) : null;
+
+            _.each(restFeatures, function (feature) {
+                this.addEntry(feature);
+            }, this);
+
+            // toggle ggf. AppendFeatures Button
+            this.updateAppendFeaturesButton();
+
+            // update Heading
+            this.updateListHeading();
+        },
+
+        updateListHeading: function () {
+            var totalFeaturesInPage = this.model.getTotalFeaturesInPage(),
+                totalFeatures = this.model.getTotalFeatures(),
+                headingtext = "1 - " + totalFeaturesInPage + " von " + totalFeatures + " Einträgen",
+                errortext = this.model.getErrortxt(),
+                heading = totalFeaturesInPage === 0 ? errortext : headingtext;
+
+            $(".heading").text(heading);
+        },
+
+        updateAppendFeaturesButton: function () {
+            var totalFeaturesInPage = this.model.getTotalFeaturesInPage(),
+                totalFeatures = this.model.getTotalFeatures();
+
+            $("#div-simpleLister-extentList").remove();
+            if (totalFeaturesInPage < totalFeatures) {
+                var ele = "<div id='div-simpleLister-extentList' title='Liste erweitern'><span id='div-simpleLister-extentList-text'>Liste erweitern</span></div>";
+
+                $(".entries").append(ele);
+            }
+        },
+
+        addEntry: function (feat) {
+            var div1 = "<div id='" + feat.id + "' class='entry'>",
+                div2 = "<div class='address'>" + feat.properties.str + " " + feat.properties.hsnr + "</div>",
+                div3 = "<div class='category'>" + feat.properties.kat_text + "</div>",
+                div4 = "<div class='description'>",
+                div5 = feat.properties.beschr.length > 50 ? feat.properties.beschr.substring(0, 50) + "..." : feat.properties.beschr,
+                div6 = "</div>",
+                div7 = "</div>",
+                div8 = "<div class='line'></div>",
+                ele = div1.concat(div2, div3, div4, div5, div6, div7, div8);
+
+            $(".entries").append(ele);
+        },
+
+        toggleSimpleList: function (evt) {
+            var glyphiconDom = $(evt.target);
+
+            if (glyphiconDom.hasClass("glyphicon-triangle-right") === true) {
+                this.show();
             }
             else {
-                this.model.setGlyphicon("glyphicon-triangle-right");
-                this.model.setDisplay("none");
-                this.$el.css({width: "0%"});
-                $("#searchbarInMap").css({left: "43px"});
+                this.hide();
             }
-            this.render();
-        },
-        getLayerFeaturesInExtent: function () {
-            this.model.getLayerFeaturesInExtent();
         },
 
         /**

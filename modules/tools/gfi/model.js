@@ -39,7 +39,8 @@ define(function (require) {
                 "getIsVisible": this.getIsVisible,
                 "getGFIForPrint": this.getGFIForPrint,
                 "getCoordinate": this.getCoordinate,
-                "getCurrentView": this.getCurrentView
+                "getCurrentView": this.getCurrentView,
+                "getTheme": this.getTheme
             }, this);
 
             this.listenTo(this, {
@@ -132,8 +133,11 @@ define(function (require) {
                 if (this.getDesktopViewType() === "attached") {
                     CurrentView = require("modules/tools/gfi/desktop/attached/view");
                 }
-                else {
+                else if (this.getDesktopViewType() === "detached") {
                     CurrentView = require("modules/tools/gfi/desktop/detached/view");
+                }
+                else {
+                    CurrentView = require("modules/tools/gfi/desktop/simpleLister/view");
                 }
             }
             this.setCurrentView(new CurrentView({model: this}));
@@ -312,6 +316,10 @@ define(function (require) {
 
         getOverlayElement: function () {
             return this.getOverlay().getElement();
+        },
+
+        getTheme: function () {
+             return this.getThemeList().at(this.getThemeIndex());
         },
 
         getThemeIndex: function () {

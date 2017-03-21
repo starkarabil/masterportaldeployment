@@ -52,7 +52,7 @@ define(function (require) {
         },
 
         toggleTriangleGlyphicon: function (evt) {
-            var glyphiconDom = $(evt.target).parent().find(".glyphicon");
+            var glyphiconDom = $(evt.target).prev().find(".glyphicon");
 
             if (evt.type === "show") {
                 glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
