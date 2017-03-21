@@ -65,7 +65,6 @@
   /*mml template*/
   /*mml template*/
   /*mml template*/
-  /* MML-Mobil*/
   /***** ToggleButton *****/
   /***** ZoomButtons *****/
   /***** FullScreen *****/
@@ -103,7 +102,6 @@
   /* Bootstrap Popover Klassen */
   /* Desktop GFI */
   /* Desktop Detached */
-  /* Desktop SimpleLister */
   /*
 Knopf zum Nachladen
 */
@@ -112,16 +110,31 @@ Blauer Filterknopf links
 neben Filterfenster
 **********************************/
   /**********************************
-Reset-Knopf in Kategorien
+Reset-Knopf in Kategorien auf Desktop
 **********************************/
   /**********************************
-Filter-Knopf für Execute
+Reset-Knopf in Kategorien auf Mobile
 **********************************/
   /**********************************
-Filterabschnitte
+Filter-Knopf für Execute auf Desktop
 **********************************/
   /**********************************
-gesamtes Filterwindow
+Filter-Knopf für Execute auf Mobile
+**********************************/
+  /**********************************
+Filterabschnitte auf Desktop
+**********************************/
+  /**********************************
+Filterabschnitte auf Mobile
+**********************************/
+  /**********************************
+Überschrift auf Mobile
+**********************************/
+  /**********************************
+gesamtes Filterwindow Desktop
+**********************************/
+  /**********************************
+gesamtes Filterwindow auf Mobile
 **********************************/
   /**********************************
 Checkbox
@@ -2880,7 +2893,7 @@ Hilfsklassen
     min-width: 300px;
   }
 }
-.lgv-container .searchbarInMap {
+.lgv-container #searchbarInMap {
   position: absolute;
   left: 43px;
   top: 7px;
@@ -2920,7 +2933,7 @@ Hilfsklassen
 .lgv-container #searchInput {
   box-shadow: none;
   font-size: 12px;
-  padding-right: 65px;
+  padding-right: 32.5px;
 }
 .lgv-container #searchForm-mml #searchInput {
   box-shadow: none;
@@ -3071,74 +3084,6 @@ Hilfsklassen
 }
 .lgv-container #searchInputUL .selected #searchInputLi {
   color: #fff;
-}
-.lgv-container #searchForm-mmlMobil {
-  height: 55px;
-  background-color: #4c4c4c;
-}
-.lgv-container #searchForm-mmlMobil .adresseEingeben {
-  background-color: #4c4c4c;
-  line-height: 1.6;
-  letter-spacing: -0.4px;
-  color: #ffffff;
-  top: 16.5px;
-  height: 24px;
-  border: none;
-}
-.lgv-container #searchForm-mmlMobil .btn-search > .glyphicon-search {
-  font-size: 14px;
-  color: white;
-}
-.lgv-container #searchForm-mmlMobil .btn-search {
-  width: 55px;
-  height: 55px;
-  border-radius: 3px;
-  border-style: none;
-  background-color: #0f5cad;
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
-}
-.lgv-container .adresseEingeben::-webkit-input-placeholder {
-  opacity: 0.51;
-}
-.lgv-container #searchForm-mmlMobil #searchInput + span {
-  z-index: 3;
-  color: #ffffff;
-  display: none;
-  pointer-events: all;
-  cursor: pointer;
-  background-color: #4c4c4c;
-  top: 16.5px;
-  width: 22px;
-  height: 22px;
-  right: 110px;
-}
-.lgv-container #removeSearchbarIcon {
-  vertical-align: inherit;
-}
-.lgv-container #searchForm-mmlMobil .orientationButtons {
-  margin: 0 0 0 0;
-  float: right;
-  position: relative;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-.lgv-container #searchForm-mmlMobil .btn-orientation {
-  height: 55px;
-  right: 55px;
-  position: absolute;
-  z-index: 3;
-  background-color: #4c4c4c;
-  border: none;
-}
-.lgv-container .searchbarInMapMobil {
-  position: absolute;
-  top: 0;
-  z-index: 3;
-  width: 100%;
-}
-.lgv-container #searchForm-mmlMobil .orientationMMLMobil {
-  height: 22px;
-  width: 22px;
 }
 .lgv-container .tooltip-default-circle {
   background: #ffffff;
@@ -4154,23 +4099,6 @@ Hilfsklassen
   color: #fff;
   cursor: pointer;
 }
-.lgv-container #simple-lister img {
-  /*padding: 26px 12px;*/
-}
-.lgv-container #simple-lister img:hover {
-  /*cursor: pointer;*/
-}
-.lgv-container #simple-lister span {
-  font-size: 18px;
-  letter-spacing: -0.4px;
-  color: #003063;
-}
-.lgv-container #simple-lister p {
-  padding: 22px 12px;
-}
-.lgv-container #simple-lister p:first-child:hover {
-  cursor: pointer;
-}
 .lgv-container #gfi-mobile {
   color: #555555;
   font-size: 14px;
@@ -4346,42 +4274,11 @@ Hilfsklassen
   font-stretch: normal;
   letter-spacing: -0.4px;
 }
-.lgv-container .mobileHeader {
-  background-color: #353535;
-  height: 55px;
-  padding: 16px 18px 24px 18px;
-  color: #fff;
-  width: 100%;
-  font-size: 16px;
-}
-.lgv-container .mobileHeader div {
-  float: left;
-}
-.lgv-container .mobileHeader div.filter {
-  float: right;
-}
-.lgv-container .mobileHeader img {
-  cursor: pointer;
-}
-.lgv-container .mobileHeader img.filter {
-  float: right;
-}
-.lgv-container .mobileHeader .title {
-  margin-left: 21px;
-}
-.lgv-container #mmlFilter .panel-heading {
-  padding: 15px 20px 15px 0px;
-}
-.lgv-container #mmlFilter .panel-body {
-  border: 0;
-  padding-left: 25px;
-  padding-top: 0px;
-}
 .lgv-container #btn-mmlFilter-toggle {
   position: absolute;
-  right: 0px;
+  left: 0px;
   cursor: pointer;
-  top: 7px;
+  top: 8px;
   width: 45px;
   height: 55px;
   border-radius: 3px !important;
@@ -4397,11 +4294,22 @@ Hilfsklassen
   margin-bottom: 10px;
 }
 .lgv-container #div-mmlFilter-reset:hover {
-  background-color: #0f5cad;
+  background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  cursor: pointer;
 }
 .lgv-container #div-mmlFilter-reset-text {
+  font-size: 14px;
+  line-height: 3.3;
+}
+.lgv-container #div-mmlFilter-reset-mobile {
+  height: 45px;
+  border-radius: 3px !important;
+  border: solid 1px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  color: black;
+  margin: 10px 40px 0px 20px;
+}
+.lgv-container #div-mmlFilter-reset-text-mobile {
   font-size: 14px;
   line-height: 3.3;
 }
@@ -4412,38 +4320,107 @@ Hilfsklassen
   text-align: center;
   color: white;
   background-color: #005ca9;
-  margin-left: 25px;
-  position: absolute;
-  bottom: 7px;
-  padding: 0px 75px;
+  margin: 30px 22px 23px 25px;
 }
 .lgv-container #div-mmlFilter-execute:hover {
-  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 .lgv-container #div-mmlFilter-execute-text {
+  font-size: 14px;
+  line-height: 3.3;
+}
+.lgv-container #div-mmlFilter-execute-mobile {
+  height: 45px;
+  border-radius: 3px !important;
+  border: solid 1px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  color: white;
+  background-color: #005ca9;
+  margin: 30px 15px 20px 15px;
+  position: absolute;
+  bottom: 0px;
+}
+.lgv-container #div-mmlFilter-execute-text-mobile {
   font-size: 14px;
   line-height: 3.3;
 }
 .lgv-container .div-mmlFilter-filter {
   line-height: 2.73;
   color: #333333;
+  padding: 20px 25px 0px 25px;
+  overflow: auto;
   display: block;
 }
-.lgv-container #mmlFilter .div-mmlFilter-filter-header {
+.lgv-container .div-mmlFilter-filter-header {
   font-weight: bold;
-  line-height: 24px;
+  line-height: 1.6;
   color: #003063;
   min-width: 200px;
   font-size: 15px;
   letter-spacing: -0.4px;
   text-align: center;
-  padding: 0px 25px;
-  font-family: HamburgSans;
-  text-decoration: none;
+  padding: 22px 25px 0px 25px;
+}
+.lgv-container .div-mmlFilter-filter-mobile {
+  line-height: 2.73;
+  color: #333333;
+  padding: 0px 0px 0px 15px !important;
+  margin-right: 0px;
+  overflow: auto;
+  display: block;
+}
+.lgv-container .div-mmlFilter-filter-header-mobile {
+  font-weight: bold;
+  line-height: 1.62;
+  color: #333333;
+  min-width: 200px;
+  font-size: 17px;
+  letter-spacing: -0.5px;
+  /*    padding: 22px 25px 0px 25px;*/
+}
+.lgv-container .div-mmlFilter-filter-header-span-mobile {
+  float: right;
+  color: #666666;
+  right: 6px;
+  font-size: 14px;
+}
+.lgv-container .div-mmlFilter-panel-mobile {
+  background: none !important;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  margin-bottom: 0px !important;
+}
+.lgv-container .div-mmlFilter-panel-heading-mobile {
+  background: none !important;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  height: 50px;
+}
+.lgv-container .div-mmlFilter-header-mobile {
+  margin: 5px 0px 0px 15px;
+  font-size: 20px;
+  line-height: 1.38;
+  color: #333333;
+  min-width: 200px;
+  letter-spacing: -0.6px;
+  height: 55px;
+}
+.lgv-container .div-mmlFilter-header-close-mobile {
+  float: right;
+  text-shadow: 0 1px 0 #ffffff;
+  border: none;
+  background: none;
+  width: 55px;
+  height: 55px;
+  padding: 5px 0px 0px 0px;
+}
+.lgv-container .div-mmlFilter-header-text-mobile {
+  font-size: 20px;
+  font-weight: bold;
+  top: 17px;
+  position: relative;
 }
 .lgv-container #div-mmlFilter-content {
-  overflow: hidden;
-  height: 100%;
   font-family: HamburgSans;
   font-size: 15px;
   font-weight: normal;
@@ -4453,12 +4430,11 @@ Hilfsklassen
   line-height: 2.73;
   position: absolute;
   left: 0px;
-  top: 0px;
+  top: 8px;
   background-color: white;
   width: 0px;
   color: #333333;
   border-radius: 1px !important;
-  max-width: 400px;
 }
 .lgv-container #fromDateDiv {
   width: 200px;
@@ -4475,25 +4451,44 @@ Hilfsklassen
   background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
 .lgv-container .panel-collapse {
-  max-height: 28vh;
+  max-height: 357px;
   overflow: auto;
 }
-.lgv-container #mmlZeitraum {
-  overflow: visible;
+.lgv-container #div-mmlFilter-content-mobile {
+  font-family: HamburgSans;
+  font-size: 15px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: -0.4px;
+  line-height: 2.73;
+  height: 100%;
+  color: #333333;
+  background-color: #f2f2f2;
+  margin: 20px 15px 20px 15px;
+  top: 0px;
+  right: 0px;
+  border: none;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -moz-box-shadow: 0px;
+  -webkit-box-shadow: 0px;
+  box-shadow: 0px;
+}
+.lgv-container #div-mmlFilter-modal-dialog {
+  margin: 0px;
 }
 .lgv-container .mml-checkbox {
   -webkit-appearance: none;
   border: 1px solid #cacece;
-  padding: 9px;
   opacity: 0.5;
   border-radius: 2px;
   display: inline-block;
   position: relative;
   height: 20px;
   width: 20px;
-}
-.lgv-container .mml-checkbox:hover {
-  cursor: pointer;
 }
 .lgv-container .mml-checkbox:checked {
   color: #99a1a7;
@@ -4508,6 +4503,10 @@ Hilfsklassen
   border-radius: 2px
     border: solid 2px #333333;
   color: #333333;
+}
+.lgv-container .mmlFilter-checkbox-span {
+  bottom: 3px;
+  position: relative;
 }
 .lgv-container .unselectable {
   -webkit-user-select: none;
@@ -4526,10 +4525,13 @@ Hilfsklassen
   float: right;
 }
 .lgv-container .margin-right-only {
-  margin: 0px 20px -3px 0px !important;
+  margin: 0px 20px 0px 0px !important;
+}
+.lgv-container .margin-topright {
+  margin: 15px 20px 0px 0px !important;
 }
 .lgv-container .margin-leftright {
-  margin: 0px 20px 0px 0px !important;
+  margin: 0px 20px 0px 25px !important;
 }
 .lgv-container .datepicker {
   height: 30px;
@@ -4569,76 +4571,15 @@ Hilfsklassen
   background: #666666 !important;
   color: #fff !important;
 }
-.lgv-container .theme-wrapper {
-  font-size: 15px;
-  color: #333333;
+.lgv-container .mmlFilter-datetype {
+  margin: 0px 30px 15px 0px;
+  height: 45px;
+  border: 0;
+  float: right;
 }
-.lgv-container .theme-wrapper div {
-  padding: 0px 26px 32px 34px;
-}
-.lgv-container .theme-wrapper div.heading {
-  padding-top: 0px;
-  padding-bottom: 10px;
-  font-weight: bold;
-}
-.lgv-container .theme-wrapper .backArrow {
-  display: none;
-}
-.lgv-container .theme-wrapper .top-picture {
-  width: 100%;
-  margin-bottom: 25px;
-}
-.lgv-container .theme-wrapper .heading {
-  font-size: 16px;
-}
-.lgv-container .theme-wrapper .gemeldet-am {
-  padding-bottom: 10px;
-}
-.lgv-container .mmlAssistentCaller {
-  position: absolute;
-  bottom: 9px;
-  right: 8px;
-  border-radius: 3px !important;
-  background-color: #e10019;
-  width: 169px;
-  height: 55px;
-  cursor: pointer;
-}
-.lgv-container .mmlAssistentCallerText {
-  color: white;
-  font-family: "HamburgSans-Bold";
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 59px;
-  letter-spacing: -0.4px;
-  margin-left: 10px;
-  position: relative;
-  bottom: 4px;
-}
-.lgv-container .mmlAssistentCaller:hover {
-  background-color: rgba(225, 0, 25, 0.8);
-}
-.lgv-container .mmlAssistentPlus {
-  margin-left: 15px;
-  margin-top: 15px;
-  width: 22px;
-  height: 22px;
-}
-.lgv-container .truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.lgv-container .unselectable {
-  -webkit-user-select: none;
-  /* Chrome all / Safari all */
-  -moz-user-select: none;
-  /* Firefox all */
-  -ms-user-select: none;
-  /* IE 10+ */
-  user-select: none;
-  /* Likely future */
+.lgv-container .mmlFilter-datetype-span {
+  margin: 0px 10px 0px 15px;
+  height: 45px;
 }
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
