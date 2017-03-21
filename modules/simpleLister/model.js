@@ -1,12 +1,6 @@
-define([
-    "openlayers"
+define(function () {
 
-], function () {
-
-    var ol = require("openlayers"),
-        SimpleListerModel;
-
-    SimpleListerModel = Backbone.Model.extend({
+    var SimpleListerModel = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
@@ -40,7 +34,7 @@ define([
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
-        getLayerFeaturesInExtent: function (evt) {
+        getLayerFeaturesInExtent: function () {
             // Soll nur ausgeführt werden, wenn nicht gerade das GFI sichtbar ist
             if (Radio.request("GFI", "getIsVisible") === false) {
                 var featuresPerPage = this.get("featuresPerPage"),
