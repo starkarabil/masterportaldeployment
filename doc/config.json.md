@@ -128,7 +128,7 @@ Konfiguriert den Button zum Aufruf des MML-Assistenten.
 |Name|Verpflichtend|Typ|Default|Beschreibung|
 |----|-------------|---|-------|------------|
 |visible|ja|Boolean|false|Definiert, ob der Button initial angezeigt werden soll.|
-|url|ja|String||URL, die aufgerufen werden soll.|
+|assistantURL|ja|String||URL, die aufgerufen werden soll.|
 
 ******
 
