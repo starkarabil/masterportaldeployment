@@ -32,12 +32,14 @@ define(function (require) {
 
         initialize: function () {
             this.render();
+            $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
+            $("#btn-mmlFilter-toggle").css({left: this.model.getMapWidth() - 50});
         },
 
         render: function () {
             var attr = this.model.toJSON();
 
-            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
         /**
@@ -52,7 +54,7 @@ define(function (require) {
         },
 
         toggleTriangleGlyphicon: function (evt) {
-            var glyphiconDom = $(evt.target).prev().find(".glyphicon");
+            var glyphiconDom = $(evt.target).parent().find(".mml-triangle-glyph");
 
             if (evt.type === "show") {
                 glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
@@ -63,7 +65,7 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var mapWidth = $("#map").width(),
+            var mapWidth = this.model.getMapWidth(),
                 startWidth = $("#div-mmlFilter-content").css("width"),
                 endWidth = startWidth === "0px" ? (mapWidth / 3) + "px" : "0px";
 
@@ -74,7 +76,7 @@ define(function (require) {
             }, {
                 duration: "slow",
                 progress: function () {
-                    var newLeftToggle = String(mapWidth - 45 - $("#div-mmlFilter-content").width()) + "px",
+                    var newLeftToggle = String(mapWidth - 50 - $("#div-mmlFilter-content").width()) + "px",
                         newLeftContent = String(mapWidth - $("#div-mmlFilter-content").width()) + "px";
 
                     $("#div-mmlFilter-content").css("left", newLeftContent);
@@ -99,6 +101,7 @@ define(function (require) {
         btnFromDateClicked: function () {
             var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
 
+            $("#toDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#fromDateDiv .ui-datepicker").hide();
@@ -115,7 +118,7 @@ define(function (require) {
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yy",
+                        dateFormat: "yy-mm-dd",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -127,6 +130,7 @@ define(function (require) {
         btnToDateClicked: function () {
             var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
 
+            $("#fromDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#toDateDiv .ui-datepicker").hide();
@@ -143,7 +147,7 @@ define(function (require) {
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
                         },
-                        dateFormat: "dd-mm-yy",
+                        dateFormat: "yy-mm-dd",
                         dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                         dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
                         monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
@@ -152,10 +156,24 @@ define(function (require) {
                 }
             }
         },
-        resetKategorien: function () {
-            $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
-                $(kategorie).prop("checked", false);
-            });
+        resetKategorien: function (evt) {
+            var status = $("#div-mmlFilter-reset").attr("value");
+
+            if (status === "deaktivieren") {
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", false);
+                });
+                $("#div-mmlFilter-reset-text").html("Alle Kategorien aktivieren");
+                $("#div-mmlFilter-reset").attr("value","aktivieren");
+            }
+            else {
+                $("#div-mmlFilter-reset").attr("value", "deaktivieren");
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", true);
+                });
+                $("#div-mmlFilter-reset-text").html("Alle Kategorien deaktivieren");
+            }
+
         },
 
         executeFilter: function () {
@@ -163,10 +181,10 @@ define(function (require) {
                 selectedStatus = [],
                 selectedTimeId = $(".div-mmlFilter-filter-time").children(":checked")[0].id,
                 date = new Date(),
-                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
-                timeDiff = daysDiff * 24 * 3600 * 1000,
-                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)).toISOString().split("T")[0] : $("#fromDate").val(),
-                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val();
+                daysDiff,
+                timeDiff,
+                fromDate,
+                toDate;
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -175,6 +193,36 @@ define(function (require) {
             $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
                 selectedStatus.push(status.id);
             });
+
+            if (selectedTimeId !== "ignore-time") {
+
+                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0;
+                timeDiff = daysDiff * 24 * 3600 * 1000;
+                fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
+                toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
+
+                if (fromDate.getTime() <= toDate.getTime()) {
+                    $("#fromDateDiv").removeClass("has-error");
+                    $("#toDateDiv").removeClass("has-error");
+                    $("#toDateDiv").next().remove();
+                    this.model.setSelectedKat(selectedKat);
+                    this.model.setSelectedStatus(selectedStatus);
+                    this.model.setFromDate(fromDate);
+                    this.model.setToDate(toDate);
+                    this.model.executeFilter(false);
+                }
+                else {
+                    $("#toDateDiv").next().remove();
+                    $("#fromDateDiv").addClass("has-error");
+                    $("#toDateDiv").addClass("has-error");
+                    $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
+                }
+            }
+            else {
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.executeFilter(true);
+            }
         }
     });
 
