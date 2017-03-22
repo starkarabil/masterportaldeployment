@@ -4363,12 +4363,13 @@ Hilfsklassen
   position: absolute;
   right: 0px;
   cursor: pointer;
-  top: 7px;
+  top: 14px;
   width: 45px;
   height: 55px;
   border-radius: 3px !important;
   background-color: #0f5cad;
   color: white;
+  border-color: #0f5cad;
 }
 .lgv-container #div-mmlFilter-reset {
   height: 45px;
