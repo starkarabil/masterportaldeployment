@@ -19,6 +19,7 @@
   left: 100%;
 }
 .simple-lister-table {
+    overflow: auto;
     position: relative;
     display: block;
     height: 100%;

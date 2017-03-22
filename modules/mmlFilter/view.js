@@ -196,7 +196,6 @@ define(function (require) {
                 });
                 $("#div-mmlFilter-reset-text").html("Alle Kategorien deaktivieren");
             }
-
         },
 
         executeFilter: function () {
