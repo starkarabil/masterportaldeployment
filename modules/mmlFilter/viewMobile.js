@@ -85,10 +85,10 @@ define([
                 selectedStatus = [],
                 selectedTimeId = $("input[name='zeitraum']:checked").val(),
                 date = new Date(),
-                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0,
-                timeDiff = daysDiff * 24 * 3600 * 1000,
-                fromDate = selectedTimeId !== "userdefined" ? new Date(date - (timeDiff)).toISOString().split("T")[0] : $("#fromDate").val(),
-                toDate = selectedTimeId !== "userdefined" ? date.toISOString().split("T")[0] : $("#toDate").val();
+                daysDiff,
+                timeDiff,
+                fromDate,
+                toDate;
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -97,10 +97,34 @@ define([
             $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
                 selectedStatus.push(status.id);
             });
-            console.log(selectedKat);
-            console.log(selectedStatus);
-            console.log(fromDate);
-            console.log(toDate);
+            if (selectedTimeId !== "ignore-time") {
+                daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0;
+                timeDiff = daysDiff * 24 * 3600 * 1000;
+                fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
+                toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
+
+                if (fromDate.getTime() <= toDate.getTime()) {
+                    $("#fromDate").css({border: ""});
+                    $("#toDate").css({border: ""});
+                    $("#toDate").next().remove();
+                    this.model.setSelectedKat(selectedKat);
+                    this.model.setSelectedStatus(selectedStatus);
+                    this.model.setFromDate(fromDate);
+                    this.model.setToDate(toDate);
+                    this.model.executeFilter(false);
+                }
+                else {
+                    $("#toDate").next().remove();
+                    $("#fromDate").css({border: "1px solid #a94442"});
+                    $("#toDate").css({border: "1px solid #a94442"});
+                    $("#toDate").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
+                }
+            }
+            else {
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.executeFilter(true);
+            }
         }
     });
 
