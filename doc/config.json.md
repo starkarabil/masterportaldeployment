@@ -44,7 +44,7 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen. Auch hier werden d
 |poi|nein|Boolean|false|Zeigt eine Liste von Features in der Umgebung an. Funktioniert nur wenn die Standortbestimmung (orientation) aktiviert ist. |
 |toggleMenu|nein|Boolean|false|Legt fest ob die Menüleiste ein- und ausgeblendet werden kann.|
 |zoom|nein|Boolean|false|Legt fest, ob die Zoombuttons angezeigt werden sollen. |
-|[mmlNewIssueButton](#markdown-header-portalconfig-mmlnewissuebutton)|nein|Object||Konfiguriert den Button zum Aufruf des MML-Assistenten |
+|[mmlNewIssueButton](#markdown-header-portalconfigcontrolsmmlnewissuebutton)|nein|Object||Konfiguriert den Button zum Aufruf des MML-Assistenten |
 
 **Beispiel controls:**
 
