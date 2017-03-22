@@ -33,7 +33,6 @@ define(function (require) {
             if (this.model.getIsVisible() === true) {
                 Radio.trigger("SimpleLister", "show");
                 $("#simple-lister-table").html(this.$el);
-                console.log(this.model.getCoordinate());
                 Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
             }
             else {
