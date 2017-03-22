@@ -122,7 +122,7 @@ Gibt an ob der in der Karte verwendete Marker verschiebbar sein soll.
 ******
 
 
-### Portalconfig.mmlNewIssueButton ###
+### Portalconfig.controls.mmlNewIssueButton ###
 Konfiguriert den Button zum Aufruf des MML-Assistenten.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|
