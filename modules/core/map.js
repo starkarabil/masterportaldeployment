@@ -51,6 +51,7 @@ define(function (require) {
                 "removeInteraction": this.removeInteraction,
                 "setBBox": this.setBBox,
                 "render": this.render,
+                "setSize": this.setSize,
                 "updateSize": this.updateSize,
                 "zoomToExtent": this.zoomToExtent,
                 "updatePrintPage": this.updatePrintPage,
@@ -89,6 +90,9 @@ define(function (require) {
             Radio.trigger("ModelList", "addInitialyNeededModels");
         },
 
+        render: function () {
+            this.get("map").render();
+        },
         /**
          * Findet einen Layer über seinen Namen und gibt ihn zurück
          * @param  {string} layerName - Name des Layers
@@ -102,7 +106,12 @@ define(function (require) {
 
             return layer;
         },
+        setSize: function () {
+            var width = $(".ol-viewport").width(),
+                height = $(".ol-viewport").height();
 
+            this.getMap().setSize([width,height]);
+        },
         /**
          * Erstellt einen Vectorlayer
          * @param {string} layerName - Name des Vectorlayers
@@ -127,10 +136,6 @@ define(function (require) {
 
         getLayers: function () {
             return this.get("map").getLayers();
-        },
-
-        render: function () {
-            this.get("map").render();
         },
 
         setBBox: function (bbox) {

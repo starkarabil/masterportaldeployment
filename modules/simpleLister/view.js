@@ -22,6 +22,11 @@ define([
         },
 
         initialize: function () {
+            var channel = Radio.channel("SimpleLister");
+
+            channel.on({
+                "collapse": this.collapse
+            }, this);
             this.listenTo(this.model, {
                 "newFeaturesInExtent": this.newFeaturesInExtent,
                 "appendFeaturesInExtent": this.appendFeaturesInExtent,
@@ -37,6 +42,11 @@ define([
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
+        collapse: function () {
+            if (this.$el.find(".glyphicon-triangle-right").length === 0) {
+                this.toggleSimpleList();
+            }
+        },
         triggerGFI: function (evt) {
             this.model.triggerGFI(parseInt(evt.currentTarget.id));
         },
@@ -50,7 +60,7 @@ define([
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
             this.$el.css({width: "41%"});
-            $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+            // $("#searchbarInMap").css({left: "calc(42% + 43px)"});
             this.model.getLayerFeaturesInExtent();
         },
 
@@ -60,7 +70,7 @@ define([
             glyphiconDom.removeClass("glyphicon-triangle-left").addClass("glyphicon-triangle-right");
             $("#simple-lister-table").hide();
             this.$el.css({width: "0%"});
-            $("#searchbarInMap").css({left: "43px"});
+            // $("#searchbarInMap").css({left: "43px"});
         },
 
         newFeaturesInExtent: function () {
@@ -139,17 +149,26 @@ define([
             $(".entries").append(ele);
         },
 
-        toggleSimpleList: function (evt) {
-            var glyphiconDom = $(evt.target);
+        toggleSimpleList: function () {
+            var glyphiconDom = this.$el;
 
-            if (glyphiconDom.hasClass("glyphicon-triangle-right") === true) {
+            Radio.trigger("MmlFilter", "collapse");
+            if (glyphiconDom.find(".glyphicon-triangle-right").length > 0) {
                 this.show();
+                $(".ol-viewport").css({
+                    width: "59%",
+                    float: "right"
+                });
             }
             else {
                 this.hide();
+                $(".ol-viewport").css({
+                    width: "100%",
+                    float: ""
+                });
             }
+            Radio.trigger("Map", "setSize");
         },
-
         /**
          * Hebt Zeilen mit dieser id hervor
          */
