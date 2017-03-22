@@ -44,6 +44,7 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen. Auch hier werden d
 |poi|nein|Boolean|false|Zeigt eine Liste von Features in der Umgebung an. Funktioniert nur wenn die Standortbestimmung (orientation) aktiviert ist. |
 |toggleMenu|nein|Boolean|false|Legt fest ob die Menüleiste ein- und ausgeblendet werden kann.|
 |zoom|nein|Boolean|false|Legt fest, ob die Zoombuttons angezeigt werden sollen. |
+|[mmlNewIssueButton](#markdown-header-portalconfigcontrolsmmlnewissuebutton)|nein|Object||Konfiguriert den Button zum Aufruf des MML-Assistenten |
 
 **Beispiel controls:**
 
@@ -117,6 +118,17 @@ Gibt an ob der in der Karte verwendete Marker verschiebbar sein soll.
 |----|-------------|---|-------|------------|
 |marker|nein|String||Bei "dragMarker" wird der Marker auf der Karte verschiebbar, bei allen anderen Eingaben wird ein Marker verwendet, der nicht verschiebbar ist.|
 |visible|nein|Boolean|true|Gibt an ob der Marker beim initialen Laden der Karte sichtbar ist oder nicht.|
+
+******
+
+
+### Portalconfig.controls.mmlNewIssueButton ###
+Konfiguriert den Button zum Aufruf des MML-Assistenten.
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|
+|----|-------------|---|-------|------------|
+|visible|ja|Boolean|false|Definiert, ob der Button initial angezeigt werden soll.|
+|assistantURL|ja|String||URL, die aufgerufen werden soll.|
 
 ******
 
