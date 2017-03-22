@@ -121,6 +121,17 @@ Gibt an ob der in der Karte verwendete Marker verschiebbar sein soll.
 
 ******
 
+
+### Portalconfig.mmlNewIssueButton ###
+Konfiguriert den Button zum Aufruf des MML-Assistenten.
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|
+|----|-------------|---|-------|------------|
+|visible|ja|Boolean|false|Definiert, ob der Button initial angezeigt werden soll.|
+|url|ja|String||URL, die aufgerufen werden soll.|
+
+******
+
 #### Portalconfig.menu.contact ####
 Das Modul *contact* gibt dem Anwender des Portals die Möglichkeit, eine Mail mit seiner Fehlermeldung/Rückmeldung/Anmerkung etc. an den Betreiber des Portals zu versenden. 
 
