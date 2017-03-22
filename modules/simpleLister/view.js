@@ -1,6 +1,7 @@
 define([
     "text!modules/simpleLister/template.html",
-    "modules/simpleLister/model"
+    "modules/simpleLister/model",
+    "openlayers"
 
 ], function () {
 

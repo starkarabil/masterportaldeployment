@@ -14,25 +14,8 @@ define(function (require) {
          */
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.GeoJSON(),
-                loader: this.loaderFunction
+                format: new ol.format.GeoJSON()
             }, this));
-            this.getLayerSource().set("context", this);
-        },
-        loaderFunction: function () {
-            var features = this.get("context").getFeatures();
-            if (_.isUndefined(features)) {
-                $.ajax({
-                  url: this.get("url"),
-                  dataType: "json"
-                }).then(function (response) {
-                    features = new ol.format.GeoJSON().readFeatures(response);
-                    this.addFeatures(features);
-                });
-            }
-            else {
-                this.addFeatures(features);
-            }
         },
         /**
          * Lädt die JSON-Datei und startet parse
@@ -50,9 +33,7 @@ define(function (require) {
          * konvertiert die Daten in ol.features
          */
         parse: function (data) {
-            var vectorSource = new ol.source.Vector({
-                    format: new ol.format.GeoJSON()
-                });
+            var vectorSource = this.getLayerSource();
 
             this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
         },
@@ -68,6 +49,15 @@ define(function (require) {
             });
             this.getLayerSource().clear();
             this.getLayerSource().addFeatures(features);
+            Radio.trigger("MmlFilter","featuresLoaded");
+        },
+        checkIfFeaturesLoaded: function () {
+            var source = this.getLayerSource(),
+                features = source.getFeatures();
+
+            if (features.length > 1) {
+                Radio.trigger("MmlFilter","featuresLoaded");
+            }
         },
         /**
          * [createClusterLayerSource description]

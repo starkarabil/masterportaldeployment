@@ -19,6 +19,11 @@ define(function (require) {
             layerInfoClicked: false
         },
         initialize: function () {
+            var channel = Radio.channel("Layer");
+
+            channel.on({
+                "checkIfFeaturesLoaded": this.checkIfFeaturesLoaded
+            }, this);
             this.listenToOnce(this, {
                 // Die LayerSource wird beim ersten Selektieren einmalig erstellt
                 "change:isSelected": this.createLayerSource,
@@ -99,7 +104,6 @@ define(function (require) {
             this.setAttributes();
             this.createLegendURL();
         },
-
         getLayerInfoChecked: function () {
             return this.get("layerInfoChecked");
         },
@@ -122,6 +126,7 @@ define(function (require) {
         /**
          * abstrakte Funktionen die in den Subclasses überschrieben werden
          */
+        checkIfFeaturesLoaded: function () {},
         createLegendURL: function () {},
         createLayerSource: function () {},
         createLayer: function () {},
@@ -370,6 +375,7 @@ define(function (require) {
          */
         updateLayerTransparency: function () {
             var opacity = (100 - this.get("transparency")) / 100;
+
             // Auch wenn die Layer im simple Tree noch nicht selected wurde können
             // die Settings angezeigt werden. Das Layer objekt wurden dann jedoch noch nicht erzeugt und ist undefined
             if (!_.isUndefined(this.getLayer())) {

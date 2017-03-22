@@ -1,7 +1,6 @@
-define([
-], function () {
-
-    var MMLFilter = Backbone.Model.extend({
+define(function (require) {
+    var ol = require("openlayers"),
+        MMLFilter = Backbone.Model.extend({
 
         defaults: {
             mapHeight: $("#map").height(), // Map-Höhe
@@ -15,20 +14,24 @@ define([
             selFeatures: []
         },
         initialize: function () {
-            var layer = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}).get("layer"),
-                source = layer.getSource();
+            var channel = Radio.channel("MmlFilter");
+
+            channel.on({
+                "featuresLoaded": this.prepareFeatures
+            }, this);
+            Radio.trigger("Layer", "checkIfFeaturesLoaded");
+        },
+        prepareFeatures: function () {
+            var prepFeatures = [],
+                layerModel = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}),
+                layer = layerModel.get("layer"),
+                source = layer.getSource(),
+                features;
 
             if (source instanceof ol.source.Cluster) {
                 source = source.getSource();
             }
-            this.setFeatures(source.getFeatures());
-            this.prepareFeatures();
-        },
-        prepareFeatures: function () {
-            var features = this.getFeatures(),
-                prepFeatures = [];
-
-
+            features = source.getFeatures();
             _.each(features, function (feature, index) {
 
                 var datum = feature.get("start").slice(0,4) + "-" + feature.get("start").slice(4,6) + "-" + feature.get("start").slice(6,8);
@@ -142,6 +145,18 @@ define([
         },
         getSelFeatures: function () {
             return this.get("selFeatures");
+        },
+        setMapHeight: function (value) {
+            this.set("mapHeight", value);
+        },
+        getMapHeight: function () {
+            return this.get("mapHeight");
+        },
+        setMapWidth: function (value) {
+            this.set("mapWidth", value);
+        },
+        getMapWidth: function () {
+            return this.get("mapWidth");
         }
     });
 

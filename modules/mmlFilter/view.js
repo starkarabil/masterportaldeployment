@@ -32,12 +32,14 @@ define(function (require) {
 
         initialize: function () {
             this.render();
+            $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
+            $("#btn-mmlFilter-toggle").css({left: this.model.getMapWidth() - 50});
         },
 
         render: function () {
             var attr = this.model.toJSON();
 
-            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
         /**
@@ -63,7 +65,7 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var mapWidth = $("#map").width(),
+            var mapWidth = this.model.getMapWidth(),
                 startWidth = $("#div-mmlFilter-content").css("width"),
                 endWidth = startWidth === "0px" ? (mapWidth / 3) + "px" : "0px";
 
@@ -74,7 +76,7 @@ define(function (require) {
             }, {
                 duration: "slow",
                 progress: function () {
-                    var newLeftToggle = String(mapWidth - 45 - $("#div-mmlFilter-content").width()) + "px",
+                    var newLeftToggle = String(mapWidth - 50 - $("#div-mmlFilter-content").width()) + "px",
                         newLeftContent = String(mapWidth - $("#div-mmlFilter-content").width()) + "px";
 
                     $("#div-mmlFilter-content").css("left", newLeftContent);
