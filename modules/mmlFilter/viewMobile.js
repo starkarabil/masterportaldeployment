@@ -14,7 +14,8 @@ define([
 
     MobileMMLFilterView = Backbone.View.extend({
         model: new Model(),
-        className: "unselectable mmlFilter",
+        className: "modal fade unselectable mmlFilter",
+        id: "div-mmlFilter-content-mobile",
         template: _.template(Template),
         events: {
             "click #div-mmlFilter-reset-mobile": "resetKategorien",
@@ -37,6 +38,10 @@ define([
             var attr = this.model.toJSON();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            this.$el.modal({
+                backdrop: "static",
+                show: false
+            });
         },
 
         singleShowTargetFilter: function (evt) {

@@ -4459,9 +4459,10 @@ Hilfsklassen
   text-align: center;
   color: white;
   background-color: #005ca9;
-  margin: 30px 15px 20px 15px;
   position: absolute;
-  bottom: 0px;
+  bottom: 20px;
+  right: 15px;
+  left: 15px;
 }
 .lgv-container #div-mmlFilter-execute-text-mobile {
   font-size: 14px;
@@ -4491,6 +4492,7 @@ Hilfsklassen
   margin-right: 0px;
   overflow: auto;
   display: block;
+  max-height: calc("100%" - "345px");
 }
 .lgv-container .div-mmlFilter-filter-header-mobile {
   font-weight: bold;
@@ -4577,7 +4579,6 @@ Hilfsklassen
   background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
 .lgv-container .panel-collapse {
-  max-height: 28vh;
   overflow: auto;
 }
 .lgv-container #div-mmlFilter-content-mobile {
@@ -4588,20 +4589,21 @@ Hilfsklassen
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
-  height: 100%;
+  height: calc("100%" - "40px");
+  height: -moz-calc("100%" - "40px");
+  height: -webkit-calc("100%" - "40px");
   color: #333333;
   background-color: #f2f2f2;
-  margin: 20px 15px 20px 15px;
-  top: 0px;
-  right: 0px;
+  right: 15px;
+  left: 15px;
+  top: 20px;
+  bottom: 20px;
   border: none;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   -o-border-radius: 0px;
   -ms-border-radius: 0px;
   -moz-box-shadow: 0px;
-  -webkit-box-shadow: 0px;
-  box-shadow: 0px;
 }
 .lgv-container #div-mmlFilter-modal-dialog {
   margin: 0px;
