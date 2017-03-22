@@ -48,6 +48,7 @@ define(function (require) {
                 }
             });
             this.getLayerSource().clear();
+            features = this.sortFeaturesByAttr(features, "mmlid");
             this.getLayerSource().addFeatures(features);
             Radio.trigger("MmlFilter","featuresLoaded");
         },
@@ -187,7 +188,14 @@ define(function (require) {
             features = _.filter(featuresToHide, function (feature) {
                 return _.contains(featureAttrList, String(feature.get(attr)));
             });
-            features.sort(function (a, b) {
+
+            features = this.sortFeaturesByAttr(features,attr);
+            source.addFeatures(features);
+            featuresToHide = _.difference(featuresToHide, features);
+            this.setFeaturesToHide(featuresToHide);
+        },
+        sortFeaturesByAttr: function (features, attr) {
+            return features.sort(function (a, b) {
                 var a_id = parseInt(a.get(attr)),
                     b_id = parseInt(b.get(attr));
 
@@ -195,11 +203,7 @@ define(function (require) {
                 if (a_id > b_id) {return 1;}
                 return 0;
             });
-            source.addFeatures(features);
-            featuresToHide = _.difference(featuresToHide, features);
-            this.setFeaturesToHide(featuresToHide);
         },
-
         /**
          * Versteckt nur die Features an, deren Id übergeben wird
          * @param  {string[]} featureIdList
