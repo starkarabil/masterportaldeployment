@@ -32,14 +32,16 @@ define(function (require) {
             var channel = Radio.channel("GFI");
 
             channel.on({
-                "setIsVisible": this.setIsVisible
+                "setIsVisible": this.setIsVisible,
+                "createGFIFromSimpleLister": this.createGFIFromSimpleLister
             }, this);
 
             channel.reply({
                 "getIsVisible": this.getIsVisible,
                 "getGFIForPrint": this.getGFIForPrint,
                 "getCoordinate": this.getCoordinate,
-                "getCurrentView": this.getCurrentView
+                "getCurrentView": this.getCurrentView,
+                "getTheme": this.getTheme
             }, this);
 
             this.listenTo(this, {
@@ -132,8 +134,11 @@ define(function (require) {
                 if (this.getDesktopViewType() === "attached") {
                     CurrentView = require("modules/tools/gfi/desktop/attached/view");
                 }
-                else {
+                else if (this.getDesktopViewType() === "detached") {
                     CurrentView = require("modules/tools/gfi/desktop/detached/view");
+                }
+                else {
+                    CurrentView = require("modules/tools/gfi/desktop/simpleLister/view");
                 }
             }
             this.setCurrentView(new CurrentView({model: this}));
@@ -191,7 +196,14 @@ define(function (require) {
          * @param  {ol.layer.Vector} olLayer
          */
         searchModelByFeature: function (featureAtPixel, olLayer) {
-            var model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            var model;
+
+            if (_.isObject(olLayer) === true) {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            }
+            else {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer});
+            }
 
             if (_.isUndefined(model) === false) {
                 var modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
@@ -306,6 +318,10 @@ define(function (require) {
             return this.getOverlay().getElement();
         },
 
+        getTheme: function () {
+             return this.getThemeList().at(this.getThemeIndex());
+        },
+
         getThemeIndex: function () {
             return this.get("themeIndex");
         },
@@ -348,6 +364,14 @@ define(function (require) {
             else {
                 return false;
             }
+        },
+
+        createGFIFromSimpleLister: function (feature, layerId) {
+            this.searchModelByFeature(feature, layerId);
+            this.setCoordinate(feature.getGeometry().getFirstCoordinate());
+            this.setThemeIndex(0);
+            this.getThemeList().reset(gfiParams);
+            gfiParams = [];
         }
 
     });
