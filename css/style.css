@@ -4169,12 +4169,6 @@ Hilfsklassen
   color: #fff;
   cursor: pointer;
 }
-.lgv-container #simple-lister img {
-  /*padding: 26px 12px;*/
-}
-.lgv-container #simple-lister img:hover {
-  /*cursor: pointer;*/
-}
 .lgv-container #simple-lister span {
   font-size: 18px;
   letter-spacing: -0.4px;
@@ -4182,6 +4176,7 @@ Hilfsklassen
 }
 .lgv-container #simple-lister p {
   padding: 22px 12px;
+  margin: 0;
 }
 .lgv-container #simple-lister p:first-child:hover {
   cursor: pointer;
@@ -4290,6 +4285,7 @@ Hilfsklassen
   left: 100%;
 }
 .lgv-container .simple-lister-table {
+  overflow: auto;
   position: relative;
   display: block;
   height: 100%;
@@ -4719,9 +4715,10 @@ Hilfsklassen
 }
 .lgv-container .theme-wrapper div {
   padding: 0px 26px 32px 34px;
+  line-height: 27px;
 }
 .lgv-container .theme-wrapper div.heading {
-  padding-top: 0px;
+  padding-top: 10px;
   padding-bottom: 10px;
   font-weight: bold;
 }
@@ -4731,12 +4728,13 @@ Hilfsklassen
 .lgv-container .theme-wrapper .top-picture {
   width: 100%;
   margin-bottom: 25px;
+  max-height: 250px;
 }
 .lgv-container .theme-wrapper .heading {
   font-size: 16px;
 }
 .lgv-container .theme-wrapper .gemeldet-am {
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 }
 .lgv-container .mmlAssistentCaller {
   position: absolute;
