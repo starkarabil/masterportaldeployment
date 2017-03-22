@@ -75,9 +75,22 @@ define([
         },
 
         resetKategorien: function () {
-            $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
-                $(kategorie).prop("checked", false);
-            });
+            var status = $("#div-mmlFilter-reset-mobile").attr("value");
+
+            if (status === "deaktivieren") {
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", false);
+                });
+                $("#div-mmlFilter-reset-text-mobile").html("Alle Kategorien aktivieren");
+                $("#div-mmlFilter-reset-mobile").attr("value","aktivieren");
+            }
+            else {
+                $("#div-mmlFilter-reset-mobile").attr("value", "deaktivieren");
+                $(".div-mmlFilter-filter-kategorien").children(":checkbox").each(function (index, kategorie) {
+                    $(kategorie).prop("checked", true);
+                });
+                $("#div-mmlFilter-reset-text-mobile").html("Alle Kategorien deaktivieren");
+            }
         },
 
         executeFilter: function () {
