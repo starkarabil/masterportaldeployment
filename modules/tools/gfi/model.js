@@ -32,7 +32,8 @@ define(function (require) {
             var channel = Radio.channel("GFI");
 
             channel.on({
-                "setIsVisible": this.setIsVisible
+                "setIsVisible": this.setIsVisible,
+                "createGFIFromSimpleLister": this.createGFIFromSimpleLister
             }, this);
 
             channel.reply({
@@ -203,7 +204,14 @@ define(function (require) {
          * @param  {ol.layer.Vector} olLayer
          */
         searchModelByFeature: function (featureAtPixel, olLayer) {
-            var model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            var model;
+
+            if (_.isObject(olLayer) === true) {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            }
+            else {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer});
+            }
 
             if (_.isUndefined(model) === false) {
                 var modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
@@ -364,6 +372,14 @@ define(function (require) {
             else {
                 return false;
             }
+        },
+
+        createGFIFromSimpleLister: function (feature, layerId) {
+            this.searchModelByFeature(feature, layerId);
+            this.setCoordinate(feature.getGeometry().getFirstCoordinate());
+            this.setThemeIndex(0);
+            this.getThemeList().reset(gfiParams);
+            gfiParams = [];
         }
 
     });

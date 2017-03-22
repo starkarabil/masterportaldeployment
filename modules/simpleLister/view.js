@@ -1,6 +1,7 @@
 define([
     "text!modules/simpleLister/template.html",
-    "modules/simpleLister/model"
+    "modules/simpleLister/model",
+    "openlayers"
 
 ], function () {
 
@@ -16,7 +17,8 @@ define([
             "click .simple-lister-button": "toggleSimpleList",
             "click #div-simpleLister-extentList": "appendMoreFeatures",
             "mouseenter .entry": "mouseenterEntry",
-            "mouseleave .entry": "mouseleaveEntry"
+            "mouseleave .entry": "mouseleaveEntry",
+            "click .entry": "triggerGFI"
         },
 
         initialize: function () {
@@ -35,7 +37,9 @@ define([
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
-
+        triggerGFI: function (evt) {
+            this.model.triggerGFI(parseInt(evt.currentTarget.id));
+        },
         appendMoreFeatures: function () {
             this.model.appendFeatures();
         },

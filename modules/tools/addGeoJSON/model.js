@@ -29,9 +29,9 @@ define(function (require) {
                 "addFeatures": function (features, name, hoverInfos) {
                     this.setLayerId(name);
                     this.createFeaturesFromGeoJson(features);
-                    if (this.getLayerName !== name) {
-                        this.addLayer(hoverInfos);
+                    if (this.getLayerName() !== name) {
                         this.setLayerName(name);
+                        this.addLayer(hoverInfos);
                     }
                 }
             }, this);
