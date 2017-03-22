@@ -14,7 +14,7 @@ define([
         render: function () {
             var attr = this.model.toJSON();
 
-            $("#lgv-container").append(this.$el.html(this.template(attr)));
+            $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
         }
     });
 

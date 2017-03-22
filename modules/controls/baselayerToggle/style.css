@@ -1,6 +1,6 @@
 .baselayerToggle {
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 10px;
     border-radius: 5px !important;
     background-color: rgba(0, 0, 0, 0.5);
