@@ -25,12 +25,16 @@ define(function () {
             this.getParams();
         },
         getParams: function () {
-            var simpleLister = Radio.request("Parser", "getPortalConfig").simpleLister;
+            var configJSON = Radio.request("Parser", "getPortalConfig"),
+                simpleLister;
 
-            this.setLayerId(simpleLister.layerId);
-            this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
-            this.setFeaturesPerPage(simpleLister.featuresPerPage);
-            this.setSortProperty(simpleLister.sortProperty);
+            if (configJSON && configJSON.simpleLister) {
+                simpleLister = configJSON.simpleLister;
+                this.setLayerId(simpleLister.layerId);
+                this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
+                this.setFeaturesPerPage(simpleLister.featuresPerPage);
+                this.setSortProperty(simpleLister.sortProperty);
+            }
         },
 
         // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
@@ -122,7 +126,30 @@ define(function () {
             this.set("featuresInExtent", featuresReversed);
             this.set("totalFeaturesInPage", number);
         },
+        triggerGFI: function (id) {
+            var geoJsonReader = new ol.format.GeoJSON(),
+                feature = _.find(this.getFeaturesInExtent(), {id: id}),
+                olFeature = geoJsonReader.readFeature(feature);
 
+            Radio.trigger("GFI", "createGFIFromSimpleLister", olFeature, this.getLayerId());
+        },
+        // getter for glyphicon
+        getGlyphicon: function () {
+            return this.get("glyphicon");
+        },
+        // setter for glyphicon
+        setGlyphicon: function (value) {
+            this.set("glyphicon", value);
+        },
+
+        // getter for display
+        getDisplay: function () {
+            return this.get("display");
+        },
+        // setter for display
+        setDisplay: function (value) {
+            this.set("display", value);
+        },
         // getter for totalFeaturesInPage
         getTotalFeaturesInPage: function () {
             return this.get("totalFeaturesInPage");
