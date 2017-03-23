@@ -106,6 +106,7 @@ define([
             console.log(selectedStatus);
             console.log(fromDate);
             console.log(toDate);
+            this.toggleFilterWindow();
         }
     });
 
