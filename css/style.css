@@ -3306,6 +3306,22 @@ Hilfsklassen
   border-radius: 50px !important;
   font-size: 20px;
 }
+.lgv-container #zoom .mml {
+  opacity: 0.5;
+  background-color: #000000;
+}
+.lgv-container #fullScreen .mml {
+  opacity: 0.5;
+  background-color: #000000;
+}
+.lgv-container #zoom > div > .mml:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+.lgv-container #fullScreen > div > .mml:hover {
+  cursor: pointer;
+  opacity: 1;
+}
 .lgv-container .dropdown-menu {
   border: 1px solid #ccc;
 }

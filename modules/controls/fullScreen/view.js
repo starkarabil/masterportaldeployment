@@ -14,7 +14,12 @@ define([
             this.render();
         },
         render: function () {
+            var newStyle = Radio.request("Parser", "getPortalConfig").controls.style;
+
             this.$el.html(this.template);
+            if (_.isUndefined(Radio.request("Parser", "getPortalConfig").controls.style) === false) {
+                $(".glyphicon.glyphicon-fullscreen").addClass(newStyle);
+            }
         },
         toggleFullScreen: function () {
             // true wenn "window" keine iframe ist --> FullScree-Modus (F11)
