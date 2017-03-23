@@ -168,7 +168,7 @@ define(function (require) {
                 }
             }
         },
-        resetKategorien: function (evt) {
+        resetKategorien: function () {
             var status = $("#div-mmlFilter-reset").attr("value");
 
             if (status === "deaktivieren") {
@@ -176,7 +176,7 @@ define(function (require) {
                     $(kategorie).prop("checked", false);
                 });
                 $("#div-mmlFilter-reset-text").html("Alle Kategorien aktivieren");
-                $("#div-mmlFilter-reset").attr("value","aktivieren");
+                $("#div-mmlFilter-reset").attr("value", "aktivieren");
             }
             else {
                 $("#div-mmlFilter-reset").attr("value", "deaktivieren");

@@ -6,7 +6,7 @@ define(function (require) {
             mapHeight: $("#map").height(), // Map-Höhe
             mapWidth: $("#map").width(), // Map-Breite
             filterMaxHeight: $("#map").height() - 238,
-            filterMaxHeightMobile: $("#map").height() - 345, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
+            filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
             selectedKat: [],
             selectedStatus: [],
             fromDate: "",
@@ -24,7 +24,7 @@ define(function (require) {
         },
         prepareFeatures: function () {
             var prepFeatures = [],
-                layerModel = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}),
+                layerModel = Radio.request("ModelList", "getModelByAttributes", {"id": "6059"}),
                 layer = layerModel.get("layer"),
                 source = layer.getSource(),
                 features;
@@ -33,9 +33,8 @@ define(function (require) {
                 source = source.getSource();
             }
             features = source.getFeatures();
-            _.each(features, function (feature, index) {
-
-                var datum = feature.get("start").slice(0,4) + "-" + feature.get("start").slice(4,6) + "-" + feature.get("start").slice(6,8);
+            _.each(features, function (feature) {
+                var datum = feature.get("start").slice(0, 4) + "-" + feature.get("start").slice(4, 6) + "-" + feature.get("start").slice(6, 8);
 
                 prepFeatures.push({
                     "id": feature.get("mmlid"),
@@ -99,9 +98,8 @@ define(function (require) {
         },
         showFilteredFeatures: function () {
             var selFeatures = this.getSelFeatures(),
-                layer = Radio.request("ModelList", "getModelByAttributes",{"id": "6059"}),
+                layer = Radio.request("ModelList", "getModelByAttributes", {"id": "6059"}),
                 idList = [];
-
 
             _.each(selFeatures, function (feature) {
                 idList.push(feature.id);

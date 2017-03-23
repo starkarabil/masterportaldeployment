@@ -643,6 +643,9 @@ define(function (require) {
                 this.model.set("searchString", "");
                 $("#searchInput").blur();
             }
+            if (Radio.request("Util", "isViewMobile")) {
+                $("#searchInput").blur();
+            }
         }
     });
 
