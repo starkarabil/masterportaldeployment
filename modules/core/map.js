@@ -434,7 +434,9 @@ define(function (require) {
         createLayerIfNotExists: function (name) {
             var layers = this.getLayers(),
                 found = false,
-                resultLayer = {};
+                resultLayer = {},
+                source,
+                layer;
 
             _.each(layers.getArray(), function (layer) {
                 if (layer.get("name") === name) {
@@ -444,8 +446,8 @@ define(function (require) {
             }, this);
 
             if (!found) {
-                var source = new ol.source.Vector({useSpatialIndex: false}),
-                    layer = new ol.layer.Vector({
+                source = new ol.source.Vector({useSpatialIndex: false});
+                layer = new ol.layer.Vector({
                     name: name,
                     id: name,
                     source: source,
