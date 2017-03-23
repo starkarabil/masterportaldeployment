@@ -1,5 +1,4 @@
 define(function (require) {
-
     var ol = require("openlayers"),
         MapView = require("modules/core/mapView"),
         Map;
@@ -81,6 +80,10 @@ define(function (require) {
                 this.changedExtent();
             }, this);
 
+            this.registerListenerOnce("change:size", function () {
+                this.updateSize();
+            }, this);
+
             this.set("view", mapView.get("view"));
             this.getMap().setTarget("map");
             this.getMap().setView(this.get("view"));
@@ -89,6 +92,9 @@ define(function (require) {
             Radio.trigger("ModelList", "addInitialyNeededModels");
         },
 
+        render: function () {
+            this.get("map").render();
+        },
         /**
          * Findet einen Layer über seinen Namen und gibt ihn zurück
          * @param  {string} layerName - Name des Layers
@@ -102,7 +108,6 @@ define(function (require) {
 
             return layer;
         },
-
         /**
          * Erstellt einen Vectorlayer
          * @param {string} layerName - Name des Vectorlayers
@@ -127,10 +132,6 @@ define(function (require) {
 
         getLayers: function () {
             return this.get("map").getLayers();
-        },
-
-        render: function () {
-            this.get("map").render();
         },
 
         setBBox: function (bbox) {
@@ -433,7 +434,9 @@ define(function (require) {
         createLayerIfNotExists: function (name) {
             var layers = this.getLayers(),
                 found = false,
-                resultLayer = {};
+                resultLayer = {},
+                source,
+                layer;
 
             _.each(layers.getArray(), function (layer) {
                 if (layer.get("name") === name) {
@@ -443,8 +446,8 @@ define(function (require) {
             }, this);
 
             if (!found) {
-                var source = new ol.source.Vector({useSpatialIndex: false}),
-                    layer = new ol.layer.Vector({
+                source = new ol.source.Vector({useSpatialIndex: false});
+                layer = new ol.layer.Vector({
                     name: name,
                     id: name,
                     source: source,
@@ -500,7 +503,16 @@ define(function (require) {
           * http://openlayers.org/en/latest/apidoc/ol.Map.html#updateSize
           */
          updateSize: function () {
-             this.getMap().updateSize();
+             var width = $(".ol-viewport").width(),
+                height = $(".ol-viewport").height();
+
+            this.getMap().setSize([width,height]);
+            // listener auf "change:size" wird nur einmal registriert, da wir sonst beim Setzen der Size in eine Endlosschleife laufen.
+            // Leider müssen wir jetzt jedes mal einmalig auf das event hören.
+            // Falls es in Zukunft in ol die Möglichkeit gibt setSize() silent aufzurufen, kann der ListenerOnce umgebaut werden.
+            this.registerListenerOnce("change:size", function () {
+                this.updateSize();
+            }, this);
          }
     });
 
