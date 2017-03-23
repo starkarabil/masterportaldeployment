@@ -270,6 +270,9 @@ define(function (require) {
         *
         */
         renderHitList: function (evt) {
+            var attr,
+                template;
+
             // if (this.model.get("isHitListReady") === true) {
                 if (evt.type !== "click" || this.model.get("hitList").length === 1) {
                     this.hitSelected(evt); // erster und einziger Eintrag in Liste
@@ -279,7 +282,7 @@ define(function (require) {
                 }
                 else {
                     this.model.set("typeList", _.uniq(_.pluck(this.model.get("hitList"), "type")));
-                    var attr = this.model.toJSON(),
+                    attr = this.model.toJSON(),
                     // sz, will in lokaler Umgebung nicht funktionieren, daher erst das Template als Variable
                     // $("ul.dropdown-menu-search").html(_.template(SearchbarHitListTemplate, attr));
                         template = _.template(SearchbarHitListTemplate);
@@ -350,7 +353,7 @@ define(function (require) {
             event = e || window.event;
 
             if (event.keyCode === 38 || event.keyCode === 40 || event.keyCode === 13) {
-                var selected = this.getSelectedElement(),
+                selected = this.getSelectedElement(),
                 firstListElement = this.getFirstElement();
             }
 
@@ -424,8 +427,9 @@ define(function (require) {
         },
 
         nextElement: function (selected) {
-            selected.removeClass("selected");
             var next = {};
+
+            selected.removeClass("selected");
 
             if (this.isFolderElement(selected) && selected.hasClass("open")) {
                 next = this.getFirstChildElement(selected);
@@ -462,8 +466,9 @@ define(function (require) {
         },
 
         prevElement: function (selected) {
-            selected.removeClass("selected");
             var prev = {};
+
+            selected.removeClass("selected");
 
             if (this.isFirstElement(selected)) {
                 if (this.isChildElement(selected)) {
@@ -499,13 +504,16 @@ define(function (require) {
         *
         */
         setSearchString: function (evt) {
+            var that,
+                el;
+
             if (evt.target.value.length === 0) {
                 // suche zurücksetzten, wenn der nletzte Buchstabe gelöscht wurde
                 this.deleteSearchString();
             }
             else {
                 if (evt.type === "paste") {
-                    var that = this;
+                    that = this;
 
                     // Das Paste Event tritt auf, bevor der Wert in das Element eingefügt wird
                     setTimeout(function () {
@@ -513,7 +521,7 @@ define(function (require) {
                     }, 0);
                 }
                 else if (evt.keyCode === this.constants.arrowDown) {
-                    var el = $("#searchInput:focus");
+                    el = $("#searchInput:focus");
 
                     if (el.size() !== 0) {
                         $("#searchInput").removeClass("active");

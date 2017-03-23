@@ -52,12 +52,14 @@ define([
         * aus View gaufgerufen
         */
         setSearchString: function (value, eventType) {
-            var splitAdress = value.split(" ");
+            var splitAdress = value.split(" "),
+                houseNumber,
+                streetName;
 
             // für Copy/Paste bei Adressen
             if (splitAdress.length > 1 && splitAdress[splitAdress.length - 1].match(/\d/) && eventType === "paste") {
-                var houseNumber = splitAdress[splitAdress.length - 1],
-                    streetName = value.substr(0, value.length - houseNumber.length - 1);
+                houseNumber = splitAdress[splitAdress.length - 1];
+                streetName = value.substr(0, value.length - houseNumber.length - 1);
 
                 this.set("searchString", streetName);
                 EventBus.trigger("setPastedHouseNumber", houseNumber);
@@ -102,9 +104,9 @@ define([
                     }
                 }
                 hit.firstString = splitNameArray[0];
-                hit.firstInt = parseInt(splitNameArray[1]);
+                hit.firstInt = parseInt(splitNameArray[1], 10);
                 hit.secondString = splitNameArray[2];
-                hit.secondInt = parseInt(splitNameArray[3]);
+                hit.secondInt = parseInt(splitNameArray[3], 10);
                 hitListNew.push(hit);
             });
             sortedHitList = _.chain(hitListNew).sortBy("secondString").sortBy("secondInt").sortBy("firstInt").sortBy("firstString").value();
