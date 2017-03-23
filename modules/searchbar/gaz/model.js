@@ -34,13 +34,13 @@ define([
          * @param {integer} [config.minCharacters=3] - Mindestanzahl an Characters im Suchstring, bevor Suche initieert wird. Default: 3.
          */
         initialize: function (config) {
+            var gazService = Radio.request("RestReader", "getServiceById", config.serviceId);
+
             this.listenTo(EventBus, {
                 "setPastedHouseNumber": this.setPastedHouseNumber,
                 "searchbar:search": this.search,
                 "gaz:adressSearch": this.adressSearch
             });
-
-            var gazService = Radio.request("RestReader", "getServiceById", config.serviceId);
 
             if (gazService[0] && gazService[0].get("url")) {
                 this.set("gazetteerURL", gazService[0].get("url"));
@@ -77,6 +77,8 @@ define([
         *
         */
         search: function (searchString) {
+            var gemarkung, flurstuecksnummer;
+
             this.set("searchString", searchString);
             if (searchString.length >= this.get("minChars")) {
                 if (this.get("searchStreets") === true) {
@@ -94,7 +96,6 @@ define([
                     }
                 }
                 if (this.get("searchParcels") === true) {
-                    var gemarkung, flurstuecksnummer;
 
                     if (!_.isNull(searchString.match(/^[0-9]{4}[\s|\/][0-9]*$/))) {
                         gemarkung = searchString.split(/[\s|\/]/)[0];
@@ -180,7 +181,9 @@ define([
                 coordinates,
                 hitNames = [],
                 hitName,
-                hitObject;
+                hitObject,
+                firstDigit,
+                newHouseNumber;
 
             _.each(hits, function (hit) {
                 coordinates = $(hit).find("gml\\:posList,posList")[0].textContent;
@@ -205,7 +208,7 @@ define([
                     this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(hitName), this.getHouseNumbers, false, this.getTypeOfRequest());
                 }
                 else if (hits.length === 0) {
-                    var firstDigit = this.get("searchString").search(/\d/),
+                    firstDigit = this.get("searchString").search(/\d/),
                     newHouseNumber = this.get("searchString").substring(firstDigit).replace(/\ /g, "");
 
                     if (!_.include(this.get("searchString").toString(), this.get("prevSearchString").toString())) {
@@ -253,14 +256,15 @@ define([
             EventBus.trigger("createRecommendedList");
         },
         searchInHouseNumbers: function () {
-            var address;
+            var address,
+            number;
 
             // Adressuche über Copy/Paste
             Radio.trigger("Searchbar", "setHitList", []);
             if (this.get("pastedHouseNumber") !== undefined) {
                 _.each(this.get("houseNumbers"), function (houseNumber) {
                     address = houseNumber.name.replace(/ /g, "");
-                    var number = houseNumber.adress.housenumber + houseNumber.adress.affix;
+                    number = houseNumber.adress.housenumber + houseNumber.adress.affix;
 
                     if (number.indexOf(this.get("pastedHouseNumber")) === 0) {
                         Radio.trigger("Searchbar", "pushHits", "hitList", houseNumber);
@@ -294,6 +298,8 @@ define([
 
             this.set("houseNumbers", []);
             _.each(hits, function (hit) {
+                var obj;
+
                 position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
                 coordinate = [parseFloat(position[0]), parseFloat(position[1])];
                 number = $(hit).find("dog\\:hausnummer,hausnummer")[0].textContent;
@@ -315,7 +321,7 @@ define([
                     };
                 }
                 // "Hitlist-Objekte"
-                var obj = {
+                obj = {
                     name: name,
                     type: "Adresse",
                     coordinate: coordinate,
