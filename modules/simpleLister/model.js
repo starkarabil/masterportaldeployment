@@ -1,39 +1,106 @@
-define([
+define(function () {
 
-], function () {
-
-    var
-        SimpleLister;
-
-    SimpleLister = Backbone.Model.extend({
+    var SimpleListerModel = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
-            featuresPerPage: 20,
-            glyphicon: "glyphicon-chevron-right",
-            display: "none"
+            featuresPerPage: 20, // Anzahl initialer Features in Liste
+            totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
+            totalFeatures: 0, // Anzahl aller Features im Extent
+            sortProperty: "ende"
         },
 
         initialize: function () {
+            var channel = Radio.channel("SimpleLister");
+
+            channel.on({
+                "show": function () {
+                    this.trigger("show");
+                },
+                "render": function () {
+                    this.trigger("render");
+                }
+            }, this);
+
             Radio.trigger("Map", "registerListener", "moveend", this.getLayerFeaturesInExtent, this);
             this.getParams();
         },
         getParams: function () {
-            var simpleLister = Radio.request("Parser","getPortalConfig").simpleLister;
+            var configJSON = Radio.request("Parser", "getPortalConfig"),
+                simpleLister;
 
-            this.setLayerId(simpleLister.layerId);
-            this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
-            this.setFeaturesPerPage(simpleLister.featuresPerPage);
+            if (configJSON && configJSON.simpleLister) {
+                simpleLister = configJSON.simpleLister;
+                this.setLayerId(simpleLister.layerId);
+                this.setErrortxt(simpleLister.errortxt || "Keine Features im Kartenausschnitt");
+                this.setFeaturesPerPage(simpleLister.featuresPerPage);
+                this.setSortProperty(simpleLister.sortProperty);
+            }
         },
 
+        // holt sich JSON-Objekte aus Extent und gewünschte Anzahl in Liste und initiiert setter
         getLayerFeaturesInExtent: function () {
-            var features = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
-                featuresObj = [];
+            // Soll nur ausgeführt werden, wenn nicht gerade das GFI sichtbar ist
+            if (Radio.request("GFI", "getIsVisible") === false) {
+                var featuresPerPage = this.get("featuresPerPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId()),
+                totalFeatures = jsonfeatures.length;
 
-            _.each(features, function (feature) {
-                featuresObj.push(JSON.parse(feature));
-            });
-            this.setFeaturesInExtent(featuresObj);
+                this.setTotalFeatures(totalFeatures);
+                this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+                this.trigger("newFeaturesInExtent");
+            }
         },
+
+        // holt sich JSON-Objekte aus Extent und verdoppelt gewünschte Anzahl in Liste und initiiert setter
+        appendFeatures: function () {
+            var featuresPerPage = this.get("featuresPerPage") + this.get("totalFeaturesInPage"),
+                jsonfeatures = Radio.request("ModelList", "getLayerFeaturesInExtent", this.getLayerId());
+
+            this.setFeaturesInExtent(jsonfeatures, featuresPerPage);
+            this.trigger("appendFeaturesInExtent");
+        },
+
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte anzupassen.
+         */
+        triggerMouseHoverById: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "hoverByCoordinates", coord);
+            }
+        },
+
+        /**
+         * Holt sich die Coordinate zur Id des in der Liste zuletzt gehoverten Features und triggert im Mousehover, um den Style des Features in der Karte zurück zu setzen.
+         */
+        triggerMouseHoverLeave: function (id) {
+            var coord = this.getFeatureCoordById(id);
+
+            if (coord) {
+                Radio.trigger("MouseHover", "resetStyle", coord);
+            }
+        },
+
+        /**
+         * Gibt die Koordinate zu der Feature Id zurück.
+         */
+        getFeatureCoordById: function (id) {
+            var features = this.getFeaturesInExtent(),
+                coord,
+                feature;
+
+                feature = _.find(features, function (feat) {
+                    return feat.id.toString() === id;
+                }),
+                coord = feature ? feature.geometry.coordinates : null;
+
+                return coord;
+        },
+
+        /*
+         * GETTTER / SETTER - Methoden
+         */
 
         // getter for featuresInExtent
         getFeaturesInExtent: function () {
@@ -41,17 +108,38 @@ define([
         },
 
         // setter for featuresInExtent
-        setFeaturesInExtent: function (value) {
-            this.set("featuresInExtent", value);
-        },
+        setFeaturesInExtent: function (jsonFeaturesInExtent, number) {
+            var sortProperty = this.getSortProperty(),
+                totalFeatures = jsonFeaturesInExtent.length,
+                number = totalFeatures < number ? totalFeatures : number,
+                featuresInExtent = _.map(jsonFeaturesInExtent, function (feat) {
+                    return JSON.parse(feat);
+                }),
+                featuresSorted = _.sortBy(featuresInExtent, function (feat) {
+                    if (feat.properties && _.has(feat.properties, sortProperty) === true) {
+                        return _.values(_.pick(feat.properties, sortProperty))[0];
+                    }
+                }),
+                featuresSelected = _.last(featuresSorted, number), // aktuellste Features in umgekehrter Reihenfolge
+                featuresReversed = featuresSelected.reverse();
 
+            this.set("featuresInExtent", featuresReversed);
+            this.set("totalFeaturesInPage", number);
+        },
+        triggerGFI: function (id) {
+            var geoJsonReader = new ol.format.GeoJSON(),
+                feature = _.find(this.getFeaturesInExtent(), {id: id}),
+                olFeature = geoJsonReader.readFeature(feature);
+
+            Radio.trigger("GFI", "createGFIFromSimpleLister", olFeature, this.getLayerId());
+        },
         // getter for glyphicon
         getGlyphicon: function () {
             return this.get("glyphicon");
         },
         // setter for glyphicon
         setGlyphicon: function (value) {
-            this.set("glyphicon",value);
+            this.set("glyphicon", value);
         },
 
         // getter for display
@@ -60,7 +148,11 @@ define([
         },
         // setter for display
         setDisplay: function (value) {
-            this.set("display",value);
+            this.set("display", value);
+        },
+        // getter for totalFeaturesInPage
+        getTotalFeaturesInPage: function () {
+            return this.get("totalFeaturesInPage");
         },
 
         // getter for layerId
@@ -87,8 +179,26 @@ define([
         // getter für featuresPerPage
         getFeaturesPerPage: function () {
             return this.get("featuresPerPage");
+        },
+
+        // getter for SortProperty
+        getSortProperty: function () {
+            return this.get("sortProperty");
+        },
+        // setter for SortProperty
+        setSortProperty: function (value) {
+            this.set("sortProperty", value);
+        },
+
+        // getter for totalFeatures
+        getTotalFeatures: function () {
+            return this.get("totalFeatures");
+        },
+        // setter for totalFeatures
+        setTotalFeatures: function (value) {
+            this.set("totalFeatures", value);
         }
     });
 
-    return SimpleLister;
+    return SimpleListerModel;
 });

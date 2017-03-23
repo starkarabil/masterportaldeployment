@@ -14,12 +14,52 @@ define(function (require) {
          */
         createLayerSource: function () {
             this.setLayerSource(new ol.source.Vector({
-                format: new ol.format.GeoJSON(),
+                format: new ol.format.GeoJSON()
+            }, this));
+        },
+        /**
+         * Lädt die JSON-Datei und startet parse
+         */
+        updateData: function () {
+            this.fetch({
                 url: this.get("url"),
-                features: this.getFeatures()
-            }));
+                cache: false,
+                error: function () {
+                    Radio.trigger("Alert", "alert", {text: "<strong>Layerdaten (JSON) konnten nicht geladen werden!</strong>", kategorie: "alert-danger"});
+                }
+            });
+        },
+        /**
+         * konvertiert die Daten in ol.features
+         */
+        parse: function (data) {
+            var vectorSource = this.getLayerSource();
+
+            this.updateLayerSourceData(vectorSource.getFormat().readFeatures(data));
         },
 
+        updateLayerSourceData: function (features) {
+            var count = 0;
+
+            features.forEach(function (feature) {
+                if (!feature.getId()) {
+                    feature.setId(count);
+                    count++;
+                }
+            });
+            this.getLayerSource().clear();
+            features = this.sortFeaturesByAttr(features, "mmlid");
+            this.getLayerSource().addFeatures(features);
+            Radio.trigger("MmlFilter","featuresLoaded");
+        },
+        checkIfFeaturesLoaded: function () {
+            var source = this.getLayerSource(),
+                features = source.getFeatures();
+
+            if (features.length > 1) {
+                Radio.trigger("MmlFilter","featuresLoaded");
+            }
+        },
         /**
          * [createClusterLayerSource description]
          * @return {[type]} [description]
@@ -45,8 +85,13 @@ define(function (require) {
                 gfiAttributes: this.get("gfiAttributes"),
                 routable: this.get("routable"),
                 gfiTheme: this.get("gfiTheme"),
-                id: this.getId()
+                id: this.getId(),
+                mouseHoverField: this.get("mouseHoverField")
             }));
+
+            if (_.isUndefined(this.get("url")) === false) {
+                this.updateData();
+            }
         },
 
         /**
@@ -88,11 +133,9 @@ define(function (require) {
             var source = this.getLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
-                _.each(featuresToHide, function (feature) {
-                    source.addFeature(feature);
-                    featuresToHide = _.without(featuresToHide, feature);
-                });
-                this.setFeaturesToHide(featuresToHide);
+            source.addFeatures(featuresToHide);
+            featuresToHide = [];
+            this.setFeaturesToHide(featuresToHide);
         },
 
         /**
@@ -105,8 +148,8 @@ define(function (require) {
 
             collection.forEach(function (feature) {
                 featuresToHide.push(feature);
-                source.removeFeature(feature);
-            }, this);
+            });
+            source.clear();
         },
 
         /**
@@ -117,17 +160,50 @@ define(function (require) {
             var source = this.getLayerSource(),
                 featuresToHide = this.getFeaturesToHide();
 
-            _.each(featureIdList, function (id) {
-                _.each(featuresToHide, function (feature) {
-                    if (String(feature.getId()) === id) {
-                        source.addFeature(feature);
-                        featuresToHide = _.without(featuresToHide, feature);
-                    }
-                }, this);
-            }, this);
+            features = _.filter(featuresToHide, function (feature) {
+                return _.contains(featureAttrList, String(feature.getId()));
+            });
+            features.sort(function (a, b) {
+                var a_id = parseInt(a.getId()),
+                    b_id = parseInt(b.getId());
+
+                if (a_id < b_id) {return -1;}
+                if (a_id > b_id) {return 1;}
+                return 0;
+            });
+            source.addFeatures(features);
+            featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
         },
+        /**
+         * Zeigt nur die Features an, deren Attr übergeben wird
+         * @param  {string[]} featureAttrList
+         * @param  {string} attr
+         */
+        showFeaturesByAttr: function (featureAttrList, attr) {
+            var source = this.getLayerSource(),
+                featuresToHide = this.getFeaturesToHide(),
+                features;
 
+            features = _.filter(featuresToHide, function (feature) {
+                return _.contains(featureAttrList, String(feature.get(attr)));
+            });
+
+            features = this.sortFeaturesByAttr(features,attr);
+            source.addFeatures(features);
+            featuresToHide = _.difference(featuresToHide, features);
+            this.setFeaturesToHide(featuresToHide);
+        },
+        sortFeaturesByAttr: function (features, attr) {
+            return features.sort(function (a, b) {
+                var a_id = parseInt(a.get(attr)),
+                    b_id = parseInt(b.get(attr));
+
+                if (a_id < b_id) {return -1;}
+                if (a_id > b_id) {return 1;}
+                return 0;
+            });
+        },
         /**
          * Versteckt nur die Features an, deren Id übergeben wird
          * @param  {string[]} featureIdList

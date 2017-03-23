@@ -32,14 +32,16 @@ define(function (require) {
             var channel = Radio.channel("GFI");
 
             channel.on({
-                "setIsVisible": this.setIsVisible
+                "setIsVisible": this.setIsVisible,
+                "createGFIFromSimpleLister": this.createGFIFromSimpleLister
             }, this);
 
             channel.reply({
                 "getIsVisible": this.getIsVisible,
                 "getGFIForPrint": this.getGFIForPrint,
                 "getCoordinate": this.getCoordinate,
-                "getCurrentView": this.getCurrentView
+                "getCurrentView": this.getCurrentView,
+                "getTheme": this.getTheme
             }, this);
 
             this.listenTo(this, {
@@ -100,7 +102,6 @@ define(function (require) {
             }
             this.initView();
         },
-
         /**
          * Prüft ob GFI aktiviert ist und registriert entsprechend den Listener oder eben nicht
          * @param  {String} id - Tool Id
@@ -133,8 +134,11 @@ define(function (require) {
                 if (this.getDesktopViewType() === "attached") {
                     CurrentView = require("modules/tools/gfi/desktop/attached/view");
                 }
-                else {
+                else if (this.getDesktopViewType() === "detached") {
                     CurrentView = require("modules/tools/gfi/desktop/detached/view");
+                }
+                else {
+                    CurrentView = require("modules/tools/gfi/desktop/simpleLister/view");
                 }
             }
             this.setCurrentView(new CurrentView({model: this}));
@@ -149,12 +153,19 @@ define(function (require) {
                 visibleGroupLayerList = Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, isOutOfRange: false, typ: "GROUP"}),
                 visibleLayerList = _.union(visibleWMSLayerList, visibleGroupLayerList),
                 eventPixel = Radio.request("Map", "getEventPixel", evt.originalEvent),
-                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel);
+                isFeatureAtPixel = Radio.request("Map", "hasFeatureAtPixel", eventPixel),
+                config,
+                marker;
 
                 this.setCoordinate(evt.coordinate);
 
                 // Abbruch, wenn auf SerchMarker x geklcikt wird.
-                if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
+
+                config = Radio.request("Parser", "getPortalConfig");
+                if (config) {
+                    marker = config.mapMarkerModul;
+                }
+                if (!_.isUndefined(marker) && marker === "mapMarker" && this.checkInsideSearchMarker (eventPixel[1], eventPixel[0]) === true) {
                     return;
                 }
 
@@ -181,6 +192,7 @@ define(function (require) {
                         }
                     }
                 }, this);
+
                 this.setThemeIndex(0);
                 this.getThemeList().reset(gfiParams);
                 gfiParams = [];
@@ -192,7 +204,14 @@ define(function (require) {
          * @param  {ol.layer.Vector} olLayer
          */
         searchModelByFeature: function (featureAtPixel, olLayer) {
-            var model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            var model;
+
+            if (_.isObject(olLayer) === true) {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
+            }
+            else {
+                model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer});
+            }
 
             if (_.isUndefined(model) === false) {
                 var modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
@@ -204,12 +223,32 @@ define(function (require) {
                 }
                 // Cluster Feature
                 else {
+                    // Cluster Feature hat nur ein Feature
                     if (featureAtPixel.get("features").length === 1) {
                         _.each(featureAtPixel.get("features"), function (feature) {
                             modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
                             modelAttributes.feature = feature;
                             gfiParams.push(modelAttributes);
                         });
+                    }
+                    // Cluster Feature mit mehr als einen Feature
+                    else {
+                        // In der letzten/größten Zoomstufe (ganz reingezoomt)
+                        if (Radio.request("MapView", "isLastZoomLevel") === true && Radio.request("Util", "isViewMobile")) {
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+                                modelAttributes.feature = feature;
+                                gfiParams.push(modelAttributes);
+                            });
+                        }
+                        else {
+                            var coords = [];
+
+                            _.each(featureAtPixel.get("features"), function (feature) {
+                                coords.push(feature.getGeometry().getCoordinates());
+                            });
+                            Radio.trigger("Map", "zoomToExtent", ol.extent.boundingExtent(coords));
+                        }
                     }
                 }
             }
@@ -287,6 +326,10 @@ define(function (require) {
             return this.getOverlay().getElement();
         },
 
+        getTheme: function () {
+             return this.getThemeList().at(this.getThemeIndex());
+        },
+
         getThemeIndex: function () {
             return this.get("themeIndex");
         },
@@ -329,6 +372,14 @@ define(function (require) {
             else {
                 return false;
             }
+        },
+
+        createGFIFromSimpleLister: function (feature, layerId) {
+            this.searchModelByFeature(feature, layerId);
+            this.setCoordinate(feature.getGeometry().getFirstCoordinate());
+            this.setThemeIndex(0);
+            this.getThemeList().reset(gfiParams);
+            gfiParams = [];
         }
 
     });

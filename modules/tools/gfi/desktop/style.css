@@ -17,7 +17,6 @@
 .gfi {
     border: 1px solid rgb(229, 229, 229);
     color: rgb(85, 85, 85);
-    font-family: "UniversNextW01-Regular",sans-serif;
 }
 
 
@@ -107,4 +106,20 @@
     background-color: #337ab7;
     color: #fff;
     cursor: pointer;
+}
+
+/* Desktop SimpleLister */
+#simple-lister span {
+    font-size: 18px;
+    letter-spacing: -0.4px;
+    color: #003063;
+}
+
+#simple-lister p {
+    padding: 22px 12px;
+    margin: 0;
+}
+
+#simple-lister p:first-child:hover {
+        cursor: pointer;
 }

@@ -10,7 +10,6 @@
 /**************** Themenbaum ****************/
 ul#Themen {
     border: none;
-    font-family: "UniversNextW01-Regular","Arial Narrow",Arial,sans-serif;
     padding: 0px 0;
     min-width:  380px;
 }
@@ -81,7 +80,6 @@ ul#Themen .catalog_buttons .glyphicon-adjust {
 }
 
 ul#Themen ul .title {
-    font-family: UniversNextW01-Regular,"Arial Narrow",Arial,sans-serif;
     font-size: 12px;
     cursor: pointer;
 }

@@ -16,6 +16,17 @@
 ### JavaScript
 ##### Leerzeichen, geschweifte Klammern und Zeilenumbrüche
 
+* Strings die zu lang werden, werden mit in mehrere Zeilen geschrieben und mit "+" verbunden.
+
+"so ja" Beispiel:
+```javascript
+    console.log("Dies ist ein besonders langer String " +
+                "Länge" + this.getStringLength() + " Zeichen, " +
+                "deswegen sollte der String nicht komplett in eine Zeile " +
+                "geschrieben werden");
+
+```
+
 * *if / else / for / while / try* enthalten immer Leerzeichen, geschweifte Klammern und erstrecken sich über mehrere Zeilen
 * keine leeren Blöcke
 
@@ -146,7 +157,7 @@ var html = "<div id='my-id'></div>";
 #### Kommentare
 * Mehrzeilige Kommentare sind gut
 * Kommentare am Zeilenende sind untersagt
-* JSDoc Style Kommentare sind gut, aber erfordern mehr Zeit
+* JSDoc Style Kommentare werden für Funktionen benutzt.
 
 #### Backbone spezifische Konventionen
 * "listenTo" anstatt "on" als Eventlistener
@@ -154,6 +165,32 @@ var html = "<div id='my-id'></div>";
 * Die render-Funktion ist in jeder View die zweite Funktion
 * Die Logik wird im Model programmiert(Controller)
 
+#### Require
+
+Der syntaktische Zucker (http://requirejs.org/docs/whyamd.html#sugar) wird verwendet:
+
+"so nicht" Beispiele:
+```javascript
+define("app",
+    [
+    "config",
+    "modules/core/util",
+    "modules/core/rawLayerList",
+    .
+    .
+    .
+], function (Config, Util, RawLayerList, ...) {
+
+````
+"so ja" Beispiele:
+```javascript
+define(function (require) {
+    var Backbone = require("backbone"),
+        Radio = require("backbone.radio"),
+        .
+        .
+        .
+```
 #### Sonstiges
 * Comma-First-Formatierung ist verboten
 * So wenig globale Variablen wie möglich
@@ -225,6 +262,110 @@ insert_final_newline = true
         "define",
         "require"
     ]
+}
+```
+Eslint-Config:
+
+```ini
+{
+  "rules": {
+    "no-empty": [
+      1,
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "no-mixed-spaces-and-tabs": 1,
+    "no-multiple-empty-lines": 1,
+    "no-multi-spaces": 1,
+    "key-spacing": [
+      1,
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "space-unary-ops": [
+      1,
+      {
+        "words": false,
+        "nonwords": false
+      }
+    ],
+    "array-bracket-spacing": [
+      1,
+      "never",
+      {
+        "arraysInArrays": true
+      }
+    ],
+    "space-in-parens": [
+      1,
+      "never"
+    ],
+    "comma-dangle": [
+      1,
+      "never"
+    ],
+    "no-trailing-spaces": 1,
+    "comma-style": [
+      1,
+      "last"
+    ],
+    "curly": [
+      1,
+      "all"
+    ],
+    "dot-notation": 1,
+    "brace-style": [
+      1,
+      "stroustrup",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "one-var": [
+      1,
+      "always"
+    ],
+    "operator-linebreak": [
+      1,
+      "after"
+    ],
+    "newline-after-var": [
+      1,
+      "always"
+    ],
+    "semi": [
+      1,
+      "always"
+    ],
+    "space-infix-ops": 1,
+    "keyword-spacing": [
+      1,
+      {}
+    ],
+    "spaced-comment": [
+      1,
+      "always"
+    ],
+    "space-before-blocks": [
+      1,
+      "always"
+    ],
+    "space-before-function-paren": [
+      1,
+      "always"
+    ],
+    "linebreak-style": [
+      off,
+      "windows"
+    ],
+    "quotes": [
+      1,
+      "double"
+    ]
+  }
 }
 ```
 

@@ -2,7 +2,7 @@ define([
         "modules/core/configLoader/parserDefaultTree",
     "modules/core/configLoader/parserCustomTree"
 ], function () {
-    var         DefaultTreeParser = require("modules/core/configLoader/parserDefaultTree"),
+    var DefaultTreeParser = require("modules/core/configLoader/parserDefaultTree"),
         CustomTreeParser = require("modules/core/configLoader/parserCustomTree"),
         Preparser;
 
@@ -11,7 +11,9 @@ define([
             return Radio.request("Util", "getPath", configPath) + "config.json";
         },
         initialize: function () {
-            this.fetch({async: false});
+            this.fetch({async: false, error: function () {
+                Radio.trigger("Alert", "alert", "Die Config.json konnte entweder nicht geladen oder nicht verarbeitet werden");
+            }});
         },
         parse: function (response) {
             var attributes = {

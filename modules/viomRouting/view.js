@@ -39,7 +39,7 @@ define([
             "click .pagination": "paginationSwitcher"
         },
         startAdressePosition: function () {
-            Radio.trigger("geolocation", "sendPosition");
+            Radio.trigger("Geolocation", "sendPosition");
         },
         paginationSwitcher: function (evt) {
             if ($(evt.target).parent().hasClass("disabled") === false) {

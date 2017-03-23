@@ -27,7 +27,7 @@ define([
         },
         initialize: function () {
             Radio.on("Window", "winParams", this.setStatus, this);
-            Radio.on("geolocation", "position", this.setStartpoint, this); // asynchroner Prozess
+            Radio.on("Geolocation", "position", this.setStartpoint, this); // asynchroner Prozess
         },
         setStartpoint: function (geoloc) {
             this.set("fromCoord", geoloc);

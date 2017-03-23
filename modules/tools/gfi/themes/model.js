@@ -160,6 +160,10 @@ define(function (require) {
             return this.get("gfiContent");
         },
 
+        getFeature: function () {
+            return this.get("feature");
+        },
+
         isValidKey: function (key) {
             var ignoredKeys = Config.ignoredKeys;
 

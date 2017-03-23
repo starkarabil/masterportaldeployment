@@ -32,7 +32,7 @@ define([
         render: function (portalTitle) {
             this.$el.html(this.template({
                 title: portalTitle,
-                logo: this.projektImgPath + this.getLogo(),
+                logo: this.getLogo(),
                 logoLink: Radio.request("Parser", "getPortalConfig").LogoLink || "http://geoinfo.hamburg.de",
                 logoTooltip: Radio.request("Parser", "getPortalConfig").LogoToolTip || "Landesbetrieb Geoinformation und Vermessung"
             }));
@@ -48,10 +48,10 @@ define([
                result = null;
             }
             else if (_.isUndefined(logo)) {
-                result = "hh-logo.png";
+                result = this.projektImgPath + "hh-logo.png";
             }
             else {
-                result = logo;
+                result = this.projektImgPath + logo;
             }
             this.logo = result;
         },

@@ -1,16 +1,16 @@
 define([
-        "text!modules/controls/orientation/template.html",
-    "modules/controls/orientation/model",
-    "config",
+    "backbone.radio",
+    "text!modules/controls/orientation/template.html",
+    "modules/controls/orientation/model"
 
-], function (OrientationTemplate, OrientationModel, Config) {
+], function (Radio, OrientationTemplate, OrientationModel) {
     "use strict";
     var OrientationView = Backbone.View.extend({
         className: "row",
         template: _.template(OrientationTemplate),
         model: OrientationModel,
         events: {
-            "click .orientationButtons > .glyphicon-map-marker": "getOrientation",
+            "click .orientationButtons > .orientation": "getOrientation",
             "click .orientationButtons > .glyphicon-record": "getPOI"
         },
         initialize: function () {
@@ -23,9 +23,10 @@ define([
             // Deshalb nehmen wir bei Chrome die Lokalisierung raus, da unsere Portale auf http laufen und die Dienste auch.
             if (showGeolocation) {// wenn es nicht Chrome UND http ist, Lokalisierung und InMeinerNähe initialisieren
 
-                var channel = Radio.channel("orientation");
+                var channel = Radio.channel("Orientation");
 
                 channel.on({
+                    "getOrientation": this.getOrientation,
                     "untrack": this.toggleLocateRemoveClass
                 }, this);
 
@@ -43,7 +44,7 @@ define([
 
                 this.render();
                 // erst nach render kann auf document.getElementById zugegriffen werden
-                this.model.get("marker").setElement(document.getElementById("geolocation_marker"));
+                this.model.addGeolocationClass();
                 if (this.model.get("isPoiOn")) {
                     require(["modules/controls/orientation/poi/view"], function (POIView) {
                         new POIView();
@@ -55,7 +56,12 @@ define([
         render: function () {
             var attr = this.model.toJSON();
 
-            this.$el.html(this.template(attr));
+            if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.geolocationIcon) {
+                this.model.setOrientationMarkerIcon();
+            }
+            else {
+                this.$el.html(this.template(attr));
+            }
         },
 
         /**
@@ -72,7 +78,7 @@ define([
             }
         },
 
-        toggleLocateRemoveClass: function() {
+        toggleLocateRemoveClass: function () {
             $("#geolocate").removeClass("toggleButtonPressed");
         },
         /*

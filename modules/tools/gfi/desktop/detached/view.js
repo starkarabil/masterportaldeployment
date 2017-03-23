@@ -33,7 +33,13 @@ define(function (require) {
                 this.$el.show();
                 this.setGfiLeftPosition();
                 Radio.trigger("MapMarker", "showMarker", this.model.getCoordinate());
-                if (Radio.request("Parser", "getPortalConfig").mapMarkerModul.marker === "mapMarker") {
+                var mapMarkerModul,
+                config = Radio.request("Parser", "getPortalConfig");
+
+                if (config) {
+                    mapMarkerModul = config.mapMarkerModul;
+                }
+                if (mapMarkerModul  && mapMarkerModul.marker === "mapMarker") {
                     Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
                 }
             }

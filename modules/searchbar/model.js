@@ -13,7 +13,9 @@ define([
             hitList: [],
             minChars: "",
             singleStreetName: "",
-            pasted: false
+            pasted: false,
+            // Ist die Searchbar sichtbar oder nicht
+            isVisible: true
             // isHitListReady: true
         },
         /**
@@ -26,18 +28,26 @@ define([
                 "pushHits": this.pushHits,
                 "setHitList": this.setHitList,
                 "createRecommendedList": this.createRecommendedList,
-                "setSingelStreeName": this.setSingleStreetName
+                "setSingelStreeName": this.setSingleStreetName,
+                "hide": function () {
+                    this.setIsVisible(false);
+                },
+                "show": function () {
+                    this.setIsVisible(true);
+                }
             }, this);
 
             if (Config.quickHelp) {
                 this.set("quickHelp", Config.quickHelp);
             }
+
             EventBus.on("createRecommendedList", this.createRecommendedList, this);
             EventBus.on("searchbar:pushHits", this.pushHits, this);
 
             if (_.isUndefined(Radio.request("ParametricURL", "getInitString")) === false) {
                 this.setInitSearchString(Radio.request("ParametricURL", "getInitString"));
             }
+
         },
 
         setInitSearchString: function (value) {
@@ -161,6 +171,22 @@ define([
         */
         getSingleStreetName: function () {
             return this.get("singleStreetName");
+        },
+
+        /**
+         * Setter für das Attribut "isVisible".
+         * @param {boolean} value
+         */
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        /**
+         * Getter für das Attribut "isVisible".
+         * @return {boolean}
+         */
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
 
     });
