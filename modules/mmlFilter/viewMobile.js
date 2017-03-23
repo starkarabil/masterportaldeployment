@@ -14,7 +14,8 @@ define([
 
     MobileMMLFilterView = Backbone.View.extend({
         model: new Model(),
-        className: "unselectable mmlFilter",
+        className: "modal fade unselectable mmlFilter",
+        id: "div-mmlFilter-content-mobile",
         template: _.template(Template),
         events: {
             "click #div-mmlFilter-reset-mobile": "resetKategorien",
@@ -37,6 +38,10 @@ define([
             var attr = this.model.toJSON();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
+            this.$el.modal({
+                backdrop: "static",
+                show: false
+            });
         },
 
         singleShowTargetFilter: function (evt) {
@@ -110,6 +115,7 @@ define([
             $(".div-mmlFilter-filter-status").children(":checked").each(function (index, status) {
                 selectedStatus.push(status.id);
             });
+
             if (selectedTimeId !== "ignore-time") {
                 daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0;
                 timeDiff = daysDiff * 24 * 3600 * 1000;
@@ -138,6 +144,8 @@ define([
                 this.model.setSelectedStatus(selectedStatus);
                 this.model.executeFilter(true);
             }
+
+            this.toggleFilterWindow();
         }
     });
 
