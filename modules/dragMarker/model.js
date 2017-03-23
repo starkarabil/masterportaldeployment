@@ -42,12 +42,12 @@ define(function (require) {
             dragMarkerFeature: null,
             featureAtPixel: null,
             sourceHH: null,
-            url: ""
+            url: "",
+            zoomLevelStreet: 4
         },
 
         initialize: function () {
             EventBus.on("searchbar:hit", this.searchbarhit, this);
-
 
             // Radio channel
             var channel = Radio.channel("DragMarker");
@@ -81,10 +81,15 @@ define(function (require) {
             this.setPosition(this.get("coordinate"));
             this.readConfig();
             this.getBoundaryHH();
+            var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+
+            if (_.has(searchConf, "zoomLevelStreet")) {
+                this.setZoomLevelStreet(searchConf.zoomLevelStreet);
+            }
         },
 
         readConfig: function () {
-            var config = Radio.request("Parser","getPortalConfig").mapMarkerModul,
+            var config = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
                 visible = config.visible ? config.visible : false,
                 landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
                 landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
@@ -181,7 +186,12 @@ define(function (require) {
 
             if (type === "point") {
                 this.setPosition(coord);
-                this.zoomTo(coord);
+                if (hit.type === "Straße") {
+                    Radio.trigger("MapView", "setCenter", hit.coordinate, this.getZoomLevelStreet());
+                }
+                else {
+                    this.zoomTo(coord);
+                }
             }
             else if (type === "bbox") {
                 _.each(coord, function (num, index, array) {
@@ -268,6 +278,19 @@ define(function (require) {
             this.set("dragMarkerFeature", null);
             this.set("featureAtPixel", null);
             return false;
+        },
+
+        /**
+        * Setter Zoomlevel für Straßen
+        */
+        setZoomLevelStreet: function (value) {
+            this.set("zoomLevelStreet", value);
+        },
+        /**
+        * Getter Zoomlevel für Straßen
+        */
+        getZoomLevelStreet: function () {
+            return this.get("zoomLevelStreet");
         }
     });
 

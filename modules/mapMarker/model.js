@@ -15,7 +15,8 @@ define([
             wkt: "",
             markers:[],
             source: new ol.source.Vector(),
-            zoomLevel: 7
+            zoomLevel: 7,
+            zoomLevelStreet: 4
         },
         initialize: function () {
 //            this.set("layer", new ol.layer.Vector({
@@ -28,8 +29,11 @@ define([
             });
             var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 
-            if(_.has(searchConf, "zoomLevel")){
+            if (_.has(searchConf, "zoomLevel")) {
                 this.set("zoomLevel", searchConf.zoomLevel);
+            }
+            if (_.has(searchConf, "zoomLevelStreet")) {
+                this.set("zoomLevelStreet", searchConf.zoomLevelStreet);
             }
         },
 
