@@ -507,6 +507,9 @@ define(function (require) {
                 height = $(".ol-viewport").height();
 
             this.getMap().setSize([width,height]);
+            // listener auf "change:size" wird nur einmal registriert, da wir sonst beim Setzen der Size in eine Endlosschleife laufen.
+            // Leider müssen wir jetzt jedes mal einmalig auf das event hören.
+            // Falls es in Zukunft in ol die Möglichkeit gibt setSize() silent aufzurufen, kann der ListenerOnce umgebaut werden.
             this.registerListenerOnce("change:size", function () {
                 this.updateSize();
             }, this);
