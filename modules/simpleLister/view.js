@@ -30,7 +30,7 @@ define([
             this.listenTo(this.model, {
                 "newFeaturesInExtent": this.newFeaturesInExtent,
                 "appendFeaturesInExtent": this.appendFeaturesInExtent,
-                "render": this.render,
+                "renderContent": this.renderContent,
                 "show": this.show
             });
 
@@ -42,6 +42,13 @@ define([
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
+
+        renderContent: function () {
+            var attr = this.model.toJSON();
+
+            this.$el.html(this.template(attr));
+        },
+
         collapse: function () {
             if (this.$el.find(".glyphicon-triangle-right").length === 0) {
                 this.toggleSimpleList();
@@ -62,6 +69,11 @@ define([
             this.$el.css({width: "41%"});
             // $("#searchbarInMap").css({left: "calc(42% + 43px)"});
             this.model.getLayerFeaturesInExtent();
+            $(".ol-viewport").css({
+                "width": "59%",
+                "float": "right"
+            });
+            Radio.trigger("Map", "updateSize");
         },
 
         hide: function () {
@@ -71,6 +83,11 @@ define([
             $("#simple-lister-table").hide();
             this.$el.css({width: "0%"});
             // $("#searchbarInMap").css({left: "43px"});
+            $(".ol-viewport").css({
+                "width": "100%",
+                "float": ""
+            });
+            Radio.trigger("Map", "updateSize");
         },
 
         newFeaturesInExtent: function () {
@@ -154,19 +171,10 @@ define([
             Radio.trigger("MmlFilter", "collapse");
             if (glyphiconDom.find(".glyphicon-triangle-right").length > 0) {
                 this.show();
-                $(".ol-viewport").css({
-                    "width": "59%",
-                    "float": "right"
-                });
             }
             else {
                 this.hide();
-                $(".ol-viewport").css({
-                    "width": "100%",
-                    "float": ""
-                });
             }
-            Radio.trigger("Map", "updateSize");
         },
         /**
          * Hebt Zeilen mit dieser id hervor

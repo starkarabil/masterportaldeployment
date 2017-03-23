@@ -506,7 +506,6 @@ define(function (require) {
              var width = $(".ol-viewport").width(),
                 height = $(".ol-viewport").height();
 
-            this.unregisterListener("change:size", this.prepareSetSize, this);
             this.getMap().setSize([width,height]);
             this.registerListenerOnce("change:size", function () {
                 this.updateSize();
