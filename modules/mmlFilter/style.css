@@ -251,6 +251,7 @@ gesamtes Filterwindow Desktop
 }
 .panel-collapse {
     overflow: auto;
+    margin: 15px 0;
 }
 
 /**********************************

@@ -4582,6 +4582,7 @@ Hilfsklassen
 }
 .lgv-container .panel-collapse {
   overflow: auto;
+  margin: 15px 0;
 }
 .lgv-container #div-mmlFilter-content-mobile {
   font-family: HamburgSans;
