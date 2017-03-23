@@ -21,7 +21,6 @@ neben Filterfenster
     position: relative;
     float:right;
     cursor: pointer;
-    /*top: 14px;*/
     top: -100%;
     width: 45px;
     height: 55px;
@@ -232,7 +231,6 @@ gesamtes Filterwindow Desktop
     width: 0px;
     color: #333333;
     border-radius: 1px !important;
-    /*max-width: 400px;*/
 }
 
 #fromDateDiv {

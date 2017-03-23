@@ -82,6 +82,10 @@ define(function (require) {
                 this.changedExtent();
             }, this);
 
+            this.registerListenerOnce("change:size", function () {
+                this.prepareSetSize();
+            }, this);
+
             this.set("view", mapView.get("view"));
             this.getMap().setTarget("map");
             this.getMap().setView(this.get("view"));
@@ -105,6 +109,13 @@ define(function (require) {
                 });
 
             return layer;
+        },
+        prepareSetSize: function () {
+            this.unregisterListener("change:size", this.prepareSetSize, this);
+            this.setSize();
+            this.registerListenerOnce("change:size", function () {
+                this.prepareSetSize();
+            }, this);
         },
         setSize: function () {
             var width = $(".ol-viewport").width(),

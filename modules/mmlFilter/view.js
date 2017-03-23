@@ -39,7 +39,7 @@ define(function (require) {
 
             this.render();
             $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
-            // $("#btn-mmlFilter-toggle").css({left: this.model.getMapWidth() - 50});
+            $("#btn-mmlFilter-toggle").css({top: "calc(-100% + 7px)"});
         },
 
         render: function () {
@@ -76,23 +76,12 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            // var mapWidth = this.model.getMapWidth(),
-            //     startWidth = $("#div-mmlFilter-content").css("width"),
-            //     endWidth = startWidth === "0px" ? (mapWidth / 3) : 0,
-            //     newLeftToggle = String(mapWidth - 50 - endWidth) + "px",
-            //     newLeftContent = String(mapWidth - endWidth) + "px";
-
             var mapWidth = Math.round(this.model.getMapWidth() / 100 * 33),
                 startWidth = $("#div-mmlFilter-content").css("width"),
-                // endWidth = startWidth === "0px" ? "" + mapWidth + "px" : "0px",
                 endWidth = startWidth === "0px" ? "33%" : "0%",
                 width = startWidth === "0px" ? "67%" : "100%",
                 float = startWidth === "0px" ? "left" : "";
 
-            // console.log(width);
-            // console.log(float);
-            // console.log(startWidth);
-            console.log(endWidth);
             Radio.trigger("SimpleLister", "collapse");
             $(".ol-viewport").css({
                 width: width,
