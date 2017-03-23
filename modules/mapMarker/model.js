@@ -113,7 +113,9 @@ define([
         askForMarkers: function () {
             var centers,
                 id,
-                marker;
+                marker,
+                imglink,
+                markers;
 
             if (_.has(Config, "zoomtofeature")) {
                 centers = Radio.request("zoomtofeature", "getCenterList"),
@@ -144,13 +146,14 @@ define([
             }
         },
         checkLayer: function (layerlist) {
-            var layer;
+            var layer,
+                markers;
 
             if (Config.zoomtofeature) {
                 layer = _.find(layerlist, {id: Config.zoomtofeature.layerid});
 
                 EventBus.trigger("mapMarker:getMarkers");
-                var markers = this.get("markers");
+                markers = this.get("markers");
 
                 _.each(markers, function (marker) {
                     if (layer === undefined) {
