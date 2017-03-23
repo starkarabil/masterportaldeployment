@@ -1,6 +1,8 @@
 define(function () {
+    var ol = require("openlayers"),
+        SimpleListerModel;
 
-    var SimpleListerModel = Backbone.Model.extend({
+    SimpleListerModel = Backbone.Model.extend({
         defaults: {
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
@@ -16,8 +18,8 @@ define(function () {
                 "show": function () {
                     this.trigger("show");
                 },
-                "render": function () {
-                    this.trigger("render");
+                "renderContent": function () {
+                    this.trigger("renderContent");
                 }
             }, this);
 
