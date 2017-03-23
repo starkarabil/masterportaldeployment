@@ -48,7 +48,7 @@ define([
             }
         },
         triggerGFI: function (evt) {
-            this.model.triggerGFI(parseInt(evt.currentTarget.id));
+            this.model.triggerGFI(parseInt(evt.currentTarget.id, 10));
         },
         appendMoreFeatures: function () {
             this.model.appendFeatures();
@@ -90,10 +90,8 @@ define([
         },
 
         appendFeaturesInExtent: function () {
-            var features = this.model.getFeaturesInExtent();
-
-            // Features nachgeladen: nur neue Features hinzufügen
-            var lastEntry = $(".entry").last()[0],
+            var features = this.model.getFeaturesInExtent(),
+                lastEntry = $(".entry").last()[0],
                 lastId = lastEntry.id,
                 indexLastId = _.findIndex(features, function (feat) {
                     var featId = feat.id.toString();
@@ -125,11 +123,12 @@ define([
 
         updateAppendFeaturesButton: function () {
             var totalFeaturesInPage = this.model.getTotalFeaturesInPage(),
-                totalFeatures = this.model.getTotalFeatures();
+                totalFeatures = this.model.getTotalFeatures(),
+                ele;
 
             $("#div-simpleLister-extentList").remove();
             if (totalFeaturesInPage < totalFeatures) {
-                var ele = "<div id='div-simpleLister-extentList' title='Liste erweitern'><span id='div-simpleLister-extentList-text'>Liste erweitern</span></div>";
+                ele = "<div id='div-simpleLister-extentList' title='Liste erweitern'><span id='div-simpleLister-extentList-text'>Liste erweitern</span></div>";
 
                 $(".entries").append(ele);
             }
@@ -156,15 +155,15 @@ define([
             if (glyphiconDom.find(".glyphicon-triangle-right").length > 0) {
                 this.show();
                 $(".ol-viewport").css({
-                    width: "59%",
-                    float: "right"
+                    "width": "59%",
+                    "float": "right"
                 });
             }
             else {
                 this.hide();
                 $(".ol-viewport").css({
-                    width: "100%",
-                    float: ""
+                    "width": "100%",
+                    "float": ""
                 });
             }
             Radio.trigger("Map", "updateSize");

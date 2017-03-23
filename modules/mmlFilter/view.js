@@ -76,16 +76,15 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var mapWidth = Math.round(this.model.getMapWidth() / 100 * 33),
-                startWidth = $("#div-mmlFilter-content").css("width"),
+            var startWidth = $("#div-mmlFilter-content").css("width"),
                 endWidth = startWidth === "0px" ? "33%" : "0%",
                 width = startWidth === "0px" ? "67%" : "100%",
-                float = startWidth === "0px" ? "left" : "";
+                cssFloat = startWidth === "0px" ? "left" : "";
 
             Radio.trigger("SimpleLister", "collapse");
             $(".ol-viewport").css({
-                width: width,
-                float: float
+                "width": width,
+                "float": cssFloat
             });
             Radio.trigger("Map", "updateSize");
             $("#div-mmlFilter-content").css({
@@ -168,7 +167,7 @@ define(function (require) {
                 }
             }
         },
-        resetKategorien: function (evt) {
+        resetKategorien: function () {
             var status = $("#div-mmlFilter-reset").attr("value");
 
             if (status === "deaktivieren") {
