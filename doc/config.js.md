@@ -35,7 +35,7 @@ Im Folgenden werden die einzelnen Konfigurationsoptionen beschrieben. Darüber h
 ## MML
 |Name|Verpflichtend|Typ|Default|Beschreibung|Beispiel|
 |----|-------------|---|-------|------------|--------|
-|mmlFullscreen|nein|boolean|-|Wenn dieser Parameter gesetzt und true ist, wird der mml container zum Modal und nicht die Browser fullscreen Funktion benutzt|isMml=true|
+|mmlFullscreen|nein|boolean|-|Wenn dieser Parameter gesetzt und true ist, wird der mml container zum Modal und nicht die Browser fullscreen Funktion benutzt|mmlFullscreen=true|
 
 ******
 ## animation
