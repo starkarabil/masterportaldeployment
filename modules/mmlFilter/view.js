@@ -87,7 +87,7 @@ define(function (require) {
                 width: width,
                 float: float
             });
-            Radio.trigger("Map","setSize");
+            Radio.trigger("Map","updateSize");
             $("#div-mmlFilter-content").css({
                 // width: endWidth
                 width: endWidth

@@ -167,7 +167,7 @@ define([
                     float: ""
                 });
             }
-            Radio.trigger("Map", "setSize");
+            Radio.trigger("Map", "updateSize");
         },
         /**
          * Hebt Zeilen mit dieser id hervor

@@ -51,7 +51,6 @@ define(function (require) {
                 "removeInteraction": this.removeInteraction,
                 "setBBox": this.setBBox,
                 "render": this.render,
-                "setSize": this.setSize,
                 "updateSize": this.updateSize,
                 "zoomToExtent": this.zoomToExtent,
                 "updatePrintPage": this.updatePrintPage,
@@ -83,7 +82,7 @@ define(function (require) {
             }, this);
 
             this.registerListenerOnce("change:size", function () {
-                this.prepareSetSize();
+                this.updateSize();
             }, this);
 
             this.set("view", mapView.get("view"));
@@ -109,19 +108,6 @@ define(function (require) {
                 });
 
             return layer;
-        },
-        prepareSetSize: function () {
-            this.unregisterListener("change:size", this.prepareSetSize, this);
-            this.setSize();
-            this.registerListenerOnce("change:size", function () {
-                this.prepareSetSize();
-            }, this);
-        },
-        setSize: function () {
-            var width = $(".ol-viewport").width(),
-                height = $(".ol-viewport").height();
-
-            this.getMap().setSize([width,height]);
         },
         /**
          * Erstellt einen Vectorlayer
@@ -516,7 +502,14 @@ define(function (require) {
           * http://openlayers.org/en/latest/apidoc/ol.Map.html#updateSize
           */
          updateSize: function () {
-             this.getMap().updateSize();
+             var width = $(".ol-viewport").width(),
+                height = $(".ol-viewport").height();
+
+            this.unregisterListener("change:size", this.prepareSetSize, this);
+            this.getMap().setSize([width,height]);
+            this.registerListenerOnce("change:size", function () {
+                this.updateSize();
+            }, this);
          }
     });
 
