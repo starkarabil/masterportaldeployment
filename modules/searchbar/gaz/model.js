@@ -169,12 +169,19 @@ define([
          */
         getStreets: function (data) {
             var hits = $("wfs\\:member,member", data),
+                position,
                 coordinates,
                 hitNames = [],
                 hitName;
 
             _.each(hits, function (hit) {
-                coordinates = $(hit).find("gml\\:posList,posList")[0].textContent;
+                if (_.isUndefined($(hit).find("iso19112\\:position_strassenachse,position_strassenachse").find("gml\\:pos,pos")[0]) === false) {
+                    position = $(hit).find("iso19112\\:position_strassenachse,position_strassenachse").find("gml\\:pos,pos")[0].textContent.split(" ");
+                }
+                else {
+                    position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
+                }
+                coordinates = [parseFloat(position[0]), parseFloat(position[1])];
                 hitName = $(hit).find("dog\\:strassenname, strassenname")[0].textContent;
                 hitNames.push(hitName);
                 // "Hitlist-Objekte"
