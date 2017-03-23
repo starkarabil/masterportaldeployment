@@ -1,5 +1,4 @@
 define(function (require) {
-
     var ol = require("openlayers"),
         MapView = require("modules/core/mapView"),
         Map;
