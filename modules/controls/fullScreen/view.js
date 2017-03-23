@@ -48,7 +48,7 @@ define(function (require) {
             }
         },
         toggleFullScreen: function () {
-            if (!_.isUndefined(Config.isMml) && Config.isMml) {
+            if (!_.isUndefined(Config.mmlFullscreen) && Config.mmlFullscreen) {
                 this.toggleMmlContainerIsModal();
             }
             else {

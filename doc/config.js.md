@@ -32,10 +32,11 @@ Im Folgenden werden die einzelnen Konfigurationsoptionen beschrieben. Darüber h
 |[zoomToFeature](#markdown-header-zoomtofeature)|nein|Object||Optionale Konfigurations-Einstellungen für den URL-Parameter *featureid*. Siehe [URL-Parameter](URL-Parameter.md).||
 
 ******
-##MML
+## MML
 |Name|Verpflichtend|Typ|Default|Beschreibung|Beispiel|
 |----|-------------|---|-------|------------|--------|
-|isMml|nein|boolean|-|Wenn dieser Parameter gesetzt und true ist, werden MML-spezifische Funktionen aktiviert|isMml=true|
+|mmlFullscreen|nein|boolean|-|Wenn dieser Parameter gesetzt und true ist, wird der mml container zum Modal und nicht die Browser fullscreen Funktion benutzt|isMml=true|
+
 ******
 ## animation
 
