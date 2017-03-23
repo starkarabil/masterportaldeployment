@@ -13,7 +13,7 @@ define([
                 stopEvent: false
             }),
             wkt: "",
-            markers:[],
+            markers: [],
             source: new ol.source.Vector(),
             zoomLevel: 7,
             zoomLevelStreet: 4
@@ -112,8 +112,8 @@ define([
                 var centers = Radio.request("zoomtofeature", "getCenterList"),
                     imglink = Config.zoomtofeature.imglink;
 
-                _.each(centers, function (center, i){
-                    var id = "featureMarker" +i;
+                _.each(centers, function (center, i) {
+                    var id = "featureMarker" + i;
 
                     // lokaler Pfad zum IMG-Ordner ist anders
                     $("#map").append("<div id=" + id + " class='featureMarker'><img src='" + Util.getPath(imglink) + "'></div>");
@@ -127,17 +127,18 @@ define([
 
                     marker.setPosition(center);
                     var markers = this.get("markers");
+
                     markers.push(marker);
                     this.set("markers", markers);
                     Radio.trigger("Map", "addOverlay", marker);
 
-                },this);
+                }, this);
                 EventBus.trigger("layerlist:getVisiblelayerList");
             }
         },
         checkLayer: function (layerlist) {
             if (Config.zoomtofeature) {
-                var layer = _.find(layerlist,{id:Config.zoomtofeature.layerid});
+                var layer = _.find(layerlist, {id: Config.zoomtofeature.layerid});
 
                 EventBus.trigger("mapMarker:getMarkers");
                 var markers = this.get("markers");

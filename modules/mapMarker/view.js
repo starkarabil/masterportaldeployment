@@ -36,6 +36,7 @@ define([
         */
         initialize: function () {
             var channel = Radio.channel("MapMarker");
+
             channel.on({
                 "showMarker": this.showMarker,
                 "hideMarker": this.hideMarker
