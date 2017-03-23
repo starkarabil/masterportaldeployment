@@ -32,13 +32,13 @@ define([
          * @param {integer} [config.minCharacters=3] - Mindestanzahl an Characters im Suchstring, bevor Suche initieert wird. Default: 3.
          */
         initialize: function (config) {
+            var gazService = Radio.request("RestReader", "getServiceById", config.serviceId);
+
             this.listenTo(EventBus, {
                 "setPastedHouseNumber": this.setPastedHouseNumber,
                 "searchbar:search": this.search,
                 "gaz:adressSearch": this.adressSearch
             });
-
-            var gazService = Radio.request("RestReader", "getServiceById", config.serviceId);
 
             if (gazService[0] && gazService[0].get("url")) {
                 this.set("gazetteerURL", gazService[0].get("url"));
@@ -117,13 +117,14 @@ define([
         * @param {string} [adress.affix] - Zusatz zur Hausnummer
         */
         adressSearch: function (adress) {
+            var searchString;
             if (adress.affix && adress.affix !== "") {
-                var searchString = (adress.streetname + "&hausnummer=" + adress.housenumber + "&zusatz=" + adress.affix).replace(/[()]/g, '\\$&');
+                searchString = (adress.streetname + "&hausnummer=" + adress.housenumber + "&zusatz=" + adress.affix).replace(/[()]/g, '\\$&');
 
                 this.sendRequest("StoredQuery_ID=AdresseMitZusatz&strassenname=" + encodeURIComponent(adress.streetname) + "&hausnummer=" + encodeURIComponent(adress.housenumber) + "&zusatz=" + encodeURIComponent(adress.affix), this.getAdress, false);
             }
             else {
-                var searchString = (adress.streetname + "&hausnummer=" + adress.housenumber).replace(/[()]/g, '\\$&');
+                searchString = (adress.streetname + "&hausnummer=" + adress.housenumber).replace(/[()]/g, '\\$&');
 
                 this.sendRequest("StoredQuery_ID=AdresseOhneZusatz&strassenname=" + encodeURIComponent(adress.streetname) + "&hausnummer=" + encodeURIComponent(adress.housenumber), this.getAdress, false);
             }
@@ -133,9 +134,11 @@ define([
         * @param {string} searchString - Suchstring
         */
         directSearch: function (searchString) {
+            var splitInitString;
+
             this.set("searchString", searchString);
             if (searchString.search(",") !== -1) {
-                var splitInitString = searchString.split(",");
+                splitInitString = searchString.split(",");
 
                 this.set("onlyOneStreetName", splitInitString[0]);
                 searchString = searchString.replace(/\ /g, "");
@@ -241,13 +244,14 @@ define([
             EventBus.trigger("createRecommendedList");
         },
         searchInHouseNumbers: function () {
-            var address;
+            var address,
+                number;
 
             // Adressuche über Copy/Paste
             if (this.get("pastedHouseNumber") !== undefined) {
                 _.each(this.get("houseNumbers"), function (houseNumber) {
                     address = houseNumber.name.replace(/ /g, "");
-                    var number = houseNumber.adress.housenumber + houseNumber.adress.affix;
+                    number = houseNumber.adress.housenumber + houseNumber.adress.affix;
 
                     if (number === this.get("pastedHouseNumber")) {
                         EventBus.trigger("searchbar:pushHits", "hitList", houseNumber);
@@ -280,6 +284,8 @@ define([
 
             this.set("houseNumbers", []);
             _.each(hits, function (hit) {
+                var obj;
+
                 position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
                 coordinate = [parseFloat(position[0]), parseFloat(position[1])];
                 number = $(hit).find("dog\\:hausnummer,hausnummer")[0].textContent;
@@ -301,7 +307,7 @@ define([
                     };
                 }
                 // "Hitlist-Objekte"
-                var obj = {
+                obj = {
                     name: name,
                     type: "Adresse",
                     coordinate: coordinate,

@@ -47,10 +47,9 @@ define(function (require) {
         },
 
         initialize: function () {
-            EventBus.on("searchbar:hit", this.searchbarhit, this);
-
             // Radio channel
-            var channel = Radio.channel("DragMarker");
+            var channel = Radio.channel("DragMarker"),
+            searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
@@ -67,6 +66,8 @@ define(function (require) {
                 "getPosition": this.getPosition
             }, this);
 
+            EventBus.on("searchbar:hit", this.searchbarhit, this);
+
             // external Radio channel
             Radio.on("ReverseGeocoder", "addressComputed", this.setNearestAddress, this);
 
@@ -81,7 +82,6 @@ define(function (require) {
             this.setPosition(this.get("coordinate"));
             this.readConfig();
             this.getBoundaryHH();
-            var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 
             if (_.has(searchConf, "zoomLevelStreet")) {
                 this.setZoomLevelStreet(searchConf.zoomLevelStreet);
@@ -182,7 +182,9 @@ define(function (require) {
                     return parseFloat(t);
                 }),
                 type = coord.length === 2 ? "point" : coord.length === 10 ? "bbox" : undefined,
-                nestedArr = [];
+                nestedArr = [],
+                geom,
+                newCoord;
 
             if (type === "point") {
                 this.setPosition(coord);
@@ -199,8 +201,8 @@ define(function (require) {
                         nestedArr.push ([num, array[index + 1]]);
                     }
                 });
-                var geom = new ol.geom.LineString(nestedArr),
-                    newCoord = ol.extent.getCenter(geom.getExtent());
+                geom = new ol.geom.LineString(nestedArr);
+                newCoord = ol.extent.getCenter(geom.getExtent());
 
                 this.setPosition(newCoord);
                 this.zoomTo(newCoord);
@@ -240,10 +242,11 @@ define(function (require) {
         // INTERACTION EVENTS
         // start Event
         handleDownEvent: function (evt) {
-            var hasFeaturesAtPixel = evt.map.hasFeatureAtPixel(evt.pixel);
+            var hasFeaturesAtPixel = evt.map.hasFeatureAtPixel(evt.pixel),
+                feature;
 
             if (hasFeaturesAtPixel === true) {
-                var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                     return feature;
                 });
 
@@ -259,8 +262,11 @@ define(function (require) {
 
         // calculates move-vector
         handleDragEvent: function (evt) {
+            var evtCoordinate,
+                isInside;
+
             if (_.isNull(this.get("featureAtPixel")) === false) {
-                var evtCoordinate = evt.coordinate,
+                evtCoordinate = evt.coordinate,
                     isInside = this.isInsideHH(evtCoordinate);
 
                 document.body.style.cursor = "pointer";
