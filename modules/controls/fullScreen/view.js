@@ -19,12 +19,12 @@ define(function (require) {
             this.render();
         },
         render: function () {
-            var newStyle = Radio.request("Parser", "getPortalConfig").controls.style;
+            var config = Radio.request("Parser", "getPortalConfig");
 
             this.$el.html(this.template);
-            if (_.isUndefined(Radio.request("Parser", "getPortalConfig").controls.style) === false) {
-                $("#fullScreen").addClass(newStyle + "FullScreen");
-                $(".glyphicon.glyphicon-fullscreen").addClass(newStyle);
+            if (_.isUndefined(config.controls) === false && _.isUndefined(config.controls.style) === false) {
+                $("#fullScreen").addClass(config.controls.style + "FullScreen");
+                $(".glyphicon.glyphicon-fullscreen").addClass(config.controls.style);
             }
         },
         makeContainerModal: function (container) {

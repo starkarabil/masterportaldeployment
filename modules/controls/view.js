@@ -14,14 +14,14 @@ define(function () {
         },
         render: function () {
             var result = Radio.request("ParametricURL", "getResult"),
-                newStyle = Radio.request("Parser", "getPortalConfig").controls.style;
+                config = Radio.request("Parser", "getPortalConfig");
 
             if (!_.has(result, "STYLE") || _.values(_.pick(result, "STYLE"))[0].toUpperCase() !== "SIMPLE") {
                 $(".ol-overlaycontainer-stopevent").append(this.$el);
                 // $(mapViewPort).append(this.$el);
             }
-            if (_.isUndefined(Radio.request("Parser", "getPortalConfig").controls.style) === false) {
-                $("#controls").addClass(newStyle + "Controls");
+            if (_.isUndefined(config.controls) === false && _.isUndefined(config.controls.style) === false) {
+                $("#controls").addClass(config.controls.style + "Controls");
             }
 
         },
