@@ -1,3 +1,9 @@
+#mmlFilter {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: -100%;
+}
 #mmlFilter .panel-heading {
     padding: 15px 20px 15px 0px;
 }
@@ -12,10 +18,10 @@ Blauer Filterknopf links
 neben Filterfenster
 **********************************/
 #btn-mmlFilter-toggle {
-    position: absolute;
-    right: 0px;
+    position: relative;
+    float:right;
     cursor: pointer;
-    top: 14px;
+    top: -100%;
     width: 45px;
     height: 55px;
     border-radius: 3px !important;
@@ -99,9 +105,10 @@ Filter-Knopf für Execute auf Mobile
     text-align: center;
     color: white;
     background-color: #005ca9;
-    margin: 30px 15px 20px 15px;
     position: absolute;
-    bottom: 0px;
+    bottom: 20px;
+    right: 15px;
+    left: 15px;
 }
 
 #div-mmlFilter-execute-text-mobile {
@@ -141,6 +148,7 @@ Filterabschnitte auf Mobile
     margin-right: 0px;
     overflow: auto;
     display: block;
+    max-height: calc("100%" - "345px");
 }
 
 .div-mmlFilter-filter-header-mobile {
@@ -217,14 +225,14 @@ gesamtes Filterwindow Desktop
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
-    position: absolute;
-    left: 0px;
-    top: 0px;
+    position: relative;
+    float: right;
+    right: -45px;
+    top: -100%;
     background-color: white;
     width: 0px;
     color: #333333;
     border-radius: 1px !important;
-    max-width: 400px;
 }
 
 #fromDateDiv {
@@ -242,8 +250,8 @@ gesamtes Filterwindow Desktop
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
 .panel-collapse {
-    max-height: 28vh;
     overflow: auto;
+    margin: 15px 0;
 }
 
 /**********************************
@@ -257,20 +265,21 @@ gesamtes Filterwindow auf Mobile
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
-    height: 100%;
+    height: calc("100%" - "40px");
+    height: -moz-calc("100%" - "40px");
+    height: -webkit-calc("100%" - "40px");
     color: #333333;
     background-color: #f2f2f2;
-    margin: 20px 15px 20px 15px;
-    top: 0px;
-    right: 0px;
+    right: 15px;
+    left: 15px;
+    top: 20px;
+    bottom: 20px;
     border: none;
     -webkit-border-radius:  0px;
     -moz-border-radius:     0px;
     -o-border-radius:       0px;
     -ms-border-radius:      0px;
     -moz-box-shadow:    0px;
-    -webkit-box-shadow: 0px;
-    box-shadow:         0px;
 }
 
 #div-mmlFilter-modal-dialog {

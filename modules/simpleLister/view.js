@@ -22,10 +22,15 @@ define([
         },
 
         initialize: function () {
+            var channel = Radio.channel("SimpleLister");
+
+            channel.on({
+                "collapse": this.collapse
+            }, this);
             this.listenTo(this.model, {
                 "newFeaturesInExtent": this.newFeaturesInExtent,
                 "appendFeaturesInExtent": this.appendFeaturesInExtent,
-                "render": this.render,
+                "renderContent": this.renderContent,
                 "show": this.show
             });
 
@@ -37,8 +42,20 @@ define([
 
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
+
+        renderContent: function () {
+            var attr = this.model.toJSON();
+
+            this.$el.html(this.template(attr));
+        },
+
+        collapse: function () {
+            if (this.$el.find(".glyphicon-triangle-right").length === 0) {
+                this.toggleSimpleList();
+            }
+        },
         triggerGFI: function (evt) {
-            this.model.triggerGFI(parseInt(evt.currentTarget.id));
+            this.model.triggerGFI(parseInt(evt.currentTarget.id, 10));
         },
         appendMoreFeatures: function () {
             this.model.appendFeatures();
@@ -50,8 +67,13 @@ define([
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
             this.$el.css({width: "41%"});
-            $("#searchbarInMap").css({left: "calc(42% + 43px)"});
+            // $("#searchbarInMap").css({left: "calc(42% + 43px)"});
             this.model.getLayerFeaturesInExtent();
+            $(".ol-viewport").css({
+                "width": "59%",
+                "float": "right"
+            });
+            Radio.trigger("Map", "updateSize");
         },
 
         hide: function () {
@@ -60,7 +82,12 @@ define([
             glyphiconDom.removeClass("glyphicon-triangle-left").addClass("glyphicon-triangle-right");
             $("#simple-lister-table").hide();
             this.$el.css({width: "0%"});
-            $("#searchbarInMap").css({left: "43px"});
+            // $("#searchbarInMap").css({left: "43px"});
+            $(".ol-viewport").css({
+                "width": "100%",
+                "float": ""
+            });
+            Radio.trigger("Map", "updateSize");
         },
 
         newFeaturesInExtent: function () {
@@ -80,10 +107,8 @@ define([
         },
 
         appendFeaturesInExtent: function () {
-            var features = this.model.getFeaturesInExtent();
-
-            // Features nachgeladen: nur neue Features hinzufügen
-            var lastEntry = $(".entry").last()[0],
+            var features = this.model.getFeaturesInExtent(),
+                lastEntry = $(".entry").last()[0],
                 lastId = lastEntry.id,
                 indexLastId = _.findIndex(features, function (feat) {
                     var featId = feat.id.toString();
@@ -115,11 +140,12 @@ define([
 
         updateAppendFeaturesButton: function () {
             var totalFeaturesInPage = this.model.getTotalFeaturesInPage(),
-                totalFeatures = this.model.getTotalFeatures();
+                totalFeatures = this.model.getTotalFeatures(),
+                ele;
 
             $("#div-simpleLister-extentList").remove();
             if (totalFeaturesInPage < totalFeatures) {
-                var ele = "<div id='div-simpleLister-extentList' title='Liste erweitern'><span id='div-simpleLister-extentList-text'>Liste erweitern</span></div>";
+                ele = "<div id='div-simpleLister-extentList' title='Liste erweitern'><span id='div-simpleLister-extentList-text'>Liste erweitern</span></div>";
 
                 $(".entries").append(ele);
             }
@@ -139,17 +165,17 @@ define([
             $(".entries").append(ele);
         },
 
-        toggleSimpleList: function (evt) {
-            var glyphiconDom = $(evt.target);
+        toggleSimpleList: function () {
+            var glyphiconDom = this.$el;
 
-            if (glyphiconDom.hasClass("glyphicon-triangle-right") === true) {
+            Radio.trigger("MmlFilter", "collapse");
+            if (glyphiconDom.find(".glyphicon-triangle-right").length > 0) {
                 this.show();
             }
             else {
                 this.hide();
             }
         },
-
         /**
          * Hebt Zeilen mit dieser id hervor
          */
