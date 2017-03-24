@@ -19,11 +19,12 @@ define([
                 color: "rgba(8, 119, 95, 0.3)"
             })
         })
-    });
+        }),
+        MapMarker;
 
     Radio.trigger("Map", "addLayerToIndex", [searchVector, Radio.request("Map", "getLayers").getArray().length]);
 
-    var MapMarker = Backbone.View.extend({
+    MapMarker = Backbone.View.extend({
         model: new MapHandlerModel(),
         id: "searchMarker",
         className: "glyphicon glyphicon-map-marker",
@@ -36,12 +37,20 @@ define([
         */
         initialize: function () {
             var channel = Radio.channel("MapMarker");
+
             channel.on({
                 "showMarker": this.showMarker,
                 "hideMarker": this.hideMarker
             }, this);
             channel.reply({
                 "getCloseButtonCorners": function () {
+                    var bottomSM,
+                        leftSM,
+                        widthSM,
+                        heightSM,
+                        topSM,
+                        rightSM;
+
                     if (this.$el.is(":visible") === false) {
                         return {
                             top: -1,
@@ -51,7 +60,7 @@ define([
                         };
                     }
                     else {
-                        var bottomSM = $("#searchMarker .glyphicon-remove").offset().top,
+                        bottomSM = $("#searchMarker .glyphicon-remove").offset().top,
                             leftSM = $("#searchMarker .glyphicon-remove").offset().left,
                             widthSM = $("#searchMarker .glyphicon-remove").outerWidth(),
                             heightSM = $("#searchMarker .glyphicon-remove").outerHeight(),
@@ -105,6 +114,7 @@ define([
         * @param {Object} hit - Treffer der Searchbar
         */
         zoomTo: function (hit) {
+            var isMobile;
 
             this.clearMarker();
             switch (hit.type) {
@@ -113,12 +123,14 @@ define([
                     break;
                 }
                 case "Straße": {
-                    this.model.getWKTFromString("POLYGON", hit.coordinate);
-                    // Lese index mit Maßstab 1:1000 als maximal Scale, sonst höchstmögliche Zommstufe
-                    var resolutions = Radio.request("MapView", "getResolutions"),
-                        index = _.indexOf(resolutions, 0.2645831904584105) === -1 ? resolutions.length : _.indexOf(resolutions, 0.2645831904584105);
-
-                    Radio.trigger("Map", "zoomToExtent", this.model.getExtentFromString(), {maxZoom: index});
+                    // this.model.getWKTFromString("POLYGON", hit.coordinate);
+                    // // Lese index mit Maßstab 1:1000 als maximal Scale, sonst höchstmögliche Zommstufe
+                    // var resolutions = Radio.request("MapView", "getResolutions"),
+                    //     index = _.indexOf(resolutions, 0.2645831904584105) === -1 ? resolutions.length : _.indexOf(resolutions, 0.2645831904584105);
+                    //
+                    // Radio.trigger("Map", "zoomToExtent", this.model.getExtentFromString(), {maxZoom: index});
+                    this.showMarker(hit.coordinate);
+                    Radio.trigger("MapView", "setCenter", hit.coordinate, this.model.get("zoomLevelStreet"));
                     break;
                 }
                 case "Parcel": {
@@ -141,7 +153,7 @@ define([
                     break;
                 }
                 case "Thema": {
-                    var isMobile = Radio.request("Util", "isViewMobile");
+                    isMobile = Radio.request("Util", "isViewMobile");
 
                     // desktop - Themenbaum wird aufgeklappt
                     if (isMobile === false) {
@@ -218,12 +230,14 @@ define([
         * @param {string} data - Die Data-Object des request.
         */
         zoomToBKGSearchResult: function (data) {
+            var coordinates;
+
             if (data.features[0].properties.bbox.type === "Point") {
                 Radio.trigger("MapView", "setCenter", data.features[0].properties.bbox.coordinates, this.model.get("zoomLevel"));
                 this.showMarker(data.features[0].properties.bbox.coordinates);
             }
             else if (data.features[0].properties.bbox.type === "Polygon") {
-                var coordinates = "";
+                coordinates = "";
 
                 _.each(data.features[0].properties.bbox.coordinates[0], function (point) {
                     coordinates += point[0] + " " + point[1] + " ";
