@@ -3306,6 +3306,58 @@ Hilfsklassen
   border-radius: 50px !important;
   font-size: 20px;
 }
+.lgv-container #zoom .mml {
+  opacity: 0.5;
+  background-color: #000000;
+  width: 45px;
+  height: 45px;
+  color: #ffffff;
+  font-size: 17px;
+  padding: 15px 15px 15px 15px;
+  position: absolute;
+  right: 0px;
+}
+.lgv-container #zoom .glyphicon-plus.mml {
+  top: 230px;
+}
+.lgv-container #zoom .glyphicon-minus.mml {
+  top: 281px;
+}
+.lgv-container #fullScreen .mml {
+  opacity: 0.5;
+  background-color: #000000;
+  width: 45px;
+  height: 45px;
+  color: #ffffff;
+  font-size: 25px;
+  padding: 10px 10px 10px 10px;
+  position: absolute;
+  right: 0px;
+  top: 168px;
+}
+.lgv-container .mmlZoom {
+  margin-top: 0px;
+}
+.lgv-container .mmlFullScreen {
+  margin-top: 0px;
+}
+.lgv-container #zoom > div > .mml:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+.lgv-container #fullScreen > div > .mml:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+.lgv-container .mmlControls {
+  top: 0px;
+}
+.lgv-container #controls .mmlFullScreen .full-screen-button {
+  margin-top: 0px;
+}
+.lgv-container #controls .mmlZoom .zoomButtons {
+  margin-top: 0px;
+}
 .lgv-container .dropdown-menu {
   border: 1px solid #ccc;
 }

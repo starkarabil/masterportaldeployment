@@ -16,7 +16,14 @@ define([
             EventBus.trigger("registerZoomButtonsInClickCounter", this.$el);
         },
         render: function () {
+            var config = Radio.request("Parser", "getPortalConfig");
+
             this.$el.html(this.template);
+            if (_.isUndefined(config.controls) === false && _.isUndefined(config.controls.style) === false) {
+                $("#zoom").addClass(config.controls.style + "Zoom");
+                $(".glyphicon.glyphicon-plus").addClass(config.controls.style);
+                $(".glyphicon.glyphicon-minus").addClass(config.controls.style);
+            }
         },
         setZoomLevelUp: function () {
             Radio.trigger("MapView", "setZoomLevelUp");
