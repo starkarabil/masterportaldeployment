@@ -8,7 +8,7 @@ define(function (require) {
         model: new Model(),
         className: "mobileHeader",
         events: {
-            "click .filter": function () {
+            "click div.filter": function () {
                 Radio.trigger("MMLFilter", "toggleFilter");
             },
             "click .arrow": "TODO"
