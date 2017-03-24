@@ -31,9 +31,15 @@ define(function (require) {
         },
 
         initialize: function () {
+            var channel = Radio.channel("MmlFilter");
+
+            channel.on({
+                "collapse": this.collapse
+            }, this);
+
             this.render();
             $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
-            $("#btn-mmlFilter-toggle").css({left: this.model.getMapWidth() - 50});
+            $("#btn-mmlFilter-toggle").css({top: "calc(-100% + 7px)"});
         },
 
         render: function () {
@@ -42,6 +48,11 @@ define(function (require) {
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
+        collapse: function () {
+            if ($("#div-mmlFilter-content").css("width") !== "0px") {
+                this.toggleMMLFilter();
+            }
+        },
         /**
          * Panels werden aus- und eingeklappt.
          * @param {MouseEvent} evt - Click auf .panel-heading
@@ -65,24 +76,24 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var mapWidth = this.model.getMapWidth(),
-                startWidth = $("#div-mmlFilter-content").css("width"),
-                endWidth = startWidth === "0px" ? (mapWidth / 3) + "px" : "0px";
+            var startWidth = $("#div-mmlFilter-content").css("width"),
+                endWidth = startWidth === "0px" ? "33%" : "0%",
+                width = startWidth === "0px" ? "67%" : "100%",
+                cssFloat = startWidth === "0px" ? "left" : "";
 
-            $("#div-mmlFilter-content").css("left", $("#map").css("width"));
-
-            $("#div-mmlFilter-content").animate({
+            Radio.trigger("SimpleLister", "collapse");
+            $(".ol-viewport").css({
+                "width": width,
+                "float": cssFloat
+            });
+            Radio.trigger("Map", "updateSize");
+            $("#div-mmlFilter-content").css({
+                // width: endWidth
                 width: endWidth
-            }, {
-                duration: "slow",
-                progress: function () {
-                    var newLeftToggle = String(mapWidth - 50 - $("#div-mmlFilter-content").width()) + "px",
-                        newLeftContent = String(mapWidth - $("#div-mmlFilter-content").width()) + "px";
-
-                    $("#div-mmlFilter-content").css("left", newLeftContent);
-                    $("#btn-mmlFilter-toggle").css("left", newLeftToggle);
-                }
-            }, this);
+            });
+            $("#btn-mmlFilter-toggle").css({
+                right: endWidth
+            });
         },
 
         toggleTimeMode: function (evt) {
@@ -156,7 +167,7 @@ define(function (require) {
                 }
             }
         },
-        resetKategorien: function (evt) {
+        resetKategorien: function () {
             var status = $("#div-mmlFilter-reset").attr("value");
 
             if (status === "deaktivieren") {
@@ -164,7 +175,7 @@ define(function (require) {
                     $(kategorie).prop("checked", false);
                 });
                 $("#div-mmlFilter-reset-text").html("Alle Kategorien aktivieren");
-                $("#div-mmlFilter-reset").attr("value","aktivieren");
+                $("#div-mmlFilter-reset").attr("value", "aktivieren");
             }
             else {
                 $("#div-mmlFilter-reset").attr("value", "deaktivieren");
@@ -173,7 +184,6 @@ define(function (require) {
                 });
                 $("#div-mmlFilter-reset-text").html("Alle Kategorien deaktivieren");
             }
-
         },
 
         executeFilter: function () {
