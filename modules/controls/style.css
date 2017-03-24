@@ -137,3 +137,56 @@
     border-radius: 50px !important;
     font-size: 20px;
 }
+#zoom .mml {
+    opacity: 0.5;
+    background-color: #000000;
+    width: 45px;
+    height: 45px;
+    color: #ffffff;
+    font-size: 17px;
+    padding: 15px 15px 15px 15px;
+    position: absolute;
+    right: 0px;
+}
+#zoom .glyphicon-plus.mml{
+    top: 230px;
+}
+#zoom .glyphicon-minus.mml{
+    top: 281px;
+}
+#fullScreen .mml {
+    opacity: 0.5;
+    background-color: #000000;
+    width: 45px;
+    height: 45px;
+    color: #ffffff;
+    font-size: 25px;
+    padding: 10px 10px 10px 10px;
+    position: absolute;
+    right: 0px;
+    top: 168px;
+}
+.mmlZoom {
+    margin-top: 0px;
+}
+.mmlFullScreen {
+    margin-top: 0px;
+}
+#zoom > div > .mml:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+#fullScreen > div > .mml:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+.mmlControls {
+    top: 0px;
+
+}
+#controls .mmlFullScreen .full-screen-button {
+    margin-top: 0px;
+}
+#controls .mmlZoom .zoomButtons {
+    margin-top: 0px;
+}

@@ -140,9 +140,11 @@ define([
         * @param {string} searchString - Suchstring
         */
         directSearch: function (searchString) {
+            var splitInitString;
+
             this.set("searchString", searchString);
             if (searchString.search(",") !== -1) {
-                var splitInitString = searchString.split(",");
+                splitInitString = searchString.split(",");
 
                 this.set("onlyOneStreetName", splitInitString[0]);
                 searchString = searchString.replace(/\ /g, "");
@@ -178,6 +180,7 @@ define([
          */
         getStreets: function (data) {
             var hits = $("wfs\\:member,member", data),
+                position,
                 coordinates,
                 hitNames = [],
                 hitName,
@@ -186,7 +189,13 @@ define([
                 newHouseNumber;
 
             _.each(hits, function (hit) {
-                coordinates = $(hit).find("gml\\:posList,posList")[0].textContent;
+                if (_.isUndefined($(hit).find("iso19112\\:position_strassenachse,position_strassenachse").find("gml\\:pos,pos")[0]) === false) {
+                    position = $(hit).find("iso19112\\:position_strassenachse,position_strassenachse").find("gml\\:pos,pos")[0].textContent.split(" ");
+                }
+                else {
+                    position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
+                }
+                coordinates = [parseFloat(position[0]), parseFloat(position[1])];
                 hitName = $(hit).find("dog\\:strassenname, strassenname")[0].textContent;
                 hitNames.push(hitName);
                 // "Hitlist-Objekte"
@@ -257,8 +266,7 @@ define([
         },
         searchInHouseNumbers: function () {
             var address,
-            number;
-
+                number;
             // Adressuche über Copy/Paste
             Radio.trigger("Searchbar", "setHitList", []);
             if (this.get("pastedHouseNumber") !== undefined) {

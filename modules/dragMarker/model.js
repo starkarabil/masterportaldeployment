@@ -42,15 +42,14 @@ define(function (require) {
             dragMarkerFeature: null,
             featureAtPixel: null,
             sourceHH: null,
-            url: ""
+            url: "",
+            zoomLevelStreet: 4
         },
 
         initialize: function () {
-            EventBus.on("searchbar:hit", this.searchbarhit, this);
-
-
             // Radio channel
-            var channel = Radio.channel("DragMarker");
+            var channel = Radio.channel("DragMarker"),
+            searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
 
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
@@ -67,6 +66,8 @@ define(function (require) {
                 "getPosition": this.getPosition
             }, this);
 
+            EventBus.on("searchbar:hit", this.searchbarhit, this);
+
             // external Radio channel
             Radio.on("ReverseGeocoder", "addressComputed", this.setNearestAddress, this);
 
@@ -81,11 +82,14 @@ define(function (require) {
             this.setPosition(this.get("coordinate"));
             this.readConfig();
             this.getBoundaryHH();
+
+            if (_.has(searchConf, "zoomLevelStreet")) {
+                this.setZoomLevelStreet(searchConf.zoomLevelStreet);
+            }
         },
 
         readConfig: function () {
-            var config = Radio.request("Parser","getPortalConfig").mapMarkerModul,
-                visible = config.visible ? config.visible : false,
+            var config = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
                 landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
                 landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
                 url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
@@ -177,11 +181,18 @@ define(function (require) {
                     return parseFloat(t);
                 }),
                 type = coord.length === 2 ? "point" : coord.length === 10 ? "bbox" : undefined,
-                nestedArr = [];
+                nestedArr = [],
+                geom,
+                newCoord;
 
             if (type === "point") {
                 this.setPosition(coord);
-                this.zoomTo(coord);
+                if (hit.type === "Straße") {
+                    Radio.trigger("MapView", "setCenter", hit.coordinate, this.getZoomLevelStreet());
+                }
+                else {
+                    this.zoomTo(coord);
+                }
             }
             else if (type === "bbox") {
                 _.each(coord, function (num, index, array) {
@@ -189,8 +200,8 @@ define(function (require) {
                         nestedArr.push ([num, array[index + 1]]);
                     }
                 });
-                var geom = new ol.geom.LineString(nestedArr),
-                    newCoord = ol.extent.getCenter(geom.getExtent());
+                geom = new ol.geom.LineString(nestedArr);
+                newCoord = ol.extent.getCenter(geom.getExtent());
 
                 this.setPosition(newCoord);
                 this.zoomTo(newCoord);
@@ -230,10 +241,11 @@ define(function (require) {
         // INTERACTION EVENTS
         // start Event
         handleDownEvent: function (evt) {
-            var hasFeaturesAtPixel = evt.map.hasFeatureAtPixel(evt.pixel);
+            var hasFeaturesAtPixel = evt.map.hasFeatureAtPixel(evt.pixel),
+                feature;
 
             if (hasFeaturesAtPixel === true) {
-                var feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                feature = evt.map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                     return feature;
                 });
 
@@ -249,8 +261,11 @@ define(function (require) {
 
         // calculates move-vector
         handleDragEvent: function (evt) {
+            var evtCoordinate,
+                isInside;
+
             if (_.isNull(this.get("featureAtPixel")) === false) {
-                var evtCoordinate = evt.coordinate,
+                evtCoordinate = evt.coordinate,
                     isInside = this.isInsideHH(evtCoordinate);
 
                 document.body.style.cursor = "pointer";
@@ -268,6 +283,19 @@ define(function (require) {
             this.set("dragMarkerFeature", null);
             this.set("featureAtPixel", null);
             return false;
+        },
+
+        /**
+        * Setter Zoomlevel für Straßen
+        */
+        setZoomLevelStreet: function (value) {
+            this.set("zoomLevelStreet", value);
+        },
+        /**
+        * Getter Zoomlevel für Straßen
+        */
+        getZoomLevelStreet: function () {
+            return this.get("zoomLevelStreet");
         }
     });
 
