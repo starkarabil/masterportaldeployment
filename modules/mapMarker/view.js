@@ -19,11 +19,12 @@ define([
                 color: "rgba(8, 119, 95, 0.3)"
             })
         })
-    });
+        }),
+        MapMarker;
 
     Radio.trigger("Map", "addLayerToIndex", [searchVector, Radio.request("Map", "getLayers").getArray().length]);
 
-    var MapMarker = Backbone.View.extend({
+    MapMarker = Backbone.View.extend({
         model: new MapHandlerModel(),
         id: "searchMarker",
         className: "glyphicon glyphicon-map-marker",
