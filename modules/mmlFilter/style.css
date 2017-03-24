@@ -216,7 +216,7 @@ Filterabschnitte auf Mobile
 gesamtes Filterwindow Desktop
 **********************************/
 #div-mmlFilter-content {
-    overflow: hidden;
+    overflow: auto;
     height: 100%;
     font-family: HamburgSans;
     font-size: 15px;

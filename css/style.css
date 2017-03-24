@@ -4548,7 +4548,7 @@ Hilfsklassen
   position: relative;
 }
 .lgv-container #div-mmlFilter-content {
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   font-family: HamburgSans;
   font-size: 15px;
