@@ -90,7 +90,6 @@ define(function (require) {
 
         readConfig: function () {
             var config = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
-                visible = config.visible ? config.visible : false,
                 landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
                 landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
                 url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
