@@ -23,6 +23,7 @@ define(function (require) {
 
             this.$el.html(this.template);
             if (_.isUndefined(Radio.request("Parser", "getPortalConfig").controls.style) === false) {
+                $("#fullScreen").addClass(newStyle + "FullScreen");
                 $(".glyphicon.glyphicon-fullscreen").addClass(newStyle);
             }
         },
