@@ -16,6 +16,7 @@ define(function (require) {
             this.setLayerSource(new ol.source.Vector({
                 format: new ol.format.GeoJSON()
             }, this));
+
         },
         /**
          * Lädt die JSON-Datei und startet parse
@@ -50,14 +51,14 @@ define(function (require) {
             this.getLayerSource().clear();
             features = this.sortFeaturesByAttr(features, "mmlid");
             this.getLayerSource().addFeatures(features);
-            Radio.trigger("MmlFilter","featuresLoaded");
+            Radio.trigger("MmlFilter", "featuresLoaded");
         },
         checkIfFeaturesLoaded: function () {
             var source = this.getLayerSource(),
                 features = source.getFeatures();
 
             if (features.length > 1) {
-                Radio.trigger("MmlFilter","featuresLoaded");
+                Radio.trigger("MmlFilter", "featuresLoaded");
             }
         },
         /**
@@ -92,6 +93,10 @@ define(function (require) {
             if (_.isUndefined(this.get("url")) === false) {
                 this.updateData();
             }
+            // Wenn Features übers RemoteInterface hinzugefügt werden
+            else {
+                this.getLayerSource().addFeatures(this.getFeatures());
+            }
         },
 
         /**
@@ -120,7 +125,8 @@ define(function (require) {
             }
             else {
                 this.set("style", function (feature) {
-                    stylelistmodel = Radio.request("StyleList", "returnModelByValue", styleId);
+                    var stylelistmodel = Radio.request("StyleList", "returnModelByValue", styleId);
+
                     feature.setStyle(stylelistmodel.getSimpleStyle());
                 });
             }
@@ -158,21 +164,26 @@ define(function (require) {
          */
         showFeaturesByIds: function (featureIdList) {
             var source = this.getLayerSource(),
+                features,
                 featuresToHide = this.getFeaturesToHide();
 
             features = _.filter(featuresToHide, function (feature) {
-                return _.contains(featureAttrList, String(feature.getId()));
+                return _.contains(featureIdList, String(feature.getId()));
             });
             features.sort(function (a, b) {
                 var a_id = parseInt(a.getId()),
                     b_id = parseInt(b.getId());
 
-                if (a_id < b_id) {return -1;}
-                if (a_id > b_id) {return 1;}
+                if (a_id < b_id) {
+                    return -1;
+                }
+                if (a_id > b_id) {
+                    return 1;
+                }
                 return 0;
             });
             source.addFeatures(features);
-            featuresToHide = _.difference(featuresToHide, features);
+            featuresToHide = _.difference(featuresToHide);
             this.setFeaturesToHide(featuresToHide);
         },
         /**
@@ -189,7 +200,7 @@ define(function (require) {
                 return _.contains(featureAttrList, String(feature.get(attr)));
             });
 
-            features = this.sortFeaturesByAttr(features,attr);
+            features = this.sortFeaturesByAttr(features, attr);
             source.addFeatures(features);
             featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
@@ -199,8 +210,12 @@ define(function (require) {
                 var a_id = parseInt(a.get(attr)),
                     b_id = parseInt(b.get(attr));
 
-                if (a_id < b_id) {return -1;}
-                if (a_id > b_id) {return 1;}
+                if (a_id < b_id) {
+                    return -1;
+                }
+                if (a_id > b_id) {
+                    return 1;
+                }
                 return 0;
             });
         },
