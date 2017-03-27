@@ -1,6 +1,6 @@
 define(function (require) {
 
-    var Template = require("text!modules/controls/mmlAssistentCaller/template.html"),
+    var Template = require("text!modules/controls/mmlAssistentCaller/templateButton.html"),
         Model = require("modules/controls/mmlAssistentCaller/model"),
         MmlAssistentCallerView;
 
@@ -12,10 +12,10 @@ define(function (require) {
             "click": "assistentCall"
         },
         initialize: function () {
-            this.listenTo(this.model, "change:visible", this.render);
-            this.render();
+            this.listenTo(this.model, "change:visible", this.renderButton);
+            this.renderButton();
         },
-        render: function () {
+        renderButton: function () {
             var visible = this.model.getVisible(),
                 attr = this.model.toJSON();
 
