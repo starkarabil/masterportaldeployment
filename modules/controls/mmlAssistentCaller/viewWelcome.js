@@ -15,7 +15,14 @@ define(function (require) {
             "click .mmlWelcomeScreen-plus": "assistentCall"
         },
         initialize: function () {
-            this.render();
+            var welcomeScreen = this.model.getWelcomeScreen();
+
+            if (welcomeScreen === true) {
+                this.render();
+            }
+            else {
+                this.remove();
+            }
         },
         render: function () {
             var attr = this.model.toJSON();
