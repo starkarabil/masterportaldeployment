@@ -408,8 +408,9 @@ define("app",
                         break;
                     }
                     case "mmlNewIssueButton": {
-                        require(["modules/controls/mmlAssistentCaller/view"], function (MmlAssistentCallerView) {
-                            new MmlAssistentCallerView();
+                        require(["modules/controls/mmlAssistentCaller/viewButton", "modules/controls/mmlAssistentCaller/viewWelcome"], function (MmlAssistentCallerButtonView, MmlAssistentCallerWelcomeView) {
+                            new MmlAssistentCallerWelcomeView();
+                            new MmlAssistentCallerButtonView();
                         });
                         decModulesLoading();
                         break;

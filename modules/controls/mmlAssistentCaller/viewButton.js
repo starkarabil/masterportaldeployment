@@ -12,10 +12,10 @@ define(function (require) {
             "click": "assistentCall"
         },
         initialize: function () {
-            this.listenTo(this.model, "change:visible", this.renderButton);
-            this.renderButton();
+            this.listenTo(this.model, "change:visible", this.render);
+            this.render();
         },
-        renderButton: function () {
+        render: function () {
             var visible = this.model.getVisible(),
                 attr = this.model.toJSON();
 
