@@ -395,6 +395,12 @@ define(function (require) {
             // fix für Firefox
             event = e || window.event;
 
+            //fix für Konflikt mit externer cit-seite.
+            if (event.keyCode === 13) {
+                event.stopPropagation();
+                event.preventDefault();
+            }
+
             if (event.keyCode === 38 || event.keyCode === 40 || event.keyCode === 13) {
                 selected = this.getSelectedElement(),
                 firstListElement = this.getFirstElement();
