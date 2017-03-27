@@ -409,7 +409,9 @@ define("app",
                     }
                     case "mmlNewIssueButton": {
                         require(["modules/controls/mmlAssistentCaller/viewButton", "modules/controls/mmlAssistentCaller/viewWelcome"], function (MmlAssistentCallerButtonView, MmlAssistentCallerWelcomeView) {
-                            new MmlAssistentCallerWelcomeView();
+                            if (Radio.request("Util", "isAny") !== true) {
+                                new MmlAssistentCallerWelcomeView();
+                            }
                             new MmlAssistentCallerButtonView();
                         });
                         decModulesLoading();
