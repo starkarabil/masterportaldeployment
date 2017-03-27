@@ -5,10 +5,14 @@ define(function (require) {
         MmlAssistentCallerWelcome;
 
     MmlAssistentCallerWelcome = Backbone.View.extend({
-        className: "unselectable",
+        className: "modal unselectable mmlWelcomeScreen",
+        id: "div-mmlWelcomeScreen",
         model: Model,
         template: _.template(Template),
         events: {
+            "click .mmlWelcomeScreen-close": "destroy",
+            "click .mmlWelcomeScreen-map": "destroy",
+            "click .mmlWelcomeScreen-plus": "assistentCall"
         },
         initialize: function () {
             this.render();
@@ -19,11 +23,16 @@ define(function (require) {
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             this.$el.modal({
                 backdrop: "static",
-                show: false
+                show: true
             });
         },
         assistentCall: function () {
             this.model.getParameterValues();
+            this.destroy();
+        },
+        destroy: function () {
+            this.$el.modal("hide");
+            this.remove();
         }
     });
 
