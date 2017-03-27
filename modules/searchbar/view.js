@@ -320,7 +320,7 @@ define(function (require) {
                 if (evt.type !== "click" || this.model.get("hitList").length === 1) {
                     this.hitSelected(evt); // erster und einziger Eintrag in Liste
                 }
-                else if (_.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
+                else if (evt.currentTarget.className !== "list-group-item results" & _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
                   this.hitSelected(evt);
                 }
                 else {
