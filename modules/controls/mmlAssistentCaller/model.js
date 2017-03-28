@@ -6,7 +6,8 @@ define(function (require) {
     MmlAssistantCallerModel = Backbone.Model.extend({
         defaults: {
             visible: false, // shows / hides control
-            assistantURL: "" // URL to open
+            assistantURL: "", // URL to open
+            welcomeScreen: false
         },
         initialize: function () {
             this.getConfiguration();
@@ -19,10 +20,12 @@ define(function (require) {
                 controls = portalConfig.controls ? portalConfig.controls : null,
                 mmlNewIssueControl = controls ? controls.mmlNewIssueButton : null,
                 visible = mmlNewIssueControl && mmlNewIssueControl.visible ? mmlNewIssueControl.visible : false,
-                url = mmlNewIssueControl && mmlNewIssueControl.assistantURL ? mmlNewIssueControl.assistantURL : "";
+                url = mmlNewIssueControl && mmlNewIssueControl.assistantURL ? mmlNewIssueControl.assistantURL : "",
+                welcomeScreen = mmlNewIssueControl && mmlNewIssueControl.welcomeScreen ? mmlNewIssueControl.welcomeScreen : false;
 
-            this.setVisible(visible);
             this.setAssistantURL(url);
+            this.setWelcomeScreen(welcomeScreen);
+            this.setVisible(visible);
         },
         /**
          * Collects parameters for URL and calls openMMLAssistant
@@ -83,6 +86,20 @@ define(function (require) {
          */
         getVisible: function () {
             return this.get("visible");
+        },
+        /**
+         * Setter für welcomeScreen
+         * @param {boolean} val new welcomeScreen state
+         */
+        setWelcomeScreen: function (val) {
+            this.set("welcomeScreen", val);
+        },
+        /**
+         * Getter für welcomeScreen
+         * @return {boolean} welcomeScreen state
+         */
+        getWelcomeScreen: function () {
+            return this.get("welcomeScreen");
         }
     });
 

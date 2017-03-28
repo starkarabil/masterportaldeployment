@@ -40,3 +40,86 @@
     -ms-user-select: none;      /* IE 10+ */
     user-select: none;          /* Likely future */
 }
+.mmlWelcomeScreen {
+    background-color: rgba(255,255,255,0.5);
+}
+.mmlWelcomeScreen-dialog {
+    top: 25%;
+    margin: 25px !important;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+.mmlWelcomeScreen-close {
+    position: relative;
+    float: right;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
+    background-color: #ffffff;
+}
+.mmlWelcomeScreen-close:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.mmlWelcomeScreen-header {
+    position: relative;
+    top: 29px;
+    text-align: center;
+    font-family: HamburgSans;
+    font-size: 19px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.42;
+    letter-spacing: -0.5px;
+    color: #003063;
+}
+.mmlWelcomeScreen-text {
+    position: relative;
+    padding: 40px 28px;
+    font-family: HamburgSans;
+    font-size: 17px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.32;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: #333333;
+}
+.mmlWelcomeScreen-buttons {
+    margin: auto;
+    margin-bottom: 35px;
+    width: 350px;
+    height: 45px;
+}
+.mmlWelcomeScreen-svg {
+    position: relative;
+    top: 5px;
+    width: 22px;
+    height: 22px;
+}
+.mmlWelcomeScreen-plus {
+    background-color: rgba(225, 0, 25, 1);
+    float: right;
+}
+.mmlWelcomeScreen-plus:hover {
+    background-color: rgba(225, 0, 25, 0.5);
+}
+.mmlWelcomeScreen-map {
+    background-color: rgba(15, 92, 173, 1);
+    float: left;
+}
+.mmlWelcomeScreen-map:hover {
+    background-color: rgba(15, 92, 173, 0.5);
+}
+.mmlWelcomeScreen-ButtonText {
+    margin-left: 10px;
+    font-family: HamburgSans;
+    font-size: 15px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.6;
+    letter-spacing: -0.4px;
+    text-align: center;
+    color: #ffffff;
+}

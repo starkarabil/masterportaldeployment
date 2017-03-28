@@ -4844,6 +4844,89 @@ Hilfsklassen
   user-select: none;
   /* Likely future */
 }
+.lgv-container .mmlWelcomeScreen {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-dialog {
+  top: 25%;
+  margin: 25px !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+.lgv-container .mmlWelcomeScreen-close {
+  position: relative;
+  float: right;
+  cursor: pointer;
+  width: 55px;
+  height: 55px;
+  background-color: #ffffff;
+}
+.lgv-container .mmlWelcomeScreen-close:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-header {
+  position: relative;
+  top: 29px;
+  text-align: center;
+  font-family: HamburgSans;
+  font-size: 19px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.42;
+  letter-spacing: -0.5px;
+  color: #003063;
+}
+.lgv-container .mmlWelcomeScreen-text {
+  position: relative;
+  padding: 40px 28px;
+  font-family: HamburgSans;
+  font-size: 17px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.32;
+  letter-spacing: -0.5px;
+  text-align: center;
+  color: #333333;
+}
+.lgv-container .mmlWelcomeScreen-buttons {
+  margin: auto;
+  margin-bottom: 35px;
+  width: 350px;
+  height: 45px;
+}
+.lgv-container .mmlWelcomeScreen-svg {
+  position: relative;
+  top: 5px;
+  width: 22px;
+  height: 22px;
+}
+.lgv-container .mmlWelcomeScreen-plus {
+  background-color: #e10019;
+  float: right;
+}
+.lgv-container .mmlWelcomeScreen-plus:hover {
+  background-color: rgba(225, 0, 25, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-map {
+  background-color: #0f5cad;
+  float: left;
+}
+.lgv-container .mmlWelcomeScreen-map:hover {
+  background-color: rgba(15, 92, 173, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-ButtonText {
+  margin-left: 10px;
+  font-family: HamburgSans;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: -0.4px;
+  text-align: center;
+  color: #ffffff;
+}
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
