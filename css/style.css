@@ -142,6 +142,9 @@ gesamtes Filterwindow auf Mobile
 Checkbox
 **********************************/
   /**********************************
+Radio Button Mobil
+**********************************/
+  /**********************************
 Hilfsklassen
 **********************************/
 }
@@ -4697,6 +4700,27 @@ Hilfsklassen
 .lgv-container .mmlFilter-checkbox-span {
   bottom: 3px;
   position: relative;
+}
+.lgv-container .input-mmlFilter-filter-time-mobile {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  background: none;
+}
+.lgv-container .input-mmlFilter-filter-time-mobile:after {
+  width: 21px;
+  height: 21px;
+  border-radius: 21px;
+  position: relative;
+  background-color: white;
+  content: '';
+  display: inline-block;
+}
+.lgv-container .input-mmlFilter-filter-time-mobile:checked:after {
+  background-color: black;
+  content: '';
+  border: 4px solid white;
 }
 .lgv-container .unselectable {
   -webkit-user-select: none;

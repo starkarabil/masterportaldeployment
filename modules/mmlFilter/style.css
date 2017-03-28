@@ -327,6 +327,33 @@ Checkbox
 }
 
 /**********************************
+Radio Button Mobil
+**********************************/
+.input-mmlFilter-filter-time-mobile {
+    appearance:none;
+    -webkit-appearance: none;
+    -moz-appearance:none;
+    border: none;
+    background:none;
+}
+
+.input-mmlFilter-filter-time-mobile:after {
+    width: 21px;
+    height: 21px;
+    border-radius: 21px;
+    position: relative;
+    background-color: white;
+    content: '';
+    display: inline-block;
+}
+
+.input-mmlFilter-filter-time-mobile:checked:after {
+    background-color: black;
+    content: '';
+    border: 4px solid white;
+}
+
+/**********************************
 Hilfsklassen
 **********************************/
 .unselectable {

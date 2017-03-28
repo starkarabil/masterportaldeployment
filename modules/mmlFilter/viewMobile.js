@@ -20,7 +20,7 @@ define([
         events: {
             "click #div-mmlFilter-reset-mobile": "resetKategorien",
             "click #div-mmlFilter-execute-mobile": "executeFilter",
-            "click .input-mmlFilter-filter-time": "toggleTimeMode",
+            "click .input-mmlFilter-filter-time-mobile": "toggleTimeMode",
             "click .div-mmlFilter-panel-heading-mobile": "singleShowTargetFilter"
         },
 
