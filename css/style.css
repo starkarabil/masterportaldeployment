@@ -4704,18 +4704,19 @@ Hilfsklassen
 .lgv-container .mml-checkbox-mobil {
   -webkit-appearance: none;
   background-color: white;
-  border-radius: 2px;
+  border: none;
   display: inline-block;
   position: relative;
   height: 20px;
   width: 20px;
 }
 .lgv-container .mml-checkbox-mobil:checked:after {
+  -webkit-transform: scale(1.5, 1.5);
   content: '\2714';
   position: absolute;
-  left: 0px;
-  top: -3px;
-  border-radius: 2px;
+  left: 2px;
+  bottom: 0px;
+  border: none;
   color: #333333;
 }
 .lgv-container .unselectable {
