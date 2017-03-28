@@ -93,7 +93,7 @@ define([
                     $(kategorie).prop("checked", false);
                 });
                 $("#div-mmlFilter-reset-text-mobile").html("Alle Kategorien aktivieren");
-                $("#div-mmlFilter-reset-mobile").attr("value","aktivieren");
+                $("#div-mmlFilter-reset-mobile").attr("value", "aktivieren");
             }
             else {
                 $("#div-mmlFilter-reset-mobile").attr("value", "deaktivieren");
