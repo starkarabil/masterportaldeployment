@@ -14,7 +14,7 @@
 }
 
 #mmlFilter-accordion{
-    height: 89%;
+    height: 88%;
     .panel {
         max-height: 80%;
         overflow: auto;
@@ -92,9 +92,9 @@ Filter-Knopf für Execute auf Desktop
     color: white;
     background-color: #005ca9;
     position: relative;
-    bottom: 7px;
-    padding: 0px 75px;
     vertical-align : bottom;
+    margin: 7px 23px;
+    text-align: center;
 }
 
 #div-mmlFilter-execute:hover{
@@ -229,7 +229,6 @@ gesamtes Filterwindow Desktop
 #div-mmlFilter-content {
 
     display : block;
-    overflow: auto;
     height: 100%;
     font-family: HamburgSans;
     font-size: 15px;
