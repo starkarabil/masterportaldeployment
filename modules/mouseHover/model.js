@@ -48,7 +48,8 @@ define([
 
             channel.on({
                 "hoverByCoordinates": this.hoverByCoordinates,
-                "resetStyle": this.resetStyle
+                "resetStyle": this.resetStyle,
+                "styleDeselGFI": this.styleDeselGFI
             }, this);
 
             // select interaction Listener
@@ -231,7 +232,7 @@ define([
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-                this.styleDeselFunc(feature);
+                    this.styleDeselFunc(feature);
             }, this);
         },
 
@@ -239,7 +240,7 @@ define([
          * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
          */
         styleDeselFunc: function (feature) {
-            var normalStyle;
+            var normalStyle, GFIfeatureId, featureId;
 
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
@@ -248,10 +249,33 @@ define([
             }
             else {
                 if (_.isUndefined(feature.getStyle()[0]) === false) {
-                    normalStyle = Radio.request("StyleList", "returnModelById", "mml");
-                    feature.setStyle(normalStyle.getSimpleStyle());
+                    featureId = feature.get("features")[0].id_;
+                    if (this.attributes.GFIPopupVisibility == false) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+                    else  {
+                        GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
+                        if (GFIfeatureId !== featureId) {
+                            normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                            feature.setStyle(normalStyle.getSimpleStyle());
+                        }
+                    }
                 }
             }
+        },
+
+        /**
+         * Setzt den Style eines GFI-Features zurück.
+         */
+        styleDeselGFI: function (feature) {
+            var normalStyle;
+
+                if (_.isUndefined(feature.getStyle()) === false) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+
         },
 
         // Erzeuge Liste selektierter Features aus evt
@@ -480,7 +504,7 @@ define([
 
         hoverOffClusterFeature: function () {
             if (!_.isEmpty(this.getHoverLayer())) {
-                this.getHoverLayer().getSource().getSource().refresh();
+                // this.getHoverLayer().getSource().getSource().refresh();
             }
         },
         setHoverLayer: function (value) {
