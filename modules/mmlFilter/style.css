@@ -40,13 +40,12 @@
     padding-top: 0px;
 }
 
-
 /**********************************
 Reset-Knopf in Kategorien auf Desktop
 **********************************/
 #div-mmlFilter-reset {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -69,7 +68,7 @@ Reset-Knopf in Kategorien auf Mobile
 **********************************/
 #div-mmlFilter-reset-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -86,7 +85,7 @@ Filter-Knopf für Execute auf Desktop
 **********************************/
 #div-mmlFilter-execute {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
@@ -111,7 +110,7 @@ Filter-Knopf für Execute auf Mobile
 **********************************/
 #div-mmlFilter-execute-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
@@ -137,7 +136,7 @@ Filterabschnitte auf Desktop
 }
 
 #mmlFilter .div-mmlFilter-filter-header {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 24px;
     color: #003063;
     min-width: 200px;
@@ -145,7 +144,6 @@ Filterabschnitte auf Desktop
     letter-spacing: -0.4px;
     text-align: center;
     padding: 0px 25px;
-    font-family: HamburgSans;
     text-decoration: none;
 }
 
@@ -163,13 +161,12 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-filter-header-mobile {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 1.62;
     color: #333333;
     min-width: 200px;
     font-size: 17px;
     letter-spacing: -0.5px;
-/*    padding: 22px 25px 0px 25px;*/
 }
 
 .div-mmlFilter-filter-header-span-mobile {
@@ -217,8 +214,8 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-header-text-mobile {
+    font-family:HamburgSans-Bold;
     font-size: 20px;
-    font-weight: bold;
     top: 17px;
     position: relative;
 }
@@ -227,13 +224,10 @@ Filterabschnitte auf Mobile
 gesamtes Filterwindow Desktop
 **********************************/
 #div-mmlFilter-content {
-
     display : block;
+    font-family: HamburgSans-Regular;
     height: 100%;
-    font-family: HamburgSans;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
@@ -243,7 +237,7 @@ gesamtes Filterwindow Desktop
     background-color: white;
     width: 100%;
     color: #333333;
-    border-radius: 1px !important;
+    border-radius: 1px;
 }
 
 
@@ -261,19 +255,27 @@ gesamtes Filterwindow Desktop
 .ui-widget-content .ui-icon {
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
-.panel-collapse {
-    overflow: auto;
+.outer{
+    position: relative;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     margin: 15px 0;
+    display: block
 }
+.inner{
+    position: relative;
+    height: calc(100% + 1px);
+    display: block;
+    overflow: scroll;
+}
+
 
 /**********************************
 gesamtes Filterwindow auf Mobile
 **********************************/
 #div-mmlFilter-content-mobile {
-    font-family: HamburgSans;
+    font-family: HamburgSans-Regular;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
@@ -394,7 +396,7 @@ Hilfsklassen
 .ui-state-default {
     width: 34px !important;
     height: 31px !important;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border-color: white !important;
     background: white !important;
     line-height: 2.29 !important;

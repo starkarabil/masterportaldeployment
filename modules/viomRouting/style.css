@@ -32,7 +32,7 @@
 #routingoverlay {
     background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
     color: blue;
-    border-radius: 5px !important;
+    border-radius: 5px;
     font-family: "UniversNextW01-Regular",sans-serif;
     font-weight: bold;
     padding: 5px;
