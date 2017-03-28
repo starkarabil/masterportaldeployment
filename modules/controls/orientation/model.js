@@ -82,23 +82,33 @@ define([
                 if (this.get("geolocation") === null) {
                     geolocation = new ol.Geolocation({tracking: true, projection: ol.proj.get("EPSG:4326")});
                     this.set("geolocation", geolocation);
+                    this.onceOrAlways(geolocation, config);
                 }
                 else {
                     geolocation = this.get("geolocation");
+                    this.positioning();
                 }
                 if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
                     this.set("firstGeolocation", true);
-                    geolocation.once ("change", this.positioning, this);
-                    geolocation.once ("error", this.onError, this);
-                }
-                else {
-                    geolocation.on ("change", this.positioning, this);
-                    geolocation.on ("error", this.onError, this);
-                    this.set("tracking", true);
                 }
             }
             else {
                 this.onError();
+            }
+        },
+
+        /**
+        * Unterscheided, ob in der config once oder always für Orientation angegeben wurde und setzt Event entsprechend.
+        */
+        onceOrAlways: function (geolocation, config) {
+            if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
+                geolocation.one ("change", this.positioning, this);
+                geolocation.one ("error", this.onError, this);
+            }
+            else {
+                geolocation.on ("change", this.positioning, this);
+                geolocation.on ("error", this.onError, this);
+                this.set("tracking", true);
             }
         },
         positionMarker: function (position) {
