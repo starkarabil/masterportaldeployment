@@ -1,7 +1,7 @@
 .mobileHeader {
     background-color: #353535;
     height: 55px;
-    padding: 16px 18px 24px 18px;
+    /*padding: 16px 18px 24px 18px;*/
     color: #fff;
     width: 100%;
     font-size: 16px;
@@ -10,14 +10,22 @@
     float: left;
 }
 .mobileHeader div.filter {
-    float:right;
+    float: right;
+    width: 55px;
+    height: 55px;
 }
-.mobileHeader  img {
+.mobileHeader img {
     cursor: pointer;
 }
-.mobileHeader  img.filter {
+.mobileHeader img.filter {
     float: right;
+    padding: 15px;
+    margin: 5px 5px;
+}
+.mobileHeader img.arrow {
+    padding: 20px 18px;
 }
 .mobileHeader .title {
+    padding-top: 20px;
     margin-left: 21px;
 }
