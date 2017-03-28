@@ -73,13 +73,12 @@ define([
             }, this);
             this.listenTo(Radio.channel("MapView"), {
                 "changedZoomLevel": function () {
-                    this.hoverOffClusterFeature();
                     this.setZoom(Radio.request("MapView", "getZoomLevel"));
                 }
             }, this);
             this.listenTo(Radio.channel("Map"), {
                 "changedExtent": function () {
-                    this.hoverOffClusterFeature();
+                    // this.hoverOffClusterFeature();
                 }
             }, this);
             this.setZoom(Radio.request("MapView", "getZoomLevel"));
@@ -254,7 +253,7 @@ define([
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                         feature.setStyle(normalStyle.getSimpleStyle());
                     }
-                    else  {
+                    else {
                         GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
                         if (GFIfeatureId !== featureId) {
                             normalStyle = Radio.request("StyleList", "returnModelById", "mml");
@@ -503,10 +502,15 @@ define([
         },
 
         hoverOffClusterFeature: function () {
+            var zoom = this.getZoom();
+
             if (!_.isEmpty(this.getHoverLayer())) {
-                // this.getHoverLayer().getSource().getSource().refresh();
+                if (zoom == 9) {
+                    this.getHoverLayer().getSource().getSource().refresh();
+                }
             }
         },
+
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
         },
