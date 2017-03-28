@@ -62,11 +62,11 @@ define(function (require) {
 
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
-            this.$el.css({width: "41%"});
+            this.$el.css({width: "39%"});
             // $("#searchbarInMap").css({left: "calc(42% + 43px)"});
             this.model.getLayerFeaturesInExtent();
             $(".ol-viewport").css({
-                "width": "59%",
+                "width": "61%",
                 "float": "right"
             });
             Radio.trigger("Map", "updateSize");

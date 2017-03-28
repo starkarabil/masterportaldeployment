@@ -5,6 +5,7 @@
     top: -100%;
     height: 100%;
     width: 0%;
+    float: left;
 }
 .simple-lister-button > .glyphicon {
   top: 7px;
