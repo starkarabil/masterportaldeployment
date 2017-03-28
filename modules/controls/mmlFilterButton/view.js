@@ -2,7 +2,7 @@ define(function (require) {
 
     var Radio = require("backbone.radio"),
         Template = require("text!modules/controls/mmlFilterButton/template.html"),
-        FilterButton;
+        MmlFilterButton;
 
      MmlFilterButton = Backbone.View.extend({
         template: _.template(Template),

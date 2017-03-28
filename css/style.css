@@ -4325,7 +4325,6 @@ neben Filterfenster
   top: -100%;
   height: 100%;
   width: 0%;
-  float: left;
 }
 .lgv-container .simple-lister-button > .glyphicon {
   top: 7px;
@@ -4448,7 +4447,7 @@ neben Filterfenster
   height: 100%;
 }
 .lgv-container #mmlFilter-accordion {
-  height: 89%;
+  height: 88%;
 }
 .lgv-container #mmlFilter-accordion .panel {
   max-height: 80%;
@@ -4501,13 +4500,12 @@ neben Filterfenster
   height: 45px;
   border-radius: 3px !important;
   border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
   color: white;
   background-color: #005ca9;
   position: relative;
-  bottom: 7px;
-  padding: 0px 75px;
   vertical-align: bottom;
+  margin: 7px 23px;
+  text-align: center;
 }
 .lgv-container #div-mmlFilter-execute:hover {
   cursor: pointer;
@@ -4611,7 +4609,6 @@ neben Filterfenster
 }
 .lgv-container #div-mmlFilter-content {
   display: block;
-  overflow: auto;
   height: 100%;
   font-family: HamburgSans;
   font-size: 15px;
