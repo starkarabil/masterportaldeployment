@@ -3,13 +3,12 @@ define(function (require) {
         MMLFilter = Backbone.Model.extend({
 
         defaults: {
-            mapHeight: $("#map").height(), // Map-Höhe
-            mapWidth: $("#map").width(), // Map-Breite
-            filterMaxHeight: $("#map").height() - 260,
-            filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
+            // Gibt an ob der Filter sichtbar ist
+            isVisible: false,
             selectedKat: [],
             selectedStatus: [],
             fromDate: "",
+            filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
             toDate: "",
             features: [],
             selFeatures: []
@@ -18,8 +17,18 @@ define(function (require) {
             var channel = Radio.channel("MmlFilter");
 
             channel.on({
-                "featuresLoaded": this.prepareFeatures
+                "featuresLoaded": this.prepareFeatures,
+                "setIsVisible": this.setIsVisible,
+                "toggleIsVisible": this.toggleIsVisible
             }, this);
+            Radio.on("Util", {
+            "isViewMobileChanged": function (isMobile) {
+                if (isMobile) {
+                    this.setIsVisible(false);
+                }
+            }
+        }, this);
+
             Radio.trigger("Layer", "checkIfFeaturesLoaded");
         },
         prepareFeatures: function () {
@@ -44,6 +53,9 @@ define(function (require) {
                 });
             });
             this.setFeatures(prepFeatures);
+        },
+        toggleIsVisible: function () {
+            this.setIsVisible(!this.getIsVisible());
         },
         executeFilter: function (ignoreTime) {
             this.filterByKat();
@@ -145,17 +157,19 @@ define(function (require) {
         getSelFeatures: function () {
             return this.get("selFeatures");
         },
-        setMapHeight: function (value) {
-            this.set("mapHeight", value);
-        },
-        getMapHeight: function () {
-            return this.get("mapHeight");
-        },
         setMapWidth: function (value) {
             this.set("mapWidth", value);
         },
         getMapWidth: function () {
             return this.get("mapWidth");
+        },
+
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 

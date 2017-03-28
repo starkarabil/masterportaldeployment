@@ -111,10 +111,6 @@
 Knopf zum Nachladen
 */
   /**********************************
-Blauer Filterknopf links
-neben Filterfenster
-**********************************/
-  /**********************************
 Reset-Knopf in Kategorien auf Desktop
 **********************************/
   /**********************************
@@ -146,6 +142,10 @@ Checkbox
 **********************************/
   /**********************************
 Hilfsklassen
+**********************************/
+  /**********************************
+Blauer Filterknopf links
+neben Filterfenster
 **********************************/
 }
 .lgv-container .colorpicker-saturation {
@@ -4040,6 +4040,7 @@ Hilfsklassen
 .lgv-container #map {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 .lgv-container .breadcrumb-mobile > .breadcrumb {
   margin-bottom: 0;
@@ -4440,11 +4441,30 @@ Hilfsklassen
   padding-top: 20px;
   margin-left: 21px;
 }
-.lgv-container #mmlFilter {
+.lgv-container #mmlFilter.closed {
+  position: absolute;
+  /*width: 100%;*/
+  top: 0;
+  right: 0;
+}
+.lgv-container #mmlFilter.open {
   position: relative;
-  width: 100%;
+  width: 39%;
+  float: right;
   height: 100%;
-  top: -100%;
+}
+.lgv-container #mmlFilter-accordion {
+  height: 88%;
+}
+.lgv-container #mmlFilter-accordion .panel {
+  max-height: 80%;
+  overflow: auto;
+}
+.lgv-container #mmlFilter-accordion .panel.open {
+  height: 80%;
+}
+.lgv-container #mmlFilter.closed #div-mmlFilter-content {
+  display: none;
 }
 .lgv-container #mmlFilter .panel-heading {
   padding: 15px 20px 15px 0px;
@@ -4453,18 +4473,6 @@ Hilfsklassen
   border: 0;
   padding-left: 25px;
   padding-top: 0px;
-}
-.lgv-container #btn-mmlFilter-toggle {
-  position: relative;
-  float: right;
-  cursor: pointer;
-  top: -100%;
-  width: 45px;
-  height: 55px;
-  border-radius: 3px;
-  background-color: #0f5cad;
-  color: white;
-  border-color: #0f5cad;
 }
 .lgv-container #div-mmlFilter-reset {
   height: 45px;
@@ -4499,13 +4507,12 @@ Hilfsklassen
   height: 45px;
   border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
   color: white;
   background-color: #005ca9;
-  margin-left: 25px;
-  position: absolute;
-  bottom: 7px;
-  padding: 0px 75px;
+  position: relative;
+  vertical-align: bottom;
+  margin: 7px 23px;
+  text-align: center;
 }
 .lgv-container #div-mmlFilter-execute:hover {
   cursor: pointer;
@@ -4606,19 +4613,18 @@ Hilfsklassen
   position: relative;
 }
 .lgv-container #div-mmlFilter-content {
+  display: block;
   font-family: HamburgSans-Regular;
-  overflow: auto;
   height: 100%;
   font-size: 15px;
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
   position: relative;
-  float: right;
-  right: -45px;
-  top: -100%;
+  /*right: -45px;
+    top: -100%;*/
   background-color: white;
-  width: 0px;
+  width: 100%;
   color: #333333;
   border-radius: 1px;
 }
@@ -4735,6 +4741,9 @@ Hilfsklassen
 }
 .lgv-container .datepicker {
   height: 30px;
+}
+.lgv-container .ui-datepicker-inline {
+  width: 270px;
 }
 .lgv-container .btn-calendar {
   float: left;
@@ -4936,6 +4945,21 @@ Hilfsklassen
   letter-spacing: -0.4px;
   text-align: center;
   color: #ffffff;
+}
+.lgv-container #mmlFilter.closed #btn-mmlFilter-toggle {
+  left: -55px;
+}
+.lgv-container #btn-mmlFilter-toggle {
+  position: absolute;
+  right: 0px;
+  top: 8px;
+  cursor: pointer;
+  width: 45px;
+  height: 55px;
+  border-radius: 3px !important;
+  background-color: #0f5cad;
+  color: white;
+  border-color: #0f5cad;
 }
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)

@@ -1,0 +1,20 @@
+
+/**********************************
+Blauer Filterknopf links
+neben Filterfenster
+**********************************/
+#mmlFilter.closed #btn-mmlFilter-toggle{
+    left: -55px;
+}
+#btn-mmlFilter-toggle {
+    position: absolute;
+    right: 0px;
+    top: 8px;
+    cursor: pointer;
+    width: 45px;
+    height: 55px;
+    border-radius: 3px !important;
+    background-color: #0f5cad;
+    color: white;
+    border-color: #0f5cad;
+}
