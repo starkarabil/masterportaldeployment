@@ -3,6 +3,8 @@ define(function (require) {
         MMLFilter = Backbone.Model.extend({
 
         defaults: {
+            // Gibt an ob der Filter sichtbar ist
+            isVisible: false,
             mapHeight: $("#map").height(), // Map-Höhe
             mapWidth: $("#map").width(), // Map-Breite
             filterMaxHeight: $("#map").height() - 260,
@@ -18,8 +20,10 @@ define(function (require) {
             var channel = Radio.channel("MmlFilter");
 
             channel.on({
-                "featuresLoaded": this.prepareFeatures
+                "featuresLoaded": this.prepareFeatures,
+                "setIsVisible": this.setIsVisible
             }, this);
+
             Radio.trigger("Layer", "checkIfFeaturesLoaded");
         },
         prepareFeatures: function () {
@@ -156,6 +160,14 @@ define(function (require) {
         },
         getMapWidth: function () {
             return this.get("mapWidth");
+        },
+
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 
