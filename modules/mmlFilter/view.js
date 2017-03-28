@@ -10,10 +10,12 @@ define(function (require) {
     MMLFilterView = Backbone.View.extend({
         id: "mmlFilter",
         model: new Model(),
-        className: "unselectable",
+        className: "unselectable closed",
         template: _.template(Template),
         events: {
-            "click #btn-mmlFilter-toggle": "toggleIsVisible",
+            "click #btn-mmlFilter-toggle": function () {
+                this.model.toggleIsVisible();
+            },
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
@@ -36,24 +38,12 @@ define(function (require) {
             });
 
             this.render();
-            $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
-            $("#btn-mmlFilter-toggle").css({top: "calc(-100% + 7px)"});
         },
 
         render: function () {
             var attr = this.model.toJSON();
 
-            $("#lgv-container").append(this.$el.html(this.template(attr)));
-        },
-
-        toggleIsVisible: function () {
-            if (this.model.getIsVisible() === false) {
-                this.model.setIsVisible(true);
-                Radio.trigger("SimpleLister", "setIsVisible", false);
-            }
-            else {
-                this.model.setIsVisible(false);
-            }
+            $("#map").append(this.$el.html(this.template(attr)));
         },
 
         /**
@@ -68,36 +58,56 @@ define(function (require) {
         },
 
         toggleTriangleGlyphicon: function (evt) {
-            var glyphiconDom = $(evt.target).parent().find(".mml-triangle-glyph");
+            var parent = $(evt.target).parent(),
+                glyphiconDom = parent.find(".mml-triangle-glyph");
 
             if (evt.type === "show") {
                 glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+                parent.addClass("open");
             }
             else if (evt.type === "hide") {
                 glyphiconDom.removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+                parent.removeClass("open");
             }
         },
 
         toggleMMLFilter: function () {
-            var startWidth = $("#div-mmlFilter-content").css("width"),
-                endWidth = startWidth === "0px" ? "33%" : "0%",
-                width = startWidth === "0px" ? "67%" : "100%",
-                cssFloat = startWidth === "0px" ? "left" : "";
+            var filter = this.$el;
 
+            if (this.model.getIsVisible()) {
+                this.showMMLFilter(filter);
+            }
+            else {
+                this.hideMMLFilter(filter);
+            }
+        },
+        showMMLFilter: function (filter) {
+            this.closeLister();
+            this.shrinkViewport();
+            filter.removeClass("closed");
+            filter.addClass("open");
+        },
+        hideMMLFilter: function (filter) {
+            filter.addClass("closed");
+            filter.removeClass("open");
+            this.enlargeViewport();
+        },
+        closeLister: function () {
+            Radio.trigger("SimpleLister", "setIsVisible", false);
+        },
+        shrinkViewport: function () {
+             this.setViewportSize("61%", "left");
+        },
+        enlargeViewport: function () {
+             this.setViewportSize("100%", "");
+        },
+        setViewportSize: function (size, float) {
             $(".ol-viewport").css({
-                "width": width,
-                "float": cssFloat
+                "width": size,
+                "float": float
             });
             Radio.trigger("Map", "updateSize");
-            $("#div-mmlFilter-content").css({
-                // width: endWidth
-                width: endWidth
-            });
-            $("#btn-mmlFilter-toggle").css({
-                right: endWidth
-            });
         },
-
         toggleTimeMode: function (evt) {
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;

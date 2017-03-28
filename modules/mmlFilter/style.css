@@ -1,9 +1,35 @@
-#mmlFilter {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    top: -100%;
+#mmlFilter.closed {
+    position: absolute;
+   /*width: 100%;*/
+    top: 0;
+    right: 0;
+
 }
+
+#mmlFilter.open {
+    position: relative;
+    width: 39%;
+    float:  right;
+    height: 100%;
+}
+
+#mmlFilter-accordion{
+    height: 89%;
+    .panel {
+        max-height: 80%;
+        overflow: auto;
+    }
+    .panel.open {
+        height:80%;
+    }
+}
+
+#mmlFilter.closed #div-mmlFilter-content{
+    display:none;
+}
+
+
+
 #mmlFilter .panel-heading {
     padding: 15px 20px 15px 0px;
 }
@@ -13,22 +39,7 @@
     padding-left: 25px;
     padding-top: 0px;
 }
-/**********************************
-Blauer Filterknopf links
-neben Filterfenster
-**********************************/
-#btn-mmlFilter-toggle {
-    position: relative;
-    float:right;
-    cursor: pointer;
-    top: -100%;
-    width: 45px;
-    height: 55px;
-    border-radius: 3px !important;
-    background-color: #0f5cad;
-    color: white;
-    border-color: #0f5cad;
-}
+
 
 /**********************************
 Reset-Knopf in Kategorien auf Desktop
@@ -80,10 +91,10 @@ Filter-Knopf für Execute auf Desktop
     text-align: center;
     color: white;
     background-color: #005ca9;
-    margin-left: 25px;
-    position: absolute;
+    position: relative;
     bottom: 7px;
     padding: 0px 75px;
+    vertical-align : bottom;
 }
 
 #div-mmlFilter-execute:hover{
@@ -216,6 +227,8 @@ Filterabschnitte auf Mobile
 gesamtes Filterwindow Desktop
 **********************************/
 #div-mmlFilter-content {
+
+    display : block;
     overflow: auto;
     height: 100%;
     font-family: HamburgSans;
@@ -226,14 +239,14 @@ gesamtes Filterwindow Desktop
     letter-spacing: -0.4px;
     line-height: 2.73;
     position: relative;
-    float: right;
-    right: -45px;
-    top: -100%;
+    /*right: -45px;
+    top: -100%;*/
     background-color: white;
-    width: 0px;
+    width: 100%;
     color: #333333;
     border-radius: 1px !important;
 }
+
 
 #fromDateDiv {
     width: 200px;
@@ -329,6 +342,7 @@ Checkbox
 /**********************************
 Hilfsklassen
 **********************************/
+
 .unselectable {
     -webkit-user-select: none;  /* Chrome all / Safari all */
     -moz-user-select: none;     /* Firefox all */
@@ -356,6 +370,9 @@ Hilfsklassen
 .datepicker {
     height: 30px;
 }
+.ui-datepicker-inline {
+        width: 270px;
+}
 .btn-calendar {
     float: left;
     height: 34px;
@@ -370,6 +387,7 @@ Hilfsklassen
     top: 34px;
     right: 0px;
     z-index: 100;
+
 }
 .ui-datepicker-header {
     background-color: white
@@ -404,3 +422,4 @@ Hilfsklassen
     margin: 0px 10px 0px 15px;
     height: 45px;
 }
+
