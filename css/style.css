@@ -53,6 +53,9 @@
 ----------------------------------*/
   /* Corner radius */
   /* Overlays */
+  /**:not(.badge) {
+    border-radius: 0 !important;
+}*/
   /*bootstrap überschreiben*/
   /******* Ajax Loader *******/
   /*
@@ -2230,9 +2233,6 @@ Hilfsklassen
 .lgv-container label {
   font-weight: normal;
 }
-.lgv-container *:not(.badge) {
-  border-radius: 0 !important;
-}
 .lgv-container #cursorGlyph {
   position: absolute;
   z-index: 1000;
@@ -2317,7 +2317,7 @@ Hilfsklassen
 }
 .lgv-container .cluster {
   font-size: 25px;
-  border-radius: 30px!important;
+  border-radius: 30px;
   float: left;
   margin: 10px;
 }
@@ -2359,7 +2359,6 @@ Hilfsklassen
   font-size: 14px;
   /*    font-family: "UniversNextW04-620CondB,Arial Narrow,Arial,sans-serif";*/
   z-index: 1000;
-  /*border-radius: 5px 5px 0 !important;*/
   padding: 0;
   text-align: right;
 }
@@ -2477,7 +2476,7 @@ Hilfsklassen
 .lgv-container #routingoverlay {
   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
   color: blue;
-  border-radius: 5px !important;
+  border-radius: 5px;
   font-family: "UniversNextW01-Regular", sans-serif;
   font-weight: bold;
   padding: 5px;
@@ -2552,7 +2551,7 @@ Hilfsklassen
 }
 .lgv-container .scale-line {
   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
-  border-radius: 0 5px 0 0 !important;
+  border-radius: 0 5px 0 0;
   bottom: 0;
   color: #777;
   position: absolute;
@@ -3304,7 +3303,7 @@ Hilfsklassen
   color: #F3F3F3;
   padding: 2px 3px 2px 2px;
   background: none repeat scroll #D42132;
-  border-radius: 50px !important;
+  border-radius: 50px;
   font-size: 20px;
 }
 .lgv-container #zoom .mml {
@@ -3551,7 +3550,7 @@ Hilfsklassen
   background-color: #ffffff !important;
   color: #005ca9 !important;
   white-space: pre !important;
-  border-radius: 3px !important;
+  border-radius: 3px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
   padding: 9px 14px 6px 14px !important;
   opacity: 1 !important;
@@ -4288,7 +4287,7 @@ Hilfsklassen
   position: absolute;
   bottom: 20px;
   left: 10px;
-  border-radius: 5px !important;
+  border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
   width: 120px;
   height: 40px;
@@ -4391,7 +4390,7 @@ Hilfsklassen
 }
 .lgv-container #div-simpleLister-extentList {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: white;
@@ -4413,7 +4412,7 @@ Hilfsklassen
 .lgv-container .mobileHeader {
   background-color: #353535;
   height: 55px;
-  padding: 16px 18px 24px 18px;
+  /*padding: 16px 18px 24px 18px;*/
   color: #fff;
   width: 100%;
   font-size: 16px;
@@ -4423,14 +4422,22 @@ Hilfsklassen
 }
 .lgv-container .mobileHeader div.filter {
   float: right;
+  width: 55px;
+  height: 55px;
 }
 .lgv-container .mobileHeader img {
   cursor: pointer;
 }
 .lgv-container .mobileHeader img.filter {
   float: right;
+  padding: 15px;
+  margin: 5px 5px;
+}
+.lgv-container .mobileHeader img.arrow {
+  padding: 20px 18px;
 }
 .lgv-container .mobileHeader .title {
+  padding-top: 20px;
   margin-left: 21px;
 }
 .lgv-container #mmlFilter {
@@ -4454,14 +4461,14 @@ Hilfsklassen
   top: -100%;
   width: 45px;
   height: 55px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   background-color: #0f5cad;
   color: white;
   border-color: #0f5cad;
 }
 .lgv-container #div-mmlFilter-reset {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: black;
@@ -4478,7 +4485,7 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-reset-mobile {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: black;
@@ -4490,7 +4497,7 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-execute {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: white;
@@ -4509,7 +4516,7 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-execute-mobile {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: white;
@@ -4617,7 +4624,7 @@ Hilfsklassen
   background-color: white;
   width: 0px;
   color: #333333;
-  border-radius: 1px !important;
+  border-radius: 1px;
 }
 .lgv-container #fromDateDiv {
   width: 200px;
@@ -4633,9 +4640,18 @@ Hilfsklassen
 .lgv-container .ui-widget-content .ui-icon {
   background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
-.lgv-container .panel-collapse {
-  overflow: auto;
+.lgv-container .outer {
+  position: relative;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   margin: 15px 0;
+  display: block;
+}
+.lgv-container .inner {
+  position: relative;
+  height: calc(101%);
+  display: block;
+  overflow: scroll;
 }
 .lgv-container #div-mmlFilter-content-mobile {
   font-family: HamburgSans;
@@ -4746,7 +4762,7 @@ Hilfsklassen
 .lgv-container .ui-state-default {
   width: 34px !important;
   height: 31px !important;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border-color: white !important;
   background: white !important;
   line-height: 2.29 !important;
@@ -4802,10 +4818,10 @@ Hilfsklassen
   position: absolute;
   bottom: 20px;
   right: 8px;
-  border-radius: 3px !important;
+  border-radius: 5px;
   background-color: #e10019;
   width: 169px;
-  height: 55px;
+  height: 40px;
   cursor: pointer;
 }
 .lgv-container .mmlAssistentCallerText {
@@ -4814,18 +4830,18 @@ Hilfsklassen
   font-size: 15px;
   font-weight: bold;
   text-align: center;
-  line-height: 59px;
+  line-height: 40px;
   letter-spacing: -0.4px;
   margin-left: 10px;
   position: relative;
-  bottom: 4px;
+  bottom: 6px;
 }
 .lgv-container .mmlAssistentCaller:hover {
   background-color: rgba(225, 0, 25, 0.8);
 }
 .lgv-container .mmlAssistentPlus {
   margin-left: 15px;
-  margin-top: 15px;
+  margin-top: 9px;
   width: 22px;
   height: 22px;
 }
