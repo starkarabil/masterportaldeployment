@@ -24,7 +24,7 @@ neben Filterfenster
     top: -100%;
     width: 45px;
     height: 55px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     background-color: #0f5cad;
     color: white;
     border-color: #0f5cad;
@@ -35,7 +35,7 @@ Reset-Knopf in Kategorien auf Desktop
 **********************************/
 #div-mmlFilter-reset {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -58,7 +58,7 @@ Reset-Knopf in Kategorien auf Mobile
 **********************************/
 #div-mmlFilter-reset-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -75,7 +75,7 @@ Filter-Knopf für Execute auf Desktop
 **********************************/
 #div-mmlFilter-execute {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
@@ -100,7 +100,7 @@ Filter-Knopf für Execute auf Mobile
 **********************************/
 #div-mmlFilter-execute-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
@@ -228,7 +228,7 @@ gesamtes Filterwindow Desktop
     background-color: white;
     width: 0px;
     color: #333333;
-    border-radius: 1px !important;
+    border-radius: 1px;
 }
 
 #fromDateDiv {
@@ -245,10 +245,20 @@ gesamtes Filterwindow Desktop
 .ui-widget-content .ui-icon {
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
-.panel-collapse {
-    overflow: auto;
+.outer{
+    position: relative;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     margin: 15px 0;
+    display: block
 }
+.inner{
+    position: relative;
+    height: calc(100% + 1px);
+    display: block;
+    overflow: scroll;
+}
+
 
 /**********************************
 gesamtes Filterwindow auf Mobile
@@ -371,7 +381,7 @@ Hilfsklassen
 .ui-state-default {
     width: 34px !important;
     height: 31px !important;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border-color: white !important;
     background: white !important;
     line-height: 2.29 !important;
