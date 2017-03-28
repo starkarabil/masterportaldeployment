@@ -39,8 +39,7 @@ define([
             channel.on({
                 "removeOverlay": this.removeOverlay,
                 "getPOI": this.getPOI,
-                "sendPosition": this.sendPosition,
-                "stopTrack": this.stopTrack
+                "sendPosition": this.sendPosition
             }, this);
 
             this.setMarkerIcon();
@@ -75,9 +74,10 @@ define([
             this.removeOverlay();
         },
         track: function () {
-            if (this.getIsGeolocationDenied() === false) {
-                var geolocation;
+            var geolocation,
+                config = Radio.request("Parser", "getPortalConfig");
 
+            if (this.getIsGeolocationDenied() === false) {
                 Radio.trigger("Map", "addOverlay", this.get("marker"));
                 if (this.get("geolocation") === null) {
                     geolocation = new ol.Geolocation({tracking: true, projection: ol.proj.get("EPSG:4326")});
@@ -85,11 +85,17 @@ define([
                 }
                 else {
                     geolocation = this.get("geolocation");
-                    this.positioning();
                 }
-                geolocation.on ("change", this.positioning, this);
-                geolocation.on ("error", this.onError, this);
-                this.set("tracking", true);
+                if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
+                    this.set("firstGeolocation", true);
+                    geolocation.once ("change", this.positioning, this);
+                    geolocation.once ("error", this.onError, this);
+                }
+                else {
+                    geolocation.on ("change", this.positioning, this);
+                    geolocation.on ("error", this.onError, this);
+                    this.set("tracking", true);
+                }
             }
             else {
                 this.onError();
@@ -260,14 +266,6 @@ define([
                 className = Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.addClass;
                 $("#orientation").addClass(className);
             }
-        },
-
-        /**
-        * Setzt den Parameter tracking auf false für mml mobil, damit die Lokalisierung bei jedem klick auf den Button funktiniert
-        */
-        stopTrack: function () {
-            this.set("tracking", false);
-            this.untrack();
         }
     });
 
