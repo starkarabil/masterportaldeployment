@@ -21,7 +21,9 @@ define([
             "click #div-mmlFilter-reset-mobile": "resetKategorien",
             "click #div-mmlFilter-execute-mobile": "executeFilter",
             "click .input-mmlFilter-filter-time": "toggleTimeMode",
-            "click .div-mmlFilter-panel-heading-mobile": "singleShowTargetFilter"
+            "click .panel-heading": "togglePanel",
+            "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
+            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
         },
 
         initialize: function () {
@@ -43,21 +45,25 @@ define([
                 show: false
             });
         },
+        /**
+         * Panels werden aus- und eingeklappt.
+         * @param {MouseEvent} evt - Click auf .panel-heading
+         */
+        togglePanel: function (evt) {
+            // eventuell anderes geöffnetes Panel wird eingeklappt
+            this.$el.find(".in").collapse("hide");
+            // aktuelles Panel wird aus- oder eingeklappt
+            $(evt.currentTarget).next().collapse("toggle");
+        },
+        toggleTriangleGlyphicon: function (evt) {
+            var glyphiconDom = $(evt.target).parent().find(".mml-triangle-glyph");
 
-        singleShowTargetFilter: function (evt) {
-            var currentTarget = $(evt.currentTarget),
-                currentTargetId = currentTarget.parent().children()[1].id,
-                parentTarget = $("#div-mmlFilter-modal-dialog");
-
-            parentTarget.find(".in").each(function (index, target) {
-                if (target.id !== currentTargetId) {
-                    $(target).prev().find(".glyphicon-triangle-top").removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
-                    $(target).removeClass("in");
-                }
-            });
-
-            $("#" + currentTargetId).addClass("in");
-            $("#" + currentTargetId).prev().find(".glyphicon-triangle-bottom").removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            if (evt.type === "show") {
+                glyphiconDom.removeClass("glyphicon-triangle-bottom").addClass("glyphicon-triangle-top");
+            }
+            else if (evt.type === "hide") {
+                glyphiconDom.removeClass("glyphicon-triangle-top").addClass("glyphicon-triangle-bottom");
+            }
         },
 
         // schaltet Filterwindow sichtbar/unsichtbar
@@ -87,7 +93,7 @@ define([
                     $(kategorie).prop("checked", false);
                 });
                 $("#div-mmlFilter-reset-text-mobile").html("Alle Kategorien aktivieren");
-                $("#div-mmlFilter-reset-mobile").attr("value","aktivieren");
+                $("#div-mmlFilter-reset-mobile").attr("value", "aktivieren");
             }
             else {
                 $("#div-mmlFilter-reset-mobile").attr("value", "deaktivieren");
