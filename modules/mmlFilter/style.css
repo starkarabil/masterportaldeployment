@@ -126,7 +126,7 @@ Filterabschnitte auf Desktop
 }
 
 #mmlFilter .div-mmlFilter-filter-header {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 24px;
     color: #003063;
     min-width: 200px;
@@ -134,7 +134,6 @@ Filterabschnitte auf Desktop
     letter-spacing: -0.4px;
     text-align: center;
     padding: 0px 25px;
-    font-family: HamburgSans;
     text-decoration: none;
 }
 
@@ -152,13 +151,12 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-filter-header-mobile {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 1.62;
     color: #333333;
     min-width: 200px;
     font-size: 17px;
     letter-spacing: -0.5px;
-/*    padding: 22px 25px 0px 25px;*/
 }
 
 .div-mmlFilter-filter-header-span-mobile {
@@ -206,8 +204,8 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-header-text-mobile {
+    font-family:HamburgSans-Bold;
     font-size: 20px;
-    font-weight: bold;
     top: 17px;
     position: relative;
 }
@@ -216,12 +214,10 @@ Filterabschnitte auf Mobile
 gesamtes Filterwindow Desktop
 **********************************/
 #div-mmlFilter-content {
+    font-family: HamburgSans-Regular;
     overflow: auto;
     height: 100%;
-    font-family: HamburgSans;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
@@ -258,10 +254,8 @@ gesamtes Filterwindow Desktop
 gesamtes Filterwindow auf Mobile
 **********************************/
 #div-mmlFilter-content-mobile {
-    font-family: HamburgSans;
+    font-family: HamburgSans-Regular;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;

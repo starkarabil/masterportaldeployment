@@ -4529,7 +4529,7 @@ Hilfsklassen
   display: block;
 }
 .lgv-container #mmlFilter .div-mmlFilter-filter-header {
-  font-weight: bold;
+  font-family: HamburgSans-Bold;
   line-height: 24px;
   color: #003063;
   min-width: 200px;
@@ -4537,7 +4537,6 @@ Hilfsklassen
   letter-spacing: -0.4px;
   text-align: center;
   padding: 0px 25px;
-  font-family: HamburgSans;
   text-decoration: none;
 }
 .lgv-container .div-mmlFilter-filter-mobile {
@@ -4550,13 +4549,12 @@ Hilfsklassen
   max-height: calc("100%" - "345px");
 }
 .lgv-container .div-mmlFilter-filter-header-mobile {
-  font-weight: bold;
+  font-family: HamburgSans-Bold;
   line-height: 1.62;
   color: #333333;
   min-width: 200px;
   font-size: 17px;
   letter-spacing: -0.5px;
-  /*    padding: 22px 25px 0px 25px;*/
 }
 .lgv-container .div-mmlFilter-filter-header-span-mobile {
   float: right;
@@ -4595,18 +4593,16 @@ Hilfsklassen
   padding: 5px 0px 0px 0px;
 }
 .lgv-container .div-mmlFilter-header-text-mobile {
+  font-family: HamburgSans-Bold;
   font-size: 20px;
-  font-weight: bold;
   top: 17px;
   position: relative;
 }
 .lgv-container #div-mmlFilter-content {
+  font-family: HamburgSans-Regular;
   overflow: auto;
   height: 100%;
-  font-family: HamburgSans;
   font-size: 15px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
@@ -4638,10 +4634,8 @@ Hilfsklassen
   margin: 15px 0;
 }
 .lgv-container #div-mmlFilter-content-mobile {
-  font-family: HamburgSans;
+  font-family: HamburgSans-Regular;
   font-size: 15px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
