@@ -13,7 +13,7 @@ define(function (require) {
         className: "unselectable",
         template: _.template(Template),
         events: {
-            "click #btn-mmlFilter-toggle": "toggleMMLFilter",
+            "click #btn-mmlFilter-toggle": "toggleIsVisible",
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
@@ -31,11 +31,9 @@ define(function (require) {
         },
 
         initialize: function () {
-            var channel = Radio.channel("MmlFilter");
-
-            channel.on({
-                "collapse": this.collapse
-            }, this);
+            this.listenTo(this.model, {
+                "change:isVisible": this.toggleMMLFilter
+            });
 
             this.render();
             $("#div-mmlFilter-content").css({height: this.model.getMapHeight()});
@@ -48,11 +46,16 @@ define(function (require) {
             $("#lgv-container").append(this.$el.html(this.template(attr)));
         },
 
-        collapse: function () {
-            if ($("#div-mmlFilter-content").css("width") !== "0px") {
-                this.toggleMMLFilter();
+        toggleIsVisible: function () {
+            if (this.model.getIsVisible() === false) {
+                this.model.setIsVisible(true);
+                Radio.trigger("SimpleLister", "setIsVisible", false);
+            }
+            else {
+                this.model.setIsVisible(false);
             }
         },
+
         /**
          * Panels werden aus- und eingeklappt.
          * @param {MouseEvent} evt - Click auf .panel-heading
@@ -81,7 +84,6 @@ define(function (require) {
                 width = startWidth === "0px" ? "67%" : "100%",
                 cssFloat = startWidth === "0px" ? "left" : "";
 
-            Radio.trigger("SimpleLister", "collapse");
             $(".ol-viewport").css({
                 "width": width,
                 "float": cssFloat

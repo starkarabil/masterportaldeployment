@@ -1,9 +1,4 @@
-define([
-    "text!modules/simpleLister/template.html",
-    "modules/simpleLister/model",
-    "openlayers"
-
-], function () {
+define(function (require) {
 
     var Template = require("text!modules/simpleLister/template.html"),
         SimpleLister = require("modules/simpleLister/model"),
@@ -14,7 +9,7 @@ define([
         className: "simple-lister-view",
         template: _.template(Template),
         events: {
-            "click .simple-lister-button": "toggleSimpleList",
+            "click .simple-lister-button": "toggleIsVisible",
             "click #div-simpleLister-extentList": "appendMoreFeatures",
             "mouseenter .entry": "mouseenterEntry",
             "mouseleave .entry": "mouseleaveEntry",
@@ -22,16 +17,12 @@ define([
         },
 
         initialize: function () {
-            var channel = Radio.channel("SimpleLister");
-
-            channel.on({
-                "collapse": this.collapse
-            }, this);
             this.listenTo(this.model, {
                 "newFeaturesInExtent": this.newFeaturesInExtent,
                 "appendFeaturesInExtent": this.appendFeaturesInExtent,
                 "renderContent": this.renderContent,
-                "show": this.show
+                "show": this.show,
+                "change:isVisible": this.toggleSimpleList
             });
 
             this.render();
@@ -49,11 +40,16 @@ define([
             this.$el.html(this.template(attr));
         },
 
-        collapse: function () {
-            if (this.$el.find(".glyphicon-triangle-right").length === 0) {
-                this.toggleSimpleList();
+        toggleIsVisible: function () {
+            if (this.model.getIsVisible() === false) {
+                Radio.trigger("MmlFilter", "setIsVisible", false);
+                this.model.setIsVisible(true);
+            }
+            else {
+                this.model.setIsVisible(false);
             }
         },
+
         triggerGFI: function (evt) {
             this.model.triggerGFI(parseInt(evt.currentTarget.id, 10));
         },
@@ -166,10 +162,7 @@ define([
         },
 
         toggleSimpleList: function () {
-            var glyphiconDom = this.$el;
-
-            Radio.trigger("MmlFilter", "collapse");
-            if (glyphiconDom.find(".glyphicon-triangle-right").length > 0) {
+            if (this.model.getIsVisible() === true) {
                 this.show();
             }
             else {

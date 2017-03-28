@@ -4,6 +4,8 @@ define(function () {
 
     SimpleListerModel = Backbone.Model.extend({
         defaults: {
+            // Ist das Modul sichtbar
+            isVisible: false,
             featuresInExtent: [],
             featuresPerPage: 20, // Anzahl initialer Features in Liste
             totalFeaturesInPage: 0, // Aktuelle Anzahl an Features in Liste
@@ -15,6 +17,7 @@ define(function () {
             var channel = Radio.channel("SimpleLister");
 
             channel.on({
+                "setIsVisible": this.setIsVisible,
                 "show": function () {
                     this.trigger("show");
                 },
@@ -199,6 +202,14 @@ define(function () {
         // setter for totalFeatures
         setTotalFeatures: function (value) {
             this.set("totalFeatures", value);
+        },
+
+        getIsVisible: function () {
+            return this.get("isVisible");
+        },
+
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
         }
     });
 
