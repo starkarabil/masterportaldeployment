@@ -90,6 +90,8 @@ define(function (require) {
 
             Radio.trigger("zoomtofeature", "zoomtoid");
             Radio.trigger("ModelList", "addInitialyNeededModels");
+
+            this.stopMouseMoveEvent();
         },
 
         render: function () {
@@ -513,7 +515,19 @@ define(function (require) {
             this.registerListenerOnce("change:size", function () {
                 this.updateSize();
             }, this);
-         }
+        },
+
+        /**
+         * Der ol-overlaycontainer-stopevent Container stoppt nicht jedes Event.
+         * Unter anderem das Mousemove Event. Das übernimmt diese Methode.
+         *
+         * @see {@link https://github.com/openlayers/openlayers/issues/4953}
+         */
+        stopMouseMoveEvent: function () {
+            $(".ol-overlaycontainer-stopevent").on("mousemove", function (evt) {
+                evt.stopPropagation();
+            });
+        }
     });
 
     return Map;

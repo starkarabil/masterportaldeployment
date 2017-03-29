@@ -53,6 +53,9 @@
 ----------------------------------*/
   /* Corner radius */
   /* Overlays */
+  /**:not(.badge) {
+    border-radius: 0 !important;
+}*/
   /*bootstrap überschreiben*/
   /******* Ajax Loader *******/
   /*
@@ -108,10 +111,6 @@
 Knopf zum Nachladen
 */
   /**********************************
-Blauer Filterknopf links
-neben Filterfenster
-**********************************/
-  /**********************************
 Reset-Knopf in Kategorien auf Desktop
 **********************************/
   /**********************************
@@ -146,6 +145,10 @@ Checkbox Mobil
 **********************************/
   /**********************************
 Hilfsklassen
+**********************************/
+  /**********************************
+Blauer Filterknopf links
+neben Filterfenster
 **********************************/
 }
 .lgv-container .colorpicker-saturation {
@@ -2233,9 +2236,6 @@ Hilfsklassen
 .lgv-container label {
   font-weight: normal;
 }
-.lgv-container *:not(.badge) {
-  border-radius: 0 !important;
-}
 .lgv-container #cursorGlyph {
   position: absolute;
   z-index: 1000;
@@ -2320,7 +2320,7 @@ Hilfsklassen
 }
 .lgv-container .cluster {
   font-size: 25px;
-  border-radius: 30px!important;
+  border-radius: 30px;
   float: left;
   margin: 10px;
 }
@@ -2362,7 +2362,6 @@ Hilfsklassen
   font-size: 14px;
   /*    font-family: "UniversNextW04-620CondB,Arial Narrow,Arial,sans-serif";*/
   z-index: 1000;
-  /*border-radius: 5px 5px 0 !important;*/
   padding: 0;
   text-align: right;
 }
@@ -2480,7 +2479,7 @@ Hilfsklassen
 .lgv-container #routingoverlay {
   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
   color: blue;
-  border-radius: 5px !important;
+  border-radius: 5px;
   font-family: "UniversNextW01-Regular", sans-serif;
   font-weight: bold;
   padding: 5px;
@@ -2555,7 +2554,7 @@ Hilfsklassen
 }
 .lgv-container .scale-line {
   background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
-  border-radius: 0 5px 0 0 !important;
+  border-radius: 0 5px 0 0;
   bottom: 0;
   color: #777;
   position: absolute;
@@ -3307,7 +3306,7 @@ Hilfsklassen
   color: #F3F3F3;
   padding: 2px 3px 2px 2px;
   background: none repeat scroll #D42132;
-  border-radius: 50px !important;
+  border-radius: 50px;
   font-size: 20px;
 }
 .lgv-container #zoom .mml {
@@ -3554,7 +3553,7 @@ Hilfsklassen
   background-color: #ffffff !important;
   color: #005ca9 !important;
   white-space: pre !important;
-  border-radius: 3px !important;
+  border-radius: 3px;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5) !important;
   padding: 9px 14px 6px 14px !important;
   opacity: 1 !important;
@@ -4044,6 +4043,7 @@ Hilfsklassen
 .lgv-container #map {
   height: 100%;
   width: 100%;
+  position: relative;
 }
 .lgv-container .breadcrumb-mobile > .breadcrumb {
   margin-bottom: 0;
@@ -4291,7 +4291,7 @@ Hilfsklassen
   position: absolute;
   bottom: 20px;
   left: 10px;
-  border-radius: 5px !important;
+  border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
   width: 120px;
   height: 40px;
@@ -4394,7 +4394,7 @@ Hilfsklassen
 }
 .lgv-container #div-simpleLister-extentList {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: white;
@@ -4416,7 +4416,7 @@ Hilfsklassen
 .lgv-container .mobileHeader {
   background-color: #353535;
   height: 55px;
-  padding: 16px 18px 24px 18px;
+  /*padding: 16px 18px 24px 18px;*/
   color: #fff;
   width: 100%;
   font-size: 16px;
@@ -4426,21 +4426,48 @@ Hilfsklassen
 }
 .lgv-container .mobileHeader div.filter {
   float: right;
+  width: 55px;
+  height: 55px;
 }
 .lgv-container .mobileHeader img {
   cursor: pointer;
 }
 .lgv-container .mobileHeader img.filter {
   float: right;
+  padding: 15px;
+  margin: 5px 5px;
+}
+.lgv-container .mobileHeader img.arrow {
+  padding: 20px 18px;
 }
 .lgv-container .mobileHeader .title {
+  padding-top: 20px;
   margin-left: 21px;
 }
-.lgv-container #mmlFilter {
+.lgv-container #mmlFilter.closed {
+  position: absolute;
+  /*width: 100%;*/
+  top: 0;
+  right: 0;
+}
+.lgv-container #mmlFilter.open {
   position: relative;
-  width: 100%;
+  width: 39%;
+  float: right;
   height: 100%;
-  top: -100%;
+}
+.lgv-container #mmlFilter-accordion {
+  height: 88%;
+}
+.lgv-container #mmlFilter-accordion .panel {
+  max-height: 80%;
+  overflow: auto;
+}
+.lgv-container #mmlFilter-accordion .panel.open {
+  height: 80%;
+}
+.lgv-container #mmlFilter.closed #div-mmlFilter-content {
+  display: none;
 }
 .lgv-container #mmlFilter .panel-heading {
   padding: 15px 20px 15px 0px;
@@ -4450,21 +4477,9 @@ Hilfsklassen
   padding-left: 25px;
   padding-top: 0px;
 }
-.lgv-container #btn-mmlFilter-toggle {
-  position: relative;
-  float: right;
-  cursor: pointer;
-  top: -100%;
-  width: 45px;
-  height: 55px;
-  border-radius: 3px !important;
-  background-color: #0f5cad;
-  color: white;
-  border-color: #0f5cad;
-}
 .lgv-container #div-mmlFilter-reset {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: black;
@@ -4481,7 +4496,7 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-reset-mobile {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: black;
@@ -4493,15 +4508,14 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-execute {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
-  text-align: center;
   color: white;
   background-color: #005ca9;
-  margin-left: 25px;
-  position: absolute;
-  bottom: 7px;
-  padding: 0px 75px;
+  position: relative;
+  vertical-align: bottom;
+  margin: 7px 23px;
+  text-align: center;
 }
 .lgv-container #div-mmlFilter-execute:hover {
   cursor: pointer;
@@ -4512,7 +4526,7 @@ Hilfsklassen
 }
 .lgv-container #div-mmlFilter-execute-mobile {
   height: 45px;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border: solid 1px rgba(0, 0, 0, 0.18);
   text-align: center;
   color: white;
@@ -4532,7 +4546,7 @@ Hilfsklassen
   display: block;
 }
 .lgv-container #mmlFilter .div-mmlFilter-filter-header {
-  font-weight: bold;
+  font-family: HamburgSans-Bold;
   line-height: 24px;
   color: #003063;
   min-width: 200px;
@@ -4540,7 +4554,6 @@ Hilfsklassen
   letter-spacing: -0.4px;
   text-align: center;
   padding: 0px 25px;
-  font-family: HamburgSans;
   text-decoration: none;
 }
 .lgv-container .div-mmlFilter-filter-mobile {
@@ -4553,13 +4566,12 @@ Hilfsklassen
   max-height: calc("100%" - "345px");
 }
 .lgv-container .div-mmlFilter-filter-header-mobile {
-  font-weight: bold;
+  font-family: HamburgSans-Bold;
   line-height: 1.62;
   color: #333333;
   min-width: 200px;
   font-size: 17px;
   letter-spacing: -0.5px;
-  /*    padding: 22px 25px 0px 25px;*/
 }
 .lgv-container .div-mmlFilter-filter-header-span-mobile {
   float: right;
@@ -4598,29 +4610,26 @@ Hilfsklassen
   padding: 5px 0px 0px 0px;
 }
 .lgv-container .div-mmlFilter-header-text-mobile {
+  font-family: HamburgSans-Bold;
   font-size: 20px;
-  font-weight: bold;
   top: 17px;
   position: relative;
 }
 .lgv-container #div-mmlFilter-content {
-  overflow: auto;
+  display: block;
+  font-family: HamburgSans-Regular;
   height: 100%;
-  font-family: HamburgSans;
   font-size: 15px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
   position: relative;
-  float: right;
-  right: -45px;
-  top: -100%;
+  /*right: -45px;
+    top: -100%;*/
   background-color: white;
-  width: 0px;
+  width: 100%;
   color: #333333;
-  border-radius: 1px !important;
+  border-radius: 1px;
 }
 .lgv-container #fromDateDiv {
   width: 200px;
@@ -4636,15 +4645,22 @@ Hilfsklassen
 .lgv-container .ui-widget-content .ui-icon {
   background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
-.lgv-container .panel-collapse {
-  overflow: auto;
+.lgv-container .outer {
+  position: relative;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   margin: 15px 0;
+  display: block;
+}
+.lgv-container .inner {
+  position: relative;
+  height: calc(101%);
+  display: block;
+  overflow: scroll;
 }
 .lgv-container #div-mmlFilter-content-mobile {
-  font-family: HamburgSans;
+  font-family: HamburgSans-Regular;
   font-size: 15px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   letter-spacing: -0.4px;
   line-height: 2.73;
@@ -4745,6 +4761,9 @@ Hilfsklassen
 .lgv-container .datepicker {
   height: 30px;
 }
+.lgv-container .ui-datepicker-inline {
+  width: 270px;
+}
 .lgv-container .btn-calendar {
   float: left;
   height: 34px;
@@ -4765,7 +4784,7 @@ Hilfsklassen
 .lgv-container .ui-state-default {
   width: 34px !important;
   height: 31px !important;
-  border-radius: 3px !important;
+  border-radius: 3px;
   border-color: white !important;
   background: white !important;
   line-height: 2.29 !important;
@@ -4821,10 +4840,10 @@ Hilfsklassen
   position: absolute;
   bottom: 20px;
   right: 8px;
-  border-radius: 3px !important;
+  border-radius: 5px;
   background-color: #e10019;
   width: 169px;
-  height: 55px;
+  height: 40px;
   cursor: pointer;
 }
 .lgv-container .mmlAssistentCallerText {
@@ -4833,18 +4852,18 @@ Hilfsklassen
   font-size: 15px;
   font-weight: bold;
   text-align: center;
-  line-height: 59px;
+  line-height: 40px;
   letter-spacing: -0.4px;
   margin-left: 10px;
   position: relative;
-  bottom: 4px;
+  bottom: 6px;
 }
 .lgv-container .mmlAssistentCaller:hover {
   background-color: rgba(225, 0, 25, 0.8);
 }
 .lgv-container .mmlAssistentPlus {
   margin-left: 15px;
-  margin-top: 15px;
+  margin-top: 9px;
   width: 22px;
   height: 22px;
 }
@@ -4862,6 +4881,104 @@ Hilfsklassen
   /* IE 10+ */
   user-select: none;
   /* Likely future */
+}
+.lgv-container .mmlWelcomeScreen {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-dialog {
+  top: 25%;
+  margin: 25px !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+}
+.lgv-container .mmlWelcomeScreen-close {
+  position: relative;
+  float: right;
+  cursor: pointer;
+  width: 55px;
+  height: 55px;
+  background-color: #ffffff;
+}
+.lgv-container .mmlWelcomeScreen-close:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-header {
+  position: relative;
+  top: 29px;
+  text-align: center;
+  font-family: HamburgSans;
+  font-size: 19px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.42;
+  letter-spacing: -0.5px;
+  color: #003063;
+}
+.lgv-container .mmlWelcomeScreen-text {
+  position: relative;
+  padding: 40px 28px;
+  font-family: HamburgSans;
+  font-size: 17px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.32;
+  letter-spacing: -0.5px;
+  text-align: center;
+  color: #333333;
+}
+.lgv-container .mmlWelcomeScreen-buttons {
+  margin: auto;
+  margin-bottom: 35px;
+  width: 350px;
+  height: 45px;
+}
+.lgv-container .mmlWelcomeScreen-svg {
+  position: relative;
+  top: 5px;
+  width: 22px;
+  height: 22px;
+}
+.lgv-container .mmlWelcomeScreen-plus {
+  background-color: #e10019;
+  float: right;
+}
+.lgv-container .mmlWelcomeScreen-plus:hover {
+  background-color: rgba(225, 0, 25, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-map {
+  background-color: #0f5cad;
+  float: left;
+}
+.lgv-container .mmlWelcomeScreen-map:hover {
+  background-color: rgba(15, 92, 173, 0.5);
+}
+.lgv-container .mmlWelcomeScreen-ButtonText {
+  margin-left: 10px;
+  font-family: HamburgSans;
+  font-size: 15px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.6;
+  letter-spacing: -0.4px;
+  text-align: center;
+  color: #ffffff;
+}
+.lgv-container #mmlFilter.closed #btn-mmlFilter-toggle {
+  left: -55px;
+}
+.lgv-container #btn-mmlFilter-toggle {
+  position: absolute;
+  right: 0px;
+  top: 8px;
+  cursor: pointer;
+  width: 45px;
+  height: 55px;
+  border-radius: 3px !important;
+  background-color: #0f5cad;
+  color: white;
+  border-color: #0f5cad;
 }
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)

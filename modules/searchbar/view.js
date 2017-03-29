@@ -235,7 +235,6 @@ define(function (require) {
                 $("#geolocation_marker").remove();
                 $("#mmlMobilRemove").css({"right": "70px"});
             }
-            this.focusOnEnd($("#searchInput"));
             if (this.model.get("searchString").length !== 0) {
                 $("#searchInput:focus").css("border-right-width", "0");
             }
@@ -721,11 +720,8 @@ define(function (require) {
             }
             else {
                 this.model.set("searchString", "");
-                $("#searchInput").blur();
             }
-            if (Radio.request("Util", "isViewMobile")) {
-                $("#searchInput").blur();
-            }
+            $("#searchInput").blur();
         }
     });
 
