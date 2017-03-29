@@ -147,6 +147,7 @@
     padding: 15px 15px 15px 15px;
     position: absolute;
     right: 0px;
+    border-radius: 3px;
 }
 #zoom .glyphicon-plus.mml{
     top: 230px;
@@ -165,12 +166,15 @@
     position: absolute;
     right: 0px;
     top: 168px;
+    border-radius: 3px;
 }
 .mmlZoom {
     margin-top: 0px;
+    border-radius: 3px;
 }
 .mmlFullScreen {
     margin-top: 0px;
+    border-radius: 3px;
 }
 #zoom > div > .mml:hover {
     cursor: pointer;
@@ -182,7 +186,6 @@
 }
 .mmlControls {
     top: 0px;
-
 }
 #controls .mmlFullScreen .full-screen-button {
     margin-top: 0px;
