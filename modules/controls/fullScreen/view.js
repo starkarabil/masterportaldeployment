@@ -28,14 +28,25 @@ define(function (require) {
             }
         },
         makeContainerModal: function (container) {
+            var glyphicon = this.$el.find(".glyphicon");
+
+            glyphicon.removeClass("glyphicon-fullscreen");
+            glyphicon.addClass("glyphicon-remove");
+
             this.prevDimensions.height = container.prop("style").height;
             this.prevDimensions.width = container.prop("style").width;
+
             container.addClass("is-modal");
             container.css("height", "99vh");
             container.css("width", "100%");
             Radio.trigger("Map", "updateSize");
         },
         reEmbedContainer: function (container) {
+            var glyphicon = this.$el.find(".glyphicon");
+
+            glyphicon.addClass("glyphicon-fullscreen");
+            glyphicon.removeClass("glyphicon-remove");
+
             container.removeClass("is-modal");
             container.css("height", this.prevDimensions.height);
             container.css("width", this.prevDimensions.width);

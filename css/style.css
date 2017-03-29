@@ -3319,6 +3319,7 @@ neben Filterfenster
   padding: 15px 15px 15px 15px;
   position: absolute;
   right: 0px;
+  border-radius: 3px;
 }
 .lgv-container #zoom .glyphicon-plus.mml {
   top: 230px;
@@ -3337,12 +3338,15 @@ neben Filterfenster
   position: absolute;
   right: 0px;
   top: 168px;
+  border-radius: 3px;
 }
 .lgv-container .mmlZoom {
   margin-top: 0px;
+  border-radius: 3px;
 }
 .lgv-container .mmlFullScreen {
   margin-top: 0px;
+  border-radius: 3px;
 }
 .lgv-container #zoom > div > .mml:hover {
   cursor: pointer;
