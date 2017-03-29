@@ -48,7 +48,8 @@ define([
 
             channel.on({
                 "hoverByCoordinates": this.hoverByCoordinates,
-                "resetStyle": this.resetStyle
+                "resetStyle": this.resetStyle,
+                "styleDeselGFI": this.styleDeselGFI
             }, this);
 
             // select interaction Listener
@@ -72,13 +73,12 @@ define([
             }, this);
             this.listenTo(Radio.channel("MapView"), {
                 "changedZoomLevel": function () {
-                    this.hoverOffClusterFeature();
                     this.setZoom(Radio.request("MapView", "getZoomLevel"));
                 }
             }, this);
             this.listenTo(Radio.channel("Map"), {
                 "changedExtent": function () {
-                    this.hoverOffClusterFeature();
+                    // this.hoverOffClusterFeature();
                 }
             }, this);
             this.setZoom(Radio.request("MapView", "getZoomLevel"));
@@ -231,7 +231,7 @@ define([
         // Deselected Features: Symbol zurücksetzen
         styleDeselectedFeatures: function (features) {
             features.forEach(function (feature) {
-                this.styleDeselFunc(feature);
+                    this.styleDeselFunc(feature);
             }, this);
         },
 
@@ -239,7 +239,7 @@ define([
          * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
          */
         styleDeselFunc: function (feature) {
-            var normalStyle;
+            var normalStyle, GFIfeatureId, featureId;
 
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
@@ -248,10 +248,33 @@ define([
             }
             else {
                 if (_.isUndefined(feature.getStyle()[0]) === false) {
-                    normalStyle = Radio.request("StyleList", "returnModelById", "mml");
-                    feature.setStyle(normalStyle.getSimpleStyle());
+                    featureId = feature.get("features")[0].id_;
+                    if (this.attributes.GFIPopupVisibility === false) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+                    else {
+                        GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
+                        if (GFIfeatureId !== featureId) {
+                            normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                            feature.setStyle(normalStyle.getSimpleStyle());
+                        }
+                    }
                 }
             }
+        },
+
+        /**
+         * Setzt den Style eines GFI-Features zurück.
+         */
+        styleDeselGFI: function (feature) {
+            var normalStyle;
+
+                if (_.isUndefined(feature.getStyle()) === false) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+
         },
 
         // Erzeuge Liste selektierter Features aus evt
@@ -316,7 +339,8 @@ define([
 
         compareArrayOfObjects: function (arr1, arr2) {
             var obj1,
-                obj2;
+                obj2,
+                i;
 
             if (arr1.length !== arr2.length) {
                 return false;
@@ -428,7 +452,8 @@ define([
                 newClusterFeature,
                 geom,
                 oldFeature,
-                feature;
+                feature,
+                i;
 
             newStyle.getImage().setOpacity(0.5);
 
@@ -479,10 +504,15 @@ define([
         },
 
         hoverOffClusterFeature: function () {
+            var zoom = this.getZoom();
+
             if (!_.isEmpty(this.getHoverLayer())) {
-                this.getHoverLayer().getSource().getSource().refresh();
+                if (zoom === 9) {
+                    this.getHoverLayer().getSource().getSource().refresh();
+                }
             }
         },
+
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
         },
