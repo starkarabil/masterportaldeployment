@@ -249,7 +249,7 @@ define([
             else {
                 if (_.isUndefined(feature.getStyle()[0]) === false) {
                     featureId = feature.get("features")[0].id_;
-                    if (this.attributes.GFIPopupVisibility == false) {
+                    if (this.attributes.GFIPopupVisibility === false) {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                         feature.setStyle(normalStyle.getSimpleStyle());
                     }
@@ -339,7 +339,8 @@ define([
 
         compareArrayOfObjects: function (arr1, arr2) {
             var obj1,
-                obj2;
+                obj2,
+                i;
 
             if (arr1.length !== arr2.length) {
                 return false;
@@ -451,7 +452,8 @@ define([
                 newClusterFeature,
                 geom,
                 oldFeature,
-                feature;
+                feature,
+                i;
 
             newStyle.getImage().setOpacity(0.5);
 
@@ -505,7 +507,7 @@ define([
             var zoom = this.getZoom();
 
             if (!_.isEmpty(this.getHoverLayer())) {
-                if (zoom == 9) {
+                if (zoom === 9) {
                     this.getHoverLayer().getSource().getSource().refresh();
                 }
             }
