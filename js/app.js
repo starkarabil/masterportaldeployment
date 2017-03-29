@@ -423,6 +423,7 @@ define("app",
                         require(["modules/controls/mmlFilterButton/view"], function (MmlFilterButton) {
                             new MmlFilterButton();
                         });
+                        decModulesLoading();
                         break;
                     }
                     default: {
