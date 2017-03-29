@@ -190,7 +190,6 @@ define(function (require) {
             "click .form-control-feedback": "deleteSearchString",
             "click .btn-search": "renderHitList",
             "click #mmlOrientaiton": function () {
-                Radio.trigger("Geolocation", "stopTrack");
                 Radio.trigger("Orientation", "getOrientation");
             },
             "click .list-group-item.hit": "hitSelected",
@@ -207,16 +206,16 @@ define(function (require) {
                 EventBus.trigger("showWindowHelp", "search");
             },
             "keydown": "navigateList",
-            "click": function () {
+            "click ": function () {
                 this.clearSelection();
-                $("#searchInput").focus();
             }
         },
         /**
         *
         */
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                config = Radio.request("Parser", "getPortalConfig");
 
             this.removeMobilDesktopClass();
             if (this.config.searchbarTemplate === "mml" && Radio.request("Util", "isViewMobile")) {
@@ -230,7 +229,7 @@ define(function (require) {
                 this.renderWhere();
             }
             this.$el.html(this.template(attr));
-            if (window.location.protocol !== "https:") {
+            if (window.location.protocol !== "https:" || _.isUndefined(config.controls.orientation) === true || config.controls.orientation === false) {
                 $("#mmlOrientaiton").remove();
                 $("#geolocation_marker").remove();
                 $("#mmlMobilRemove").css({"right": "70px"});
@@ -319,7 +318,7 @@ define(function (require) {
                 if (evt.type !== "click" || this.model.get("hitList").length === 1) {
                     this.hitSelected(evt); // erster und einziger Eintrag in Liste
                 }
-                else if (evt.currentTarget.className !== "list-group-item results" & _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
+                else if (evt.currentTarget.className !== "list-group-item results" && _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
                   this.hitSelected(evt);
                 }
                 else {
@@ -394,7 +393,7 @@ define(function (require) {
             // fix für Firefox
             event = e || window.event;
 
-            //fix für Konflikt mit externer cit-seite.
+            // fix für Konflikt mit externer cit-seite.
             if (event.keyCode === 13) {
                 event.stopPropagation();
                 event.preventDefault();
