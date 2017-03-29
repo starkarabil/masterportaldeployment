@@ -363,10 +363,12 @@ define("app",
                         break;
                     }
                     case "orientation": {
-                        el = controlsView.addRow(control.id);
-                         require(["modules/controls/orientation/view"], function (OrientationView) {
-                             new OrientationView({el: el});
-                         });
+                        if (control.attr !== false) {
+                            el = controlsView.addRow(control.id);
+                             require(["modules/controls/orientation/view"], function (OrientationView) {
+                                 new OrientationView({el: el});
+                             });
+                        }
                         decModulesLoading();
                         break;
                     }
