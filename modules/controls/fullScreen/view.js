@@ -40,6 +40,7 @@ define(function (require) {
             container.css("height", "99vh");
             container.css("width", "100%");
             Radio.trigger("Map", "updateSize");
+            $("#topbar-sticky-wrapper").hide();
         },
         reEmbedContainer: function (container) {
             var glyphicon = this.$el.find(".glyphicon");
@@ -51,6 +52,7 @@ define(function (require) {
             container.css("height", this.prevDimensions.height);
             container.css("width", this.prevDimensions.width);
             Radio.trigger("Map", "updateSize");
+            $("#topbar-sticky-wrapper").show();
         },
         toggleMmlContainerIsModal: function () {
             var container = $(".lgv-container");

@@ -123,3 +123,9 @@
     text-align: center;
     color: #ffffff;
 }
+#div-mmlWelcomeScreen {
+    display: block;
+    padding-right: 0px;
+    top: 0%;
+    position: absolute;
+}

@@ -4992,6 +4992,12 @@ neben Filterfenster
   text-align: center;
   color: #ffffff;
 }
+.lgv-container #div-mmlWelcomeScreen {
+  display: block;
+  padding-right: 0px;
+  top: 0%;
+  position: absolute;
+}
 .lgv-container #mmlFilter.closed #btn-mmlFilter-toggle {
   left: -55px;
 }
