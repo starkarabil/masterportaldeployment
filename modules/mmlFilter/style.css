@@ -1,9 +1,35 @@
-#mmlFilter {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    top: -100%;
+#mmlFilter.closed {
+    position: absolute;
+   /*width: 100%;*/
+    top: 0;
+    right: 0;
+
 }
+
+#mmlFilter.open {
+    position: relative;
+    width: 39%;
+    float:  right;
+    height: 100%;
+}
+
+#mmlFilter-accordion{
+    height: 88%;
+    .panel {
+        max-height: 80%;
+        overflow: auto;
+    }
+    .panel.open {
+        height:80%;
+    }
+}
+
+#mmlFilter.closed #div-mmlFilter-content{
+    display:none;
+}
+
+
+
 #mmlFilter .panel-heading {
     padding: 15px 20px 15px 0px;
 }
@@ -13,29 +39,13 @@
     padding-left: 25px;
     padding-top: 0px;
 }
-/**********************************
-Blauer Filterknopf links
-neben Filterfenster
-**********************************/
-#btn-mmlFilter-toggle {
-    position: relative;
-    float:right;
-    cursor: pointer;
-    top: -100%;
-    width: 45px;
-    height: 55px;
-    border-radius: 3px !important;
-    background-color: #0f5cad;
-    color: white;
-    border-color: #0f5cad;
-}
 
 /**********************************
 Reset-Knopf in Kategorien auf Desktop
 **********************************/
 #div-mmlFilter-reset {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -58,7 +68,7 @@ Reset-Knopf in Kategorien auf Mobile
 **********************************/
 #div-mmlFilter-reset-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: black;
@@ -75,15 +85,15 @@ Filter-Knopf für Execute auf Desktop
 **********************************/
 #div-mmlFilter-execute {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
     background-color: #005ca9;
-    margin-left: 25px;
-    position: absolute;
-    bottom: 7px;
-    padding: 0px 75px;
+    position: relative;
+    vertical-align : bottom;
+    margin: 7px 23px;
+    text-align: center;
 }
 
 #div-mmlFilter-execute:hover{
@@ -100,7 +110,7 @@ Filter-Knopf für Execute auf Mobile
 **********************************/
 #div-mmlFilter-execute-mobile {
     height: 45px;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
     color: white;
@@ -126,7 +136,7 @@ Filterabschnitte auf Desktop
 }
 
 #mmlFilter .div-mmlFilter-filter-header {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 24px;
     color: #003063;
     min-width: 200px;
@@ -134,7 +144,6 @@ Filterabschnitte auf Desktop
     letter-spacing: -0.4px;
     text-align: center;
     padding: 0px 25px;
-    font-family: HamburgSans;
     text-decoration: none;
 }
 
@@ -152,13 +161,12 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-filter-header-mobile {
-    font-weight: bold;
+    font-family: HamburgSans-Bold;
     line-height: 1.62;
     color: #333333;
     min-width: 200px;
     font-size: 17px;
     letter-spacing: -0.5px;
-/*    padding: 22px 25px 0px 25px;*/
 }
 
 .div-mmlFilter-filter-header-span-mobile {
@@ -206,8 +214,8 @@ Filterabschnitte auf Mobile
 }
 
 .div-mmlFilter-header-text-mobile {
+    font-family:HamburgSans-Bold;
     font-size: 20px;
-    font-weight: bold;
     top: 17px;
     position: relative;
 }
@@ -216,24 +224,22 @@ Filterabschnitte auf Mobile
 gesamtes Filterwindow Desktop
 **********************************/
 #div-mmlFilter-content {
-    overflow: auto;
+    display : block;
+    font-family: HamburgSans-Regular;
     height: 100%;
-    font-family: HamburgSans;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
     position: relative;
-    float: right;
-    right: -45px;
-    top: -100%;
+    /*right: -45px;
+    top: -100%;*/
     background-color: white;
-    width: 0px;
+    width: 100%;
     color: #333333;
-    border-radius: 1px !important;
+    border-radius: 1px;
 }
+
 
 #fromDateDiv {
     width: 200px;
@@ -249,19 +255,27 @@ gesamtes Filterwindow Desktop
 .ui-widget-content .ui-icon {
     background-image: url("../img/bootstrap-datepicker/ui-icons_444444_256x240.png") !important;
 }
-.panel-collapse {
-    overflow: auto;
+.outer{
+    position: relative;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
     margin: 15px 0;
+    display: block
 }
+.inner{
+    position: relative;
+    height: calc(100% + 1px);
+    display: block;
+    overflow: scroll;
+}
+
 
 /**********************************
 gesamtes Filterwindow auf Mobile
 **********************************/
 #div-mmlFilter-content-mobile {
-    font-family: HamburgSans;
+    font-family: HamburgSans-Regular;
     font-size: 15px;
-    font-weight: normal;
-    font-style: normal;
     font-stretch: normal;
     letter-spacing: -0.4px;
     line-height: 2.73;
@@ -356,6 +370,7 @@ Radio Button Mobil
 /**********************************
 Hilfsklassen
 **********************************/
+
 .unselectable {
     -webkit-user-select: none;  /* Chrome all / Safari all */
     -moz-user-select: none;     /* Firefox all */
@@ -383,6 +398,9 @@ Hilfsklassen
 .datepicker {
     height: 30px;
 }
+.ui-datepicker-inline {
+        width: 270px;
+}
 .btn-calendar {
     float: left;
     height: 34px;
@@ -397,6 +415,7 @@ Hilfsklassen
     top: 34px;
     right: 0px;
     z-index: 100;
+
 }
 .ui-datepicker-header {
     background-color: white
@@ -404,7 +423,7 @@ Hilfsklassen
 .ui-state-default {
     width: 34px !important;
     height: 31px !important;
-    border-radius: 3px !important;
+    border-radius: 3px;
     border-color: white !important;
     background: white !important;
     line-height: 2.29 !important;
@@ -431,3 +450,4 @@ Hilfsklassen
     margin: 0px 10px 0px 15px;
     height: 45px;
 }
+

@@ -1,6 +1,6 @@
 define(function (require) {
 
-    var Template = require("text!modules/controls/mmlAssistentCaller/template.html"),
+    var Template = require("text!modules/controls/mmlAssistentCaller/templateButton.html"),
         Model = require("modules/controls/mmlAssistentCaller/model"),
         MmlAssistentCallerView;
 

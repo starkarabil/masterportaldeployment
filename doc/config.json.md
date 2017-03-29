@@ -129,6 +129,7 @@ Konfiguriert den Button zum Aufruf des MML-Assistenten.
 |----|-------------|---|-------|------------|
 |visible|ja|Boolean|false|Definiert, ob der Button initial angezeigt werden soll.|
 |assistantURL|ja|String||URL, die aufgerufen werden soll.|
+|welcomeScreen|nein|Boolean|false|Definiert, ob initial ein WelcomeScreen modal angezeigt werden soll.|
 
 ******
 

@@ -6,9 +6,9 @@ label {
     font-weight: normal;
 }
 
-*:not(.badge) {
+/**:not(.badge) {
     border-radius: 0 !important;
-}
+}*/
 
 
 #cursorGlyph {
@@ -94,7 +94,7 @@ label {
 
 .cluster{
     font-size:25px;
-    border-radius:30px!important;
+    border-radius:30px;
     float:left;
     margin:10px;
 }

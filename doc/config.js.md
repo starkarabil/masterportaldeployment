@@ -124,7 +124,7 @@ mobil: "http://static.hamburg.de/countframes/verkehrskarte-mobil_count.html"
 ### footer.urls ###
 |Name|Verpflichtend|Typ|Default|Beschreibung|
 |----|-------------|---|-------|------------|
-|alias|nein|String|"Landesbetrieb Geoniformation und Vermessung"|Bezeichnung des Links bei Desktop-Ausspielung.|
+|alias|nein|String|"Landesbetrieb Geoinformation und Vermessung"|Bezeichnung des Links bei Desktop-Ausspielung.|
 |alias_mobil|nein|String|"LGV"|Bezeichnung bei mobiler Ausspielung.|
 |bezeichnung|nein|String|"Kartographie und Gestaltung: "|Bezeichnung vor dem Link.|
 |url|nein|String|„http://www.geoinfo.hamburg.de/“|Die aufzurufende URL.|
@@ -141,7 +141,7 @@ footer: {
                 {
                     "bezeichnung": "Kartographie und Gestaltung: ",
                     "url": "http://www.geoinfo.hamburg.de/",
-                    "alias": "Landesbetrieb Geoniformation und Vermessung",
+                    "alias": "Landesbetrieb Geoinformation und Vermessung",
                     "alias_mobil": "LGV"
                 },
                 {

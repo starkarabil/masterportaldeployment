@@ -408,10 +408,19 @@ define("app",
                         break;
                     }
                     case "mmlNewIssueButton": {
-                        require(["modules/controls/mmlAssistentCaller/view"], function (MmlAssistentCallerView) {
-                            new MmlAssistentCallerView();
+                        require(["modules/controls/mmlAssistentCaller/viewButton", "modules/controls/mmlAssistentCaller/viewWelcome"], function (MmlAssistentCallerButtonView, MmlAssistentCallerWelcomeView) {
+                            if (Radio.request("Util", "isViewMobile") === false) {
+                                new MmlAssistentCallerWelcomeView();
+                            }
+                            new MmlAssistentCallerButtonView();
                         });
                         decModulesLoading();
+                        break;
+                    }
+                    case "mmlFilterButton": {
+                        require(["modules/controls/mmlFilterButton/view"], function (MmlFilterButton) {
+                            new MmlFilterButton();
+                        });
                         break;
                     }
                     default: {
