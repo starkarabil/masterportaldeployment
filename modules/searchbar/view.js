@@ -214,7 +214,8 @@ define(function (require) {
         *
         */
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                config = Radio.request("Parser", "getPortalConfig");
 
             this.removeMobilDesktopClass();
             if (this.config.searchbarTemplate === "mml" && Radio.request("Util", "isViewMobile")) {
@@ -228,7 +229,7 @@ define(function (require) {
                 this.renderWhere();
             }
             this.$el.html(this.template(attr));
-            if (window.location.protocol !== "https:") {
+            if (window.location.protocol !== "http:" || _.isUndefined(config.controls.orientation) === true || config.controls.orientation === false) {
                 $("#mmlOrientaiton").remove();
                 $("#geolocation_marker").remove();
                 $("#mmlMobilRemove").css({"right": "70px"});
