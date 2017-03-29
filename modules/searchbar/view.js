@@ -229,7 +229,7 @@ define(function (require) {
                 this.renderWhere();
             }
             this.$el.html(this.template(attr));
-            if (window.location.protocol !== "http:" || _.isUndefined(config.controls.orientation) === true || config.controls.orientation === false) {
+            if (window.location.protocol !== "https:" || _.isUndefined(config.controls.orientation) === true || config.controls.orientation === false) {
                 $("#mmlOrientaiton").remove();
                 $("#geolocation_marker").remove();
                 $("#mmlMobilRemove").css({"right": "70px"});
