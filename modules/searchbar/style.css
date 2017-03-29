@@ -326,8 +326,7 @@ li.results:hover {
 }
 #searchForm-mmlMobil .btn-orientation {
     height: 55px;
-    right: 55px;
-    position: absolute;
+    width: 55px;
     z-index: 3;
     background-color: #4c4c4c;
     border: none;

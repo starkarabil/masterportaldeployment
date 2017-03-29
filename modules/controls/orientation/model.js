@@ -102,8 +102,8 @@ define([
         */
         onceOrAlways: function (geolocation, config) {
             if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
-                geolocation.one ("change", this.positioning, this);
-                geolocation.one ("error", this.onError, this);
+                geolocation.once ("change", this.positioning, this);
+                geolocation.once ("error", this.onError, this);
             }
             else {
                 geolocation.on ("change", this.positioning, this);

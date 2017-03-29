@@ -6,7 +6,9 @@
             <img id="removeSearchbarIcon" class="mmlMobilRemove" src= "<%= Radio.request('Util', 'getImgPath')+'removeSearchbar.svg' %>"  />
         </span>
         <div id = "input-group-btn-Mobil" class="input-group-btn">
-            <span id="geolocation_marker" class="glyphicon glyphicon-map-marker geolocation_marker" />
+            <% if (markerIcon !=="dragMarker") {%>
+                <span id="geolocation_marker" class="glyphicon glyphicon-map-marker geolocation_marker" />
+            <% } %>
             <button id="mmlOrientaiton" class="btn btn-default btn-orientation" type="button">
                 <img class="orientationMMLMobil" src="<%= Radio.request('Util', 'getImgPath') + 'orientation_mml.svg' %>" />
             </button>

@@ -217,6 +217,7 @@ define(function (require) {
             var attr = this.model.toJSON(),
                 config = Radio.request("Parser", "getPortalConfig");
 
+            attr.markerIcon = config.controls.orientation.markerIcon;
             this.removeMobilDesktopClass();
             if (this.config.searchbarTemplate === "mml" && Radio.request("Util", "isViewMobile")) {
                 this.template = _.template(SearchbarTemplateMMLMobil);
