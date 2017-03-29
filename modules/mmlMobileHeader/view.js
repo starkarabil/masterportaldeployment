@@ -19,6 +19,8 @@ define(function (require) {
         initialize: function () {
             if (Radio.request("Util", "isViewMobile")) {
                 this.render();
+                $(".lgv-container #map").css("height", $(window).height() - this.$el.height() - 20 + "px");
+                Radio.trigger("Map", "updateSize");
             }
             Radio.on("Util", {
                 "isViewMobileChanged": function (isViewMobile) {
