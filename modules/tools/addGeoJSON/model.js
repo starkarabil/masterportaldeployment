@@ -6,9 +6,11 @@ define(function (require) {
 
     AddGeoJSON = Backbone.Model.extend({
         defaults: {
-            reader: new ol.format.GeoJSON()
+            reader: new ol.format.GeoJSON(),
+            features: [],
+            layerId: "",
+            layerName: ""
         },
-        url: "http://191.233.106.244/lgv-config/mml_anliegen.json",
 
         initialize: function () {
             var channel = Radio.channel("AddGeoJSON");
@@ -20,27 +22,39 @@ define(function (require) {
                         this.addLayer();
                         this.setLayerName(layerName);
                     }
-
                     this.createFeaturesFromGBM(hits);
                 }
             });
 
             channel.on({
                 "addFeatures": function (features, name, hoverInfos) {
+                    var model,
+                        layer,
+                        source;
+
                     this.setLayerId(name);
+                    this.setLayerName(name);
                     this.createFeaturesFromGeoJson(features);
-                    if (this.getLayerName() !== name) {
-                        this.setLayerName(name);
+                    // if model, and thus the ol.layer, doesn't exist in the modelList: Create Model and add Layer.
+                    model = Radio.request("ModelList", "getModelByAttributes", {id: this.getLayerId()});
+                    if (!model) {
                         this.addLayer(hoverInfos);
+                    }
+                    // if layer exists: Add features
+                    else {
+                        model = Radio.request("ModelList", "getModelByAttributes", {id: this.getLayerId()});
+                        layer = model ? model.get("layer") : null;
+                        source = layer ? layer.getSource() : null;
+
+                        if (source) {
+                            if (source instanceof ol.source.Cluster) {
+                                source = source.getSource();
+                            }
+                            source.addFeatures(this.getFeatures());
+                        }
                     }
                 }
             }, this);
-        },
-
-        parse: function (response, options) {
-            options.context.setLayerId(response.name);
-            options.context.setLayerName(response.name);
-            options.context.createFeaturesFromGeoJson(response);
         },
         addLayer: function (hoverInfos) {
             // Im Parser die Layer erzeugen
@@ -96,35 +110,33 @@ define(function (require) {
                 dataProjection: "EPSG:25832"
             });
         },
-
-        // Setter
-        setFeatures: function (value) {
-            this.set("features", value);
-        },
-
-        setLayerName: function (value) {
-            this.set("layerName", value);
-        },
-
-        setLayerId: function (value) {
-            this.set("layerId", value);
-        },
-
-        // Getter
-        getReader: function () {
-            return this.get("reader");
-        },
-
+        // getter for features
         getFeatures: function () {
             return this.get("features");
         },
-
+        // setter for features
+        setFeatures: function (value) {
+            this.set("features", value);
+        },
+        // getter for layerName
         getLayerName: function () {
             return this.get("layerName");
         },
-
+        // setter for layerName
+        setLayerName: function (value) {
+            this.set("layerName", value);
+        },
+        // getter for layerId
         getLayerId: function () {
             return this.get("layerId");
+        },
+        // setter for layerId
+        setLayerId: function (value) {
+            this.set("layerId", value);
+        },
+        // getter for reader
+        getReader: function () {
+            return this.get("reader");
         }
     });
 
