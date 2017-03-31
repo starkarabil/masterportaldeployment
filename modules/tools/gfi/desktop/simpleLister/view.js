@@ -11,6 +11,7 @@ define(function (require) {
         events: {
             "click p:first-child": function () {
                 this.model.setIsVisible(false);
+                Radio.trigger("GFI", "isVisible", false);
                 Radio.trigger("MouseHover", "styleDeselGFI", this.model.getTheme().getFeature());
             }
         },

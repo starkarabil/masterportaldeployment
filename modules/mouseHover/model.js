@@ -69,7 +69,7 @@ define([
 
             // Listeners
             this.listenTo(Radio.channel("GFI"), {
-                "isVisible": this.GFIPopupVisibility
+                "isVisible": this.setGFIPopupVisibility
             }, this);
             this.listenTo(Radio.channel("MapView"), {
                 "changedZoomLevel": function () {
@@ -155,8 +155,11 @@ define([
             this.set("mouseHoverInfos", mouseHoverInfos);
         },
 
-        GFIPopupVisibility: function (GFIPopupVisibility) {
-            this.set("GFIPopupVisibility", GFIPopupVisibility);
+        setGFIPopupVisibility: function (value) {
+            this.set("GFIPopupVisibility", value);
+        },
+        getGFIPopupVisibility: function () {
+            return this.get("GFIPopupVisibility");
         },
 
         /**
@@ -243,17 +246,27 @@ define([
 
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
-                normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
-                feature.setStyle(normalStyle.getClusterStyle(feature));
+                if (this.getGFIPopupVisibility() === false) {
+                    normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                    feature.setStyle(normalStyle.getClusterStyle(feature));
+                }
+                else {
+                    GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
+                    featureId = _.findWhere(feature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(feature.get("features"), {id_: GFIfeatureId}).id_ : null;
+                    if (GFIfeatureId !== featureId) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+                }
             }
             else {
                 if (_.isUndefined(feature.getStyle()[0]) === false) {
-                    featureId = feature.get("features")[0].id_;
-                    if (this.attributes.GFIPopupVisibility === false) {
+                    if (this.getGFIPopupVisibility() === false) {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                         feature.setStyle(normalStyle.getSimpleStyle());
                     }
                     else {
+                        featureId = feature.get("features")[0].id_;
                         GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
                         if (GFIfeatureId !== featureId) {
                             normalStyle = Radio.request("StyleList", "returnModelById", "mml");
