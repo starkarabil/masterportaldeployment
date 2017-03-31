@@ -11,7 +11,6 @@ define(function (require) {
             layerId: "",
             layerName: ""
         },
-        url: "http://191.233.106.244/lgv-config/mml_anliegen.json",
 
         initialize: function () {
             var channel = Radio.channel("AddGeoJSON");
@@ -56,12 +55,6 @@ define(function (require) {
                     }
                 }
             }, this);
-        },
-
-        parse: function (response, options) {
-            options.context.setLayerId(response.name);
-            options.context.setLayerName(response.name);
-            options.context.createFeaturesFromGeoJson(response);
         },
         addLayer: function (hoverInfos) {
             // Im Parser die Layer erzeugen
