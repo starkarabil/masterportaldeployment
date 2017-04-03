@@ -60,7 +60,13 @@ define(function (require) {
             this.setFeatures(prepFeatures);
         },
         toggleIsVisible: function () {
-            this.setIsVisible(!this.getIsVisible());
+            if (this.getIsVisible() === false) {
+                Radio.trigger("SimpleLister", "setIsVisible", false);
+                this.setIsVisible(true);
+            }
+            else {
+                this.setIsVisible(false);
+            }
         },
         executeFilter: function (ignoreTime) {
             this.filterByKat();
