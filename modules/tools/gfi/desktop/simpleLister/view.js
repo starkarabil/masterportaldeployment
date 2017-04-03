@@ -12,7 +12,7 @@ define(function (require) {
             "click p:first-child": function () {
                 this.model.setIsVisible(false);
                 Radio.trigger("GFI", "isVisible", false);
-                Radio.trigger("MouseHover", "styleDeselGFI", this.model.getTheme().getFeature());
+                Radio.trigger("MouseHover", "styleDeselGFI");
             }
         },
 
