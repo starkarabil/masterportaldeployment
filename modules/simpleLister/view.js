@@ -42,7 +42,7 @@ define(function (require) {
 
         toggleIsVisible: function () {
             if (this.model.getIsVisible() === false) {
-                Radio.trigger("MmlFilter", "setIsVisible", false);
+                Radio.trigger("MMLFilter", "setIsVisible", false);
                 this.model.setIsVisible(true);
             }
             else {

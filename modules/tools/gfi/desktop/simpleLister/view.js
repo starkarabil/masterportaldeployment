@@ -31,7 +31,7 @@ define(function (require) {
          * Fügt das GFI an den SimpleLister oder eben nicht
          */
         toggle: function () {
-            Radio.trigger("MmlFilter", "collapse");
+            Radio.trigger("MMLFilter", "collapse");
             if (this.model.getIsVisible() === true) {
                 Radio.trigger("SimpleLister", "show");
                 $("#simple-lister-table").html(this.$el);
