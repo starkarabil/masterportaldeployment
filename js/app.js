@@ -170,15 +170,9 @@ define("app",
 
         if (configJSON && configJSON.mmlFilter) {
             incModulesLoading();
-            require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
-                if (Radio.request("Util", "isAny")) {
-                    new MobileMMLFilterView();
+            require(["modules/mmlFilter/mmlFilterLoader"], function (MMLFilterLoader) {
+                    new MMLFilterLoader();
                     decModulesLoading();
-                }
-                else {
-                    new MMLFilterView();
-                    decModulesLoading();
-                }
             });
         }
 
