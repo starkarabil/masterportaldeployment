@@ -240,7 +240,8 @@ define([
          */
         styleDeselFunc: function (feature) {
             var normalStyle,
-                GFIfeatureId,
+                theme = Radio.request("GFI", "getTheme"),
+                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
                 featureId;
 
             // bei ClusterFeatures
@@ -250,7 +251,6 @@ define([
                     feature.setStyle(normalStyle.getSimpleStyle());
                 }
                 else {
-                    GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
                     featureId = _.findWhere(feature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(feature.get("features"), {id_: GFIfeatureId}).id_ : null;
                     if (GFIfeatureId !== featureId) {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
@@ -266,7 +266,8 @@ define([
                     }
                     else {
                         featureId = feature.get("features")[0].id_;
-                        GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
+                        console.log(GFIfeatureId);
+                        console.log(featureId);
                         if (GFIfeatureId !== featureId) {
                             normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                             feature.setStyle(normalStyle.getSimpleStyle());
@@ -283,7 +284,8 @@ define([
             var normalStyle,
                 clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
                 clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
-                GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_,
+                theme = Radio.request("GFI", "getTheme"),
+                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
                 featureId;
 
             _.each(clusterFeatures, function (clusterFeature) {
@@ -303,13 +305,13 @@ define([
         normalStylesExceptGFI: function () {
             var clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
                 clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
-                GFIfeatureId,
+                theme = Radio.request("GFI", "getTheme"),
+                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
                 clusterFeatureId,
                 normalStyle,
                 hoverStyle;
 
             if (this.getGFIPopupVisibility()) {
-                GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_,
                 _.each(clusterFeatures, function (clusterFeature) {
                     clusterFeatureId = _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}).id_ : null;
                     if (GFIfeatureId !== clusterFeatureId) {
@@ -558,16 +560,6 @@ define([
                 hasFeaturesWithSameExtent = true;
             }
             return hasFeaturesWithSameExtent;
-        },
-
-        hoverOffClusterFeature: function () {
-            var zoom = this.getZoom();
-
-            if (!_.isEmpty(this.getHoverLayer())) {
-                if (zoom === 9) {
-                    this.getHoverLayer().getSource().getSource().refresh();
-                }
-            }
         },
 
         setHoverLayer: function (value) {
