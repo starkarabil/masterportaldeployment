@@ -31,7 +31,8 @@ define([
             var channel = Radio.channel("MMLFilter");
 
             channel.on({
-                "toggleFilter": this.toggleFilterWindow
+                "toggleFilter": this.toggleFilterWindow,
+                "hideFilter": this.hideMMLFilter
             }, this);
 
             this.render();
@@ -54,7 +55,7 @@ define([
             var channel = Radio.channel("MMLFilter");
 
             channel.reset();
-            $("#div-mmlFilter-content-mobile").modal("hide");
+            this.hideMMLFilter();
             this.model.destroy();
             this.remove();
         },
@@ -83,6 +84,10 @@ define([
         // schaltet Filterwindow sichtbar/unsichtbar
         toggleFilterWindow: function () {
             $("#div-mmlFilter-content-mobile").modal("toggle");
+        },
+
+        hideMMLFilter: function () {
+            $("#div-mmlFilter-content-mobile").modal("hide");
         },
 
         toggleTimeMode: function (evt) {

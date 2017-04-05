@@ -33,7 +33,8 @@ define(function (require) {
             var channel = Radio.channel("MMLFilter");
 
             channel.on({
-                "toggleFilter": this.toggleMMLFilter
+                "toggleFilter": this.toggleMMLFilter,
+                "hideFilter": this.hideMMLFilter
             }, this);
 
             this.render();
