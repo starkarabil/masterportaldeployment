@@ -97,7 +97,6 @@ define(function (require) {
             }
         },
         showMMLFilter: function (filter) {
-            this.closeLister();
             this.shrinkViewport();
             filter.removeClass("closed");
             filter.addClass("open");
@@ -106,9 +105,6 @@ define(function (require) {
             filter.addClass("closed");
             filter.removeClass("open");
             this.enlargeViewport();
-        },
-        closeLister: function () {
-            Radio.trigger("SimpleLister", "setIsVisible", false);
         },
         shrinkViewport: function () {
              this.setViewportSize("61%", "left");

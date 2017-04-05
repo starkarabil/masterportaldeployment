@@ -31,9 +31,8 @@ define(function (require) {
          * Fügt das GFI an den SimpleLister oder eben nicht
          */
         toggle: function () {
-            Radio.trigger("MMLFilter", "collapse");
             if (this.model.getIsVisible() === true) {
-                Radio.trigger("SimpleLister", "show");
+                Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
                 Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
             }
@@ -41,6 +40,7 @@ define(function (require) {
                 Radio.trigger("SimpleLister", "renderContent");
                 Radio.trigger("SimpleLister", "show");
             }
+            Radio.trigger("MMLFilter", "hideFilter");
         },
 
         removeView: function () {
