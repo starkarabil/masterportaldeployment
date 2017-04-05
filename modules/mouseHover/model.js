@@ -241,8 +241,9 @@ define([
         styleDeselFunc: function (feature) {
             var normalStyle,
                 theme = Radio.request("GFI", "getTheme"),
-                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
-                featureId;
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
+                featureId,
+                filteredFeature;
 
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
@@ -251,7 +252,15 @@ define([
                     feature.setStyle(normalStyle.getSimpleStyle());
                 }
                 else {
-                    featureId = _.findWhere(feature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(feature.get("features"), {id_: GFIfeatureId}).id_ : null;
+                    filteredFeature = _.filter(feature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                    featureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
                     if (GFIfeatureId !== featureId) {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
                         feature.setStyle(normalStyle.getSimpleStyle());
@@ -265,12 +274,12 @@ define([
                         feature.setStyle(normalStyle.getSimpleStyle());
                     }
                     else {
-                        featureId = feature.get("features")[0].id_;
-                        console.log(GFIfeatureId);
-                        console.log(featureId);
-                        if (GFIfeatureId !== featureId) {
-                            normalStyle = Radio.request("StyleList", "returnModelById", "mml");
-                            feature.setStyle(normalStyle.getSimpleStyle());
+                        featureId = feature.get("features")[0].get("mmlid");
+                        if (_.isUndefined(GFIfeatureId) === false || _.isUndefined(featureId) === false) {
+                            if (GFIfeatureId !== featureId) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                                feature.setStyle(normalStyle.getSimpleStyle());
+                            }
                         }
                     }
                 }
@@ -285,11 +294,20 @@ define([
                 clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
                 clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
                 theme = Radio.request("GFI", "getTheme"),
-                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
+                filteredFeature,
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
                 featureId;
 
             _.each(clusterFeatures, function (clusterFeature) {
-                featureId = _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}).id_ : null;
+                filteredFeature = _.filter(clusterFeature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                featureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
 
                 if (GFIfeatureId === featureId) {
                     if (clusterFeature.get("features").length > 1) {
@@ -306,14 +324,24 @@ define([
             var clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
                 clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
                 theme = Radio.request("GFI", "getTheme"),
-                GFIfeatureId = theme ? theme.attributes.feature.id_ : null,
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
                 clusterFeatureId,
+                filteredFeature,
                 normalStyle,
                 hoverStyle;
 
             if (this.getGFIPopupVisibility()) {
                 _.each(clusterFeatures, function (clusterFeature) {
-                    clusterFeatureId = _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}) ? _.findWhere(clusterFeature.get("features"), {id_: GFIfeatureId}).id_ : null;
+                    filteredFeature = _.filter(clusterFeature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                    clusterFeatureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
+
                     if (GFIfeatureId !== clusterFeatureId) {
                         if (clusterFeature.get("features").length > 1) {
                             normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
