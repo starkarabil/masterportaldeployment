@@ -86,22 +86,25 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var filter = this.$el,
-                isOpen = this.$el.hasClass("closed");
+            var isOpen = this.$el.hasClass("closed");
 
             if (isOpen) {
-                this.showMMLFilter(filter);
+                this.showMMLFilter();
             }
             else {
-                this.hideMMLFilter(filter);
+                this.hideMMLFilter();
             }
         },
         showMMLFilter: function (filter) {
+            var filter = this.$el;
+
             this.shrinkViewport();
             filter.removeClass("closed");
             filter.addClass("open");
         },
         hideMMLFilter: function (filter) {
+            var filter = this.$el;
+
             filter.addClass("closed");
             filter.removeClass("open");
             this.enlargeViewport();
