@@ -405,7 +405,7 @@ define([
 
             if (ajax[type] !== null && !_.isUndefined(ajax[type])) {
                 ajax[type].abort();
-                ajax[type] = null;
+                this.polishAjax(type);
             }
             this.ajaxSend(data, successFunction, asyncBool, type);
         },
@@ -422,11 +422,33 @@ define([
                 timeout: 6000,
                 typeRequest: typeRequest,
                 error: function (err) {
-                    var detail = err.statusText && err.statusText !== "" ? err.statusText : "";
-
-                    Radio.trigger("Alet", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
+                    this.showError(err);
+                },
+                complete: function (typeRequest) {
+                    this.polishAjax(typeRequest);
                 }
-            }));
+            }, this));
+        },
+
+        /**
+         * Triggert die Darstellung einer Fehlermeldung
+         * @param {object} err Fehlerobjekt aus Ajax-Request
+         */
+        showError: function (err) {
+            var detail = err.statusText && err.statusText !== "" ? err.statusText : "";
+
+            Radio.trigger("Alet", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
+        },
+
+        /**
+         * Löscht die Information des erfolgreichen oder abgebrochenen Ajax-Requests wieder aus dem Objekt der laufenden Ajax-Requests
+         * @param {string} type Bezeichnung des Typs
+         */
+        polishAjax: function (type) {
+            var ajax = this.get("ajaxRequests"),
+                cleanedAjax = _.omit(ajax, type);
+
+            this.set("ajaxRequests", cleanedAjax);
         },
 
         /**
