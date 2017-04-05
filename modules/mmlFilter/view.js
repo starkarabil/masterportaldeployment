@@ -95,14 +95,15 @@ define(function (require) {
                 this.hideMMLFilter();
             }
         },
-        showMMLFilter: function (filter) {
+        showMMLFilter: function () {
             var filter = this.$el;
 
+            Radio.trigger("SimpleLister", "setIsVisible", false);
             this.shrinkViewport();
             filter.removeClass("closed");
             filter.addClass("open");
         },
-        hideMMLFilter: function (filter) {
+        hideMMLFilter: function () {
             var filter = this.$el;
 
             filter.addClass("closed");
