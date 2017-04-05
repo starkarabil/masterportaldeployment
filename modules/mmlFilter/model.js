@@ -11,11 +11,15 @@ define(function (require) {
             filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
             toDate: "",
             features: [],
-            selFeatures: []
+            selFeatures: [],
+            layerID: ""
         },
         initialize: function () {
-            var channel = Radio.channel("MmlFilter");
+            var mmlFilterConfig = Radio.request("Parser", "getPortalConfig").mmlFilter,
+                layerId = mmlFilterConfig && mmlFilterConfig.layerId ? mmlFilterConfig.layerId : "",
+                channel = Radio.channel("MmlFilter");
 
+            this.setLayerId(layerId);
             channel.on({
                 "featuresLoaded": this.prepareFeatures,
                 "setIsVisible": this.setIsVisible,
@@ -33,7 +37,8 @@ define(function (require) {
         },
         prepareFeatures: function () {
             var prepFeatures = [],
-                layerModel = Radio.request("ModelList", "getModelByAttributes", {"id": "6059"}),
+                layerId = this.getLayerId(),
+                layerModel = Radio.request("ModelList", "getModelByAttributes", {"id": layerId}),
                 layer = layerModel.get("layer"),
                 source = layer.getSource(),
                 features;
@@ -55,7 +60,13 @@ define(function (require) {
             this.setFeatures(prepFeatures);
         },
         toggleIsVisible: function () {
-            this.setIsVisible(!this.getIsVisible());
+            if (this.getIsVisible() === false) {
+                Radio.trigger("SimpleLister", "setIsVisible", false);
+                this.setIsVisible(true);
+            }
+            else {
+                this.setIsVisible(false);
+            }
         },
         executeFilter: function (ignoreTime) {
             this.filterByKat();
@@ -110,7 +121,8 @@ define(function (require) {
         },
         showFilteredFeatures: function () {
             var selFeatures = this.getSelFeatures(),
-                layer = Radio.request("ModelList", "getModelByAttributes", {"id": "6059"}),
+                layerId = this.getLayerId(),
+                layer = Radio.request("ModelList", "getModelByAttributes", {"id": layerId}),
                 idList = [];
 
             _.each(selFeatures, function (feature) {
@@ -170,6 +182,14 @@ define(function (require) {
 
         getIsVisible: function () {
             return this.get("isVisible");
+        },
+
+        setLayerId: function (value) {
+            this.set("layerId", value);
+        },
+
+        getLayerId: function () {
+            return this.get("layerId");
         }
     });
 
