@@ -13,7 +13,6 @@ define([
         MobileMMLFilterView;
 
     MobileMMLFilterView = Backbone.View.extend({
-        model: new Model(),
         className: "modal fade unselectable mmlFilter",
         id: "div-mmlFilter-content-mobile",
         template: _.template(Template),
@@ -28,6 +27,7 @@ define([
         },
 
         initialize: function () {
+            this.model = new Model();
             var channel = Radio.channel("MMLFilter");
 
             channel.on({
@@ -46,6 +46,19 @@ define([
                 show: false
             });
         },
+
+        /**
+         * [@description Schließt das DOM und entfernt die View und das Model vollständig.]
+         */
+        destroyFilter: function () {
+            var channel = Radio.channel("MMLFilter");
+
+            channel.reset();
+            $("#div-mmlFilter-content-mobile").modal("hide");
+            this.model.destroy();
+            this.remove();
+        },
+
         /**
          * Panels werden aus- und eingeklappt.
          * @param {MouseEvent} evt - Click auf .panel-heading

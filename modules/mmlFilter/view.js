@@ -9,13 +9,9 @@ define(function (require) {
 
     MMLFilterView = Backbone.View.extend({
         id: "mmlFilter",
-        model: new Model(),
         className: "unselectable closed",
         template: _.template(Template),
         events: {
-            "click #btn-mmlFilter-toggle": function () {
-                this.model.toggleIsVisible();
-            },
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
@@ -33,9 +29,12 @@ define(function (require) {
         },
 
         initialize: function () {
-            this.listenTo(this.model, {
-                "change:isVisible": this.toggleMMLFilter
-            });
+            this.model = new Model();
+            var channel = Radio.channel("MMLFilter");
+
+            channel.on({
+                "toggleFilter": this.toggleMMLFilter
+            }, this);
 
             this.render();
         },
@@ -44,6 +43,20 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             $("#map").append(this.$el.html(this.template(attr)));
+        },
+
+        /**
+         * [@description Schließt das DOM und entfernt die View und das Model vollständig.]
+         */
+        destroyFilter: function () {
+            var channel = Radio.channel("MMLFilter"),
+                filter = this.$el;
+
+            channel.reset();
+            this.hideMMLFilter(filter);
+            // remove entfernt alle Listener und das Dom-Element
+            this.model.destroy();
+            this.remove();
         },
 
         /**
@@ -72,9 +85,10 @@ define(function (require) {
         },
 
         toggleMMLFilter: function () {
-            var filter = this.$el;
+            var filter = this.$el,
+                isOpen = this.$el.hasClass("closed");
 
-            if (this.model.getIsVisible()) {
+            if (isOpen) {
                 this.showMMLFilter(filter);
             }
             else {

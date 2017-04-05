@@ -17,23 +17,19 @@ define(function (require) {
         initialize: function () {
             var mmlFilterConfig = Radio.request("Parser", "getPortalConfig").mmlFilter,
                 layerId = mmlFilterConfig && mmlFilterConfig.layerId ? mmlFilterConfig.layerId : "",
-                channel = Radio.channel("MmlFilter");
+                channel = Radio.channel("MMLFilter");
 
             this.setLayerId(layerId);
             channel.on({
-                "featuresLoaded": this.prepareFeatures,
-                "setIsVisible": this.setIsVisible,
-                "toggleIsVisible": this.toggleIsVisible
+                "featuresLoaded": this.prepareFeatures
             }, this);
-            Radio.on("Util", {
-            "isViewMobileChanged": function (isMobile) {
-                if (isMobile) {
-                    this.setIsVisible(false);
-                }
-            }
-        }, this);
 
             Radio.trigger("Layer", "checkIfFeaturesLoaded");
+        },
+        destroy: function () {
+            var channel = Radio.channel("MMLFilter");
+
+            channel.reset();
         },
         prepareFeatures: function () {
             var prepFeatures = [],
@@ -58,9 +54,6 @@ define(function (require) {
                 });
             });
             this.setFeatures(prepFeatures);
-        },
-        toggleIsVisible: function () {
-            this.setIsVisible(!this.getIsVisible());
         },
         executeFilter: function (ignoreTime) {
             this.filterByKat();
@@ -168,14 +161,6 @@ define(function (require) {
         },
         getMapWidth: function () {
             return this.get("mapWidth");
-        },
-
-        setIsVisible: function (value) {
-            this.set("isVisible", value);
-        },
-
-        getIsVisible: function () {
-            return this.get("isVisible");
         },
 
         setLayerId: function (value) {
