@@ -424,7 +424,7 @@ define([
                 error: function (err) {
                     this.showError(err);
                 },
-                complete: function (typeRequest) {
+                complete: function () {
                     this.polishAjax(typeRequest);
                 }
             }, this));
