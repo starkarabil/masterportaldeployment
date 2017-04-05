@@ -296,7 +296,8 @@ define([
                 theme = Radio.request("GFI", "getTheme"),
                 filteredFeature,
                 GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
-                featureId;
+                featureId,
+                featureStyle;
 
             _.each(clusterFeatures, function (clusterFeature) {
                 filteredFeature = _.filter(clusterFeature.get("features"), function (subFeature) {
@@ -316,9 +317,21 @@ define([
                     else {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                     }
-                    clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                    // MML: special case for overlaying features on highest zoomlevel
+                    if (clusterFeature.getStyle()) {
+                        if (clusterFeature.getStyle().length === 1) {
+                            featureStyle = clusterFeature.getStyle()[0].getImage();
+                        }
+                        else {
+                            featureStyle = clusterFeature.getStyle().getImage();
+                        }
+                    }
+                    // normal case
+                    if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                        clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                    }
                 }
-            });
+            }, this);
         },
         normalStylesExceptGFI: function () {
             var clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
@@ -328,7 +341,8 @@ define([
                 clusterFeatureId,
                 filteredFeature,
                 normalStyle,
-                hoverStyle;
+                hoverStyle,
+                featureStyle;
 
             if (this.getGFIPopupVisibility()) {
                 _.each(clusterFeatures, function (clusterFeature) {
@@ -345,11 +359,24 @@ define([
                     if (GFIfeatureId !== clusterFeatureId) {
                         if (clusterFeature.get("features").length > 1) {
                             normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                            clusterFeature.setStyle(normalStyle.getSimpleStyle());
                         }
                         else {
-                            normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                            // MML: special case for overlaying features on highest zoomlevel
+                            if (clusterFeature.getStyle()) {
+                                if (clusterFeature.getStyle().length === 1) {
+                                    featureStyle = clusterFeature.getStyle()[0].getImage();
+                                }
+                                else {
+                                    featureStyle = clusterFeature.getStyle().getImage();
+                                }
+                            }
+                            // normal case
+                            if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                                clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                            }
                         }
-                        clusterFeature.setStyle(normalStyle.getSimpleStyle());
                     }
                     else { // Styles für das GFI features werden aktiv gesetzt, benötigt für den ZoomChange "moveeend".
                         if (clusterFeature.get("features").length > 1) {
@@ -357,11 +384,23 @@ define([
                             clusterFeature.setStyle(hoverStyle.getHoverClusterStyle(clusterFeature));
                         }
                         else {
-                            hoverStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
-                            clusterFeature.setStyle(hoverStyle.getHoverStyle());
+                            // MML: special case for overlaying features on highest zoomlevel
+                            if (clusterFeature.getStyle()) {
+                                if (clusterFeature.getStyle().length === 1) {
+                                    featureStyle = clusterFeature.getStyle()[0].getImage();
+                                }
+                                else {
+                                    featureStyle = clusterFeature.getStyle().getImage();
+                                }
+                            }
+                            // normal case
+                            if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
+                                clusterFeature.setStyle(normalStyle.getHoverStyle());
+                            }
                         }
                     }
-                });
+                }, this);
             }
         },
         // Erzeuge Liste selektierter Features aus evt
@@ -564,31 +603,6 @@ define([
                 source.addFeature(newClusterFeature);
             }
         },
-        // prüft über den Extent ob Features übereinander liegen
-        hasOnlyFeaturesWithSameExtent: function (featureArray) {
-            var xMinArray = [],
-                yMinArray = [],
-                xMaxArray = [],
-                yMaxArray = [],
-                hasFeaturesWithSameExtent = false;
-
-            _.each(featureArray, function (feature) {
-                    xMinArray.push(feature.getGeometry().getExtent()[0]);
-                    yMinArray.push(feature.getGeometry().getExtent()[1]);
-                    xMaxArray.push(feature.getGeometry().getExtent()[2]);
-                    yMaxArray.push(feature.getGeometry().getExtent()[3]);
-            });
-
-            xMinArray = _.uniq(xMinArray);
-            yMinArray = _.uniq(yMinArray);
-            xMaxArray = _.uniq(xMaxArray);
-            yMaxArray = _.uniq(yMaxArray);
-
-            if (xMinArray.length === 1 && yMinArray.length === 1 && xMaxArray.length === 1 && yMaxArray.length === 1) {
-                hasFeaturesWithSameExtent = true;
-            }
-            return hasFeaturesWithSameExtent;
-        },
 
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
@@ -598,36 +612,6 @@ define([
         },
         setZoom: function (value) {
             this.set("zoom", value);
-        },
-        // zoomt bei Klick auf das Cluster Feature auf den extent aller geclusterten Features
-        featureClicked: function (feature) {
-            var extent = [];
-
-            if (feature.get("features") && feature.get("features").length > 1) {
-                _.each(feature.get("features"), function (feature) {
-                    if (extent.length === 0) {
-                        extent.push(feature.getGeometry().getExtent()[0]);
-                        extent.push(feature.getGeometry().getExtent()[1]);
-                        extent.push(feature.getGeometry().getExtent()[2]);
-                        extent.push(feature.getGeometry().getExtent()[3]);
-                    }
-                    else {
-                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
-                            extent[0] = feature.getGeometry().getExtent()[0];
-                        }
-                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
-                            extent[1] = feature.getGeometry().getExtent()[1];
-                        }
-                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
-                            extent[2] = feature.getGeometry().getExtent()[2];
-                        }
-                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
-                            extent[3] = feature.getGeometry().getExtent()[3];
-                        }
-                    }
-                });
-                Radio.trigger("Map", "zoomToExtent", extent);
-            }
         },
 
         /**
