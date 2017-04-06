@@ -411,10 +411,10 @@ define([
         },
 
         ajaxSend: function (data, successFunction, asyncBool, typeRequest) {
-
             this.get("ajaxRequests")[typeRequest] = ($.ajax({
                 url: this.get("gazetteerURL"),
                 data: data,
+                dataType: "xml",
                 context: this,
                 async: asyncBool,
                 type: "GET",
