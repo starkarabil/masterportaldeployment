@@ -19,9 +19,6 @@
         max-height: 80%;
         overflow: auto;
     }
-    .panel.open {
-        height:80%;
-    }
 }
 
 #mmlFilter.closed #div-mmlFilter-content{
@@ -470,4 +467,3 @@ Hilfsklassen
     margin: 0px 10px 0px 15px;
     height: 45px;
 }
-

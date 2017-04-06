@@ -4469,9 +4469,6 @@ neben Filterfenster
   max-height: 80%;
   overflow: auto;
 }
-.lgv-container #mmlFilter-accordion .panel.open {
-  height: 80%;
-}
 .lgv-container #mmlFilter.closed #div-mmlFilter-content {
   display: none;
 }
