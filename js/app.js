@@ -148,8 +148,8 @@ define("app",
         }
         if (Config.mmlMobileHeader) {
             incModulesLoading();
-            require(["modules/mmlMobileHeader/view"], function (mmlMobileHeaderView) {
-                new mmlMobileHeaderView();
+            require(["modules/mmlMobileHeader/mmlMobileHeaderLoader"], function (mmlMobileHeaderLoader) {
+                new mmlMobileHeaderLoader();
                 decModulesLoading();
             });
         }
