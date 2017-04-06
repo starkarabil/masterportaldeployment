@@ -2946,6 +2946,7 @@ neben Filterfenster
 .lgv-container #searchForm-mml #searchInput {
   box-shadow: none;
   font-size: 14px;
+  line-height: 3.2;
   padding-right: 32.5px;
 }
 .lgv-container #searchInput::-ms-clear {
@@ -3030,6 +3031,7 @@ neben Filterfenster
   border-style: none;
   background-color: #0f5cad;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+  line-height: 1;
 }
 .lgv-container #searchForm-mml .btn-search > .glyphicon-search {
   font-size: 14px;
