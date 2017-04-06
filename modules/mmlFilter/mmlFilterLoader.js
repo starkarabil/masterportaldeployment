@@ -1,23 +1,22 @@
 define(function (require) {
     require("modules/core/util");
-    require("modules/core/util");
-    require("modules/core/util");
 
     var MMLFilterLoader;
 
     MMLFilterLoader = function () {
         var ViewMobile = require("modules/mmlFilter/viewMobile"),
-            View = require("modules/mmlFilter/view");
+            View = require("modules/mmlFilter/view"),
+            Model = require("modules/mmlFilter/model");
 
         this.getMMLFilterView = function () {
             var isMobile = Radio.request("Util", "isViewMobile"),
                 currentFilterView;
 
             if (isMobile) {
-                currentFilterView = new ViewMobile();
+                currentFilterView = new ViewMobile(Model);
             }
             else {
-                currentFilterView = new View();
+                currentFilterView = new View(Model);
             }
 
             return currentFilterView;

@@ -1,7 +1,9 @@
 define(function (require) {
     var ol = require("openlayers"),
-        MMLFilter = Backbone.Model.extend({
+        Radio = require("backbone.radio"),
+        MMLFilterModel;
 
+    MMLFilterModel = Backbone.Model.extend({
         defaults: {
             // Gibt an ob der Filter sichtbar ist
             isVisible: false,
@@ -21,15 +23,18 @@ define(function (require) {
 
             this.setLayerId(layerId);
             channel.on({
-                "featuresLoaded": this.prepareFeatures
+                "featuresLoaded": this.prepareFeatures,
+                "toggleFilter": this.toggleMMLFilter,
+                "hideFilter": this.hideMMLFilter
             }, this);
 
             Radio.trigger("Layer", "checkIfFeaturesLoaded");
         },
-        destroy: function () {
-            var channel = Radio.channel("MMLFilter");
-
-            channel.reset();
+        toggleMMLFilter: function () {
+            this.setIsVisible(!this.getIsVisible());
+        },
+        hideMMLFilter: function () {
+            this.setIsVisible(false);
         },
         prepareFeatures: function () {
             var prepFeatures = [],
@@ -169,8 +174,16 @@ define(function (require) {
 
         getLayerId: function () {
             return this.get("layerId");
+        },
+
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 
-    return MMLFilter;
+    return new MMLFilterModel();
 });

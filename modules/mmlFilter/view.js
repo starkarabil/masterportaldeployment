@@ -4,7 +4,7 @@ define(function (require) {
     require("jqueryui/widgets/datepicker");
 
     var Template = require("text!modules/mmlFilter/template.html"),
-        Model = require("modules/mmlFilter/model"),
+        Radio = require("backbone.radio"),
         MMLFilterView;
 
     MMLFilterView = Backbone.View.extend({
@@ -28,35 +28,36 @@ define(function (require) {
             "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
         },
 
-        initialize: function () {
-            this.model = new Model();
-            var channel = Radio.channel("MMLFilter");
+        initialize: function (Model) {
+            this.model = Model;
 
-            channel.on({
-                "toggleFilter": this.toggleMMLFilter,
-                "hideFilter": this.hideMMLFilter
-            }, this);
+            this.listenTo(this.model, {
+                "change isVisible": this.toggleMMLFilter
+            });
 
             this.render();
         },
 
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                isVisible = this.model.getIsVisible();
 
             $("#map").append(this.$el.html(this.template(attr)));
+
+            if (isVisible) {
+                this.showMMLFilter();
+            }
+            else {
+                this.hideMMLFilter();
+            }
         },
 
         /**
          * [@description Schließt das DOM und entfernt die View und das Model vollständig.]
          */
         destroyFilter: function () {
-            var channel = Radio.channel("MMLFilter"),
-                filter = this.$el;
-
-            channel.reset();
-            this.hideMMLFilter(filter);
+            this.hideMMLFilter();
             // remove entfernt alle Listener und das Dom-Element
-            this.model.destroy();
             this.remove();
         },
 
@@ -85,10 +86,14 @@ define(function (require) {
             }
         },
 
-        toggleMMLFilter: function () {
-            var isOpen = this.$el.hasClass("closed");
+        /**
+         * Schaltet die Sichtbarkeit der View
+         * @param {object} evt Event des Models
+         */
+        toggleMMLFilter: function (evt) {
+            var isVisible = evt.changed.isVisible;
 
-            if (isOpen) {
+            if (isVisible) {
                 this.showMMLFilter();
             }
             else {
@@ -116,10 +121,10 @@ define(function (require) {
         enlargeViewport: function () {
              this.setViewportSize("100%", "");
         },
-        setViewportSize: function (size, float) {
+        setViewportSize: function (sizeVal, floatVal) {
             $(".ol-viewport").css({
-                "width": size,
-                "float": float
+                "width": sizeVal,
+                "float": floatVal
             });
             Radio.trigger("Map", "updateSize");
         },
