@@ -437,7 +437,7 @@ define([
         showError: function (err) {
             var detail = err.statusText && err.statusText !== "" ? err.statusText : "";
 
-            Radio.trigger("Alet", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
+            Radio.trigger("Alert", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
         },
 
         /**
