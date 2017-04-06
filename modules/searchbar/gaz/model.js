@@ -422,7 +422,9 @@ define([
                 timeout: 6000,
                 typeRequest: typeRequest,
                 error: function (err) {
-                    this.showError(err);
+                    if (err.status !== 0) { // Bei abort keine Fehlermeldung
+                        this.showError(err);
+                    }
                 },
                 complete: function () {
                     this.polishAjax(typeRequest);
