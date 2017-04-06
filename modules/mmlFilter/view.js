@@ -94,10 +94,10 @@ define(function (require) {
         enlargeViewport: function () {
              this.setViewportSize("100%", "");
         },
-        setViewportSize: function (size, float) {
+        setViewportSize: function (size, floatVal) {
             $(".ol-viewport").css({
                 "width": size,
-                "float": float
+                "float": floatVal
             });
             Radio.trigger("Map", "updateSize");
         },
