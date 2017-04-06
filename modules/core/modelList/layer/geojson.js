@@ -51,14 +51,14 @@ define(function (require) {
             this.getLayerSource().clear();
             features = this.sortFeaturesByAttr(features, "mmlid");
             this.getLayerSource().addFeatures(features);
-            Radio.trigger("MmlFilter", "featuresLoaded");
+            Radio.trigger("MMLFilter", "featuresLoaded");
         },
         checkIfFeaturesLoaded: function () {
             var source = this.getLayerSource(),
                 features = source.getFeatures();
 
             if (features.length > 1) {
-                Radio.trigger("MmlFilter", "featuresLoaded");
+                Radio.trigger("MMLFilter", "featuresLoaded");
             }
         },
         /**
