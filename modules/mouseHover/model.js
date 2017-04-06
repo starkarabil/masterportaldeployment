@@ -69,16 +69,13 @@ define([
 
             // Listeners
             this.listenTo(Radio.channel("GFI"), {
-                "isVisible": this.GFIPopupVisibility
+                "isVisible": this.setGFIPopupVisibility
             }, this);
+
+            Radio.trigger("Map", "registerListener", "moveend", this.normalStylesExceptGFI, this);
             this.listenTo(Radio.channel("MapView"), {
                 "changedZoomLevel": function () {
                     this.setZoom(Radio.request("MapView", "getZoomLevel"));
-                }
-            }, this);
-            this.listenTo(Radio.channel("Map"), {
-                "changedExtent": function () {
-                    // this.hoverOffClusterFeature();
                 }
             }, this);
             this.setZoom(Radio.request("MapView", "getZoomLevel"));
@@ -155,8 +152,11 @@ define([
             this.set("mouseHoverInfos", mouseHoverInfos);
         },
 
-        GFIPopupVisibility: function (GFIPopupVisibility) {
-            this.set("GFIPopupVisibility", GFIPopupVisibility);
+        setGFIPopupVisibility: function (value) {
+            this.set("GFIPopupVisibility", value);
+        },
+        getGFIPopupVisibility: function () {
+            return this.get("GFIPopupVisibility");
         },
 
         /**
@@ -239,25 +239,47 @@ define([
          * Setzt den Style eines einzelnen Features/ClusterFeatures zurück.
          */
         styleDeselFunc: function (feature) {
-            var normalStyle, GFIfeatureId, featureId;
+            var normalStyle,
+                theme = Radio.request("GFI", "getTheme"),
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
+                featureId,
+                filteredFeature;
 
             // bei ClusterFeatures
             if (feature.get("features").length > 1) {
-                normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
-                feature.setStyle(normalStyle.getClusterStyle(feature));
+                if (this.getGFIPopupVisibility() === false) {
+                    normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                    feature.setStyle(normalStyle.getSimpleStyle());
+                }
+                else {
+                    filteredFeature = _.filter(feature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                    featureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
+                    if (GFIfeatureId !== featureId) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                        feature.setStyle(normalStyle.getSimpleStyle());
+                    }
+                }
             }
             else {
                 if (_.isUndefined(feature.getStyle()[0]) === false) {
-                    featureId = feature.get("features")[0].id_;
-                    if (this.attributes.GFIPopupVisibility === false) {
+                    if (this.getGFIPopupVisibility() === false) {
                         normalStyle = Radio.request("StyleList", "returnModelById", "mml");
                         feature.setStyle(normalStyle.getSimpleStyle());
                     }
                     else {
-                        GFIfeatureId = Radio.request("GFI", "getTheme").attributes.feature.id_;
-                        if (GFIfeatureId !== featureId) {
-                            normalStyle = Radio.request("StyleList", "returnModelById", "mml");
-                            feature.setStyle(normalStyle.getSimpleStyle());
+                        featureId = feature.get("features")[0].get("mmlid");
+                        if (_.isUndefined(GFIfeatureId) === false || _.isUndefined(featureId) === false) {
+                            if (GFIfeatureId !== featureId) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                                feature.setStyle(normalStyle.getSimpleStyle());
+                            }
                         }
                     }
                 }
@@ -267,16 +289,120 @@ define([
         /**
          * Setzt den Style eines GFI-Features zurück.
          */
-        styleDeselGFI: function (feature) {
-            var normalStyle;
+        styleDeselGFI: function () {
+            var normalStyle,
+                clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
+                clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
+                theme = Radio.request("GFI", "getTheme"),
+                filteredFeature,
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
+                featureId,
+                featureStyle;
 
-                if (_.isUndefined(feature.getStyle()) === false) {
-                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
-                        feature.setStyle(normalStyle.getSimpleStyle());
+            _.each(clusterFeatures, function (clusterFeature) {
+                filteredFeature = _.filter(clusterFeature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                featureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
+
+                if (GFIfeatureId === featureId) {
+                    if (clusterFeature.get("features").length > 1) {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
                     }
-
+                    else {
+                        normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                    }
+                    // MML: special case for overlaying features on highest zoomlevel
+                    if (clusterFeature.getStyle()) {
+                        if (clusterFeature.getStyle().length === 1) {
+                            featureStyle = clusterFeature.getStyle()[0].getImage();
+                        }
+                        else {
+                            featureStyle = clusterFeature.getStyle().getImage();
+                        }
+                    }
+                    // normal case
+                    if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                        clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                    }
+                }
+            }, this);
         },
+        normalStylesExceptGFI: function () {
+            var clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
+                clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
+                theme = Radio.request("GFI", "getTheme"),
+                GFIfeatureId = theme ? theme.attributes.feature.get("mmlid") : null,
+                clusterFeatureId,
+                filteredFeature,
+                normalStyle,
+                hoverStyle,
+                featureStyle;
 
+            if (this.getGFIPopupVisibility()) {
+                _.each(clusterFeatures, function (clusterFeature) {
+                    filteredFeature = _.filter(clusterFeature.get("features"), function (subFeature) {
+                        if (subFeature.get("mmlid") === GFIfeatureId) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    });
+                    clusterFeatureId = filteredFeature[0] ? filteredFeature[0].get("mmlid") : null;
+
+                    if (GFIfeatureId !== clusterFeatureId) {
+                        if (clusterFeature.get("features").length > 1) {
+                            normalStyle = Radio.request("StyleList", "returnModelById", "mml_cluster");
+                            clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                        }
+                        else {
+                            // MML: special case for overlaying features on highest zoomlevel
+                            if (clusterFeature.getStyle()) {
+                                if (clusterFeature.getStyle().length === 1) {
+                                    featureStyle = clusterFeature.getStyle()[0].getImage();
+                                }
+                                else {
+                                    featureStyle = clusterFeature.getStyle().getImage();
+                                }
+                            }
+                            // normal case
+                            if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml");
+                                clusterFeature.setStyle(normalStyle.getSimpleStyle());
+                            }
+                        }
+                    }
+                    else { // Styles für das GFI features werden aktiv gesetzt, benötigt für den ZoomChange "moveeend".
+                        if (clusterFeature.get("features").length > 1) {
+                            hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
+                            clusterFeature.setStyle(hoverStyle.getHoverClusterStyle(clusterFeature));
+                        }
+                        else {
+                            // MML: special case for overlaying features on highest zoomlevel
+                            if (clusterFeature.getStyle()) {
+                                if (clusterFeature.getStyle().length === 1) {
+                                    featureStyle = clusterFeature.getStyle()[0].getImage();
+                                }
+                                else {
+                                    featureStyle = clusterFeature.getStyle().getImage();
+                                }
+                            }
+                            // normal case
+                            if (!(this.getZoom() === 9 && featureStyle instanceof ol.style.Circle)) {
+                                normalStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
+                                clusterFeature.setStyle(normalStyle.getHoverStyle());
+                            }
+                        }
+                    }
+                }, this);
+            }
+        },
         // Erzeuge Liste selektierter Features aus evt
         checkForEachFeatureAtPixel: function (evt) {
             if (evt.mapBrowserEvent.dragging) {
@@ -477,41 +603,6 @@ define([
                 source.addFeature(newClusterFeature);
             }
         },
-        // prüft über den Extent ob Features übereinander liegen
-        hasOnlyFeaturesWithSameExtent: function (featureArray) {
-            var xMinArray = [],
-                yMinArray = [],
-                xMaxArray = [],
-                yMaxArray = [],
-                hasFeaturesWithSameExtent = false;
-
-            _.each(featureArray, function (feature) {
-                    xMinArray.push(feature.getGeometry().getExtent()[0]);
-                    yMinArray.push(feature.getGeometry().getExtent()[1]);
-                    xMaxArray.push(feature.getGeometry().getExtent()[2]);
-                    yMaxArray.push(feature.getGeometry().getExtent()[3]);
-            });
-
-            xMinArray = _.uniq(xMinArray);
-            yMinArray = _.uniq(yMinArray);
-            xMaxArray = _.uniq(xMaxArray);
-            yMaxArray = _.uniq(yMaxArray);
-
-            if (xMinArray.length === 1 && yMinArray.length === 1 && xMaxArray.length === 1 && yMaxArray.length === 1) {
-                hasFeaturesWithSameExtent = true;
-            }
-            return hasFeaturesWithSameExtent;
-        },
-
-        hoverOffClusterFeature: function () {
-            var zoom = this.getZoom();
-
-            if (!_.isEmpty(this.getHoverLayer())) {
-                if (zoom === 9) {
-                    this.getHoverLayer().getSource().getSource().refresh();
-                }
-            }
-        },
 
         setHoverLayer: function (value) {
             this.set("hoverLayer", value);
@@ -521,36 +612,6 @@ define([
         },
         setZoom: function (value) {
             this.set("zoom", value);
-        },
-        // zoomt bei Klick auf das Cluster Feature auf den extent aller geclusterten Features
-        featureClicked: function (feature) {
-            var extent = [];
-
-            if (feature.get("features") && feature.get("features").length > 1) {
-                _.each(feature.get("features"), function (feature) {
-                    if (extent.length === 0) {
-                        extent.push(feature.getGeometry().getExtent()[0]);
-                        extent.push(feature.getGeometry().getExtent()[1]);
-                        extent.push(feature.getGeometry().getExtent()[2]);
-                        extent.push(feature.getGeometry().getExtent()[3]);
-                    }
-                    else {
-                        if (extent[0] > feature.getGeometry().getExtent()[0]) {
-                            extent[0] = feature.getGeometry().getExtent()[0];
-                        }
-                        if (extent[1] > feature.getGeometry().getExtent()[1]) {
-                            extent[1] = feature.getGeometry().getExtent()[1];
-                        }
-                        if (extent[2] < feature.getGeometry().getExtent()[2]) {
-                            extent[2] = feature.getGeometry().getExtent()[2];
-                        }
-                        if (extent[3] < feature.getGeometry().getExtent()[3]) {
-                            extent[3] = feature.getGeometry().getExtent()[3];
-                        }
-                    }
-                });
-                Radio.trigger("Map", "zoomToExtent", extent);
-            }
         },
 
         /**
@@ -581,7 +642,6 @@ define([
         getOverlayStyle: function () {
             return this.get("overlayStyle");
         },
-
         /**
          * Holt sich das nächstgelegene Feature zur übergebenen Koordinate.
          */
