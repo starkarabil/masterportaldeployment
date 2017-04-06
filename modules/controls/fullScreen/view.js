@@ -15,7 +15,6 @@ define(function (require) {
             width: ""
         },
         initialize: function () {
-            $(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange", this.toggleStyle);
             this.render();
         },
         render: function () {
@@ -107,9 +106,9 @@ define(function (require) {
                     window.open(window.location.href, "_blank");
                 }
             }
+            this.toggleStyle();
         },
         toggleStyle: function () {
-            $(".full-screen-button > span").toggleClass("glyphicon-fullscreen glyphicon-remove");
             if ($(".full-screen-button").attr("title") === "Vollbild aktivieren") {
                 $(".full-screen-button").attr("title", "Vollbild deaktivieren");
             }
