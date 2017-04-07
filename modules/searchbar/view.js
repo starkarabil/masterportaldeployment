@@ -120,7 +120,24 @@ define(function (require) {
             if ($("#main-nav").length > 0) {
                 this.render();
             }
-
+            if (config.renderToDOM) {
+                if (config.renderToDOM === "#searchbarInMap") {
+                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form \"></div");
+                }
+                this.setElement(config.renderToDOM);
+                this.render();
+            }
+            else {
+                // Hack für flexible Suchleiste
+                $(window).on("resize", function () {
+                    if ($("#map").width() >= 768) {
+                        $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
+                    }
+                });
+                if ($("#map").width() >= 768) {
+                    $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
+                }
+            }
             if (navigator.appVersion.indexOf("MSIE 9.") !== -1) {
                 $("#searchInput").val(this.model.get("placeholder"));
             }
@@ -155,26 +172,6 @@ define(function (require) {
                 // require(["modules/searchbar/layer/model"], function (LayerSearch) {
                     new LayerSearch(config.layer);
                 // });
-            }
-
-            // Hack für flexible Suchleiste
-            $(window).on("resize", function () {
-                if ($("#map").width() >= 768) {
-                    $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
-                }
-            });
-            if ($("#map").width() >= 768) {
-                $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
-            }
-            if (config.renderToDOM) {
-                if (config.renderToDOM === "#searchbarInMap") {
-                    $(".ol-overlaycontainer-stopevent").append("<div id=\"searchbarInMap\" class=\"navbar-form \"></div");
-                }
-                this.setElement(config.renderToDOM);
-                this.render();
-                if ($("#map").width() >= 768) {
-                        $("#searchInput").width($("#map").width() - $(".desktop").width() - 150);
-                }
             }
             this.listenTo(Radio.channel("DragMarker"), {
                 "newAddress": this.newDragMarkerAddress
@@ -712,18 +709,19 @@ define(function (require) {
         /*
         * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
         */
-        newDragMarkerAddress: function (response) {
-            if (!response.error) {
-                this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
-                this.render();
-                $("#searchInput + span").show();
+        newDragMarkerAddress: function (response, firstDMA) {
+            if (firstDMA === false) {
+                if (!response.error) {
+                    this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                    this.render();
+                    $("#searchInput + span").show();
+                }
+                else {
+                    this.model.set("searchString", "");
+                    this.render();
+                }
+                $("#searchInput").blur();
             }
-            else {
-                this.model.set("searchString", "");
-                this.render();
-            }
-
-            $("#searchInput").blur();
         }
     });
 
