@@ -43,7 +43,8 @@ define(function (require) {
             featureAtPixel: null,
             sourceHH: null,
             url: "",
-            zoomLevelStreet: 4
+            zoomLevelStreet: 4,
+            firstDMA: true
         },
 
         initialize: function () {
@@ -220,7 +221,13 @@ define(function (require) {
 
         // Wird auf listenTo "change:nearestAddress" registriert. Liefert Adressobjekt bzw. Fehlerobjekt aus.
         sendNewAddress: function () {
-            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"));
+            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"), this.getFirstDMAdress());
+            if (_.isUndefined(this.getFirstDMAdress())) {
+            this.setFirstDMAdress(true);
+            }
+            else if (this.getFirstDMAdress() === true) {
+                this.setFirstDMAdress(false);
+            }
         },
 
         // Wird auf Radio "requestAddress" ausgeführt. Prüft, ob gültige Adresse ermittelt wurde und triggert diese sofort bzw. initiiert eine neue Abfrage
@@ -296,6 +303,20 @@ define(function (require) {
         */
         getZoomLevelStreet: function () {
             return this.get("zoomLevelStreet");
+        },
+
+        /**
+        * Setter firstDMA für erste Adresssuche über ReverseGeocoder
+        */
+        setFirstDMAdress: function (value) {
+            this.set("firstDMA", value);
+        },
+
+        /**
+        * Getter firstDMA für erste Adresssuche über ReverseGeocoder
+        */
+        getFirstDMAdress: function () {
+            return this.get("firstDMA");
         }
     });
 

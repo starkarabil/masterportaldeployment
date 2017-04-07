@@ -712,16 +712,18 @@ define(function (require) {
         /*
         * Schreibt die gefunde Adresse vom ReverseGeocoder ins Suchfenster
         */
-        newDragMarkerAddress: function (response) {
-            if (!response.error) {
-                this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
-                this.render();
-                $("#searchInput + span").show();
+        newDragMarkerAddress: function (response, firstDMA) {
+            if (firstDMA === false) {
+                if (!response.error) {
+                    this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                    this.render();
+                    $("#searchInput + span").show();
+                }
+                else {
+                    this.model.set("searchString", "");
+                }
+                $("#searchInput").blur();
             }
-            else {
-                this.model.set("searchString", "");
-            }
-            $("#searchInput").blur();
         }
     });
 
