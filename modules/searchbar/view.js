@@ -719,8 +719,8 @@ define(function (require) {
                 $("#searchInput + span").show();
             }
             else {
-                this.render();
                 this.model.set("searchString", "");
+                this.render();
             }
 
             $("#searchInput").blur();
