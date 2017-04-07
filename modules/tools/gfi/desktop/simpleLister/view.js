@@ -11,7 +11,8 @@ define(function (require) {
         events: {
             "click p:first-child": function () {
                 this.model.setIsVisible(false);
-                Radio.trigger("MouseHover", "styleDeselGFI", this.model.getTheme().getFeature());
+                Radio.trigger("GFI", "isVisible", false);
+                Radio.trigger("MouseHover", "styleDeselGFI");
             }
         },
 
@@ -31,6 +32,7 @@ define(function (require) {
          * Fügt das GFI an den SimpleLister oder eben nicht
          */
         toggle: function () {
+            Radio.trigger("MMLFilter", "hideFilter");
             if (this.model.getIsVisible() === true) {
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
@@ -40,7 +42,6 @@ define(function (require) {
                 Radio.trigger("SimpleLister", "renderContent");
                 Radio.trigger("SimpleLister", "show");
             }
-            Radio.trigger("MMLFilter", "hideFilter");
         },
 
         removeView: function () {
