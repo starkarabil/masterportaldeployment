@@ -24,7 +24,10 @@ define([
             "click .div-mmlFilter-panel-heading-mobile": "singleShowTargetFilter",
             "click .panel-heading": "togglePanel",
             "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
-            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
+            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
+            "touchmove #mmlKategorien": function (evt) {
+                evt.stopPropagation();
+            }
         },
 
         initialize: function () {
