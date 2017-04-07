@@ -12,7 +12,7 @@ define(function (require) {
                 currentMobileHeader = null;
 
             if (isMobile) {
-                currentMobileHeader = new View(Model);
+                currentMobileHeader = new View({model: Model});
             }
 
             return currentMobileHeader;

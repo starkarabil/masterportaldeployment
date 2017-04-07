@@ -16,8 +16,7 @@ define(function (require) {
         template: _.template("<div><img class=\"arrow\" src=\"<%= arrowImage %>\"></div>" +
                             "<div class=\"title\"><%= title %></div>" +
                             "<div class=\"filter\"><img class=\"filter\" src=\"<%= filterImage %>\"></div>"),
-        initialize: function (Model) {
-            this.model = Model;
+        initialize: function () {
             if (Radio.request("Util", "isViewMobile")) {
                 this.render();
                 $(".lgv-container #map").css("height", $(window).height() - this.$el.height() - 20 + "px");
