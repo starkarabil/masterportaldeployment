@@ -77,7 +77,8 @@ requirejs.onError = function (err) {
 };
 
 // zuerst libs laden, die alle Module brauchen. die sind dann im globalen Namespace verfügbar, empfehlung s. https://gist.github.com/jjt/3306911
-require(["jquery", "backbone", "backbone.radio"], function () {
+require(["jquery", "backbone", "backbone.radio"], function (jquery) {
+    jquery = jquery.noConflict( true );
     // dann unsere app laden, die von diesen globalen libs abhängen
     Radio = Backbone.Radio;
     require(["app"]);
