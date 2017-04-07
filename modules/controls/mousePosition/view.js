@@ -1,7 +1,7 @@
 define([
-
+    "jquery",
     "text!modules/controls/mousePosition/template.html"
-], function (MousePositionTemplate) {
+], function ($, MousePositionTemplate) {
 
     var MousePositionView = Backbone.View.extend({
         className: "mouse-position hidden-xs",

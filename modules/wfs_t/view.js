@@ -1,7 +1,8 @@
 define([
-        "text!modules/wfs_t/template.html",
+    "jquery",
+    "text!modules/wfs_t/template.html",
     "modules/wfs_t/model"
-], function (WFS_TTemplate, WFS_T) {
+], function ($, WFS_TTemplate, WFS_T) {
 
     var WFS_TView = Backbone.View.extend({
         model: WFS_T,

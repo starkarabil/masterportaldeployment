@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "openlayers",
     "config"
-], function () {
+], function ($) {
 
     var
         ol = require("openlayers"),

@@ -1,12 +1,12 @@
 define([
-
+    "jquery",
     "text!modules/quickhelp/templateSearch.html",
     "text!modules/quickhelp/templateTree.html",
     "text!modules/quickhelp/templateMeasureTool.html",
     "eventbus",
     "modules/core/util",
     "jqueryui/widgets/draggable"
-], function (TemplateSearch, TemplateTree, TemplateMeasureTool, EventBus, Util) {
+], function ($, TemplateSearch, TemplateTree, TemplateMeasureTool, EventBus) {
 
     var view = Backbone.View.extend({
         templateSearch: _.template(TemplateSearch),

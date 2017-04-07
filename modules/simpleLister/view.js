@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Template = require("text!modules/simpleLister/template.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/simpleLister/template.html"),
         SimpleLister = require("modules/simpleLister/model"),
         SimpleListerView;
 

@@ -1,20 +1,17 @@
 define([
-
+    "jquery",
     "eventbus",
     "modules/searchbar/model"],
-function (EventBus) {
-        "use strict";
-        return Backbone.Model.extend({
-        /**
-        *
-        */
-            defaults: {
-                inUse: false,
-                minChars: 3,
-                bPlans: [],
-                kita: [],
-                bplanURL: "" // bplan-URL für evtl. requests des mapHandlers
-            },
+function ($, EventBus) {
+    "use strict";
+    return Backbone.Model.extend({
+        defaults: {
+            inUse: false,
+            minChars: 3,
+            bPlans: [],
+            kita: [],
+            bplanURL: "" // bplan-URL für evtl. requests des mapHandlers
+        },
         /**
          * @description Initialisierung der wfsFeature Suche.
          * @param {Objekt} config - Das Konfigurationsarray für die specialWFS-Suche

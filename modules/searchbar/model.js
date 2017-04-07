@@ -1,8 +1,9 @@
 define([
+    "jquery",
     "backbone.radio",
     "eventbus",
     "config"
-], function (Radio, EventBus, Config) {
+], function ($, Radio, EventBus, Config) {
     "use strict";
     var SearchbarModel = Backbone.Model.extend({
         defaults: {

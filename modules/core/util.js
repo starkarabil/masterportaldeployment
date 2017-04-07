@@ -1,9 +1,11 @@
 define([
-
     "require"
 ], function (Require) {
 
-    var Util = Backbone.Model.extend({
+    var $ = require("jquery"),
+        Util;
+
+    Util = Backbone.Model.extend({
         defaults: {
             isViewMobile: false
         },

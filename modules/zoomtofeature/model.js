@@ -1,11 +1,13 @@
 define([
-        "config",
+    "config",
     "eventbus"
 ], function () {
-    var         Config = require("config"),
+    var $ = require("jquery"),
+        Config = require("config"),
         EventBus = require("eventbus"),
+        ZoomToFeature;
 
-        ZoomToFeature = Backbone.Model.extend({
+    ZoomToFeature = Backbone.Model.extend({
         defaults: {
             prefs: {},
             centerlist: [],

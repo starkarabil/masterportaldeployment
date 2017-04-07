@@ -1,9 +1,9 @@
 define([
-
+    "jquery",
     "openlayers",
     "eventbus",
     "proj4"
-], function (ol, EventBus, proj4) {
+], function ($, ol, EventBus, proj4) {
 
     var SearchByCoord = Backbone.Model.extend({
 

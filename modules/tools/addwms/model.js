@@ -7,9 +7,9 @@
 **/
 
 define([
-
+    "jquery",
     "openlayers"
-], function (ol) {
+], function ($, ol) {
 
     var AddWMSModel = Backbone.Model.extend({
         initialize: function () {

@@ -1,9 +1,8 @@
 define([
-
     "text!modules/menu/desktop/layer/template.html"
 ], function () {
 
-    var
+    var $ = require("jquery"),
         Template = require("text!modules/menu/desktop/layer/template.html"),
         LayerView;
 

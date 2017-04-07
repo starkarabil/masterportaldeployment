@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var ol = require("openlayers"),
+    var $ = require("jquery"),
+        ol = require("openlayers"),
         Config = require("config"),
         Animation;
 

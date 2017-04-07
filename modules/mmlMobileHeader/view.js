@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Model = require("modules/mmlMobileHeader/model"),
+    var $ = require("jquery"),
+        Model = require("modules/mmlMobileHeader/model"),
         Radio = require("backbone.radio"),
         HeaderView;
 

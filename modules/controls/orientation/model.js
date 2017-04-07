@@ -1,9 +1,10 @@
 define([
+    "jquery",
     "backbone.radio",
     "openlayers",
     "proj4",
     "config"
-], function (Radio, ol, proj4, Config) {
+], function ($, Radio, ol, proj4, Config) {
 
     var OrientationModel = Backbone.Model.extend({
         defaults: {

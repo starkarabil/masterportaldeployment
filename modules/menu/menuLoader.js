@@ -3,7 +3,8 @@ define(function (require) {
     require("bootstrap/transition");
     require("bootstrap/collapse");
 
-    var MenuTemplate = require("text!modules/menu/template.html"),
+    var $ = require("jquery"),
+        MenuTemplate = require("text!modules/menu/template.html"),
         MenuLoader;
 
     MenuLoader = function () {

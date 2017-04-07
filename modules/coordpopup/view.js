@@ -1,7 +1,8 @@
 define([
-        "modules/coordpopup/model",
+    "jquery",
+    "modules/coordpopup/model",
     "text!modules/coordpopup/template.html"
-], function (CoordPopup, CoordPopupTemplate) {
+], function ($, CoordPopup, CoordPopupTemplate) {
 
     var CoordPopupView = Backbone.View.extend({
         model: new CoordPopup(),

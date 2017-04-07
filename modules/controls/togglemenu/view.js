@@ -1,7 +1,7 @@
 define([
-
+    "jquery",
     "config"
-], function (Config) {
+], function ($, Config) {
 
     var ToggleControlView = Backbone.View.extend({
         className: "row",

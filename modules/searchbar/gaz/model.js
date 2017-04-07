@@ -1,12 +1,10 @@
 define([
+    "jquery",
     "eventbus",
     "modules/searchbar/model"
-], function (EventBus) {
+], function ($, EventBus) {
     "use strict";
     return Backbone.Model.extend({
-        /**
-        *
-        */
         defaults: {
             inUse: 0,
             minChars: 3,

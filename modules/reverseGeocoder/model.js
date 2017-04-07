@@ -3,7 +3,8 @@ define([
     "backbone.radio"
 ], function () {
 
-    var Backbone = require("backbone"),
+    var $ = require("jquery"),
+        Backbone = require("backbone"),
         Radio = require("backbone.radio"),
         ReverseGeocoder;
 

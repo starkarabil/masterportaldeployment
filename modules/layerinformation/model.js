@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "config",
     "moment"
-], function (Config, moment) {
+], function ($, Config, moment) {
 
     var LayerInformation = Backbone.Model.extend({
         defaults: {

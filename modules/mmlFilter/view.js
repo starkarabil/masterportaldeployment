@@ -3,7 +3,8 @@ define(function (require) {
     require("bootstrap/collapse");
     require("jqueryui/widgets/datepicker");
 
-    var Template = require("text!modules/mmlFilter/template.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/mmlFilter/template.html"),
         Model = require("modules/mmlFilter/model"),
         MMLFilterView;
 

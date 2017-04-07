@@ -1,8 +1,9 @@
 define([
-        "config",
+    "jquery",
+    "config",
     "text!modules/footer/template.html",
     "modules/footer/model"
-], function (Config, Template, Footermodel) {
+], function ($, Config, Template, Footermodel) {
 
     var view = Backbone.View.extend({
         template: _.template(Template),

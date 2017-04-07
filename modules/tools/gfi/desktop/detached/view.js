@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var DesktopView = require("modules/tools/gfi/view"),
+    var $ = require("jquery"),
+        DesktopView = require("modules/tools/gfi/view"),
         Radio = require("backbone.radio"),
         Template = require("text!modules/tools/gfi/desktop/template.html"),
         GFIDetachedView;

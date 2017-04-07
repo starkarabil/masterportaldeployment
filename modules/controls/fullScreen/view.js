@@ -1,8 +1,9 @@
 define(function (require) {
 
-    var FullScreenView,
+    var $ = require("jquery"),
         Config = require("config"),
-        Radio = require("backbone.radio");
+        Radio = require("backbone.radio"),
+        FullScreenView;
 
     FullScreenView = Backbone.View.extend({
         className: "row",

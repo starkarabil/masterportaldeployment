@@ -1,5 +1,4 @@
 define([
-
     "bootstrap/dropdown",
     "bootstrap/collapse",
     "modules/menu/mobile/folder/view",
@@ -10,8 +9,8 @@ define([
     "jqueryui/effect",
     "jqueryui/effects/effect-slide"
     ],
-    function () {
-        var
+    function (require) {
+        var $ = require("jquery"),
             FolderView = require("modules/menu/mobile/folder/view"),
             LayerView = require("modules/menu/mobile/layer/view"),
             LayerViewLight = require("modules/menu/mobile/layer/viewLight"),

@@ -1,7 +1,9 @@
 define(function (require) {
-    var ol = require("openlayers"),
-        MMLFilter = Backbone.Model.extend({
+    var $ = require("jquery"),
+        ol = require("openlayers"),
+        MMLFilter;
 
+    MMLFilter = Backbone.Model.extend({
         defaults: {
             // Gibt an ob der Filter sichtbar ist
             isVisible: false,

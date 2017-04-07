@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var ThemeView = require("modules/tools/gfi/themes/view"),
+    var $ = require("jquery"),
+        ThemeView = require("modules/tools/gfi/themes/view"),
         MietenspiegelTemplate = require("text!modules/tools/gfi/themes/mietenspiegel/template.html"),
         MietenspiegelFormularTemplate = ("text!modules/tools/gfi/themes/mietenspiegel/template-formular.html"),
         Radio = require("backbone.radio"),

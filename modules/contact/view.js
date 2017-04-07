@@ -1,7 +1,8 @@
 define([
-        "modules/contact/model",
+    "jquery",
+    "modules/contact/model",
     "text!modules/contact/template.html"
-], function (ContactModel, Template) {
+], function ($, ContactModel, Template) {
 
     var formularView = Backbone.View.extend({
         className: "win-body",

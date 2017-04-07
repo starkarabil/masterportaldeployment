@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "text!modules/tools/parcelSearch/template.html",
     "modules/tools/parcelSearch/model"
-], function (parcelSearchTemplate, ParcelSearch) {
+], function ($, parcelSearchTemplate, ParcelSearch) {
 
     var ParcelSearchView = Backbone.View.extend({
         model: new ParcelSearch(),

@@ -1,17 +1,17 @@
 define([
-
     "modules/menu/desktop/listViewMain",
     "modules/menu/desktop/folder/viewTree",
     "modules/menu/desktop/folder/viewCatalog",
     "modules/menu/desktop/layer/viewSelection",
     "modules/menu/desktop/layer/view"
     ], function () {
-        var listView = require("modules/menu/desktop/listViewMain"),
+
+        var $ = require("jquery"),
+            listView = require("modules/menu/desktop/listViewMain"),
             DesktopThemenFolderView = require("modules/menu/desktop/folder/viewTree"),
             CatalogFolderView = require("modules/menu/desktop/folder/viewCatalog"),
             DesktopLayerView = require("modules/menu/desktop/layer/view"),
             SelectionView = require("modules/menu/desktop/layer/viewSelection"),
-
             Menu;
 
         Menu = listView.extend({

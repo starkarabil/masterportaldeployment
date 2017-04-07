@@ -1,5 +1,6 @@
 define(function (require) {
-    var GAZModel = require("modules/searchbar/gaz/model"),
+    var $ = require("jquery"),
+        GAZModel = require("modules/searchbar/gaz/model"),
         SpecialWFSModel = require("modules/searchbar/specialWFS/model"),
         VisibleWFSModel = require("modules/searchbar/visibleWFS/model"),
         BKGModel = require("modules/searchbar/bkg/model"),

@@ -4,6 +4,7 @@
 **/
 
 define([
+    "jquery",
     "text!modules/tools/addwms/template.html",
     "modules/tools/addwms/model"
 ], function ($, AddWMSWin, AddWMSModel) {

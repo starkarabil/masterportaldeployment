@@ -6,10 +6,10 @@ define([
 
 ], function () {
 
-    var Template = require("text!modules/mmlFilter/templateMobile.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/mmlFilter/templateMobile.html"),
         Model = require("modules/mmlFilter/model"),
         Radio = require("backbone.radio"),
-
         MobileMMLFilterView;
 
     MobileMMLFilterView = Backbone.View.extend({

@@ -1,11 +1,11 @@
 define([
-
+    "jquery",
     "modules/window/model",
     "text!modules/window/templateMax.html",
     "text!modules/window/templateMin.html",
     "eventbus",
     "jqueryui/widgets/draggable"
-], function (Window, templateMax, templateMin, EventBus) {
+], function ($, Window, templateMax, templateMin, EventBus) {
 
     var WindowView = Backbone.View.extend({
         id: "window",

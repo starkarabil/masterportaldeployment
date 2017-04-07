@@ -1,8 +1,8 @@
 define(function (require) {
 
-    var listView = require("modules/menu/desktop/listViewMain"),
+    var $ = require("jquery"),
+        listView = require("modules/menu/desktop/listViewMain"),
         DesktopLayerViewLight = require("modules/menu/desktop/layer/viewLight"),
-
         Menu;
 
     Menu = listView.extend({
