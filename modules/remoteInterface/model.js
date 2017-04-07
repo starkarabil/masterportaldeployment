@@ -41,12 +41,13 @@ define(function () {
 
             Radio.on("Map", "changedExtent", this.changedExtent);
             Radio.on("DragMarker", "newAddress", this.newDragMarkerAddress);
+            Radio.on("MmlMobileHeader", "mobileBackButtonClicked", this.mobileBackButtonClicked);
         },
         showSearchbar: function () {
-            Radio.trigger("Searchbar","show");
+            Radio.trigger("Searchbar", "show");
         },
         hideSearchbar: function () {
-            Radio.trigger("Searchbar","hide");
+            Radio.trigger("Searchbar", "hide");
         },
 
         showDragMarker: function () {
@@ -163,6 +164,10 @@ define(function () {
 
         requestDragMarkerAddress: function () {
             Radio.trigger("DragMarker", "requestAddress");
+        },
+
+        mobileBackButtonClicked: function () {
+            Radio.trigger("RemoteInterface", "mobileBackButtonClicked");
         }
     });
 
