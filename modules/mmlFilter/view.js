@@ -28,9 +28,7 @@ define(function (require) {
             "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
         },
 
-        initialize: function (Model) {
-            this.model = Model;
-
+        initialize: function () {
             this.listenTo(this.model, {
                 "change isVisible": this.toggleMMLFilter
             });

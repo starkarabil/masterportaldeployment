@@ -13,10 +13,10 @@ define(function (require) {
                 currentFilterView;
 
             if (isMobile) {
-                currentFilterView = new ViewMobile(Model);
+                currentFilterView = new ViewMobile({model: Model});
             }
             else {
-                currentFilterView = new View(Model);
+                currentFilterView = new View({model: Model});
             }
 
             return currentFilterView;

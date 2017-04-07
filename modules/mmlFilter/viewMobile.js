@@ -25,9 +25,7 @@ define([
             "click .div-mmlFilter-header-close-mobile": "closeMMLFilter"
         },
 
-        initialize: function (Model) {
-            this.model = Model;
-
+        initialize: function () {
             this.listenTo(this.model, {
                 "change isVisible": this.toggleMMLFilter
             });
