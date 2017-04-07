@@ -223,7 +223,7 @@ define(function (require) {
         sendNewAddress: function () {
             Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"), this.getFirstDMAdress());
             if (_.isUndefined(this.getFirstDMAdress())) {
-            this.setFirstDMAdress(true);
+                this.setFirstDMAdress(true);
             }
             else if (this.getFirstDMAdress() === true) {
                 this.setFirstDMAdress(false);
