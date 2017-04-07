@@ -718,6 +718,7 @@ define(function (require) {
                 }
                 else {
                     this.model.set("searchString", "");
+                    this.render();
                 }
                 $("#searchInput").blur();
             }
