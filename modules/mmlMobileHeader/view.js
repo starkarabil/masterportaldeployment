@@ -11,7 +11,9 @@ define(function (require) {
             "click div.filter": function () {
                 Radio.trigger("MMLFilter", "toggleFilter");
             },
-            "click .arrow": "TODO"
+            "click .arrow": function () {
+                Radio.trigger("MmlMobileHeader", "mobileBackButtonClicked");
+            }
         },
         template: _.template("<div><img class=\"arrow\" src=\"<%= arrowImage %>\"></div>" +
                             "<div class=\"title\"><%= title %></div>" +

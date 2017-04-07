@@ -1,4 +1,4 @@
-Die Kommunikationsschnittstelle (Remote-Interface) bietet Zugriff auf festgelegte Events und Funktionen in unterschiedlichen Modulen. Sie ist mit [Backbone.Radio](https://github.com/marionettejs/backbone.radio) umgesetzt. Backbone.Radio wird als Radio in den globalen Namespace importiert.   
+Die Kommunikationsschnittstelle (Remote-Interface) bietet Zugriff auf festgelegte Events und Funktionen in unterschiedlichen Modulen. Sie ist mit [Backbone.Radio](https://github.com/marionettejs/backbone.radio) umgesetzt. Backbone.Radio wird als Radio in den globalen Namespace importiert.
 
 Die Kommunikationsschnittstelle kann erst verwendet werden, wenn alle notwendigen Module geladen sind. Hierfür wird per window.postMessage() ein MessageEvent bereitgestellt, auf das sich wie folgt registriert werden kann:
 
@@ -40,7 +40,7 @@ Radio.once("RemoteInterface", eventName, function (eventObject) {
 
 ---
 **Inhaltsverzeichnis:**
- 
+
 [TOC]
 
 ---
@@ -152,7 +152,18 @@ Radio.on("RemoteInterface", "changedExtent", function (extent) {
    console.log(extent);
 });
 ```
+## Auf mobileBackButtonClicked registrieren (nur MML)
+*(mobileBackButtonClicked)*
 
+Mit diesem Aufruf kann sich auf das *mobileBackButtonClicked* Event registriert werden. Jedesmal wenn in der mobilen Ansicht der "back"-Button geklickt wird, wird die Funktion ausgeführt.
+
+**Beispiel-Aufruf**
+```
+#!js
+Radio.on("RemoteInterface", "mobileBackButtonClicked", function () {
+   console.log("mobileBackButton wurde geklickt");
+});
+```
 ## BoundingBox WGS84 abfragen
 *(getWGS84MapSizeBBOX)*
 
@@ -184,7 +195,7 @@ Gibt die Namen der definierten BaseLayer als Array zurück.
 Radio.request("RemoteInterface", "getAllBaseLayers");
 ```
 
-## Alle sichtbaren Hintergrundkarten auslesen 
+## Alle sichtbaren Hintergrundkarten auslesen
 *(getVisibleBaseLayers)*
 
 Gibt die Namen der sichtbaren BaseLayer als Array zurück.
@@ -238,7 +249,7 @@ Setzt die übergebenen Kartenebenen auf sichtbar.
 #!js
 Radio.trigger("RemoteInterface", "showLayers", ["Layername1", "Layername2"], true);
 ```
-## Suchleiste ausblenden 
+## Suchleiste ausblenden
 *(hideSearchbar)*
 
 Blendet die Suchleiste aus der Karte aus.
@@ -250,7 +261,7 @@ Blendet die Suchleiste aus der Karte aus.
 Radio.trigger("RemoteInterface", "hideSearchbar");
 ```
 
-## Suchleiste einblenden 
+## Suchleiste einblenden
 *(showSearchbar)*
 
 Blendet die Suchleiste in der Karte ein.
@@ -265,7 +276,7 @@ Radio.trigger("RemoteInterface", "showSearchbar");
 ---
 # **DragMarker**
 
-Über die hier genannten Aufrufe können spezielle Methoden und Funktionen im Zusammenhang mit einem DragMarker im Kontext Melde-Michel aufgerufen werden. 
+Über die hier genannten Aufrufe können spezielle Methoden und Funktionen im Zusammenhang mit einem DragMarker im Kontext Melde-Michel aufgerufen werden.
 
 ## Position setzen
 *(setDragMarkerPosition)*
@@ -339,7 +350,7 @@ Radio.once("RemoteInterface", "newDragMarkerAddress", function (dragMarkerAddres
 ```
 
 
-## Prüfung auf nächstgelegene Addresse initiieren 
+## Prüfung auf nächstgelegene Addresse initiieren
 *(requestDragMarkerAddress)*
 
 Initiiert die Prüfung auf eine zum DragMarker nächstgelegene Adresse. Feuert *newDragMarkerAddress*, wenn diese vorliegt. Diese manuelle Methode zur Ermittlung nächstgelegener Adressen kommt zum Einsatz, wenn nicht durchgehend auf *newDragMarkerAddress* reagiert werden soll.
@@ -351,7 +362,7 @@ Radio.trigger("RemoteInterface", "requestDragMarkerAddress");
 ```
 
 
-## DragMarker sichtbar schalten 
+## DragMarker sichtbar schalten
 *(showDragMarker)*
 
 Zeigt den DragMarker an.
