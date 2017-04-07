@@ -715,12 +715,13 @@ define(function (require) {
         newDragMarkerAddress: function (response) {
             if (!response.error) {
                 this.model.set("searchString", response.streetname + " " + response.housenumber + response.housenumberaffix);
+                this.render();
+                $("#searchInput + span").show();
             }
             else {
+                this.render();
                 this.model.set("searchString", "");
             }
-            this.render();
-            $("#searchInput + span").show();
 
             $("#searchInput").blur();
         }
