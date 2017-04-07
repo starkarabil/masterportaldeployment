@@ -1,5 +1,6 @@
 var scriptTags = document.getElementsByTagName("script"),
     scriptTagsArray = Array.prototype.slice.call(scriptTags),
+    globaljqueryVersion = window.$ ? window.$.fn.jquery : null,
     configPath = window.location.href,
     modulesLoading = 0,
     lastModuleRequired = false,
@@ -43,6 +44,9 @@ requirejs.config({
         modules: "../modules"
     },
     shim: {
+        backbone: {
+            deps: ["underscore", "jquery"]
+        },
         bootstrap: {
             deps: ["jquery"]
         },
@@ -78,7 +82,10 @@ requirejs.onError = function (err) {
 
 // zuerst libs laden, die alle Module brauchen. die sind dann im globalen Namespace verfügbar, empfehlung s. https://gist.github.com/jjt/3306911
 require(["jquery", "backbone", "backbone.radio"], function (jquery) {
-    jquery = jquery.noConflict( true );
+    // sofern in Umgebung bereits globales jquery definiert war, gebe $ wieder zurück und verwende intern die require-Version
+    if (globaljqueryVersion && globaljqueryVersion !== jquery.fn.jquery) {
+        jquery = jquery.noConflict(true);
+    }
     // dann unsere app laden, die von diesen globalen libs abhängen
     Radio = Backbone.Radio;
     require(["app"]);
