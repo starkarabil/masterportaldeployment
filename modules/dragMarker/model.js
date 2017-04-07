@@ -222,10 +222,7 @@ define(function (require) {
         // Wird auf listenTo "change:nearestAddress" registriert. Liefert Adressobjekt bzw. Fehlerobjekt aus.
         sendNewAddress: function () {
             Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"), this.getFirstDMAdress());
-            if (_.isUndefined(this.getFirstDMAdress())) {
-                this.setFirstDMAdress(true);
-            }
-            else if (this.getFirstDMAdress() === true) {
+            if (this.getFirstDMAdress() === true) {
                 this.setFirstDMAdress(false);
             }
         },
