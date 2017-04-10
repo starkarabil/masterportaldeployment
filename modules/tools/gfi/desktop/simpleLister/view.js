@@ -13,6 +13,7 @@ define(function (require) {
                 this.model.setIsVisible(false);
                 Radio.trigger("MouseHover", "styleDeselGFI");
                 Radio.trigger("SimpleLister", "renderContent");
+                Radio.trigger("SimpleLister", "setIsVisible", true);
             }
         },
 
