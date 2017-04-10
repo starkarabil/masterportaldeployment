@@ -157,7 +157,7 @@ define(function (require) {
                 config,
                 marker;
 
-                this.setCoordinate(evt.coordinate);
+                // this.setCoordinate(evt.coordinate);
 
                 // Abbruch, wenn auf SerchMarker x geklcikt wird.
 
@@ -172,6 +172,7 @@ define(function (require) {
                 // Vector
                 Radio.trigger("ClickCounter", "gfi");
                 if (isFeatureAtPixel === true) {
+                    this.setCoordinate(evt.coordinate);
                     Radio.trigger("Map", "forEachFeatureAtPixel", eventPixel, this.searchModelByFeature);
                 }
 
@@ -179,12 +180,14 @@ define(function (require) {
                 _.each(visibleLayerList, function (model) {
                     if (model.getGfiAttributes() !== "ignore") {
                         if (model.getTyp() === "WMS") {
+                            this.setCoordinate(evt.coordinate);
                             model.attributes.gfiUrl = model.getGfiUrl();
                             gfiParams.push(model.attributes);
                         }
                         else {
                             model.get("backbonelayers").forEach(function (layer) {
                                 if (layer.get("gfiAttributes") !== "ignore") {
+                                    this.setCoordinate(evt.coordinate);
                                     model.attributes.gfiUrl = model.getGfiUrl();
                                     gfiParams.push(model.attributes);
                                 }
@@ -192,10 +195,11 @@ define(function (require) {
                         }
                     }
                 }, this);
-
-                this.setThemeIndex(0);
-                this.getThemeList().reset(gfiParams);
-                gfiParams = [];
+                if (gfiParams.length !== 0) {
+                    this.setThemeIndex(0);
+                    this.getThemeList().reset(gfiParams);
+                    gfiParams = [];
+                }
         },
 
         /**
@@ -204,7 +208,9 @@ define(function (require) {
          * @param  {ol.layer.Vector} olLayer
          */
         searchModelByFeature: function (featureAtPixel, olLayer) {
-            var model;
+            var model,
+                modelAttributes,
+                coords;
 
             if (_.isObject(olLayer) === true) {
                 model = Radio.request("ModelList", "getModelByAttributes", {id: olLayer.get("id")});
@@ -214,7 +220,7 @@ define(function (require) {
             }
 
             if (_.isUndefined(model) === false) {
-                var modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
+                modelAttributes = _.pick(model.attributes, "name", "gfiAttributes", "typ", "gfiTheme", "routable");
 
                 // Feature
                 if (_.has(featureAtPixel.getProperties(), "features") === false) {
@@ -242,7 +248,7 @@ define(function (require) {
                             });
                         }
                         else {
-                            var coords = [];
+                            coords = [];
 
                             _.each(featureAtPixel.get("features"), function (feature) {
                                 coords.push(feature.getGeometry().getCoordinates());
