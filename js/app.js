@@ -148,8 +148,8 @@ define("app",
         }
         if (Config.mmlMobileHeader) {
             incModulesLoading();
-            require(["modules/mmlMobileHeader/view"], function (mmlMobileHeaderView) {
-                new mmlMobileHeaderView();
+            require(["modules/mmlMobileHeader/mmlMobileHeaderLoader"], function (mmlMobileHeaderLoader) {
+                new mmlMobileHeaderLoader();
                 decModulesLoading();
             });
         }
@@ -170,15 +170,9 @@ define("app",
 
         if (configJSON && configJSON.mmlFilter) {
             incModulesLoading();
-            require(["modules/mmlFilter/view", "modules/mmlFilter/viewMobile"], function (MMLFilterView, MobileMMLFilterView) {
-                if (Radio.request("Util", "isAny")) {
-                    new MobileMMLFilterView();
+            require(["modules/mmlFilter/mmlFilterLoader"], function (MMLFilterLoader) {
+                    new MMLFilterLoader();
                     decModulesLoading();
-                }
-                else {
-                    new MMLFilterView();
-                    decModulesLoading();
-                }
             });
         }
 

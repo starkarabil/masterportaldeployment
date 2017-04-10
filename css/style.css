@@ -4832,6 +4832,9 @@ neben Filterfenster
   margin: 0px 10px 0px 15px;
   height: 45px;
 }
+.lgv-container .no-overflow {
+  overflow: hidden;
+}
 .lgv-container .theme-wrapper {
   font-size: 15px;
   color: #333333;

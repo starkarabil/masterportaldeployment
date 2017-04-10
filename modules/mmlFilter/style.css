@@ -464,3 +464,7 @@ Hilfsklassen
     margin: 0px 10px 0px 15px;
     height: 45px;
 }
+
+.no-overflow {
+    overflow: hidden;
+}
