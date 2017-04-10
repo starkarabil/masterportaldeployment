@@ -1,6 +1,5 @@
 define(function (require) {
-    var $ = require("jquery"),
-        Model = require("modules/mouseHover/model"),
+    var Model = require("modules/mouseHover/model"),
         MouseHoverView;
 
     MouseHoverView = Backbone.View.extend({
