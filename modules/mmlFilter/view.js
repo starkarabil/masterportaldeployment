@@ -154,7 +154,7 @@ define(function (require) {
                 }
                 // wenn es noch keinen Kalender gibt, erstelle einen
                 else {
-                    $("#fromDateDiv").datepicker({
+                    Backbone.$("#fromDateDiv").datepicker({
                         onSelect: function (dateTxt) {
                             $("#fromDateDiv .ui-datepicker").hide();
                             $("#fromDate").val(dateTxt);
@@ -183,7 +183,7 @@ define(function (require) {
                 }
                 // wenn es noch keinen Kalender gibt, erstelle einen
                 else {
-                    $("#toDateDiv").datepicker({
+                    Backbone.$("#toDateDiv").datepicker({
                         onSelect: function (dateTxt) {
                             $("#toDateDiv .ui-datepicker").hide();
                             $("#toDate").val(dateTxt);
