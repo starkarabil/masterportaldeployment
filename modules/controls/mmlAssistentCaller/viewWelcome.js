@@ -1,7 +1,6 @@
 define(function (require) {
 
-    var $ = require("jquery"),
-        Template = require("text!modules/controls/mmlAssistentCaller/templateWelcomeScreen.html"),
+    var Template = require("text!modules/controls/mmlAssistentCaller/templateWelcomeScreen.html"),
         Model = require("modules/controls/mmlAssistentCaller/model"),
         MmlAssistentCallerWelcome;
 
@@ -29,7 +28,7 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
-            this.$el.modal({
+            $("#div-mmlWelcomeScreen").modal({
                 backdrop: "static",
                 show: true
             });
@@ -39,7 +38,7 @@ define(function (require) {
             this.destroy();
         },
         destroy: function () {
-            this.$el.modal("hide");
+            $("#div-mmlWelcomeScreen").modal("hide");
             this.remove();
         }
     });
