@@ -65,7 +65,7 @@ define(function (require) {
          */
         togglePanel: function (evt) {
             // eventuell anderes geöffnetes Panel wird eingeklappt
-            this.$el.find(".in").collapse("hide");
+            $("#mmlFilter").find(".in").collapse("hide");
             // aktuelles Panel wird aus- oder eingeklappt
             $(evt.currentTarget).next().collapse("toggle");
         },
