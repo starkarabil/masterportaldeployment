@@ -41,5 +41,5 @@ HeaderMobile = Backbone.Model.extend({
         this.set("title", value);
     }
  });
- return HeaderMobile;
+ return new HeaderMobile();
 });

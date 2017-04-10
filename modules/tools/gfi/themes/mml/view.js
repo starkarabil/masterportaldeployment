@@ -10,7 +10,7 @@ define(function (require) {
         template: _.template(Template),
         // getter for model
         getModel: function () {
-            return model;
+            return this.model;
         },
         // setter for model
         setModel: function (value) {

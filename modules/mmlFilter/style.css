@@ -19,9 +19,6 @@
         max-height: 80%;
         overflow: auto;
     }
-    .panel.open {
-        height:80%;
-    }
 }
 
 #mmlFilter.closed #div-mmlFilter-content{
@@ -48,13 +45,9 @@ Reset-Knopf in Kategorien auf Desktop
     border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
-    color: black;
-    margin-bottom: 10px;
-}
-
-#div-mmlFilter-reset:hover{
-    background-color: #0f5cad;
     color: white;
+    margin-bottom: 10px;
+    background-color: #005ca9;
     cursor: pointer;
 }
 
@@ -71,8 +64,9 @@ Reset-Knopf in Kategorien auf Mobile
     border-radius: 3px;
     border: solid 1px rgba(0, 0, 0, 0.18);
     text-align: center;
-    color: black;
+    color: white;
     margin: 10px 40px 0px 20px;
+    background-color: #005ca9;
 }
 
 #div-mmlFilter-reset-text-mobile {
@@ -471,3 +465,6 @@ Hilfsklassen
     height: 45px;
 }
 
+.no-overflow {
+    overflow: hidden;
+}

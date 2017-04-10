@@ -55,9 +55,9 @@ define(function (require) {
          * @param {string} layer  Layernames
          */
         openMMLAssistant: function (url, center, zoom, layer) {
-            var link = url + "?mapCenter=" + center + "&mapZoomLevel=" + zoom + "&mapBaseLayer=" + layer;
+            var link = url + "?mapCenter=" + center + "&mapZoomLevel=" + zoom + "&mapBaseLayer=" + layer + "&vendor_maps_position=" + center;
 
-            window.open(link,'_blank');
+            window.open(link, "_blank");
         },
         /**
          * Setter für assistantURL

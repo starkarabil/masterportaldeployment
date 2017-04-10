@@ -405,16 +405,16 @@ define([
 
             if (ajax[type] !== null && !_.isUndefined(ajax[type])) {
                 ajax[type].abort();
-                ajax[type] = null;
+                this.polishAjax(type);
             }
             this.ajaxSend(data, successFunction, asyncBool, type);
         },
 
         ajaxSend: function (data, successFunction, asyncBool, typeRequest) {
-
             this.get("ajaxRequests")[typeRequest] = ($.ajax({
                 url: this.get("gazetteerURL"),
                 data: data,
+                dataType: "xml",
                 context: this,
                 async: asyncBool,
                 type: "GET",
@@ -422,11 +422,35 @@ define([
                 timeout: 6000,
                 typeRequest: typeRequest,
                 error: function (err) {
-                    var detail = err.statusText && err.statusText !== "" ? err.statusText : "";
-
-                    Radio.trigger("Alet", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
+                    if (err.status !== 0) { // Bei abort keine Fehlermeldung
+                        this.showError(err);
+                    }
+                },
+                complete: function () {
+                    this.polishAjax(typeRequest);
                 }
-            }));
+            }, this));
+        },
+
+        /**
+         * Triggert die Darstellung einer Fehlermeldung
+         * @param {object} err Fehlerobjekt aus Ajax-Request
+         */
+        showError: function (err) {
+            var detail = err.statusText && err.statusText !== "" ? err.statusText : "";
+
+            Radio.trigger("Alert", "alert", "Gazetteer-URL nicht erreichbar. " + detail);
+        },
+
+        /**
+         * Löscht die Information des erfolgreichen oder abgebrochenen Ajax-Requests wieder aus dem Objekt der laufenden Ajax-Requests
+         * @param {string} type Bezeichnung des Typs
+         */
+        polishAjax: function (type) {
+            var ajax = this.get("ajaxRequests"),
+                cleanedAjax = _.omit(ajax, type);
+
+            this.set("ajaxRequests", cleanedAjax);
         },
 
         /**

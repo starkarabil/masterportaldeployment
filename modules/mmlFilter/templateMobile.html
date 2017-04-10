@@ -2,7 +2,9 @@
 <!-- Modal -->
 <div id="div-mmlFilter-modal-dialog" class="modal-dialog" role="document">
     <div class="div-mmlFilter-header-mobile">
-        <button type="button" class="div-mmlFilter-header-close-mobile" data-dismiss="modal" aria-label="Schließen"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+        <button type="button" class="div-mmlFilter-header-close-mobile" aria-label="Schließen">
+            <span aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+        </button>
         <span class="div-mmlFilter-header-text-mobile">Filtern nach...</span>
     </div>
     <div class="panel panel-default div-mmlFilter-panel-mobile">
@@ -13,9 +15,9 @@
                 </a>
             </h4>
         </div>
-        <div id="mmlKategorien" class="panel-collapse outer collapse in">
-            <div class="inner">
-                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+        <div id="mmlKategorien" class="no-overflow panel-collapse outer collapse in">
+            <div class="inner no-overflow">
+                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= $(window).height() - 330 %>px;">
                     <div id="div-mmlFilter-reset-mobile" title="Alle Kategorien deaktivieren" value="deaktivieren">
                         <span id="div-mmlFilter-reset-text-mobile">Alle Kategorien deaktivieren</span>
                     </div>
@@ -56,7 +58,7 @@
                 </h4>
             </div>
             <div id="mmlBearbStatus" class="panel-collapse collapse">
-                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+                <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= $(window).height() - 330 %>px;">
                     <div class="div-mmlFilter-filter-status">
                         <input id="In Bearbeitung" class="margin-topright mml-checkbox-mobil" type="checkbox" checked="true">In Bearbeitung<br>
                         <input id="abgeschlossen" class="margin-topright mml-checkbox-mobil" type="checkbox" checked="true">Bearbeitet<br>
@@ -74,7 +76,7 @@
             </h4>
         </div>
         <div id="mmlZeitraum" class="panel-collapse collapse">
-            <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= filterMaxHeightMobile %>px;">
+            <div class="panel-body div-mmlFilter-filter-mobile" style="max-height:<%= $(window).height() - 330 %>px;">
                 <input id="ignore-time" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="ignore-time" checked>Keine Einschränkung<br>
                 <input id="7days" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="7days">Die letzten 7 Tage<br>
                 <input id="30days" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="30days">Die letzten 30 Tage<br>

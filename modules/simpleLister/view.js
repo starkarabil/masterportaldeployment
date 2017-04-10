@@ -42,7 +42,7 @@ define(function (require) {
 
         toggleIsVisible: function () {
             if (this.model.getIsVisible() === false) {
-                Radio.trigger("MmlFilter", "setIsVisible", false);
+                Radio.trigger("MMLFilter", "hideFilter");
                 this.model.setIsVisible(true);
             }
             else {
@@ -63,7 +63,6 @@ define(function (require) {
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
             this.$el.css({width: "39%"});
-            // $("#searchbarInMap").css({left: "calc(42% + 43px)"});
             this.model.getLayerFeaturesInExtent();
             $(".ol-viewport").css({
                 "width": "61%",
@@ -78,7 +77,6 @@ define(function (require) {
             glyphiconDom.removeClass("glyphicon-triangle-left").addClass("glyphicon-triangle-right");
             $("#simple-lister-table").hide();
             this.$el.css({width: "0%"});
-            // $("#searchbarInMap").css({left: "43px"});
             $(".ol-viewport").css({
                 "width": "100%",
                 "float": ""
