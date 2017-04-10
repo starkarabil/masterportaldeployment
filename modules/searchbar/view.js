@@ -206,6 +206,9 @@ define(function (require) {
             "keydown": "navigateList",
             "click ": function () {
                 this.clearSelection();
+            },
+            "touchmove .dropdown-menu-search": function (evt) {
+                evt.stopPropagation();
             }
         },
         /**

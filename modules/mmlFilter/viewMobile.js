@@ -6,14 +6,11 @@ define([
 
 ], function () {
 
-    var $ = require("jquery"),
-        Template = require("text!modules/mmlFilter/templateMobile.html"),
-        Model = require("modules/mmlFilter/model"),
+    var Template = require("text!modules/mmlFilter/templateMobile.html"),
         Radio = require("backbone.radio"),
         MobileMMLFilterView;
 
     MobileMMLFilterView = Backbone.View.extend({
-        model: new Model(),
         className: "modal fade unselectable mmlFilter",
         id: "div-mmlFilter-content-mobile",
         template: _.template(Template),
@@ -24,28 +21,47 @@ define([
             "click .div-mmlFilter-panel-heading-mobile": "singleShowTargetFilter",
             "click .panel-heading": "togglePanel",
             "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
-            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon"
+            "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
+            "click .div-mmlFilter-header-close-mobile": "closeMMLFilter",
+            "touchmove #mmlKategorien": function (evt) {
+                evt.stopPropagation();
+            }
         },
 
         initialize: function () {
-            var channel = Radio.channel("MMLFilter");
-
-            channel.on({
-                "toggleFilter": this.toggleFilterWindow
-            }, this);
+            this.listenTo(this.model, {
+                "change isVisible": this.toggleMMLFilter
+            });
 
             this.render();
         },
 
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                isVisible = this.model.getIsVisible();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             this.$el.modal({
                 backdrop: "static",
-                show: false
+                show: isVisible
             });
         },
+
+        /**
+         * [@description Schließt das DOM und entfernt die View vollständig.]
+         */
+        destroyFilter: function () {
+            this.hideMMLFilter();
+            this.remove();
+        },
+
+        /**
+         * Triggert das Schließen des MMLFilter
+         */
+        closeMMLFilter: function () {
+            Radio.trigger("MMLFilter", "hideFilter");
+        },
+
         /**
          * Panels werden aus- und eingeklappt.
          * @param {MouseEvent} evt - Click auf .panel-heading
@@ -67,9 +83,29 @@ define([
             }
         },
 
-        // schaltet Filterwindow sichtbar/unsichtbar
-        toggleFilterWindow: function () {
-            $("#div-mmlFilter-content-mobile").modal("toggle");
+        /**
+         * Schaltet die Sichtbarkeit der View
+         * @param {object} evt Event des Models
+         */
+        toggleMMLFilter: function (evt) {
+            var isVisible = evt.changed.isVisible;
+
+            if (isVisible) {
+                this.showMMLFilter();
+            }
+            else {
+                this.hideMMLFilter();
+            }
+        },
+
+        // schaltet Filterwindow sichtbar
+        showMMLFilter: function () {
+            $("#div-mmlFilter-content-mobile").modal("show");
+        },
+
+        // schaltet Filterwindow unsichtbar
+        hideMMLFilter: function () {
+            $("#div-mmlFilter-content-mobile").modal("hide");
         },
 
         toggleTimeMode: function (evt) {
@@ -152,7 +188,7 @@ define([
                 this.model.executeFilter(true);
             }
 
-            this.toggleFilterWindow();
+            Radio.trigger("MMLFilter", "hideFilter");
         }
     });
 

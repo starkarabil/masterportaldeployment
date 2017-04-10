@@ -1,12 +1,9 @@
 define(function (require) {
 
-    var $ = require("jquery"),
-        Model = require("modules/mmlMobileHeader/model"),
-        Radio = require("backbone.radio"),
+    var Radio = require("backbone.radio"),
         HeaderView;
 
      HeaderView = Backbone.View.extend({
-        model: new Model(),
         className: "mobileHeader",
         events: {
             "click div.filter": function () {
@@ -25,16 +22,6 @@ define(function (require) {
                 $(".lgv-container #map").css("height", $(window).height() - this.$el.height() - 20 + "px");
                 Radio.trigger("Map", "updateSize");
             }
-            Radio.on("Util", {
-                "isViewMobileChanged": function (isViewMobile) {
-                    if (isViewMobile) {
-                        this.render();
-                    }
-                    else {
-                        this.$el.remove();
-                    }
-                }
-            }, this);
         },
         render: function () {
             var attr = this.model.toJSON();
@@ -43,5 +30,6 @@ define(function (require) {
             $(".lgv-container").prepend(this.el);
         }
     });
+
     return HeaderView;
 });

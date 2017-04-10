@@ -12,8 +12,9 @@ define(function (require) {
         events: {
             "click p:first-child": function () {
                 this.model.setIsVisible(false);
-                Radio.trigger("GFI", "isVisible", false);
                 Radio.trigger("MouseHover", "styleDeselGFI");
+                Radio.trigger("SimpleLister", "renderContent");
+                Radio.trigger("SimpleLister", "setIsVisible", true);
             }
         },
 
@@ -33,15 +34,15 @@ define(function (require) {
          * Fügt das GFI an den SimpleLister oder eben nicht
          */
         toggle: function () {
-            Radio.trigger("MmlFilter", "setIsVisible", false);
             if (this.model.getIsVisible() === true) {
+                Radio.trigger("MMLFilter", "hideFilter");
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
                 Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
             }
             else {
                 Radio.trigger("SimpleLister", "renderContent");
-                Radio.trigger("SimpleLister", "show");
+                Radio.trigger("SimpleLister", "setIsVisible", false);
             }
         },
 

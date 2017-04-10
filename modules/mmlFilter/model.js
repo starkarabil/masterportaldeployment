@@ -1,16 +1,15 @@
 define(function (require) {
-    var $ = require("jquery"),
-        ol = require("openlayers"),
-        MMLFilter;
+    var ol = require("openlayers"),
+        Radio = require("backbone.radio"),
+        MMLFilterModel;
 
-    MMLFilter = Backbone.Model.extend({
+    MMLFilterModel = Backbone.Model.extend({
         defaults: {
             // Gibt an ob der Filter sichtbar ist
             isVisible: false,
             selectedKat: [],
             selectedStatus: [],
             fromDate: "",
-            filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
             toDate: "",
             features: [],
             selFeatures: [],
@@ -19,23 +18,22 @@ define(function (require) {
         initialize: function () {
             var mmlFilterConfig = Radio.request("Parser", "getPortalConfig").mmlFilter,
                 layerId = mmlFilterConfig && mmlFilterConfig.layerId ? mmlFilterConfig.layerId : "",
-                channel = Radio.channel("MmlFilter");
+                channel = Radio.channel("MMLFilter");
 
             this.setLayerId(layerId);
             channel.on({
                 "featuresLoaded": this.prepareFeatures,
-                "setIsVisible": this.setIsVisible,
-                "toggleIsVisible": this.toggleIsVisible
+                "toggleFilter": this.toggleMMLFilter,
+                "hideFilter": this.hideMMLFilter
             }, this);
-            Radio.on("Util", {
-            "isViewMobileChanged": function (isMobile) {
-                if (isMobile) {
-                    this.setIsVisible(false);
-                }
-            }
-        }, this);
 
             Radio.trigger("Layer", "checkIfFeaturesLoaded");
+        },
+        toggleMMLFilter: function () {
+            this.setIsVisible(!this.getIsVisible());
+        },
+        hideMMLFilter: function () {
+            this.setIsVisible(false);
         },
         prepareFeatures: function () {
             var prepFeatures = [],
@@ -60,15 +58,6 @@ define(function (require) {
                 });
             });
             this.setFeatures(prepFeatures);
-        },
-        toggleIsVisible: function () {
-            if (this.getIsVisible() === false) {
-                Radio.trigger("SimpleLister", "setIsVisible", false);
-                this.setIsVisible(true);
-            }
-            else {
-                this.setIsVisible(false);
-            }
         },
         executeFilter: function (ignoreTime) {
             this.filterByKat();
@@ -178,22 +167,22 @@ define(function (require) {
             return this.get("mapWidth");
         },
 
-        setIsVisible: function (value) {
-            this.set("isVisible", value);
-        },
-
-        getIsVisible: function () {
-            return this.get("isVisible");
-        },
-
         setLayerId: function (value) {
             this.set("layerId", value);
         },
 
         getLayerId: function () {
             return this.get("layerId");
+        },
+
+        setIsVisible: function (value) {
+            this.set("isVisible", value);
+        },
+
+        getIsVisible: function () {
+            return this.get("isVisible");
         }
     });
 
-    return MMLFilter;
+    return new MMLFilterModel();
 });

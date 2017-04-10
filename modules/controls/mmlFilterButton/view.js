@@ -17,7 +17,7 @@ define(function (require) {
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template()));
         },
         togglefilter: function () {
-            Radio.trigger("MmlFilter", "toggleIsVisible");
+            Radio.trigger("MMLFilter", "toggleFilter");
         }
     });
     return MmlFilterButton;
