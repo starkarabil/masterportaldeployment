@@ -7,7 +7,10 @@ define(function (require) {
         events: {
             "click .glyphicon-remove": "hide",
             "click .pager-right": "renderNext",
-            "click .pager-left": "renderPrevious"
+            "click .pager-left": "renderPrevious",
+            "touchmove": function (evt) {
+                evt.stopPropagation();
+            }
         },
         initialize: function () {
             this.listenTo(this.model, {

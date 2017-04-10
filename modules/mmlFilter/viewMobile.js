@@ -22,7 +22,10 @@ define([
             "click .panel-heading": "togglePanel",
             "show.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
             "hide.bs.collapse .panel-collapse": "toggleTriangleGlyphicon",
-            "click .div-mmlFilter-header-close-mobile": "closeMMLFilter"
+            "click .div-mmlFilter-header-close-mobile": "closeMMLFilter",
+            "touchmove #mmlKategorien": function (evt) {
+                evt.stopPropagation();
+            }
         },
 
         initialize: function () {
