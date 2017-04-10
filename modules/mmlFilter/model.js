@@ -10,7 +10,6 @@ define(function (require) {
             selectedKat: [],
             selectedStatus: [],
             fromDate: "",
-            filterMaxHeightMobile: $(window).height() - 330, // margin (20 * 2) + filter (3 * 50) + header (60) + button (60)
             toDate: "",
             features: [],
             selFeatures: [],
