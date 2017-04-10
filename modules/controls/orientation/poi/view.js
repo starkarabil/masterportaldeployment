@@ -46,7 +46,7 @@ define([
             this.render();
         },
         show: function () {
-            this.$el.modal({
+            $("#base-modal").modal({
                 backdrop: true,
                 show: true
             });
@@ -55,7 +55,7 @@ define([
             });
         },
         hide: function () {
-            this.$el.modal("hide");
+            $("#base-modal").modal("hide");
         },
         onClick500m: function () {
             Radio.trigger("Geolocation", "getPOI", 500);

@@ -41,7 +41,7 @@ define([
                 isVisible = this.model.getIsVisible();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
-            this.$el.modal({
+            $("#div-mmlFilter-content-mobile").modal({
                 backdrop: "static",
                 show: isVisible
             });
@@ -68,7 +68,7 @@ define([
          */
         togglePanel: function (evt) {
             // eventuell anderes geöffnetes Panel wird eingeklappt
-            this.$el.find(".in").collapse("hide");
+            $("#div-mmlFilter-content-mobile").find(".in").collapse("hide");
             // aktuelles Panel wird aus- oder eingeklappt
             $(evt.currentTarget).next().collapse("toggle");
         },

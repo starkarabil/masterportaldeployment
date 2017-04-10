@@ -1,5 +1,5 @@
 define([
-        "text!modules/legend/templateMobile.html",
+    "text!modules/legend/templateMobile.html",
     "modules/legend/model",
 
 ], function (LegendTemplate, Legend) {
@@ -28,7 +28,7 @@ define([
         },
 
         toggle: function () {
-            this.$el.modal({
+            $("#base-modal-legend").modal({
                 backdrop: true,
                 show: true
             });
