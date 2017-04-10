@@ -11,8 +11,8 @@ define(function (require) {
         events: {
             "click p:first-child": function () {
                 this.model.setIsVisible(false);
-                Radio.trigger("GFI", "setIsVisible", false);
                 Radio.trigger("MouseHover", "styleDeselGFI");
+                Radio.trigger("SimpleLister", "renderContent");
             }
         },
 
@@ -40,8 +40,7 @@ define(function (require) {
             }
             else {
                 Radio.trigger("SimpleLister", "renderContent");
-                Radio.trigger("SimpleLister", "hide");
-                // Radio.trigger("SimpleLister", "setIsVisible", false);
+                Radio.trigger("SimpleLister", "setIsVisible", false);
             }
         },
 
