@@ -2564,6 +2564,7 @@ neben Filterfenster
   text-align: center;
   font-size: 10px;
   padding: 4px 8px;
+  line-height: 12px;
 }
 .lgv-container .scale:first-child {
   border-bottom: 1px solid;
@@ -2580,14 +2581,14 @@ neben Filterfenster
   background: linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -o-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   background: -ms-linear-gradient(top, #fff, #f3f3f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  bottom: 20px;
+  bottom: 22px;
   color: #555555;
   position: relative;
   box-shadow: 0px -6px 12px rgba(0, 0, 0, 0.176);
   font-size: 10px;
-  padding: 4px 10px;
+  padding: 2px 10px;
   width: 100%;
-  height: 20px;
+  height: 22px;
 }
 .lgv-container .footer > .glyphicon-option-vertical {
   padding: 0 8px;
