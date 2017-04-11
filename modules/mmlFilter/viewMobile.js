@@ -25,6 +25,9 @@ define([
             "click .div-mmlFilter-header-close-mobile": "closeMMLFilter",
             "touchmove #mmlKategorien": function (evt) {
                 evt.stopPropagation();
+            },
+            "touchmove #mmlZeitraum": function (evt) {
+                evt.stopPropagation();
             }
         },
 
