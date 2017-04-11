@@ -19,7 +19,7 @@ define([
             zoom: 0,
             overlayStyle: new ol.style.Style ({
                 image: new ol.style.Circle({
-                        radius: 5,
+                        radius: 8,
                         fill: new ol.style.Fill({
                                 color: "#005ca9"
                         }),
@@ -573,7 +573,7 @@ define([
                 anchor = clusterFeature.getGeometry().getCoordinates(),
                 source = this.getHoverLayer().getSource(),
                 options = Radio.request("MapView", "getOptions"),
-                radians = (360 / arrayLength) * (Math.PI / 180),
+                radians = (180 / (arrayLength - 1)) * (Math.PI / 180), //
                 newStyle = this.getOverlayStyle(),
                 newClusterFeature,
                 geom,
@@ -582,7 +582,6 @@ define([
                 i;
 
             newStyle.getImage().setOpacity(0.5);
-
             for (i = 0; i < arrayLength; i++) {
                 newClusterFeature = clusterFeature.clone();
                 geom = newClusterFeature.getGeometry();
@@ -592,8 +591,7 @@ define([
                 if (oldFeature) {
                     source.removeFeature(oldFeature);
                 }
-
-                geom.setCoordinates([anchor[0], anchor[1] + ((options.scale / 100) * 1.5)]); // 1.5% vom Maßstab
+                geom.setCoordinates([anchor[0] - ((options.scale / 100) ), anchor[1]]); // Abstand 1% vom Maßstab
                 geom.rotate(i * radians, anchor);
                 feature.setGeometry(geom);
                 newClusterFeature.setGeometry(geom);
