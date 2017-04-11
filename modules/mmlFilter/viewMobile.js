@@ -30,7 +30,7 @@ define([
 
         initialize: function () {
             this.listenTo(this.model, {
-                "change isVisible": this.toggleMMLFilter
+                "change:isVisible": this.toggleMMLFilter
             });
 
             this.render();
