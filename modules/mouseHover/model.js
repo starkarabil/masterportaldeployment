@@ -573,7 +573,7 @@ define([
                 anchor = clusterFeature.getGeometry().getCoordinates(),
                 source = this.getHoverLayer().getSource(),
                 options = Radio.request("MapView", "getOptions"),
-                radians = (180 / (arrayLength - 1)) * (Math.PI / 180), //
+                radians = (180 / (arrayLength - 1)) * (Math.PI / 180),
                 newStyle = this.getOverlayStyle(),
                 newClusterFeature,
                 geom,
