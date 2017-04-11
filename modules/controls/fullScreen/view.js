@@ -38,6 +38,7 @@ define(function (require) {
             container.addClass("is-modal");
             container.css("height", "99vh");
             container.css("width", "100%");
+            $("body").css("overflow-y", "hidden");
             Radio.trigger("Map", "updateSize");
             $("#topbar-sticky-wrapper").hide();
         },
@@ -50,6 +51,7 @@ define(function (require) {
             container.removeClass("is-modal");
             container.css("height", this.prevDimensions.height);
             container.css("width", this.prevDimensions.width);
+            $("body").css("overflow-y", "");
             Radio.trigger("Map", "updateSize");
             $("#topbar-sticky-wrapper").show();
         },
