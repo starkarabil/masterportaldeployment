@@ -15,11 +15,12 @@ define(function (require) {
                 source: new ol.source.Vector(),
                 style: new ol.style.Style({
                     image: new ol.style.Icon({
-                        anchor: [17, 40], // Anchor for marker_red_small.png
+                        anchor: [10, 30], // Anchor for marker_red_small.png
                         anchorXUnits: "pixels",
                         anchorYUnits: "pixels",
                         opacity: 0.7,
-                        src: Radio.request("Util", "getImgPath") + "marker_red_small.png"
+                        scale: 1.4,
+                        src: Radio.request("Util", "getImgPath") + "dragMarker.svg"
                     })
                 }),
                 alwaysOnTop: true,
@@ -51,7 +52,7 @@ define(function (require) {
             // Radio channel
             var channel = Radio.channel("DragMarker"),
             searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
-
+console.log(Radio.request("Util", "getImgPath"));
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
                 "handleMoveEvent": this.handleMoveEvent,
