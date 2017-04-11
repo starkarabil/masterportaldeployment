@@ -4797,9 +4797,9 @@ neben Filterfenster
   zoom: 1.5;
 }
 .lgv-container .ui-datepicker {
-  position: absolute;
-  top: 34px;
-  right: 0px;
+  position: fixed;
+  bottom: 200px;
+  right: 20px;
   z-index: 100;
 }
 .lgv-container .ui-datepicker-header {

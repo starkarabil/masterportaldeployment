@@ -413,7 +413,7 @@ Hilfsklassen
     height: 30px;
 }
 .ui-datepicker-inline {
-        width: 270px;
+    width: 270px;
 }
 .btn-calendar {
     float: left;
@@ -423,13 +423,11 @@ Hilfsklassen
 .zoom {
     zoom: 1.5;
 }
-
 .ui-datepicker {
-    position: absolute;
-    top: 34px;
-    right: 0px;
+    position: fixed;
+    bottom: 200px;
+    right: 20px;
     z-index: 100;
-
 }
 .ui-datepicker-header {
     background-color: white
