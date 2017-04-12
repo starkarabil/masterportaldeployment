@@ -31,7 +31,7 @@ requirejs.config({
         backbone: "../components/backbone/backbone",
         "backbone.radio": "../components/backbone.radio/build/backbone.radio.min",
         text: "../components/requirejs-text/text",
-        bootstrap: "bootstrap",
+        bootstrap: "../bootstrap/bootstrap_amd",
         colorpicker: "../components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min",
         proj4: "../components/proj4/dist/proj4",
         videojs: "../components/video.js/dist/video-js/video",
@@ -41,12 +41,8 @@ requirejs.config({
         config: configPath + "config",
         app: "app",
         templates: "../templates",
-        modules: "../modules"
-    },
-    shim: {
-        openlayers: {
-            exports: "ol"
-        }
+        modules: "../modules",
+        "jquery-private": "jquery-private"
     },
     // Add this map config in addition to any baseUrl or
     // paths config you may already have in the project.
@@ -87,5 +83,5 @@ requirejs.onError = function (err) {
 require(["backbone", "backbone.radio"], function () {
     // dann unsere app laden, die von diesen globalen libs abhängen
     Radio = Backbone.Radio;
-    require([ "app"]);
+    require(["app"]);
 });

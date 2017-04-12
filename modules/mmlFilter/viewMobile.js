@@ -1,7 +1,5 @@
-define([
-    "text!modules/mmlFilter/templateMobile.html",
-    "modules/mmlFilter/model"
-], function () {
+define(function (require) {
+    require("bootstrap");
 
     var Template = require("text!modules/mmlFilter/templateMobile.html"),
         Radio = require("backbone.radio"),

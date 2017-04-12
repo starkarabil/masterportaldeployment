@@ -1,5 +1,6 @@
 define(function (require) {
     require("jqueryui/widgets/datepicker");
+    require("bootstrap");
 
     var Template = require("text!modules/mmlFilter/template.html"),
         Radio = require("backbone.radio"),

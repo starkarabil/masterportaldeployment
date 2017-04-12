@@ -1,4 +1,5 @@
 define(function (require) {
+    require("bootstrap");
 
     var $ = require("jquery"),
         MenuTemplate = require("text!modules/menu/template.html"),

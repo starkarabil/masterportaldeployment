@@ -1,10 +1,12 @@
-define([
-    "text!modules/legend/templateMobile.html",
-    "modules/legend/model",
+define(function (require) {
+    require("bootstrap");
 
-], function (LegendTemplate, Legend) {
+    var Backbone = require("backbone"),
+        LegendTemplate = require("text!modules/legend/templateMobile.html"),
+        Legend = require("modules/legend/model"),
+        MobileLegendView;
 
-    var MobileLegendView = Backbone.View.extend({
+    MobileLegendView = Backbone.View.extend({
         model: new Legend(),
         id: "base-modal-legend",
         className: "modal bs-example-modal-sm legend fade in",

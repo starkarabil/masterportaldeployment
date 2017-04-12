@@ -1,4 +1,5 @@
 define(function (require) {
+    require("bootstrap");
 
     var $ = require("jquery"),
         DesktopView = require("modules/tools/gfi/view"),

@@ -1,10 +1,13 @@
-define([
-    "jquery",
-    "modules/coordpopup/model",
-    "text!modules/coordpopup/template.html"
-], function ($, CoordPopup, CoordPopupTemplate) {
+define(function (require) {
+    require("bootstrap");
 
-    var CoordPopupView = Backbone.View.extend({
+    var Backbone = require("backbone"),
+        $ = require("jquery"),
+        CoordPopup = require("modules/coordpopup/model"),
+        CoordPopupTemplate = require("text!modules/coordpopup/template.html"),
+        CoordPopupView;
+
+    CoordPopupView = Backbone.View.extend({
         model: new CoordPopup(),
         id: "coord-popup",
         template: _.template(CoordPopupTemplate),

@@ -1,9 +1,11 @@
-define([
-    "modules/layerinformation/model",
-    "text!modules/layerinformation/templateMobile.html"
-], function (Layerinformation, LayerInformationMobileTemplate) {
+define(function (require) {
+    require("bootstrap");
 
-    var LayerInformationView = Backbone.View.extend({
+    var Layerinformation = require("modules/layerinformation/model"),
+        LayerInformationMobileTemplate = require("text!modules/layerinformation/templateMobile.html"),
+        LayerInformationView;
+
+    LayerInformationView = Backbone.View.extend({
         model: new Layerinformation(),
         id: "layerinformation",
         className: "modal fade",

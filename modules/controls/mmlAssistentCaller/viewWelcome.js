@@ -1,4 +1,5 @@
 define(function (require) {
+    require("bootstrap");
 
     var Template = require("text!modules/controls/mmlAssistentCaller/templateWelcomeScreen.html"),
         Model = require("modules/controls/mmlAssistentCaller/model"),
