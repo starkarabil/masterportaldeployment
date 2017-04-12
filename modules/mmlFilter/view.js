@@ -15,8 +15,8 @@ define(function (require) {
             "click #div-mmlFilter-reset": "resetKategorien",
             "click #div-mmlFilter-execute": "executeFilter",
             "click .div-mmlFilter-filter-time": "toggleTimeMode",
-            "click #btn-fromDate": "btnFromDateClicked",
-            "click #btn-toDate": "btnToDateClicked",
+            "click #btn-fromDate": "toggleFromDateBtn",
+            "click #btn-toDate": "toggleToDateBtn",
             "click .panel-heading": "togglePanel",
             // Dieses Ereignis wird sofort ausgelöst, wenn die Methode show aufgerufen wird.
             // Löst aus wenn ein Panel ausgeklappt wird.
@@ -32,8 +32,8 @@ define(function (require) {
             this.listenTo(this.model, {
                 "change:isVisible": this.toggleMMLFilter
             });
-
             this.render();
+            this.createDatepicker();
         },
 
         render: function () {
@@ -49,7 +49,33 @@ define(function (require) {
                 this.hideMMLFilter();
             }
         },
+        createDatepicker: function () {
+            $("#fromDateDiv").datepicker({
+                onSelect: function (dateTxt) {
+                    $("#fromDateDiv .ui-datepicker").hide();
+                    $("#fromDate").val(dateTxt);
+                },
+                dateFormat: "dd.mm.yy",
+                dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
+            });
 
+            $("#toDateDiv").datepicker({
+                onSelect: function (dateTxt) {
+                    $("#toDateDiv .ui-datepicker").hide();
+                    $("#toDate").val(dateTxt);
+                },
+                dateFormat: "dd.mm.yy",
+                dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+                dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+                monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+                monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
+            });
+            $("#fromDateDiv .ui-datepicker").hide();
+            $("#toDateDiv .ui-datepicker").hide();
+        },
         /**
          * [@description Schließt das DOM und entfernt die View und das Model vollständig.]
          */
@@ -130,71 +156,39 @@ define(function (require) {
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
-            $(evt.target).parent().find(".rowDate").each(function (index, row) {
-                if (isUserdefined) {
-                    $(row).show();
-                }
-                else {
-                    $(row).hide();
-                }
-            });
+            if (timeModeId !== "") {
+                $(evt.target).parent().find(".rowDate").each(function (index, row) {
+                    if (isUserdefined) {
+                        $(row).show();
+                    }
+                    else {
+                        $(row).hide();
+                    }
+                });
+            }
         },
-        btnFromDateClicked: function () {
+        toggleFromDateBtn: function () {
             var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
 
-            $("#toDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#fromDateDiv .ui-datepicker").hide();
             }
             else {
-                // wenn es schon einen Kalender gibt, zeige ihn an
-                if ($("#fromDateDiv").find(".ui-datepicker").length !== 0) {
-                    $("#fromDateDiv .ui-datepicker").show();
-                }
-                // wenn es noch keinen Kalender gibt, erstelle einen
-                else {
-                    $("#fromDateDiv").datepicker({
-                        onSelect: function (dateTxt) {
-                            $("#fromDateDiv .ui-datepicker").hide();
-                            $("#fromDate").val(dateTxt);
-                        },
-                        dateFormat: "yy-mm-dd",
-                        dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-                        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-                        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-                        monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
-                    });
-                }
+                $("#toDateDiv .ui-datepicker").hide();
+                $("#fromDateDiv .ui-datepicker").show();
             }
         },
-        btnToDateClicked: function () {
+        toggleToDateBtn: function () {
             var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
 
-            $("#fromDateDiv .ui-datepicker").hide();
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
                 $("#toDateDiv .ui-datepicker").hide();
             }
             else {
-                // wenn es schon einen Kalender gibt, zeige ihn an
-                if ($("#toDateDiv").find(".ui-datepicker").length !== 0) {
-                    $("#toDateDiv .ui-datepicker").show();
-                }
-                // wenn es noch keinen Kalender gibt, erstelle einen
-                else {
-                    $("#toDateDiv").datepicker({
-                        onSelect: function (dateTxt) {
-                            $("#toDateDiv .ui-datepicker").hide();
-                            $("#toDate").val(dateTxt);
-                        },
-                        dateFormat: "yy-mm-dd",
-                        dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-                        dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-                        monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
-                        monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
-                    });
-                }
+                $("#fromDateDiv .ui-datepicker").hide();
+                $("#toDateDiv .ui-datepicker").show();
             }
         },
         resetKategorien: function () {
@@ -224,7 +218,10 @@ define(function (require) {
                 daysDiff,
                 timeDiff,
                 fromDate,
-                toDate;
+                toDate,
+                regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/,
+                fromDateVal = $("#fromDate").val(),
+                toDateVal = $("#toDate").val();
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -238,10 +235,25 @@ define(function (require) {
 
                 daysDiff = selectedTimeId === "7days" ? 7 : selectedTimeId === "30days" ? 30 : 0;
                 timeDiff = daysDiff * 24 * 3600 * 1000;
-                fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
-                toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
+                fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : fromDateVal;
+                toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : toDateVal;
 
-                if (fromDate.getTime() <= toDate.getTime()) {
+                if (selectedTimeId === "userdefined") {
+                    // check #fromDate if valid input and setDate of datepicker. Else, set null
+                    // check #toDate if valid input and setDate of datepicker. Else, set null
+                    if (fromDateVal.match(regex) && toDateVal.match(regex)) {
+                        $("#fromDateDiv").datepicker("setDate", fromDateVal);
+                        $("#toDateDiv").datepicker("setDate", toDateVal);
+                    }
+                    else {
+                        $("#fromDateDiv").datepicker("setDate", null);
+                        $("#toDateDiv").datepicker("setDate", null);
+                    }
+                    // retrieve dates vom datepicker
+                    fromDate = $("#fromDateDiv").datepicker("getDate");
+                    toDate = $("#toDateDiv").datepicker("getDate");
+                }
+                if (fromDate && toDate && fromDate.getTime() <= toDate.getTime()) {
                     $("#fromDateDiv").removeClass("has-error");
                     $("#toDateDiv").removeClass("has-error");
                     $("#toDateDiv").next().remove();
