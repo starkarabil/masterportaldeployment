@@ -1,7 +1,4 @@
-define([
-
-    "bootstrap/modal"
-], function () {
+define(function () {
 
     var Legend = Backbone.Model.extend({
 

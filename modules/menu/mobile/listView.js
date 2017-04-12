@@ -1,6 +1,4 @@
 define([
-    "bootstrap/dropdown",
-    "bootstrap/collapse",
     "modules/menu/mobile/folder/view",
     "modules/menu/mobile/layer/view",
     "modules/menu/mobile/layer/viewLight",

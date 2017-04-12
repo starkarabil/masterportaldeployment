@@ -2,8 +2,7 @@ define([
     "jquery",
     "openlayers",
     "proj4",
-    "config",
-    "bootstrap/popover"
+    "config"
 ], function ($, ol, proj4, Config) {
 
     var CoordPopup = Backbone.Model.extend({
