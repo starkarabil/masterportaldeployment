@@ -185,8 +185,8 @@ define(function (require) {
         },
         toggleToDateBtn: function () {
             var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible"),
-                topVal = $("#btn-fromDate").offset().top - 307 + 34,
-                leftVal = $("#btn-fromDate").offset().left - 270;
+                topVal = $("#btn-toDate").offset().top - 307 + 34,
+                leftVal = $("#btn-toDate").offset().left - 270;
 
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
