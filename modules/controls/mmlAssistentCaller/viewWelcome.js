@@ -2,6 +2,7 @@ define(function (require) {
 
     var Template = require("text!modules/controls/mmlAssistentCaller/templateWelcomeScreen.html"),
         Model = require("modules/controls/mmlAssistentCaller/model"),
+        $ = require("jquery"),
         MmlAssistentCallerWelcome;
 
     MmlAssistentCallerWelcome = Backbone.View.extend({

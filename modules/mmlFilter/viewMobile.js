@@ -1,9 +1,6 @@
 define([
     "text!modules/mmlFilter/templateMobile.html",
-    "modules/mmlFilter/model",
-    "bootstrap/collapse",
-    "bootstrap/modal"
-
+    "modules/mmlFilter/model"
 ], function () {
 
     var Template = require("text!modules/mmlFilter/templateMobile.html"),

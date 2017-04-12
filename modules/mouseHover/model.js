@@ -1,8 +1,8 @@
 define([
     "openlayers",
     "backbone.radio",
-    "bootstrap/popover"
-], function (ol, Radio) {
+    "jquery"
+], function (ol, Radio, $) {
 
     var MouseHoverPopup = Backbone.Model.extend({
         defaults: {

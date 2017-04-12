@@ -22,7 +22,8 @@ define("app",
     "modules/core/parametricURL",
     "modules/core/crs",
     "modules/core/autostarter",
-    "modules/alerting/view"
+    "modules/alerting/view",
+    "bootstrap"
 ], function (Config, Util, RawLayerList, RestReaderList, Preparser, Map, ParametricURL, CRS, Autostarter, Alert) {
 
     // Core laden

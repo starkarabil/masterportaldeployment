@@ -1,5 +1,4 @@
 define(function (require) {
-    require("bootstrap/modal");
 
     var GFIView = require("modules/tools/gfi/view"),
         Template = require("text!modules/tools/gfi/mobile/template.html"),

@@ -1,5 +1,4 @@
 define(function (require) {
-    require("bootstrap/popover");
 
     var $ = require("jquery"),
         DesktopView = require("modules/tools/gfi/view"),

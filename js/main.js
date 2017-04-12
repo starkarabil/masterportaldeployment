@@ -1,6 +1,6 @@
 var scriptTags = document.getElementsByTagName("script"),
     scriptTagsArray = Array.prototype.slice.call(scriptTags),
-    globaljqueryVersion = window.$ ? window.$.fn.jquery : null,
+    // globaljqueryVersion = window.$ ? window.$.fn.jquery : null,
     configPath = window.location.href,
     modulesLoading = 0,
     lastModuleRequired = false,
@@ -27,11 +27,11 @@ requirejs.config({
         jqueryui: "../components/jquery-ui/ui",
         eqcss: "../components/eqcss/EQCSS.min",
         underscore: "../components/underscore/underscore-min",
-       "underscore.string": "../components/underscore.string/dist/underscore.string.min",
+        "underscore.string": "../components/underscore.string/dist/underscore.string.min",
         backbone: "../components/backbone/backbone",
         "backbone.radio": "../components/backbone.radio/build/backbone.radio.min",
         text: "../components/requirejs-text/text",
-        bootstrap: "../components/bootstrap/js",
+        bootstrap: "bootstrap",
         colorpicker: "../components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min",
         proj4: "../components/proj4/dist/proj4",
         videojs: "../components/video.js/dist/video-js/video",
@@ -44,16 +44,22 @@ requirejs.config({
         modules: "../modules"
     },
     shim: {
-        bootstrap: {
-          // deps: ["jquery"]
-        },
-        "bootstrap/popover": {
-            deps: ["bootstrap/tooltip"]
-        },
         openlayers: {
             exports: "ol"
         }
     },
+    // Add this map config in addition to any baseUrl or
+    // paths config you may already have in the project.
+    map: {
+      // '*' means all modules will get 'jquery-private'
+      // for their 'jquery' dependency.
+      "*": { "jquery": "jquery-private" },
+
+      // 'jquery-private' wants the real jQuery module
+      // though. If this line was not here, there would
+      // be an unresolvable cyclic dependency.
+      "jquery-private": { "jquery": "jquery" }
+  },
     urlArgs: "bust=" + (new Date()).getTime(),
     config: {
         // benötigt, um in der Entwicklungsumgebung, Templates cross-domain laden zu können, s. https://github.com/requirejs/text#xhr-restrictions
@@ -66,7 +72,7 @@ requirejs.config({
 });
 
 // Überschreibt das Errorhandling von Require so,
-// dass der ursprüngliche Fehler sammt Stacjtrace ausgegeben wird.
+// dass der ursprüngliche Fehler sammt Stacktrace ausgegeben wird.
 // funktioniert obwohl der Linter meckert
 requirejs.onError = function (err) {
     if (err.requireType === "timeout") {
@@ -78,14 +84,8 @@ requirejs.onError = function (err) {
 };
 
 // zuerst libs laden, die alle Module brauchen. die sind dann im globalen Namespace verfügbar, empfehlung s. https://gist.github.com/jjt/3306911
-require(["jquery", "backbone", "backbone.radio"], function (jquery) {
-    // sofern in Umgebung bereits globales jquery definiert war, gebe $ wieder zurück und verwende intern die require-Version
-    console.log($.fn.jquery);
-    if (globaljqueryVersion && globaljqueryVersion !== jquery.fn.jquery) {
-        $.noConflict(true);
-        console.log($.fn.jquery);
-    }
+require(["backbone", "backbone.radio"], function () {
     // dann unsere app laden, die von diesen globalen libs abhängen
     Radio = Backbone.Radio;
-    require(["app"]);
+    require([ "app"]);
 });
