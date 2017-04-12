@@ -19,6 +19,9 @@
         max-height: 80%;
         overflow: auto;
     }
+    :nth-child(3) {
+        overflow: visible;
+    }
 }
 
 #mmlFilter.closed #div-mmlFilter-content{
@@ -424,9 +427,9 @@ Hilfsklassen
     width: 270px;
 }
 .ui-datepicker {
-    position: fixed;
-    top: 126px;
-    right: 60px;
+    position: absolute;
+    top: -272px;
+    right: 34px;
     z-index: 3;
 }
 .ui-datepicker-header {

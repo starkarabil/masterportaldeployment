@@ -168,9 +168,7 @@ define(function (require) {
             }
         },
         toggleFromDateBtn: function () {
-            var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible"),
-                topVal = $("#btn-fromDate").offset().top - 307 + 34,
-                leftVal = $("#btn-fromDate").offset().left - 270;
+            var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
 
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
@@ -178,15 +176,11 @@ define(function (require) {
             }
             else {
                 $("#toDateDiv .ui-datepicker").hide();
-                $("#fromDateDiv .ui-datepicker").css("top", topVal);
-                $("#fromDateDiv .ui-datepicker").css("left", leftVal);
                 $("#fromDateDiv .ui-datepicker").show();
             }
         },
         toggleToDateBtn: function () {
-            var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible"),
-                topVal = $("#btn-toDate").offset().top - 307 + 34,
-                leftVal = $("#btn-toDate").offset().left - 270;
+            var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
 
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
@@ -194,8 +188,6 @@ define(function (require) {
             }
             else {
                 $("#fromDateDiv .ui-datepicker").hide();
-                $("#toDateDiv .ui-datepicker").css("top", topVal);
-                $("#toDateDiv .ui-datepicker").css("left", leftVal);
                 $("#toDateDiv .ui-datepicker").show();
             }
         },
