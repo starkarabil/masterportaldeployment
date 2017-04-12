@@ -52,7 +52,7 @@ define(function (require) {
             // Radio channel
             var channel = Radio.channel("DragMarker"),
             searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
-console.log(Radio.request("Util", "getImgPath"));
+
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
                 "handleMoveEvent": this.handleMoveEvent,
