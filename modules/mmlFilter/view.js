@@ -156,14 +156,16 @@ define(function (require) {
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
-            $(evt.target).parent().find(".rowDate").each(function (index, row) {
-                if (isUserdefined) {
-                    $(row).show();
-                }
-                else {
-                    $(row).hide();
-                }
-            });
+            if (timeModeId !== "") {
+                $(evt.target).parent().find(".rowDate").each(function (index, row) {
+                    if (isUserdefined) {
+                        $(row).show();
+                    }
+                    else {
+                        $(row).hide();
+                    }
+                });
+            }
         },
         toggleFromDateBtn: function () {
             var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");

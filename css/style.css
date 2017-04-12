@@ -4782,12 +4782,6 @@ neben Filterfenster
 .lgv-container .margin-leftright {
   margin: 0px 20px 0px 0px !important;
 }
-.lgv-container .datepicker {
-  height: 30px;
-}
-.lgv-container .ui-datepicker-inline {
-  width: 270px;
-}
 .lgv-container .btn-calendar {
   float: left;
   height: 34px;
@@ -4796,11 +4790,17 @@ neben Filterfenster
 .lgv-container .zoom {
   zoom: 1.5;
 }
+.lgv-container .datepicker {
+  height: 30px;
+}
+.lgv-container .ui-datepicker-inline {
+  width: 270px;
+}
 .lgv-container .ui-datepicker {
   position: fixed;
-  bottom: 200px;
-  right: 20px;
-  z-index: 100;
+  top: 126px;
+  right: 60px;
+  z-index: 3;
 }
 .lgv-container .ui-datepicker-header {
   background-color: white;
