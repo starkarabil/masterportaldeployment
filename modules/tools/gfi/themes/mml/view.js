@@ -8,6 +8,16 @@ define(function (require) {
      MmlTheme = ThemeView.extend({
         model: new Model(),
         template: _.template(Template),
+        initialize: function () {
+            this.listenTo(this.model, {
+                 "change:isVisible": this.appendTheme
+            });
+
+            this.render();
+            this.$el.find(".top-picture")[0].addEventListener("load", function () {
+                $(this).width(this.naturalWidth);
+            });
+        },
         // getter for model
         getModel: function () {
             return this.model;
