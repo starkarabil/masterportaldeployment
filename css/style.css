@@ -4330,6 +4330,9 @@ neben Filterfenster
   user-select: none;
   /* Likely future */
 }
+.lgv-container #simple-lister {
+  padding: 6px;
+}
 .lgv-container .simple-lister-view {
   position: relative;
   top: -100%;
@@ -4841,7 +4844,7 @@ neben Filterfenster
   color: #333333;
 }
 .lgv-container .theme-wrapper div {
-  padding: 0px 26px 32px 34px;
+  padding: 0px 26px 32px 26px;
   line-height: 27px;
 }
 .lgv-container .theme-wrapper div.heading {

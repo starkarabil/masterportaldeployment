@@ -62,13 +62,11 @@ define(function (require) {
 
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
-            this.$el.css({width: "39%"});
+            this.$el.css({width: this.model.getWidth()});
             this.model.getLayerFeaturesInExtent();
-            $(".ol-viewport").css({
-                "width": "61%",
-                "float": "right"
-            });
+            this.manipulateViewport();
             Radio.trigger("Map", "updateSize");
+            $(window).on("resize", $.proxy(this.manipulateViewport, this));
         },
 
         hide: function () {
@@ -82,6 +80,16 @@ define(function (require) {
                 "float": ""
             });
             Radio.trigger("Map", "updateSize");
+            $(window).off("resize", $.proxy(this.manipulateViewport, this));
+        },
+
+        manipulateViewport: function () {
+            var newViewportWidth = ($("#map").width() - this.model.getWidth()) + "px";
+
+            $(".ol-viewport").css({
+                "width": newViewportWidth,
+                "float": "right"
+            });
         },
 
         newFeaturesInExtent: function () {
