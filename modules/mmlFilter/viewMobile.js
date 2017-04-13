@@ -3,6 +3,7 @@ define(function (require) {
 
     var Template = require("text!modules/mmlFilter/templateMobile.html"),
         Radio = require("backbone.radio"),
+        $ = require("jquery"),
         MobileMMLFilterView;
 
     MobileMMLFilterView = Backbone.View.extend({
