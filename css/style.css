@@ -138,13 +138,10 @@ gesamtes Filterwindow Desktop
 gesamtes Filterwindow auf Mobile
 **********************************/
   /**********************************
-Checkbox Desktop
-**********************************/
-  /**********************************
 Radio Button Mobil
 **********************************/
   /**********************************
-Checkbox Mobil
+Checkbox
 **********************************/
   /**********************************
 Hilfsklassen
@@ -4692,35 +4689,6 @@ neben Filterfenster
 .lgv-container #mmlZeitraum {
   overflow: visible;
 }
-.lgv-container .mml-checkbox {
-  -webkit-appearance: none;
-  border: 1px solid #cacece;
-  opacity: 0.5;
-  border-radius: 2px;
-  display: inline-block;
-  position: relative;
-  height: 20px;
-  width: 20px;
-}
-.lgv-container .mml-checkbox:hover {
-  cursor: pointer;
-}
-.lgv-container .mml-checkbox:checked {
-  color: #99a1a7;
-  opacity: 1;
-}
-.lgv-container .mml-checkbox:checked:after {
-  content: '\2714';
-  position: absolute;
-  left: 3px;
-  top: 0px;
-  height: 100%;
-  color: #333333;
-}
-.lgv-container .mmlFilter-checkbox-span {
-  bottom: 3px;
-  position: relative;
-}
 .lgv-container .input-mmlFilter-filter-time-mobile {
   appearance: none;
   -webkit-appearance: none;
@@ -4742,23 +4710,41 @@ neben Filterfenster
   content: '';
   border: 4px solid white;
 }
-.lgv-container .mml-checkbox-mobil {
+.lgv-container .mml-checkbox {
+  -moz-appearance: none;
   -webkit-appearance: none;
-  background-color: white;
-  border: none;
+  background-color: #fff;
   display: inline-block;
   position: relative;
   height: 20px;
   width: 20px;
+  border: 1px solid #cacece;
+  border-radius: 2px;
 }
-.lgv-container .mml-checkbox-mobil:checked:after {
-  -webkit-transform: scale(1.5, 1.5);
+.lgv-container .mml-checkbox:checked:after {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  transform: scale(1.4, 1.4);
   content: '\2714';
   position: absolute;
-  left: 2px;
-  bottom: 0px;
+  left: 1px;
+  bottom: -1px;
   border: none;
-  color: #333333;
+  color: #333;
+}
+.lgv-container .mml-checkbox:checked:focus {
+  outline: 0;
+}
+.lgv-container .mml-checkbox:hover {
+  cursor: pointer;
+}
+.lgv-container .mml-checkbox:checked {
+  color: #99a1a7;
+  opacity: 1;
+}
+.lgv-container .mmlFilter-checkbox-span {
+  bottom: 3px;
+  position: relative;
 }
 .lgv-container .unselectable {
   -webkit-user-select: none;

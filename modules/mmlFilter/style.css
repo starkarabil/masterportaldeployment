@@ -298,40 +298,6 @@ gesamtes Filterwindow auf Mobile
 }
 
 /**********************************
-Checkbox Desktop
-**********************************/
-.mml-checkbox {
-    -webkit-appearance: none;
-    border: 1px solid #cacece;
-    opacity: 0.5;
-    border-radius: 2px;
-    display: inline-block;
-    position: relative;
-    height: 20px;
-    width: 20px;
-}
-.mml-checkbox:hover {
-    cursor: pointer;
-}
-.mml-checkbox:checked {
-    color: #99a1a7;
-    opacity: 1;
-}
-.mml-checkbox:checked:after {
-    content: '\2714';
-    position: absolute;
-    left: 3px;
-    top: 0px;
-    height:100%;
-    color: #333333;
-}
-
-.mmlFilter-checkbox-span {
-    bottom: 3px;
-    position: relative;
-}
-
-/**********************************
 Radio Button Mobil
 **********************************/
 .input-mmlFilter-filter-time-mobile {
@@ -359,26 +325,47 @@ Radio Button Mobil
 }
 
 /**********************************
-Checkbox Mobil
+Checkbox
 **********************************/
-.mml-checkbox-mobil {
-    -webkit-appearance: none;
-    background-color: white;
-    border: none;
-    display: inline-block;
-    position: relative;
-    height: 20px;
-    width: 20px;
+.mml-checkbox{
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background-color:#fff;
+    display:inline-block;
+    position:relative;
+    height:20px;
+    width:20px;
+    border:1px solid rgb(202, 206, 206);
+    border-radius:2px
 }
 
-.mml-checkbox-mobil:checked:after {
-    -webkit-transform: scale(1.5,1.5);
-    content: '\2714';
-    position: absolute;
-    left: 2px;
-    bottom: 0px;
-    border: none;
-    color: #333333;
+.mml-checkbox:checked:after{
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    transform:scale(1.4,1.4);
+    content:'\2714';
+    position:absolute;
+    left:1px;
+    bottom:-1px;
+    border:none;
+    color:#333
+}
+
+.mml-checkbox:checked:focus {
+    outline: 0;
+}
+
+.mml-checkbox:hover {
+    cursor: pointer;
+}
+.mml-checkbox:checked {
+    color: #99a1a7;
+    opacity: 1;
+}
+
+.mmlFilter-checkbox-span {
+    bottom: 3px;
+    position: relative;
 }
 
 /**********************************
