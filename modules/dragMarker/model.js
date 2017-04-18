@@ -20,6 +20,7 @@ define(function (require) {
                         anchorYUnits: "pixels",
                         opacity: 0.7,
                         scale: 1.4,
+                        imgSize: [23,32],
                         src: Radio.request("Util", "getImgPath") + "dragMarker.svg"
                     })
                 }),
