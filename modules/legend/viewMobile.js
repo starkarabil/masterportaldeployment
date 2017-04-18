@@ -2,6 +2,7 @@ define(function (require) {
     require("bootstrap");
 
     var Backbone = require("backbone"),
+        $ = require("jquery"),
         LegendTemplate = require("text!modules/legend/templateMobile.html"),
         Legend = require("modules/legend/model"),
         MobileLegendView;

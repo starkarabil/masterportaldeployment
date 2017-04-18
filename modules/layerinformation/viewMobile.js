@@ -2,6 +2,7 @@ define(function (require) {
     require("bootstrap");
 
     var Layerinformation = require("modules/layerinformation/model"),
+        $ = require("jquery");
         LayerInformationMobileTemplate = require("text!modules/layerinformation/templateMobile.html"),
         LayerInformationView;
 

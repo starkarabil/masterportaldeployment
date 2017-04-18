@@ -1,6 +1,7 @@
 define(function (require) {
 
     var Radio = require("backbone.radio"),
+        $ = require("jquery"),
         HeaderView;
 
      HeaderView = Backbone.View.extend({
