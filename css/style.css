@@ -4474,6 +4474,9 @@ neben Filterfenster
   max-height: 80%;
   overflow: auto;
 }
+.lgv-container #mmlFilter-accordion :nth-child(3) {
+  overflow: visible;
+}
 .lgv-container #mmlFilter.closed #div-mmlFilter-content {
   display: none;
 }
@@ -4800,9 +4803,9 @@ neben Filterfenster
   width: 270px;
 }
 .lgv-container .ui-datepicker {
-  position: fixed;
-  top: 126px;
-  right: 60px;
+  position: absolute;
+  top: -272px;
+  right: 34px;
   z-index: 3;
 }
 .lgv-container .ui-datepicker-header {
