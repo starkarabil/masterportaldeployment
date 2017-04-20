@@ -1,11 +1,14 @@
 {
   "name": "LGV-MML",
-  "version": "mml_1.0",
+  "version": "mml_1.1",
   "description": "LGV MML",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/lgv-g12/lgv-config.git"
+  },
+  "dependencies": {
+    "express": "^4.14.0"
   },
   "devDependencies": {
     "bower": "1.x",
@@ -28,7 +31,10 @@
     "jaguarjs-jsdoc": "0.0.1",
     "jit-grunt": "^0.9.0",
     "postcss-prefix-selector": "1.5.0",
-    "time-grunt": "1.0.0"
+    "time-grunt": "1.0.0",
+    "cors": "^2.8.1",
+    "express-cors": "0.0.3",
+    "express-urlrewrite": "1.2.0"
   },
   "title": "LGV MML"
 }

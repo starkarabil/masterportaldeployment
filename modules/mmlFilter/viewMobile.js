@@ -21,12 +21,15 @@ define(function (require) {
             "click .div-mmlFilter-header-close-mobile": "closeMMLFilter",
             "touchmove #mmlKategorien": function (evt) {
                 evt.stopPropagation();
+            },
+            "touchmove #mmlZeitraum": function (evt) {
+                evt.stopPropagation();
             }
         },
 
         initialize: function () {
             this.listenTo(this.model, {
-                "change isVisible": this.toggleMMLFilter
+                "change:isVisible": this.toggleMMLFilter
             });
 
             this.render();
