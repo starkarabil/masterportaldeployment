@@ -1,10 +1,10 @@
 define(function (require) {
-    require("bootstrap/transition");
-    require("bootstrap/collapse");
+    require("bootstrap");
     require("jqueryui/widgets/datepicker");
 
     var Template = require("text!modules/mmlFilter/template.html"),
         Radio = require("backbone.radio"),
+        $ = require("jquery"),
         MMLFilterView;
 
     MMLFilterView = Backbone.View.extend({
