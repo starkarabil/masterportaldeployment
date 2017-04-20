@@ -3,6 +3,7 @@ define(function (require) {
 
     var GFIView = require("modules/tools/gfi/view"),
         Template = require("text!modules/tools/gfi/mobile/template.html"),
+        $= require("jquery"),
         GFIMobileView;
 
     GFIMobileView = GFIView.extend({
