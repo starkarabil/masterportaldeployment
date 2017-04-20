@@ -3,6 +3,7 @@ define(function (require) {
     var Template = require("text!modules/tools/gfi/themes/mml/template.html"),
         Model = require("modules/tools/gfi/themes/model"),
         ThemeView = require("modules/tools/gfi/themes/view"),
+        $ = require("jquery"),
         MmlTheme;
 
      MmlTheme = ThemeView.extend({
