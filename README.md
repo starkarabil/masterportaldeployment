@@ -158,7 +158,7 @@ Ein Portal für die Veröffentlichung fertig machen.
 
 ```
 // grunt build --path=<pfad-zum-portal> --name=<Portalname> --url=<Server> --dev=<boolean> [--env=internet| default:fhhnet]
-# grunt build --path=portal/master --name=Master --url=http://geoportal-hamburg.de/master --dev=false
+# grunt build --path=portal/master --name=master --url=http://geoportal-hamburg.de/master --dev=false
 # grunt build --path=portalconfigs/mml --name=mml --url=http://localhost:3000/lgv-cors --dev=true
 ```
 
@@ -166,7 +166,12 @@ Ein Portal für die Veröffentlichung fertig machen.
 - Pfade in index.html werden automatisch ersetzt
 - Pfade zu *Conf in config.js werden automatisch ersetzt
 - components/lgv-config, also Konfigs, die zwischen den Portalen geteilt werden, werden in den Ordner /lgv-config kopiert, da wird die auch auf den 'echten' Servern erwartet
-- beim Bauen für anderen Server muss der Name und der letzte agegebene Ordner im URL Parameter gleich sein.
+- der Parameter dev legt fest, ob für die lokale Entwicklungsumgebung oder einen anderen Server gebaut wird.
+- beim Bauen für einen anderen Server muss der Parameter name und der letzte angegebene Ordner im Parameter url gleich sein.
+- um für ein Projekt alle zugehörigen Portale in einen Ordner zu Bauen, kann am ende des Parameters path ein * gesetzt werden um alle mit diesem Pfad anfangenden Ordner zum Bauen zu verwenden.
+- beim verwenden des * im path wird der Code nur einmal hinterlegt und die Portale im gebauten Verzeichnis greifen alle auf die gleichen Quellen zu.
+- Beispiel für mml : grunt build --path=portalconfigs/mml* --name=mml --url=http://localhost:3000/lgv-cors --dev=true
+- Ergebnis ist ein mml Ordner in dem sich ein Versionsordner befindet mit der Version aus der package.json auf der gebaut wurde, in der sich der Code und die Portalordner mit ihren Konfig-Dateien befindet. 
 
 ## grunt doc
 Die Dokumentation erzeugen. Zurzeit nur für portale/master/config.js.
