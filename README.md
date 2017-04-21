@@ -168,7 +168,8 @@ Ein Portal für die Veröffentlichung fertig machen.
 - Pfade zu *Conf in config.js werden automatisch ersetzt
 - components/lgv-config, also Konfigs, die zwischen den Portalen geteilt werden, werden in den Ordner /lgv-config kopiert, da wird die auch auf den 'echten' Servern erwartet
 - der Parameter dev legt fest, ob für die lokale Entwicklungsumgebung oder einen anderen Server gebaut wird.
-- beim Bauen für einen anderen Server muss der Parameter name und der letzte angegebene Ordner im Parameter url gleich sein.
+- beim Bauen für einen anderen Server muss der Parameter name und der letzte angegebene Ordner im Parameter url gleich sein, url ersetzt die Pfade in der html und name gibt den lokalen Ordnernamen unter dist an.
+  Durch einhalten dieser Regel, kann der lokal gebaute Ordner direkt auf dem Server ins entsrechende Verzeichnis gelegt werden und keine weiteren PFade müssen angepasst werden.
 - um für ein Projekt alle zugehörigen Portale in einen Ordner zu Bauen, kann am ende des Parameters path ein * gesetzt werden um alle mit diesem Pfad anfangenden Ordner zum Bauen zu verwenden.
 - beim verwenden des * im path wird der Code nur einmal hinterlegt und die Portale im gebauten Verzeichnis greifen alle auf die gleichen Quellen zu.
 - Beispiel für mml : grunt build --path=portalconfigs/mml* --name=mml --url=http://localhost:3000/lgv-cors --dev=true
