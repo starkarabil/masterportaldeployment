@@ -160,6 +160,7 @@ Ein Portal für die Veröffentlichung fertig machen.
 // grunt build --path=<pfad-zum-portal> --name=<Portalname> --url=<Server> --dev=<boolean> [--env=internet| default:fhhnet]
 # grunt build --path=portal/master --name=master --url=http://geoportal-hamburg.de/master --dev=false
 # grunt build --path=portalconfigs/mml --name=mml --url=http://localhost:3000/lgv-cors --dev=true
+# grunt build --path=portalconfigs/mml* --name=mml --url=https://geoportal-hamburg.de/mml --dev=false
 ```
 
 - baut das Portal und alles, was es braucht in den Ordner dist/<pkg.version>
