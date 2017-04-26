@@ -9,7 +9,7 @@ define(function (require) {
     "use strict";
     DragMarkerModel = Backbone.Model.extend({
         defaults: {
-            coordinate: [565754, 5933960], // Start-Koordinate
+            coordinate: [565764, 5933975], // Start-Koordinate
             featureName: "DragMarkerPoint",
             dragMarkerLayer: new ol.layer.Vector({
                 source: new ol.source.Vector(),
