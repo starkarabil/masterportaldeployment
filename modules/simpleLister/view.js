@@ -157,7 +157,7 @@ define(function (require) {
         addEntry: function (feat) {
             var div1 = "<div id='" + feat.id + "' class='entry'>",
                 div2 = "<div class='address'>" + feat.properties.str + " " + feat.properties.hsnr + "</div>",
-                div3 = "<div class='category'>" + feat.properties.kat_text + "</div>",
+                div3 = "<div class='category'>" + feat.properties.skat_text + "</div>",
                 div4 = "<div class='description'>",
                 div5 = feat.properties.beschr.length > 50 ? feat.properties.beschr.substring(0, 50) + "..." : feat.properties.beschr,
                 div6 = "</div>",
