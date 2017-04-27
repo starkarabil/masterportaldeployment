@@ -9,7 +9,6 @@ define(function (require) {
     GFIAttachedView = DesktopView.extend({
         className: "gfi gfi-attached",
         template: _.template(Template),
-
         /**
          * Zeichnet das Template und erstellt das Bootstrap Popover
          */
@@ -45,6 +44,9 @@ define(function (require) {
         toggle: function () {
             if (this.model.getIsVisible() === true) {
                 $(this.model.getOverlayElement()).popover("show");
+                if (this.model.getZoomToFeature()) {
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                }
             }
             else {
                 $(this.model.getOverlayElement()).popover("hide");

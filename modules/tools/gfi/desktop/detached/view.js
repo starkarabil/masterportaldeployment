@@ -9,7 +9,6 @@ define(function (require) {
     GFIDetachedView = DesktopView.extend({
         className: "gfi gfi-detached",
         template: _.template(Template),
-
         /**
          * Zeichnet das Template und macht es "draggable"
          */
@@ -34,13 +33,7 @@ define(function (require) {
                 this.$el.show();
                 this.setGfiLeftPosition();
                 Radio.trigger("MapMarker", "showMarker", this.model.getCoordinate());
-                var mapMarkerModul,
-                config = Radio.request("Parser", "getPortalConfig");
-
-                if (config) {
-                    mapMarkerModul = config.mapMarkerModul;
-                }
-                if (mapMarkerModul  && mapMarkerModul.marker === "mapMarker") {
+                if (this.model.getZoomToFeature()) {
                     Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
                 }
             }

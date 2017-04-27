@@ -38,7 +38,9 @@ define(function (require) {
                 Radio.trigger("MMLFilter", "hideFilter");
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
-                Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                if (this.model.getZoomToFeature()) {
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                }
             }
             else {
                 Radio.trigger("SimpleLister", "renderContent");
