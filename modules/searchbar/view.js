@@ -324,7 +324,6 @@ define(function (require) {
                 // wenn in der hitlist ein Objekt mit object.name = suchstring gibt
                 else if (evt.currentTarget.className !== "list-group-item results" && _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
                   this.hitSelected(evt);
-                  // console.log(_.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}));
                 }
                 else {
                     this.model.set("typeList", _.uniq(_.pluck(this.model.get("hitList"), "type")));
