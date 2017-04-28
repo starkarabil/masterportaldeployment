@@ -317,11 +317,14 @@ define(function (require) {
                 template;
 
             // if (this.model.get("isHitListReady") === true) {
+                // erster und einziger Eintrag in Liste
                 if (evt.type !== "click" || this.model.get("hitList").length === 1) {
-                    this.hitSelected(evt); // erster und einziger Eintrag in Liste
+                    this.hitSelected(evt);
                 }
+                // wenn in der hitlist ein Objekt mit object.name = suchstring gibt
                 else if (evt.currentTarget.className !== "list-group-item results" && _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()})) {
                   this.hitSelected(evt);
+                  // console.log(_.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()}));
                 }
                 else {
                     this.model.set("typeList", _.uniq(_.pluck(this.model.get("hitList"), "type")));
@@ -345,47 +348,52 @@ define(function (require) {
         */
         hitSelected: function (evt) {
             var hit,
-                hitID;
+                hitID,
+                hitList = this.model.get("hitList");
 
             // Ermittle Hit
-            if (_.has(evt, "cid")) { // in diesem Fall ist evt = model
-              hit = _.values(_.pick(this.model.get("hitList"), "0"))[0];
-            }
-            else if (_.has(evt, "currentTarget") === true && evt.currentTarget.id && evt.type !== "keyup") {
-              hitID = evt.currentTarget.id;
-              hit = _.findWhere(this.model.get("hitList"), {id: hitID});
-            }
-            else if (this.model.get("pasted") === true && this.model.get("hitList").length > 1) { // Für Straßensuche direkt über paste
-              hit = _.findWhere(this.model.get("hitList"), {name: $("#searchInput").val()});
-            }
-            else if (_.isUndefined(evt) === false &&
-              (this.model.get("hitList")[0].name.toLowerCase() === evt.target.value ||
-              this.model.get("hitList")[0].name === evt.target.value)
-            ) { // wenn der erste Eintrag zu dem suchstring passt nicht case sensitive und über keyup event
-              hit = this.model.get("hitList")[0];
-            }
-            else if (evt.type === "click") { // bei direkter auswahl per click
-              hit = this.model.get("hitList")[0];
-            }
-            // 1. Schreibe Text in Searchbar
-            if (hit) {
-                this.setSearchbarString(hit.name);
-                // 2. Verberge Suchmenü
-                if (this.model.get("pasted") === false) {
-
-                    this.hideMenu();
+            if (hitList.length > 0) {
+                if (_.has(evt, "cid")) { // in diesem Fall ist evt = model
+                  hit = _.values(_.pick(hitList, "0"))[0];
                 }
-                // 3. Zoome ggf. auf Ergebnis
-                EventBus.trigger("mapHandler:zoomTo", hit);
-                // 4. Triggere Treffer über Eventbus
-                // Wird benötigt für IDA und sgv-online, ...
-                    EventBus.trigger("searchbar:hit", hit);
-                // 5. Beende Event
+                else if (_.has(evt, "currentTarget") === true && evt.currentTarget.id && evt.type !== "keyup") {
+                  hitID = evt.currentTarget.id;
+                  hit = _.findWhere(hitList, {id: hitID});
+                }
+                else if (this.model.get("pasted") === true && hitList.length > 1) { // Für Straßensuche direkt über paste
+                  hit = _.findWhere(hitList, {name: $("#searchInput").val()});
+                }
+                else if (_.isUndefined(evt) === false &&
+                  (hitList[0].name.toLowerCase() === evt.target.value ||
+                  hitList[0].name === evt.target.value)
+                ) { // wenn der erste Eintrag zu dem suchstring passt nicht case sensitive und über keyup event
+                  hit = hitList[0];
+                }
+                else if (evt.type === "click") { // bei direkter auswahl per click
+                  hit = hitList[0];
+                }
+                if (hit) {
+                    // 1. Schreibe Text in Searchbar
+                    this.setSearchbarString(hit.name);
+                    // 2. Verberge Suchmenü
+                    if (this.model.get("pasted") === false) {
+
+                        this.hideMenu();
+                    }
+                    // 3. Zoome ggf. auf Ergebnis
+                    EventBus.trigger("mapHandler:zoomTo", hit);
+                    // 4. Triggere Treffer über Eventbus
+                    // Wird benötigt für IDA und sgv-online, ...
+                        EventBus.trigger("searchbar:hit", hit);
+                    // 5. Beende Event
                     if (evt) {
                         evt.stopPropagation();
                     }
-                else {
-                    this.model.set("pasted", false);
+                    else {
+                        this.model.set("pasted", false);
+                    }
+                    // 6. Leere hitList
+                    this.model.set("hitList" , []);
                 }
             }
         },
