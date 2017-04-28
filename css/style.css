@@ -3104,6 +3104,7 @@ neben Filterfenster
   top: 16.5px;
   height: 24px;
   border: none;
+  font-size: 15px;
 }
 .lgv-container #searchForm-mmlMobil .btn-search > .glyphicon-search {
   font-size: 14px;
