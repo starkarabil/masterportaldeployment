@@ -5,7 +5,7 @@ define(function () {
     SimpleListerModel = Backbone.Model.extend({
         defaults: {
             // festgelegte Breite in Pixel = Bildbreite (320px) + padding (12px)
-            WIDTH: 332,
+            width: 332,
             // Ist das Modul sichtbar
             isVisible: false,
             featuresInExtent: [],
@@ -215,7 +215,7 @@ define(function () {
         },
 
         getWidth: function () {
-            return this.get("WIDTH");
+            return this.get("width");
         }
     });
 
