@@ -237,7 +237,9 @@ define(function (require) {
                 toDate,
                 regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/,
                 fromDateVal = $("#fromDate").val(),
-                toDateVal = $("#toDate").val();
+                toDateVal = $("#toDate").val(),
+                fromDateTimeZoneOffset = $("#fromDateDiv").datepicker("getDate").getTimezoneOffset(),
+                toDateTimeZoneOffset = $("#toDateDiv").datepicker("getDate").getTimezoneOffset();
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -267,7 +269,9 @@ define(function (require) {
                     }
                     // retrieve dates vom datepicker
                     fromDate = $("#fromDateDiv").datepicker("getDate");
+                    fromDate.setMinutes(fromDate.getMinutes() - fromDateTimeZoneOffset);
                     toDate = $("#toDateDiv").datepicker("getDate");
+                    toDate.setMinutes(toDate.getMinutes() - toDateTimeZoneOffset);
                 }
 
                 this.model.setSelectedKat(selectedKat);

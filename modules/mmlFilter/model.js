@@ -99,18 +99,17 @@ define(function (require) {
             this.setSelFeatures(filteredFeatures);
         },
         filterByDate: function () {
-            var fromDate = this.getFromDate().getTime(),
-                toDate = this.getToDate().getTime(),
+            var fromDate = this.getFromDate(),
+                toDate = this.getToDate(),
                 features = this.getSelFeatures(),
                 filteredFeatures = [];
 
-                _.each(features, function (feature) {
-                    var datum = new Date(feature.datum).getTime();
-
-                    if ((datum >= fromDate && datum <= toDate)) {
-                        filteredFeatures.push(feature);
-                    }
-                });
+            _.each(features, function (feature) {
+                var datum = new Date(feature.datum);
+                if ((datum >= fromDate && datum <= toDate)) {
+                    filteredFeatures.push(feature);
+                }
+            });
             this.setSelFeatures(filteredFeatures);
         },
         showFilteredFeatures: function () {
