@@ -178,22 +178,11 @@ define(function (require) {
                 fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
                 toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
 
-                if (fromDate.getTime() <= toDate.getTime()) {
-                    $("#fromDate").css({border: ""});
-                    $("#toDate").css({border: ""});
-                    $("#toDate").next().remove();
-                    this.model.setSelectedKat(selectedKat);
-                    this.model.setSelectedStatus(selectedStatus);
-                    this.model.setFromDate(fromDate);
-                    this.model.setToDate(toDate);
-                    this.model.executeFilter(false);
-                }
-                else {
-                    $("#toDate").next().remove();
-                    $("#fromDate").css({border: "1px solid #a94442"});
-                    $("#toDate").css({border: "1px solid #a94442"});
-                    $("#toDate").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
-                }
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter(false);
             }
             else {
                 this.model.setSelectedKat(selectedKat);

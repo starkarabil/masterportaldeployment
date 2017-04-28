@@ -259,22 +259,12 @@ define(function (require) {
                     fromDate = $("#fromDateDiv").datepicker("getDate");
                     toDate = $("#toDateDiv").datepicker("getDate");
                 }
-                if (fromDate && toDate && fromDate.getTime() <= toDate.getTime()) {
-                    $("#fromDateDiv").removeClass("has-error");
-                    $("#toDateDiv").removeClass("has-error");
-                    $("#toDateDiv").next().remove();
-                    this.model.setSelectedKat(selectedKat);
-                    this.model.setSelectedStatus(selectedStatus);
-                    this.model.setFromDate(fromDate);
-                    this.model.setToDate(toDate);
-                    this.model.executeFilter(false);
-                }
-                else {
-                    $("#toDateDiv").next().remove();
-                    $("#fromDateDiv").addClass("has-error");
-                    $("#toDateDiv").addClass("has-error");
-                    $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
-                }
+
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter(false);
             }
             else {
                 this.model.setSelectedKat(selectedKat);
