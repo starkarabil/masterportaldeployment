@@ -55,13 +55,19 @@ define([
         },
 
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                config = Radio.request("Parser", "getPortalConfig");
 
             if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.geolocationIcon) {
+                this.$el.html(this.template(attr));
+                $(".orientationButtons").remove();
                 this.model.setOrientationMarkerIcon();
             }
             else {
                 this.$el.html(this.template(attr));
+            }
+            if (Radio.request("Util", "isViewMobile") && config.controls.orientation.initial === true) {
+                this.getOrientation();
             }
         },
 
