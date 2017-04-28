@@ -24,7 +24,9 @@ define(function (require) {
             },
             "touchmove #mmlZeitraum": function (evt) {
                 evt.stopPropagation();
-            }
+            },
+            "change #fromDate": "fromDateChanged",
+            "change #toDate": "toDateChanged"
         },
 
         initialize: function () {
@@ -44,6 +46,18 @@ define(function (require) {
                 backdrop: "static",
                 show: isVisible
             });
+        },
+
+        fromDateChanged: function (evt) {
+            var fromDate = evt.target.value;
+
+            $("#toDate").attr("min", fromDate);
+        },
+
+        toDateChanged: function (evt) {
+            var toDate = evt.target.value;
+
+            $("#fromDate").attr("max", toDate);
         },
 
         /**

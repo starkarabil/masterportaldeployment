@@ -13,7 +13,9 @@ define(function (require) {
             toDate: "",
             features: [],
             selFeatures: [],
-            layerID: ""
+            layerID: "",
+            maxDate: new Date(),
+            minDate: ""
         },
         initialize: function () {
             var mmlFilterConfig = Radio.request("Parser", "getPortalConfig").mmlFilter,
@@ -21,6 +23,7 @@ define(function (require) {
                 channel = Radio.channel("MMLFilter");
 
             this.setLayerId(layerId);
+            this.setMinDate();
             channel.on({
                 "featuresLoaded": this.prepareFeatures,
                 "toggleFilter": this.toggleMMLFilter,
@@ -181,6 +184,21 @@ define(function (require) {
 
         getIsVisible: function () {
             return this.get("isVisible");
+        },
+
+        getMaxDate: function () {
+            return this.get("maxDate");
+        },
+
+        setMinDate: function () {
+            var d = new Date();
+
+            d.setDate(d.getDate() - 90);
+            this.set("minDate", d);
+        },
+
+        getMinDate: function () {
+            return this.get("minDate");
         }
     });
 

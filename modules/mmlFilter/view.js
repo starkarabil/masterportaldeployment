@@ -54,7 +54,10 @@ define(function (require) {
                 onSelect: function (dateTxt) {
                     $("#fromDateDiv .ui-datepicker").hide();
                     $("#fromDate").val(dateTxt);
+                    $("#toDateDiv").datepicker("option", "minDate", $("#fromDateDiv").datepicker("getDate"));
                 },
+                minDate: this.model.getMinDate(),
+                maxDate: this.model.getMaxDate(),
                 dateFormat: "dd.mm.yy",
                 dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                 dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
@@ -66,7 +69,10 @@ define(function (require) {
                 onSelect: function (dateTxt) {
                     $("#toDateDiv .ui-datepicker").hide();
                     $("#toDate").val(dateTxt);
+                    $("#fromDateDiv").datepicker("option", "maxDate", $("#toDateDiv").datepicker("getDate"));
                 },
+                minDate: this.model.getMinDate(),
+                maxDate: this.model.getMaxDate(),
                 dateFormat: "dd.mm.yy",
                 dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                 dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],

@@ -83,11 +83,11 @@
                 <input id="userdefined" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="userdefined">Zeitraum wählen<br>
                 <div class="row" style="display:none;">
                     <span class="mmlFilter-datetype-span">Von</span>
-                    <input id="fromDate" class="mmlFilter-datetype" type="date" name="from" placeholder="Datum TT.MM.JJJJ">
+                    <input id="fromDate" class="mmlFilter-datetype" type="date" name="from" placeholder="Datum TT.MM.JJJJ" min="<%= minDate.toISOString().split('T')[0] %>" max="<%= maxDate.toISOString().split('T')[0] %>">
                 </div>
                 <div class="row" style="display:none;">
                     <span class="mmlFilter-datetype-span">Bis</span>
-                    <input id="toDate" class="mmlFilter-datetype" type="date" name="bis" placeholder="Datum TT.MM.JJJJ">
+                    <input id="toDate" class="mmlFilter-datetype" type="date" name="bis" placeholder="Datum TT.MM.JJJJ" min="<%= minDate.toISOString().split('T')[0] %>" max="<%= maxDate.toISOString().split('T')[0] %>">
                 </div>
             </div>
         </div>
