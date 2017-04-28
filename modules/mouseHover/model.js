@@ -538,8 +538,10 @@ define(function (require) {
                             });
 
                             if (isClusterFeature) {
-                                hoverHeader = "Mehrere Features";
-                                hoverText = "Klick zum Zoomen";
+                                var layerModel = Radio.request("ModelList", "getModelByAttributes", {id: element.layerId});
+
+                                hoverHeader = layerModel.getMouseHoverField().clusterHeader;
+                                hoverText = layerModel.getMouseHoverField().clusterText;
                             }
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";

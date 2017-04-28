@@ -286,6 +286,15 @@ define(function (require) {
                     width: 1
                 })
             });
+        },
+
+        /**
+         * Getter für das Attribut "mouseHoverField"
+         * @return {Object} - Enthält die Attribute die beim Hovern angzeigt werden
+         * (header, text, clusterHeader und clusterText)
+         */
+        getMouseHoverField: function () {
+            return this.get("mouseHoverField");
         }
     });
 
