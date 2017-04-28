@@ -64,7 +64,7 @@
     }
     .description{
         color: #333;
-        font-family: "HamburgSans";
+        font-family: "HamburgSans-Regular";
         font-size: 15px;
         line-height: 1.67;
         letter-spacing: -0.4px;
@@ -92,9 +92,7 @@ Knopf zum Nachladen
 #div-simpleLister-extentList-text {
   font-size: 14px;
   line-height: 3.3;
-  font-family: HamburgSans;
-  font-weight: normal;
-  font-style: normal;
+  font-family: HamburgSans-Regular;
   font-stretch: normal;
   letter-spacing: -0.4px;
 }
