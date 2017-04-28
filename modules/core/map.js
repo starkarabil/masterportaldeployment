@@ -507,12 +507,13 @@ define(function (require) {
           * http://openlayers.org/en/latest/apidoc/ol.Map.html#updateSize
           */
          updateSize: function () {
-            var isMobile = Radio.request("Util", "isViewMobile");
+            var isMobile = Radio.request("Util", "isViewMobile"),
+                width = $(".lgv-container").width(),
+                height = $(".lgv-container").height();
+
             if (isMobile) {
                 // OpenLayers interne Neuberechnung des Viewports
-                var width = $(".lgv-container").width(),
-                    height = $(".lgv-container").height();
-                $(this.getMap().getTargetElement()).height(height- 55);
+                $(this.getMap().getTargetElement()).height(height - 55);
                 $(this.getMap().getTargetElement()).width(width);
                 this.getMap().updateSize();
             }
