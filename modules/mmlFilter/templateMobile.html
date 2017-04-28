@@ -81,6 +81,7 @@
                 <input id="7days" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="7days">Die letzten 7 Tage<br>
                 <input id="30days" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="30days">Die letzten 30 Tage<br>
                 <input id="userdefined" class="input-mmlFilter-filter-time-mobile margin-topright" type="radio" name="zeitraum" value="userdefined">Zeitraum wählen<br>
+                <h5 style="display:none;">90 Tage nach Bearbeitungsende werden die Meldungen gelöscht.</h5>
                 <div class="row" style="display:none;">
                     <span class="mmlFilter-datetype-span">Von</span>
                     <input id="fromDate" class="mmlFilter-datetype" type="date" name="from" placeholder="Datum TT.MM.JJJJ" min="<%= minDate.toISOString().split('T')[0] %>" max="<%= maxDate.toISOString().split('T')[0] %>">

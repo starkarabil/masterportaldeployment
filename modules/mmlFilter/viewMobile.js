@@ -125,6 +125,14 @@ define(function (require) {
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
+            $(evt.target).parent().find("h5").each(function (index, row) {
+                if (isUserdefined) {
+                    $(row).show();
+                }
+                else {
+                    $(row).hide();
+                }
+            });
             $(evt.target).parent().find(".row").each(function (index, row) {
                 if (isUserdefined) {
                     $(row).show();

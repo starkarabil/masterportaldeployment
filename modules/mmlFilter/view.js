@@ -163,6 +163,16 @@ define(function (require) {
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
             if (timeModeId !== "") {
+                if (isUserdefined) {
+                    $(evt.target).parent().find("h5").each(function (index, row) {
+                        if (isUserdefined) {
+                            $(row).show();
+                        }
+                        else {
+                            $(row).hide();
+                        }
+                    });
+                }
                 $(evt.target).parent().find(".rowDate").each(function (index, row) {
                     if (isUserdefined) {
                         $(row).show();
