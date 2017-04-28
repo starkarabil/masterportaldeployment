@@ -3565,20 +3565,16 @@ neben Filterfenster
   opacity: 1 !important;
 }
 .lgv-container .mouseHoverTitle {
-  font-family: HamburgSans;
+  font-family: HamburgSans-Bold;
   font-size: 14px;
-  font-weight: bold;
-  font-style: normal;
   font-stretch: normal;
   line-height: 1.61;
   letter-spacing: -0.4px;
   color: #005ca9;
 }
 .lgv-container .mouseHoverText {
-  font-family: HamburgSans;
+  font-family: HamburgSans-Regular;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   line-height: 2.14;
   letter-spacing: -0.4px;
@@ -4396,7 +4392,7 @@ neben Filterfenster
 }
 .lgv-container .simple-lister-table .table .description {
   color: #333;
-  font-family: "HamburgSans";
+  font-family: "HamburgSans-Regular";
   font-size: 15px;
   line-height: 1.67;
   letter-spacing: -0.4px;
@@ -4416,9 +4412,7 @@ neben Filterfenster
 .lgv-container #div-simpleLister-extentList-text {
   font-size: 14px;
   line-height: 3.3;
-  font-family: HamburgSans;
-  font-weight: normal;
-  font-style: normal;
+  font-family: HamburgSans-Regular;
   font-stretch: normal;
   letter-spacing: -0.4px;
 }
@@ -4874,7 +4868,6 @@ neben Filterfenster
   color: white;
   font-family: "HamburgSans-Bold";
   font-size: 15px;
-  font-weight: bold;
   text-align: center;
   line-height: 40px;
   letter-spacing: -0.4px;
@@ -4929,10 +4922,8 @@ neben Filterfenster
   position: relative;
   top: 29px;
   text-align: center;
-  font-family: HamburgSans;
+  font-family: HamburgSans-Bold;
   font-size: 19px;
-  font-weight: bold;
-  font-style: normal;
   font-stretch: normal;
   line-height: 1.42;
   letter-spacing: -0.5px;
@@ -4941,10 +4932,8 @@ neben Filterfenster
 .lgv-container .mmlWelcomeScreen-text {
   position: relative;
   padding: 40px 28px;
-  font-family: HamburgSans;
+  font-family: HamburgSans-Regular;
   font-size: 17px;
-  font-weight: normal;
-  font-style: normal;
   font-stretch: normal;
   line-height: 1.32;
   letter-spacing: -0.5px;
@@ -4979,10 +4968,8 @@ neben Filterfenster
 }
 .lgv-container .mmlWelcomeScreen-ButtonText {
   margin-left: 10px;
-  font-family: HamburgSans;
+  font-family: HamburgSans-Bold;
   font-size: 15px;
-  font-weight: bold;
-  font-style: normal;
   font-stretch: normal;
   line-height: 1.6;
   letter-spacing: -0.4px;
