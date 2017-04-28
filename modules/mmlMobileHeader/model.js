@@ -39,7 +39,16 @@ HeaderMobile = Backbone.Model.extend({
     // setter for title
     setTitle: function (value) {
         this.set("title", value);
+    },
+
+    // getter for arrowTargetUrl
+    getArrowTargetUrl: function () {
+        return this.arrowTargetUrl;
+    },
+    // setter for arrowTargetUrl
+    setArrowTargetUrl: function (value) {
+        this.arrowTargetUrl = value;
     }
  });
- return new HeaderMobile();
+ return HeaderMobile;
 });
