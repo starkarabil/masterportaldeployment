@@ -26,11 +26,18 @@ define(function (require) {
             // Index für das aktuelle Theme
             themeIndex: 0,
             // Anzahl der Themes
-            numberOfThemes: 0
+            numberOfThemes: 0,
+            // zoom to feature on gfi
+            zoomToFeature: false
         },
         initialize: function () {
-            var channel = Radio.channel("GFI");
+            var channel = Radio.channel("GFI"),
+                config = Radio.request("Parser", "getPortalConfig"),
+                menu = config ? config.menu : null,
+                gfi = menu ? menu.gfi : null,
+                zoomToFeature = (gfi && gfi.zoomToFeature) === true ? gfi.zoomToFeature : false;
 
+            this.setZoomToFeature(zoomToFeature);
             channel.on({
                 "setIsVisible": this.setIsVisible,
                 "createGFIFromSimpleLister": this.createGFIFromSimpleLister
@@ -386,6 +393,15 @@ define(function (require) {
             this.setThemeIndex(0);
             this.getThemeList().reset(gfiParams);
             gfiParams = [];
+        },
+
+        // getter for zoomToFeature
+        getZoomToFeature: function () {
+            return this.get("zoomToFeature");
+        },
+        // setter for zoomToFeature
+        setZoomToFeature: function (value) {
+            this.set("zoomToFeature", value);
         }
 
     });

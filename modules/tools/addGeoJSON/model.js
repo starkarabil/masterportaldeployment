@@ -45,7 +45,6 @@ define(function (require) {
                         model = Radio.request("ModelList", "getModelByAttributes", {id: this.getLayerId()});
                         layer = model ? model.get("layer") : null;
                         source = layer ? layer.getSource() : null;
-
                         if (source) {
                             if (source instanceof ol.source.Cluster) {
                                 source = source.getSource();
