@@ -15,9 +15,11 @@ define(function (require) {
             });
 
             this.render();
-            this.$el.find(".top-picture")[0].addEventListener("load", function () {
-                $(this).width(this.naturalWidth);
-            });
+            if (Radio.request("Util", "isViewMobile") === false) {
+                this.$el.find(".top-picture")[0].addEventListener("load", function () {
+                    $(this).width(this.naturalWidth);
+                });
+            }
         },
         // getter for model
         getModel: function () {
