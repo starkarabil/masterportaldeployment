@@ -52,6 +52,7 @@ define(function (require) {
                 "setBBox": this.setBBox,
                 "render": this.render,
                 "updateSize": this.updateSize,
+                "olUpdateSize": this.olUpdateSize,
                 "zoomToExtent": this.zoomToExtent,
                 "updatePrintPage": this.updatePrintPage,
                 "createVectorLayer": this.createVectorLayer,
@@ -502,14 +503,24 @@ define(function (require) {
          },
 
          /**
-          * Berechnet den Viewport der Karte neu.
+          * Update der Kartengröße
           * http://openlayers.org/en/latest/apidoc/ol.Map.html#updateSize
           */
          updateSize: function () {
-             var width = $(".ol-viewport").width(),
-                height = $(".ol-viewport").height();
+            var isMobile = Radio.request("Util", "isViewMobile"),
+                width = $(".lgv-container").width(),
+                height = $(".lgv-container").height();
 
-            this.getMap().setSize([width,height]);
+            if (isMobile) {
+                // OpenLayers interne Neuberechnung des Viewports
+                $(this.getMap().getTargetElement()).height(height - 55);
+                $(this.getMap().getTargetElement()).width(width);
+                this.getMap().updateSize();
+            }
+            else {
+                // Nur Canvas an Viewport anpassen.
+                this.updateCanvasSize();
+            }
             // listener auf "change:size" wird nur einmal registriert, da wir sonst beim Setzen der Size in eine Endlosschleife laufen.
             // Leider müssen wir jetzt jedes mal einmalig auf das event hören.
             // Falls es in Zukunft in ol die Möglichkeit gibt setSize() silent aufzurufen, kann der ListenerOnce umgebaut werden.
@@ -517,7 +528,12 @@ define(function (require) {
                 this.updateSize();
             }, this);
         },
+        updateCanvasSize: function () {
+            var width = $(".ol-viewport").width(),
+                height = $(".ol-viewport").height();
 
+            this.getMap().setSize([width,height]);
+        },
         /**
          * Der ol-overlaycontainer-stopevent Container stoppt nicht jedes Event.
          * Unter anderem das Mousemove Event. Das übernimmt diese Methode.
