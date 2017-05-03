@@ -451,7 +451,7 @@ var features = {
     };
 /*
 In diesem Objekt wird konfiguriert, welche Felder der Vektoren für das Popover verwendet werden.
-Dabei wird zwischen der Überschrift und dem Text unterschieden.
+Dabei wird zwischen der Überschrift und dem Text, sowie der Überschrift und dem Text für geclusterte Features unterschieden.
 Diese Einstellung gilt nur für die Übergebene Layer.
 */
 var mouseHoverField = {
