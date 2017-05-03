@@ -409,6 +409,7 @@ Hilfsklassen
 }
 .datepicker {
     height: 30px;
+    background-color: white !important;
 }
 .ui-datepicker-inline {
     width: 270px;

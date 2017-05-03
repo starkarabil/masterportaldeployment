@@ -24,7 +24,9 @@ define(function (require) {
             },
             "touchmove #mmlZeitraum": function (evt) {
                 evt.stopPropagation();
-            }
+            },
+            "change #fromDate": "fromDateChanged",
+            "change #toDate": "toDateChanged"
         },
 
         initialize: function () {
@@ -44,6 +46,18 @@ define(function (require) {
                 backdrop: "static",
                 show: isVisible
             });
+        },
+
+        fromDateChanged: function (evt) {
+            var fromDate = evt.target.value;
+
+            $("#toDate").attr("min", fromDate);
+        },
+
+        toDateChanged: function (evt) {
+            var toDate = evt.target.value;
+
+            $("#fromDate").attr("max", toDate);
         },
 
         /**
@@ -111,6 +125,14 @@ define(function (require) {
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
+            $(evt.target).parent().find("h5").each(function (index, row) {
+                if (isUserdefined) {
+                    $(row).show();
+                }
+                else {
+                    $(row).hide();
+                }
+            });
             $(evt.target).parent().find(".row").each(function (index, row) {
                 if (isUserdefined) {
                     $(row).show();
@@ -164,22 +186,11 @@ define(function (require) {
                 fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
                 toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
 
-                if (fromDate.getTime() <= toDate.getTime()) {
-                    $("#fromDate").css({border: ""});
-                    $("#toDate").css({border: ""});
-                    $("#toDate").next().remove();
-                    this.model.setSelectedKat(selectedKat);
-                    this.model.setSelectedStatus(selectedStatus);
-                    this.model.setFromDate(fromDate);
-                    this.model.setToDate(toDate);
-                    this.model.executeFilter(false);
-                }
-                else {
-                    $("#toDate").next().remove();
-                    $("#fromDate").css({border: "1px solid #a94442"});
-                    $("#toDate").css({border: "1px solid #a94442"});
-                    $("#toDate").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
-                }
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter(false);
             }
             else {
                 this.model.setSelectedKat(selectedKat);

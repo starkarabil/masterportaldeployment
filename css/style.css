@@ -4779,6 +4779,7 @@ neben Filterfenster
 }
 .lgv-container .datepicker {
   height: 30px;
+  background-color: white !important;
 }
 .lgv-container .ui-datepicker-inline {
   width: 270px;
