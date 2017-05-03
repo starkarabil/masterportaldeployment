@@ -402,7 +402,7 @@ Fügt GeoJSON-Features der Karte als Vektorlayer hinzu. Die Features müssen ein
 |----|---|------------|
 |value|FeatureCollection|FeatureCollection aller Vektorfeatures|
 |name|String|Vektorlayername|
-|mouseHoverField|Object|Definiert welche Felder übergebenen Vektoren für das Popover verwendet werden sollen. Dabei wird zwischen Header (Überschrift) und Text (Inhalt) unterschieden. Siehe Beispiel.
+|mouseHoverField|Object|Definiert welche Felder übergebenen Vektoren für das Popover verwendet werden sollen. Dabei wird zwischen Header (Überschrift) und Text (Inhalt), ClusterHeader(Überschrift bei geclusterten Features) und ClusterText (Inhalt bei geclusterten Features) unterschieden. Siehe Beispiel.
 
 **Beispiel-Aufruf**
 ```
@@ -457,7 +457,9 @@ Diese Einstellung gilt nur für die Übergebene Layer.
 var mouseHoverField = {
         mouseHoverField: {
             "header": ["str", "hsnr"],
-            "text": ["kat_text"]
+            "text": ["kat_text"],
+            "clusterHeader": "Mehrere Anliegen",
+            "clusterText": "Bitte reinzoomen um geclusterte Features einzeln zu sehen"
         }
     };
 
