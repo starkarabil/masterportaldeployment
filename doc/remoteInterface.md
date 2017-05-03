@@ -394,7 +394,7 @@ Radio.trigger("RemoteInterface", "hideDragMarker");
 ## Features aus JSON hinzufügen
 *(addFeatures)*
 
-Fügt GeoJSON-Features der Karte als Vektorlayer hinzu.
+Fügt GeoJSON-Features der Karte als Vektorlayer hinzu. Die Features müssen ein Attribut "mmlid" haben. Über dies wird das Styling beim GFI (GetFeatureInfo) geregelt.
 
 **Parameter**
 
@@ -427,6 +427,7 @@ var features = {
                 },
                 "properties": {
                     "OBJECTID": 6009,
+                    "mmlid": "1000",
                     "name": "Feature 1",
                     "str": "Straße",
                     "hsnr": "1",
@@ -440,6 +441,7 @@ var features = {
                 },
                 "properties": {
                     "OBJECTID": 6010,
+                    "mmlid": "1001",
                     "name": "Feature 2",
                     "str": "Straße",
                     "hsnr": "1",
