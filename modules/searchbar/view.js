@@ -391,7 +391,7 @@ define(function (require) {
                         this.model.set("pasted", false);
                     }
                     // 6. Leere hitList
-                    this.model.set("hitList" , []);
+                    this.model.set("hitList" , [hit]);
                 }
             }
         },
