@@ -90,6 +90,7 @@ define(function (require) {
          */
         hide: function () {
             this.model.setIsVisible(false);
+            Radio.trigger("MouseHover", "styleDeselGFI");
         }
     });
 
