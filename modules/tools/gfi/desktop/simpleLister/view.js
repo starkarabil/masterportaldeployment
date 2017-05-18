@@ -39,7 +39,7 @@ define(function (require) {
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
                 if (this.model.getZoomToFeature()) {
-                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate(), 8);
                 }
             }
             else {
