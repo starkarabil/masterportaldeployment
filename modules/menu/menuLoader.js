@@ -1,9 +1,8 @@
 define(function (require) {
-    require("bootstrap/dropdown");
-    require("bootstrap/transition");
-    require("bootstrap/collapse");
+    require("bootstrap");
 
-    var MenuTemplate = require("text!modules/menu/template.html"),
+    var $ = require("jquery"),
+        MenuTemplate = require("text!modules/menu/template.html"),
         MenuLoader;
 
     MenuLoader = function () {

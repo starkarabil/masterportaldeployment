@@ -1,9 +1,10 @@
 define([
+    "jquery",
     "backbone.radio",
     "text!modules/controls/orientation/template.html",
     "modules/controls/orientation/model"
 
-], function (Radio, OrientationTemplate, OrientationModel) {
+], function ($, Radio, OrientationTemplate, OrientationModel) {
     "use strict";
     var OrientationView = Backbone.View.extend({
         className: "row",
@@ -14,7 +15,9 @@ define([
             "click .orientationButtons > .glyphicon-record": "getPOI"
         },
         initialize: function () {
-            var showGeolocation = true;
+            var showGeolocation = true,
+                channel,
+                config = Radio.request("Parser", "getPortalConfig");
 
             if (window.location.protocol === "http:") {
                 showGeolocation = false;
@@ -23,7 +26,7 @@ define([
             // Deshalb nehmen wir bei Chrome die Lokalisierung raus, da unsere Portale auf http laufen und die Dienste auch.
             if (showGeolocation) {// wenn es nicht Chrome UND http ist, Lokalisierung und InMeinerNähe initialisieren
 
-                var channel = Radio.channel("Orientation");
+                channel = Radio.channel("Orientation");
 
                 channel.on({
                     "getOrientation": this.getOrientation,
@@ -50,6 +53,9 @@ define([
                         new POIView();
                     });
                 }
+                if (Radio.request("Util", "isViewMobile") && config.controls.orientation.initial === true) {
+                    this.getOrientation();
+                }
             }
         },
 
@@ -57,6 +63,8 @@ define([
             var attr = this.model.toJSON();
 
             if (Radio.request("Parser", "getItemByAttributes", {id: "orientation"}).attr.geolocationIcon) {
+                this.$el.html(this.template(attr));
+                $(".orientationButtons").remove();
                 this.model.setOrientationMarkerIcon();
             }
             else {

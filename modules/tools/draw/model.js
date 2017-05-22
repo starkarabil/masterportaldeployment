@@ -1,11 +1,10 @@
 define([
-        "openlayers",
-    "eventbus",
-
+    "openlayers",
+    "eventbus"
 ], function () {
-    var         ol = require("openlayers"),
+    var $ = require("jquery"),
+        ol = require("openlayers"),
         EventBus = require("eventbus"),
-
         DrawTool;
 
     DrawTool = Backbone.Model.extend({

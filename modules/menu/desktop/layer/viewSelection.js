@@ -1,12 +1,11 @@
 define([
-        "text!modules/menu/desktop/layer/templateSelection.html",
+    "text!modules/menu/desktop/layer/templateSelection.html",
     "text!modules/menu/desktop/layer/templateSettings.html",
-
 ], function () {
 
-    var         Template = require("text!modules/menu/desktop/layer/templateSelection.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/menu/desktop/layer/templateSelection.html"),
         TemplateSettings = require("text!modules/menu/desktop/layer/templateSettings.html"),
-
         LayerView;
 
     LayerView = Backbone.View.extend({

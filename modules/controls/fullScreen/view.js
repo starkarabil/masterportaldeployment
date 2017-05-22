@@ -1,12 +1,13 @@
 define(function (require) {
 
-    var FullScreenView,
+    var $ = require("jquery"),
         Config = require("config"),
-        Radio = require("backbone.radio");
+        Radio = require("backbone.radio"),
+        FullScreenView;
 
     FullScreenView = Backbone.View.extend({
         className: "row",
-        template: _.template("<div class='full-screen-button col-md-1 hidden-xs' title='Vollbild aktivieren'><span class='glyphicon glyphicon-fullscreen'></span></div>"),
+        template: _.template("<div class='full-screen-button col-md-1 hidden-xs' title='Vollbild aktivieren'><span class='glyphicon glyphicon-resize-full'></span></div>"),
         events: {
             "click .full-screen-button": "toggleFullScreen"
         },
@@ -23,14 +24,14 @@ define(function (require) {
             this.$el.html(this.template);
             if (_.isUndefined(config.controls) === false && _.isUndefined(config.controls.style) === false) {
                 $("#fullScreen").addClass(config.controls.style + "FullScreen");
-                $(".glyphicon.glyphicon-fullscreen").addClass(config.controls.style);
+                $(".glyphicon.glyphicon-resize-full").addClass(config.controls.style);
             }
         },
         makeContainerModal: function (container) {
             var glyphicon = this.$el.find(".glyphicon");
 
-            glyphicon.removeClass("glyphicon-fullscreen");
-            glyphicon.addClass("glyphicon-remove");
+            glyphicon.removeClass("glyphicon-resize-full");
+            glyphicon.addClass("glyphicon-resize-small");
 
             this.prevDimensions.height = container.prop("style").height;
             this.prevDimensions.width = container.prop("style").width;
@@ -45,8 +46,8 @@ define(function (require) {
         reEmbedContainer: function (container) {
             var glyphicon = this.$el.find(".glyphicon");
 
-            glyphicon.addClass("glyphicon-fullscreen");
-            glyphicon.removeClass("glyphicon-remove");
+            glyphicon.addClass("glyphicon-resize-full");
+            glyphicon.removeClass("glyphicon-resize-small");
 
             container.removeClass("is-modal");
             container.css("height", this.prevDimensions.height);

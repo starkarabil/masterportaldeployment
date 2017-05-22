@@ -1,10 +1,10 @@
 define([
-
+    "jquery",
     "eventbus",
     "config",
     "openlayers",
     "modules/cookie/view"
-], function (EventBus, Config, ol, cookie) {
+], function ($, EventBus, Config, ol, cookie) {
     "use strict";
     var GrenznachweisModel = Backbone.Model.extend({
         defaults: {

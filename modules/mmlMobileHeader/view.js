@@ -1,11 +1,14 @@
 define(function (require) {
 
     var Radio = require("backbone.radio"),
+        $ = require("jquery"),
         Config = require("config"),
+        Model = require("modules/mmlMobileHeader/model"),
         HeaderView;
 
      HeaderView = Backbone.View.extend({
         className: "mobileHeader",
+        model: new Model(),
         events: {
             "click div.filter": function () {
                 Radio.trigger("MMLFilter", "toggleFilter");
@@ -30,19 +33,13 @@ define(function (require) {
             $(".lgv-container").prepend(this.el);
         },
         setParams: function () {
-            if (Config.mmlMobileHeader.url) {
-                this.setUrl(Config.mmlMobileHeader.url);
+            if (Config && Config.mmlMobileHeader && Config.mmlMobileHeader.url) {
+                this.model.setArrowTargetUrl(Config.mmlMobileHeader.url);
             }
         },
         mobileBackBtnClicked: function () {
             Radio.trigger("MmlMobileHeader", "mobileBackButtonClicked");
-            window.open(this.getUrl(), "_self");
-        },
-        setUrl: function (value) {
-            this.url = value;
-        },
-        getUrl: function () {
-            return this.url;
+            window.open(this.model.getArrowTargetUrl(), "_self");
         }
     });
 

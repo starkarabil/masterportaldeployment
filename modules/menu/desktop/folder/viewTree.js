@@ -1,9 +1,9 @@
 define([
-
+    "jquery",
     "text!modules/menu/desktop/folder/templateTree.html"
 ], function () {
 
-    var
+    var $ = require("jquery"),
         FolderTemplate = require("text!modules/menu/desktop/folder/templateTree.html"),
         FolderView;
 

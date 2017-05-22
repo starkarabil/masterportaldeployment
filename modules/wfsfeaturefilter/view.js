@@ -1,7 +1,8 @@
 define([
-        "text!modules/wfsfeaturefilter/template.html",
+    "jquery",
+    "text!modules/wfsfeaturefilter/template.html",
     "modules/wfsfeaturefilter/model"
-], function (wfsFeatureFilterTemplate, wfsFeatureFilter) {
+], function ($, wfsFeatureFilterTemplate, wfsFeatureFilter) {
     "use strict";
     var wfsFeatureFilterView = Backbone.View.extend({
         model: wfsFeatureFilter,

@@ -1,9 +1,10 @@
 define([
+    "jquery",
     "backbone.radio",
     "openlayers",
     "proj4",
     "config"
-], function (Radio, ol, proj4, Config) {
+], function ($, Radio, ol, proj4, Config) {
 
     var OrientationModel = Backbone.Model.extend({
         defaults: {
@@ -88,9 +89,6 @@ define([
                     geolocation = this.get("geolocation");
                     this.positioning();
                 }
-                if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
-                    this.set("firstGeolocation", true);
-                }
             }
             else {
                 this.onError();
@@ -131,7 +129,8 @@ define([
                 position = geolocation.getPosition(),
                 firstGeolocation = this.get("firstGeolocation"),
                 zoomMode = this.get("zoomMode"),
-                centerPosition = proj4(proj4("EPSG:4326"), proj4(Config.view.epsg), position);
+                centerPosition = proj4(proj4("EPSG:4326"), proj4(Config.view.epsg), position),
+                config = Radio.request("Parser", "getPortalConfig");
 
             // speichere Position
             this.set("position", centerPosition);
@@ -150,6 +149,9 @@ define([
             else {
                 this.positionMarker(centerPosition);
                 this.zoomAndCenter(centerPosition);
+            }
+            if (config.controls.orientation === "once" || (_.isUndefined(config.controls.orientation.zoomMode) === false && config.controls.orientation.zoomMode === "once")) {
+                this.set("firstGeolocation", true);
             }
         },
         onError: function () {
@@ -196,14 +198,13 @@ define([
         getPOI: function (distance) {
             var geolocation = this.get("geolocation"),
                 position = geolocation.getPosition(),
-                centerPosition = proj4(proj4("EPSG:4326"), proj4(Config.view.epsg), position);
+                centerPosition = proj4(proj4("EPSG:4326"), proj4(Config.view.epsg), position),
+                circle = new ol.geom.Circle(centerPosition, this.get("distance")),
+                circleExtent = circle.getExtent();
 
             this.positionMarker(centerPosition);
             this.set("distance", distance);
             this.set("newCenter", centerPosition);
-            var circle = new ol.geom.Circle(centerPosition, this.get("distance")),
-                circleExtent = circle.getExtent();
-
             this.set("circleExtent", circleExtent);
             this.getPOIParams();
         },

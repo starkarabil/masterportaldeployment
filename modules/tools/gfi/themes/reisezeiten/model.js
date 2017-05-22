@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Theme = require("modules/tools/gfi/themes/model"),
+    var $ = require("jquery"),
+        Theme = require("modules/tools/gfi/themes/model"),
         Radio = require("backbone.radio"),
         ol = require("openlayers"),
         ReisezeitenTheme;

@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Radio = require("backbone.radio"),
+    var $ = require("jquery"),
+        Radio = require("backbone.radio"),
         Template = require("text!modules/controls/mmlFilterButton/template.html"),
         MmlFilterButton;
 

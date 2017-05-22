@@ -1,10 +1,10 @@
 define(function (require) {
-    require("bootstrap/transition");
-    require("bootstrap/collapse");
+    require("bootstrap");
     require("jqueryui/widgets/datepicker");
 
     var Template = require("text!modules/mmlFilter/template.html"),
         Radio = require("backbone.radio"),
+        $ = require("jquery"),
         MMLFilterView;
 
     MMLFilterView = Backbone.View.extend({
@@ -54,7 +54,10 @@ define(function (require) {
                 onSelect: function (dateTxt) {
                     $("#fromDateDiv .ui-datepicker").hide();
                     $("#fromDate").val(dateTxt);
+                    $("#toDateDiv").datepicker("option", "minDate", $("#fromDateDiv").datepicker("getDate"));
                 },
+                minDate: this.model.getMinDate(),
+                maxDate: this.model.getMaxDate(),
                 dateFormat: "dd.mm.yy",
                 dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                 dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
@@ -66,7 +69,10 @@ define(function (require) {
                 onSelect: function (dateTxt) {
                     $("#toDateDiv .ui-datepicker").hide();
                     $("#toDate").val(dateTxt);
+                    $("#fromDateDiv").datepicker("option", "maxDate", $("#toDateDiv").datepicker("getDate"));
                 },
+                minDate: this.model.getMinDate(),
+                maxDate: this.model.getMaxDate(),
                 dateFormat: "dd.mm.yy",
                 dayNames: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
                 dayNamesMin: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
@@ -157,6 +163,16 @@ define(function (require) {
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
             if (timeModeId !== "") {
+                if (isUserdefined) {
+                    $(evt.target).parent().find("h5").each(function (index, row) {
+                        if (isUserdefined) {
+                            $(row).show();
+                        }
+                        else {
+                            $(row).hide();
+                        }
+                    });
+                }
                 $(evt.target).parent().find(".rowDate").each(function (index, row) {
                     if (isUserdefined) {
                         $(row).show();
@@ -221,7 +237,9 @@ define(function (require) {
                 toDate,
                 regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/,
                 fromDateVal = $("#fromDate").val(),
-                toDateVal = $("#toDate").val();
+                toDateVal = $("#toDate").val(),
+                fromDateTimeZoneOffset = $("#fromDateDiv").datepicker("getDate").getTimezoneOffset(),
+                toDateTimeZoneOffset = $("#toDateDiv").datepicker("getDate").getTimezoneOffset();
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -251,24 +269,16 @@ define(function (require) {
                     }
                     // retrieve dates vom datepicker
                     fromDate = $("#fromDateDiv").datepicker("getDate");
+                    fromDate.setMinutes(fromDate.getMinutes() - fromDateTimeZoneOffset);
                     toDate = $("#toDateDiv").datepicker("getDate");
+                    toDate.setMinutes(toDate.getMinutes() - toDateTimeZoneOffset);
                 }
-                if (fromDate && toDate && fromDate.getTime() <= toDate.getTime()) {
-                    $("#fromDateDiv").removeClass("has-error");
-                    $("#toDateDiv").removeClass("has-error");
-                    $("#toDateDiv").next().remove();
-                    this.model.setSelectedKat(selectedKat);
-                    this.model.setSelectedStatus(selectedStatus);
-                    this.model.setFromDate(fromDate);
-                    this.model.setToDate(toDate);
-                    this.model.executeFilter(false);
-                }
-                else {
-                    $("#toDateDiv").next().remove();
-                    $("#fromDateDiv").addClass("has-error");
-                    $("#toDateDiv").addClass("has-error");
-                    $("#toDateDiv").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
-                }
+
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter(false);
             }
             else {
                 this.model.setSelectedKat(selectedKat);

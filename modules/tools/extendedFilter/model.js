@@ -1,5 +1,5 @@
 define(function (require){
-    var
+    var $ = require("jquery"),
         Config = require("config"),
         ExtendedFilter;
 

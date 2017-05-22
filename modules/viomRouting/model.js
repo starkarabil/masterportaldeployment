@@ -1,9 +1,9 @@
 define([
+    "jquery",
     "backbone",
     "backbone.radio",
-    "openlayers",
-    "config"
-], function (Backbone, Radio, ol, Config) {
+    "openlayers"
+], function ($, Backbone, Radio, ol) {
 
     var RoutingModel = Backbone.Model.extend({
         defaults: {

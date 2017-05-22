@@ -1,10 +1,14 @@
-define([
-        "modules/layerinformation/model",
-    "text!modules/layerinformation/templateMobile.html"
-], function (Layerinformation, LayerInformationMobileTemplate) {
+define(function (require) {
+    require("bootstrap");
 
-    var LayerInformationView = Backbone.View.extend({
+    var Layerinformation = require("modules/layerinformation/model"),
+        $ = require("jquery"),
+        LayerInformationMobileTemplate = require("text!modules/layerinformation/templateMobile.html"),
+        LayerInformationView;
+
+    LayerInformationView = Backbone.View.extend({
         model: new Layerinformation(),
+        id: "layerinformation",
         className: "modal fade",
         template: _.template(LayerInformationMobileTemplate),
         events: {
@@ -26,13 +30,13 @@ define([
             var attr = this.model.toJSON();
 
             this.$el.html(this.template(attr));
-            this.$el.modal({
+            $(("#layerinformation")).modal({
                 show: true
             });
         },
 
         hide: function () {
-            this.$el.modal("hide");
+            $(("#layerinformation")).modal("hide");
         }
     });
 

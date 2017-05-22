@@ -1,6 +1,6 @@
 define(function (require) {
 
-    var Config = require("config"),
+    var $ = require("jquery"),
         Template = require("text!modules/controls/baselayerToggle/template.html"),
         Model = require("modules/controls/baselayerToggle/model"),
         BaselayerToggleView;

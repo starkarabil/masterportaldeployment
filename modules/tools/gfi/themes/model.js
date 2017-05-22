@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
+    var $ = require("jquery"),
+        Backbone = require("backbone"),
         Radio = require("backbone.radio"),
         Config = require("config"),
         Moment = require("moment"),

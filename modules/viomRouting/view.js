@@ -1,10 +1,11 @@
 define([
+    "jquery",
     "backbone",
     "backbone.radio",
     "text!modules/viomRouting/template.html",
     "modules/viomRouting/model",
     "modules/controls/orientation/model"
-], function (Backbone, Radio, RoutingWin, RoutingModel) {
+], function ($, Backbone, Radio, RoutingWin, RoutingModel) {
 
     var RoutingView = Backbone.View.extend({
         model: RoutingModel,

@@ -1,8 +1,7 @@
 define([
-
-    "modules/alerting/model",
-    "bootstrap/alert"
-], function (Model) {
+    "jquery",
+    "modules/alerting/model"
+], function ($, Model) {
     /*
      * Dieses Modul reagiert auf Events vom EventBus, nimmt als Parameter des Events ein hmtl-String oder ein Konfigurationsobjekt entgegen und stellt dies dar.
      * Das Konfigurationsobjekt kann folgende Einstellungen überschrieben:

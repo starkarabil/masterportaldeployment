@@ -1,8 +1,9 @@
 define([
+    "jquery",
     "backbone.radio",
     "eventbus",
     "config"
-], function (Radio, EventBus, Config) {
+], function ($, Radio, EventBus, Config) {
     "use strict";
     var SearchbarModel = Backbone.Model.extend({
         defaults: {
@@ -102,7 +103,8 @@ define([
                 hitListNew = [],
                 sortedHitList,
                 singleTypes,
-                splitNameArray;
+                splitNameArray,
+                i;
 
             _.each(this.getHitList(), function (hit) {
                 splitNameArray = hit.name.split(/(\d+)/).filter(Boolean);
@@ -133,7 +135,7 @@ define([
                         foundTypes.push(hit.type);
                     }
                 });
-                for (var i = 0; i < max; i++) {
+                for (i = 0; i < max; i++) {
                         singleTypes.push(sortedHitList[i]);
                         singleTypes = _.uniq(singleTypes);
                 }

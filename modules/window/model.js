@@ -1,10 +1,10 @@
-define([
+define(function (require) {
 
-    "config",
-    "eventbus"
-], function (Config, EventBus) {
+    var Backbone = require("backbone"),
+        EventBus = require("eventbus"),
+        Window;
 
-        var Window = Backbone.Model.extend({
+        Window = Backbone.Model.extend({
             defaults: {
                 isCollapsed: false,
                 isVisible: false,

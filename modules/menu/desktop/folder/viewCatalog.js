@@ -1,11 +1,13 @@
 define([
-
+    "jquery",
     "text!modules/menu/desktop/folder/templateCatalog.html"
 ], function () {
 
-    var         Template = require("text!modules/menu/desktop/folder/templateCatalog.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/menu/desktop/folder/templateCatalog.html"),
+        FolderView;
 
-        FolderView = Backbone.View.extend({
+    FolderView = Backbone.View.extend({
             tagName: "li",
             className: "layer-catalog",
             template: _.template(Template),

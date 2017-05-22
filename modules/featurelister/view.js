@@ -1,10 +1,11 @@
 define([
-        "eventbus",
+    "jquery",
+    "eventbus",
     "config",
     "text!modules/featurelister/template.html",
     "modules/featurelister/model",
     "jqueryui/widgets/draggable"
-], function (EventBus, Config, Template, Model) {
+], function ($, EventBus, Config, Template, Model) {
 
     var FeatureLister = Backbone.View.extend({
         model: Model,

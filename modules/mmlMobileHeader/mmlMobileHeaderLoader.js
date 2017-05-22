@@ -1,18 +1,17 @@
 define(function (require) {
     require("modules/core/util");
 
-    var MMLFilterLoader;
+    var MmlMobileHeaderLoader;
 
-    MMLFilterLoader = function () {
-        var View = require("modules/mmlMobileHeader/view"),
-            Model = require("modules/mmlMobileHeader/model");
+    MmlMobileHeaderLoader = function () {
+        var View = require("modules/mmlMobileHeader/view");
 
         this.getCurrentMobileHeader = function () {
             var isMobile = Radio.request("Util", "isViewMobile"),
                 currentMobileHeader = null;
 
             if (isMobile) {
-                currentMobileHeader = new View({model: Model});
+                currentMobileHeader = new View();
             }
 
             return currentMobileHeader;
@@ -32,5 +31,5 @@ define(function (require) {
         }, this);
     };
 
-    return MMLFilterLoader;
+    return MmlMobileHeaderLoader;
 });

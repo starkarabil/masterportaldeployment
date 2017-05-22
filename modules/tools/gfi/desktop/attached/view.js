@@ -1,14 +1,14 @@
 define(function (require) {
-    require("bootstrap/popover");
+    require("bootstrap");
 
-    var DesktopView = require("modules/tools/gfi/view"),
+    var $ = require("jquery"),
+        DesktopView = require("modules/tools/gfi/view"),
         Template = require("text!modules/tools/gfi/desktop/template.html"),
         GFIAttachedView;
 
     GFIAttachedView = DesktopView.extend({
         className: "gfi gfi-attached",
         template: _.template(Template),
-
         /**
          * Zeichnet das Template und erstellt das Bootstrap Popover
          */
@@ -44,6 +44,9 @@ define(function (require) {
         toggle: function () {
             if (this.model.getIsVisible() === true) {
                 $(this.model.getOverlayElement()).popover("show");
+                if (this.model.getZoomToFeature()) {
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                }
             }
             else {
                 $(this.model.getOverlayElement()).popover("hide");

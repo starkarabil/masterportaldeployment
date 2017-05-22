@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Backbone = require("backbone"),
+    var $ = require("jquery"),
+        Backbone = require("backbone"),
         GFIView;
 
     GFIView = Backbone.View.extend({
@@ -89,6 +90,7 @@ define(function (require) {
          */
         hide: function () {
             this.model.setIsVisible(false);
+            Radio.trigger("MouseHover", "styleDeselGFI");
         }
     });
 

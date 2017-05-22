@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "openlayers",
     "eventbus"
-], function (ol, EventBus) {
+], function ($, ol, EventBus) {
 
     var WFS_T = Backbone.Model.extend({
 

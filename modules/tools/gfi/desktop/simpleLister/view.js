@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var DesktopView = require("modules/tools/gfi/view"),
+    var $ = require("jquery"),
+        DesktopView = require("modules/tools/gfi/view"),
         Radio = require("backbone.radio"),
         Template = require("text!modules/tools/gfi/desktop/simpleLister/template.html"),
         GFISimpleListerView;
@@ -37,7 +38,9 @@ define(function (require) {
                 Radio.trigger("MMLFilter", "hideFilter");
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
-                Radio.trigger("MapView", "setCenter", this.model.getCoordinate());
+                if (this.model.getZoomToFeature()) {
+                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate(), 8);
+                }
             }
             else {
                 Radio.trigger("SimpleLister", "renderContent");

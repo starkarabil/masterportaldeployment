@@ -1,12 +1,10 @@
 define([
-
+    "jquery",
     "config",
     "openlayers"
-], function (Config, ol) {
+], function ($, Config, ol) {
     "use strict";
     var model = Backbone.Model.extend({
-
-        //
         defaults: {
             title: Config.print.title,
             outputFilename: Config.print.outputFilename,

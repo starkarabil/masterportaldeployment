@@ -394,7 +394,7 @@ Radio.trigger("RemoteInterface", "hideDragMarker");
 ## Features aus JSON hinzufügen
 *(addFeatures)*
 
-Fügt GeoJSON-Features der Karte als Vektorlayer hinzu.
+Fügt GeoJSON-Features der Karte als Vektorlayer hinzu. Die Features müssen ein Attribut "mmlid" haben. Über dies wird das Styling beim GFI (GetFeatureInfo) geregelt.
 
 **Parameter**
 
@@ -402,7 +402,7 @@ Fügt GeoJSON-Features der Karte als Vektorlayer hinzu.
 |----|---|------------|
 |value|FeatureCollection|FeatureCollection aller Vektorfeatures|
 |name|String|Vektorlayername|
-|mouseHoverField|Object|Definiert welche Felder übergebenen Vektoren für das Popover verwendet werden sollen. Dabei wird zwischen Header (Überschrift) und Text (Inhalt) unterschieden. Siehe Beispiel.
+|mouseHoverField|Object|Definiert welche Felder übergebenen Vektoren für das Popover verwendet werden sollen. Dabei wird zwischen Header (Überschrift) und Text (Inhalt), ClusterHeader(Überschrift bei geclusterten Features) und ClusterText (Inhalt bei geclusterten Features) unterschieden. Siehe Beispiel.
 
 **Beispiel-Aufruf**
 ```
@@ -427,6 +427,7 @@ var features = {
                 },
                 "properties": {
                     "OBJECTID": 6009,
+                    "mmlid": "1000",
                     "name": "Feature 1",
                     "str": "Straße",
                     "hsnr": "1",
@@ -440,6 +441,7 @@ var features = {
                 },
                 "properties": {
                     "OBJECTID": 6010,
+                    "mmlid": "1001",
                     "name": "Feature 2",
                     "str": "Straße",
                     "hsnr": "1",
@@ -449,13 +451,15 @@ var features = {
     };
 /*
 In diesem Objekt wird konfiguriert, welche Felder der Vektoren für das Popover verwendet werden.
-Dabei wird zwischen der Überschrift und dem Text unterschieden.
+Dabei wird zwischen der Überschrift und dem Text, sowie der Überschrift und dem Text für geclusterte Features unterschieden.
 Diese Einstellung gilt nur für die Übergebene Layer.
 */
 var mouseHoverField = {
         mouseHoverField: {
             "header": ["str", "hsnr"],
-            "text": ["kat_text"]
+            "text": ["kat_text"],
+            "clusterHeader": "Mehrere Anliegen",
+            "clusterText": "Bitte reinzoomen um geclusterte Features einzeln zu sehen"
         }
     };
 

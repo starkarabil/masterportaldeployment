@@ -40,7 +40,7 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen. Auch hier werden d
 |attributions|nein|Boolean|false|Zeigt das vorhandene Attributions an.|
 |fullScreen|nein|Boolean|false|Ermöglicht dem User die Darstellung im Vollbildmodus (ohne Tabs und Adressleiste) per Klick auf den Button. Ein erneuter Klick auf den Button wechselt wieder in den normalen Modus.|
 |mousePosition|nein|Boolean|false|Die Koordination des Mauszeigers werden angeziegt.|
-|orientation|nein|String|"none"|Orientation ist eine Funktion zur Standortbestimmung des Nutzers. Mögliche Werte sind none (Die Standortbestimmung ist deaktiviert.), *once* (Es wird einmalig beim Laden der Standort bestimmt und einmalig auf den Standort gezoomt.), *always* (Die Karte bleibt immer auf den Nutzerstandort gezoomt.)|
+|[orientation](#markdown-header-portalconfigcontrolsorientation)|nein|Object/String|"none"|Orientation ist eine Funktion zur Standortbestimmung des Nutzers. Mögliche Werte sind none (Die Standortbestimmung ist deaktiviert.), *once* (Es wird einmalig beim Laden der Standort bestimmt und einmalig auf den Standort gezoomt.), *always* (Die Karte bleibt immer auf den Nutzerstandort gezoomt.) Alternativ kann auch ein [Objekt](#markdown-header-portalconfigcontrolsorientation) übergeben werden.|
 |poi|nein|Boolean|false|Zeigt eine Liste von Features in der Umgebung an. Funktioniert nur wenn die Standortbestimmung (orientation) aktiviert ist. |
 |toggleMenu|nein|Boolean|false|Legt fest ob die Menüleiste ein- und ausgeblendet werden kann.|
 |zoom|nein|Boolean|false|Legt fest, ob die Zoombuttons angezeigt werden sollen. |
@@ -55,13 +55,31 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen. Auch hier werden d
 "controls": {
         "toggleMenu": true,
         "zoom": true,
-        "orientation": "once",
+        "orientation": {
+            "zoomMode": "once",
+            "markerIcon": "dragMarker",
+            "addClass": "visible-xs",
+            "geolocationIcon": "orientation_mml.svg"
+            "initial": true
+        },
         "poi": true,
         "fullScreen": true,
         "mousePosition": true
       }
 
 ```
+
+******
+### Portalconfig.controls.orientation ###
+Konfiguriert das Objekt für die Standortbestimmung.
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|
+|----|-------------|---|-------|------------|
+|zoomMode|ja|String|false|Kann die Werte *once* (einmalige Standortbestimmung) und *always* (dauerhafte Standortbestimmung) haben.|
+|markerIcon|nein|String|false|Für MML wird hier der DragMarker für das Anzeigen des Standortes verwendet, derzeit können die Werte *dragMarker* und *geolocation_marker* verwendet werden.|
+|addClass|nein|Boolean|false|Erwartet eine CSS Klasse die der Orientation gegeben werden soll. Im Beispiel die Klasse *visible-xs* damit die Standortbestimmung nur Mobil/im schmalen Browser verwedet werden kann.|
+|geolocationIcon|nein|String|false|Für MML wird hier das Icon für die Standortbestimmung angegeben.|
+|initial|nein|Boolean|false|Legt fest, ob die Standortbestimmung inital ausgeführt werden soll.|
 
 
 ******
@@ -381,6 +399,7 @@ Dazu muss für jeden WFS-Layer in der Layer-Konfiguration dem Werkzeug erlaubt w
 |isActive|nein|Boolean|false|Werkzeug wird initial (beim Laden des Portals) aktiviert.|
 |name|nein|String||Name des Werkzeuges im Menüeintrag.|
 |onlyDesktop|nein|Boolean|false|Werkzeug wird nur in der Desktop-Variante des Portals angezeigt.|
+|zoomToFeature|nein|Boolean|false|Bei GFI wird auf das Feature gezoomt.|
 
 
 ******

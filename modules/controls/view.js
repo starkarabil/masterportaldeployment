@@ -1,6 +1,9 @@
-define(function () {
+define(function (require) {
 
-    var ControlsView = Backbone.View.extend({
+    var $ = require("jquery"),
+        ControlsView;
+
+    ControlsView = Backbone.View.extend({
         className: "container-fluid controls-view",
         id: "controls",
         initialize: function () {

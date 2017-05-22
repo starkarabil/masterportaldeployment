@@ -1,7 +1,8 @@
 define([
-        "text!modules/tools/kmlimport/template.html",
+    "jquery",
+    "text!modules/tools/kmlimport/template.html",
     "modules/tools/kmlimport/model"
-], function (ImportTemplate, ImportTool) {
+], function ($, ImportTemplate, ImportTool) {
 
     var ImportView = Backbone.View.extend({
         model: new ImportTool(),

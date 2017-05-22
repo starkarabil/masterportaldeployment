@@ -1,6 +1,7 @@
 define(function (require) {
 
-    var Template = require("text!modules/simpleLister/template.html"),
+    var $ = require("jquery"),
+        Template = require("text!modules/simpleLister/template.html"),
         SimpleLister = require("modules/simpleLister/model"),
         SimpleListerView;
 
@@ -62,13 +63,11 @@ define(function (require) {
 
             glyphiconDom.removeClass("glyphicon-triangle-right").addClass("glyphicon-triangle-left");
             $("#simple-lister-table").show();
-            this.$el.css({width: "39%"});
+            this.$el.css({width: this.model.getWidth()});
             this.model.getLayerFeaturesInExtent();
-            $(".ol-viewport").css({
-                "width": "61%",
-                "float": "right"
-            });
+            this.manipulateViewport();
             Radio.trigger("Map", "updateSize");
+            $(window).on("resize", $.proxy(this.manipulateViewport, this));
         },
 
         hide: function () {
@@ -82,6 +81,16 @@ define(function (require) {
                 "float": ""
             });
             Radio.trigger("Map", "updateSize");
+            $(window).off("resize", $.proxy(this.manipulateViewport, this));
+        },
+
+        manipulateViewport: function () {
+            var newViewportWidth = ($("#map").width() - this.model.getWidth()) + "px";
+
+            $(".ol-viewport").css({
+                "width": newViewportWidth,
+                "float": "right"
+            });
         },
 
         newFeaturesInExtent: function () {
@@ -148,7 +157,7 @@ define(function (require) {
         addEntry: function (feat) {
             var div1 = "<div id='" + feat.id + "' class='entry'>",
                 div2 = "<div class='address'>" + feat.properties.str + " " + feat.properties.hsnr + "</div>",
-                div3 = "<div class='category'>" + feat.properties.kat_text + "</div>",
+                div3 = "<div class='category'>" + feat.properties.skat_text + "</div>",
                 div4 = "<div class='description'>",
                 div5 = feat.properties.beschr.length > 50 ? feat.properties.beschr.substring(0, 50) + "..." : feat.properties.beschr,
                 div6 = "</div>",

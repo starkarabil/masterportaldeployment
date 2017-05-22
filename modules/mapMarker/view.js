@@ -1,9 +1,9 @@
 define([
-
+    "jquery",
     "openlayers",
     "modules/mapMarker/model",
     "eventbus"
-    ], function (ol, MapHandlerModel, EventBus) {
+    ], function ($, ol, MapHandlerModel, EventBus) {
     "use strict";
 
     var searchVector = new ol.layer.Vector({

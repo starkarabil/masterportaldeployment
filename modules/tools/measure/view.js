@@ -1,9 +1,9 @@
 define([
-
+    "jquery",
     "text!modules/tools/measure/template.html",
     "modules/tools/measure/model",
     "eventbus"
-], function (MeasureTemplate, Measure, EventBus) {
+], function ($, MeasureTemplate, Measure, EventBus) {
 
     var MeasureView = Backbone.View.extend({
         model: new Measure(),

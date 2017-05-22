@@ -1,5 +1,6 @@
 define(function (require){
-    var         Model = require("modules/tools/extendedFilter/model"),
+    var $ = require("jquery"),
+        Model = require("modules/tools/extendedFilter/model"),
         Template = require("text!modules/tools/extendedFilter/template.html"),
         ExtendedFilterView;
 

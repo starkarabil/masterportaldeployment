@@ -1,11 +1,11 @@
 define([
-        "text!modules/controls/attributions/templateShow.html",
+    "jquery",
+    "text!modules/controls/attributions/templateShow.html",
     "text!modules/controls/attributions/templateHide.html",
-    "modules/controls/attributions/model",
+    "modules/controls/attributions/model"
+], function ($) {
 
-], function () {
-
-    var         TemplateShow = require("text!modules/controls/attributions/templateShow.html"),
+    var TemplateShow = require("text!modules/controls/attributions/templateShow.html"),
         TemplateHide = require("text!modules/controls/attributions/templateHide.html"),
         Attributions = require("modules/controls/attributions/model"),
 

@@ -1,8 +1,9 @@
 define(function (require) {
-    require("bootstrap/modal");
+    require("bootstrap");
 
     var GFIView = require("modules/tools/gfi/view"),
         Template = require("text!modules/tools/gfi/mobile/template.html"),
+        $ = require("jquery"),
         GFIMobileView;
 
     GFIMobileView = GFIView.extend({
@@ -16,7 +17,7 @@ define(function (require) {
             var attr = this.model.toJSON();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
-            this.$el.modal({
+            $("#gfi-mobile").modal({
                 backdrop: "static",
                 show: false
             });
@@ -27,10 +28,10 @@ define(function (require) {
          */
         toggle: function () {
             if (this.model.getIsVisible() === true) {
-                this.$el.modal("show");
+                $("#gfi-mobile").modal("show");
             }
             else {
-                this.$el.modal("hide");
+                $("#gfi-mobile").modal("hide");
             }
         },
 

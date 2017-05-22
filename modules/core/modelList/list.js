@@ -1,5 +1,4 @@
 define([
-
     "modules/core/modelList/layer/wms",
     "modules/core/modelList/layer/wfs",
     "modules/core/modelList/layer/geojson",
@@ -9,7 +8,8 @@ define([
     "modules/layer/wfsStyle/list"
 ], function () {
 
-    var WMSLayer = require("modules/core/modelList/layer/wms"),
+    var $ = require("jquery"),
+        WMSLayer = require("modules/core/modelList/layer/wms"),
         WFSLayer = require("modules/core/modelList/layer/wfs"),
         GeoJSONLayer = require("modules/core/modelList/layer/geojson"),
         StyleList = require("modules/layer/wfsStyle/list"),

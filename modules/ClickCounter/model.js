@@ -1,6 +1,6 @@
 define([
-
-], function () {
+    "jquery"
+], function ($) {
 
     var ClickCounter = Backbone.Model.extend({
         defaults: {

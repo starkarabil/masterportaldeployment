@@ -1,6 +1,6 @@
 define(function (require) {
 
-    var
+    var $ = require("jquery"),
         ItemTemplate = require("text!modules/menu/desktop/tool/template.html"),
         ItemView;
 

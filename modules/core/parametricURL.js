@@ -1,9 +1,9 @@
 define([
-
+    "jquery",
     "underscore.string",
     "config",
     "modules/core/configLoader/preparser"
-], function (_String, Config, Preparser) {
+], function ($, _String, Config, Preparser) {
 
     var ParametricURL = Backbone.Model.extend({
         defaults: {

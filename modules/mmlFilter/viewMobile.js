@@ -1,13 +1,9 @@
-define([
-    "text!modules/mmlFilter/templateMobile.html",
-    "modules/mmlFilter/model",
-    "bootstrap/collapse",
-    "bootstrap/modal"
-
-], function () {
+define(function (require) {
+    require("bootstrap");
 
     var Template = require("text!modules/mmlFilter/templateMobile.html"),
         Radio = require("backbone.radio"),
+        $ = require("jquery"),
         MobileMMLFilterView;
 
     MobileMMLFilterView = Backbone.View.extend({
@@ -28,7 +24,9 @@ define([
             },
             "touchmove #mmlZeitraum": function (evt) {
                 evt.stopPropagation();
-            }
+            },
+            "change #fromDate": "fromDateChanged",
+            "change #toDate": "toDateChanged"
         },
 
         initialize: function () {
@@ -44,10 +42,22 @@ define([
                 isVisible = this.model.getIsVisible();
 
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
-            this.$el.modal({
+            $("#div-mmlFilter-content-mobile").modal({
                 backdrop: "static",
                 show: isVisible
             });
+        },
+
+        fromDateChanged: function (evt) {
+            var fromDate = evt.target.value;
+
+            $("#toDate").attr("min", fromDate);
+        },
+
+        toDateChanged: function (evt) {
+            var toDate = evt.target.value;
+
+            $("#fromDate").attr("max", toDate);
         },
 
         /**
@@ -71,7 +81,7 @@ define([
          */
         togglePanel: function (evt) {
             // eventuell anderes geöffnetes Panel wird eingeklappt
-            this.$el.find(".in").collapse("hide");
+            $("#div-mmlFilter-content-mobile").find(".in").collapse("hide");
             // aktuelles Panel wird aus- oder eingeklappt
             $(evt.currentTarget).next().collapse("toggle");
         },
@@ -115,6 +125,14 @@ define([
             var timeModeId = evt.target.id,
                 isUserdefined = timeModeId === "userdefined" ? true : false;
 
+            $(evt.target).parent().find("h5").each(function (index, row) {
+                if (isUserdefined) {
+                    $(row).show();
+                }
+                else {
+                    $(row).hide();
+                }
+            });
             $(evt.target).parent().find(".row").each(function (index, row) {
                 if (isUserdefined) {
                     $(row).show();
@@ -168,22 +186,11 @@ define([
                 fromDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? new Date(date - (timeDiff)) : new Date($("#fromDate").val());
                 toDate = (selectedTimeId !== "userdefined" && selectedTimeId !== "ignore-time") ? date : new Date($("#toDate").val());
 
-                if (fromDate.getTime() <= toDate.getTime()) {
-                    $("#fromDate").css({border: ""});
-                    $("#toDate").css({border: ""});
-                    $("#toDate").next().remove();
-                    this.model.setSelectedKat(selectedKat);
-                    this.model.setSelectedStatus(selectedStatus);
-                    this.model.setFromDate(fromDate);
-                    this.model.setToDate(toDate);
-                    this.model.executeFilter(false);
-                }
-                else {
-                    $("#toDate").next().remove();
-                    $("#fromDate").css({border: "1px solid #a94442"});
-                    $("#toDate").css({border: "1px solid #a94442"});
-                    $("#toDate").after("<p style='color: #a94442;'>Zeitraum kann nicht aufgelöst werden.</p>");
-                }
+                this.model.setSelectedKat(selectedKat);
+                this.model.setSelectedStatus(selectedStatus);
+                this.model.setFromDate(fromDate);
+                this.model.setToDate(toDate);
+                this.model.executeFilter(false);
             }
             else {
                 this.model.setSelectedKat(selectedKat);

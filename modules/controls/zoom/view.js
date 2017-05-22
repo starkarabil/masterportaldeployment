@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "text!modules/controls/zoom/template.html",
     "eventbus"
-], function (ZoomControlTemplate, EventBus) {
+], function ($, ZoomControlTemplate, EventBus) {
 
     var ZoomControlView = Backbone.View.extend({
         className: "row",

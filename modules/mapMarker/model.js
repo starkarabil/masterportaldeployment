@@ -1,10 +1,10 @@
 define([
-        "openlayers",
+    "jquery",
+    "openlayers",
     "eventbus",
-
     "config",
     "modules/core/util"
-    ], function (ol, EventBus, Config, Util) {
+    ], function ($, ol, EventBus, Config, Util) {
     "use strict";
     var MapHandlerModel = Backbone.Model.extend({
         defaults: {

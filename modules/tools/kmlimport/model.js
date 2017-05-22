@@ -1,12 +1,10 @@
 define([
-        "openlayers",
+    "openlayers",
     "eventbus",
-
     "proj4"
 ], function () {
-    var         ol = require("openlayers"),
-        EventBus = require("eventbus"),
-
+    var $ = require("jquery"),
+        ol = require("openlayers"),
         proj4 = require("proj4"),
         ImportTool;
 

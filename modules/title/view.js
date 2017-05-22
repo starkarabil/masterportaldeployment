@@ -1,7 +1,7 @@
 define([
-        "text!modules/title/template.html",
-
-], function (TitleTemplate) {
+    "jquery",
+    "text!modules/title/template.html"
+], function ($, TitleTemplate) {
 
     var TitleView = Backbone.View.extend({
         className: "visible-lg-block portal-title",

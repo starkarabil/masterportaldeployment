@@ -1,8 +1,9 @@
 define([
-        "text!modules/treefilter/template.html",
+    "jquery",
+    "text!modules/treefilter/template.html",
     "eventbus",
     "modules/treefilter/model"
-], function (TreeFilterTemplate, EventBus, TreeFilter) {
+], function ($, TreeFilterTemplate, EventBus, TreeFilter) {
 
     var View = Backbone.View.extend({
         model: TreeFilter,

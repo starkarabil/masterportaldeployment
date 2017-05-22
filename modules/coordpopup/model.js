@@ -1,12 +1,12 @@
-define([
+define(function (require) {
 
-    "openlayers",
-    "proj4",
-    "config",
-    "bootstrap/popover"
-], function (ol, proj4, Config) {
+    var Backbone = require("backbone"),
+        $ = require("jquery"),
+        proj4 = require("proj4"),
+        Config = require("config"),
+        CoordPopup;
 
-    var CoordPopup = Backbone.Model.extend({
+    CoordPopup = Backbone.Model.extend({
          defaults: {
             // element: $("#popup"),
             coordOverlay: {},

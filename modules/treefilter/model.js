@@ -1,8 +1,8 @@
 define([
-
+    "jquery",
     "config",
     "modules/core/util"
-], function (Config, Util) {
+], function ($, Config, Util) {
 
     var TreeFilter = Backbone.Model.extend({
         defaults: {

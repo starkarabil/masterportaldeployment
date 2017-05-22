@@ -1,10 +1,13 @@
-define([
-    "openlayers",
-    "backbone.radio",
-    "bootstrap/popover"
-], function (ol, Radio) {
+define(function (require) {
+    require("bootstrap");
 
-    var MouseHoverPopup = Backbone.Model.extend({
+    var Backbone = require("backbone"),
+        Radio = require("backbone.radio"),
+        ol = require("openlayers"),
+        $ = require("jquery"),
+        MouseHoverPopup;
+
+    MouseHoverPopup = Backbone.Model.extend({
         defaults: {
             cursor: "pointer",
             previousCursor: undefined,
@@ -535,8 +538,10 @@ define([
                             });
 
                             if (isClusterFeature) {
-                                hoverHeader = "Mehrere Features";
-                                hoverText = "Klick zum Zoomen";
+                                var layerModel = Radio.request("ModelList", "getModelByAttributes", {id: element.layerId});
+
+                                hoverHeader = layerModel.getMouseHoverField().clusterHeader;
+                                hoverText = layerModel.getMouseHoverField().clusterText;
                             }
 
                             value = "<span class='mouseHoverTitle'>" + hoverHeader + "</span></br>" + "<span class='mouseHoverText'>" + hoverText + "</span>";

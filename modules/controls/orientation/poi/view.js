@@ -1,11 +1,9 @@
 define([
-
+    "jquery",
     "text!modules/controls/orientation/poi/template.html",
     "modules/controls/orientation/poi/collection",
-    "modules/controls/orientation/poi/feature/view",
-    "bootstrap/tab",
-    "bootstrap/modal"
-], function (PointOfInterestListTemplate, PointOfInterestList, PointOfInterestView) {
+    "modules/controls/orientation/poi/feature/view"
+], function ($, PointOfInterestListTemplate, PointOfInterestList, PointOfInterestView) {
 
     var PointOfInterestListView = Backbone.View.extend({
         collection: PointOfInterestList,
@@ -46,7 +44,7 @@ define([
             this.render();
         },
         show: function () {
-            this.$el.modal({
+            $("#base-modal").modal({
                 backdrop: true,
                 show: true
             });
@@ -55,7 +53,7 @@ define([
             });
         },
         hide: function () {
-            this.$el.modal("hide");
+            $("#base-modal").modal("hide");
         },
         onClick500m: function () {
             Radio.trigger("Geolocation", "getPOI", 500);
