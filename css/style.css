@@ -4447,6 +4447,9 @@ neben Filterfenster
   padding-top: 20px;
   margin-left: 21px;
 }
+.lgv-container input[type="radio"] {
+  cursor: pointer;
+}
 .lgv-container #mmlFilter.closed {
   position: absolute;
   /*width: 100%;*/

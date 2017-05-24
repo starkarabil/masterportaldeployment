@@ -1,3 +1,7 @@
+input[type="radio"] {
+    cursor: pointer;
+}
+
 #mmlFilter.closed {
     position: absolute;
    /*width: 100%;*/
