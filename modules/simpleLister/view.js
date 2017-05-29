@@ -23,7 +23,8 @@ define(function (require) {
                 "appendFeaturesInExtent": this.appendFeaturesInExtent,
                 "renderContent": this.renderContent,
                 "show": this.show,
-                "change:isVisible": this.toggleSimpleList
+                "change:isVisible": this.toggleSimpleList,
+                "fullScreen": this.updateMap
             });
 
             this.render();
@@ -65,9 +66,7 @@ define(function (require) {
             $("#simple-lister-table").show();
             this.$el.css({width: this.model.getWidth()});
             this.model.getLayerFeaturesInExtent();
-            this.manipulateViewport();
-            Radio.trigger("Map", "updateSize");
-            $(window).on("resize", $.proxy(this.manipulateViewport, this));
+            this.updateMap();
         },
 
         hide: function () {
@@ -212,6 +211,15 @@ define(function (require) {
 
             this.lowlightItemInList(id);
             this.model.triggerMouseHoverLeave(id);
+        },
+
+        /**
+         * Passt den Viewport an und aktualisiert die Map
+         */
+        updateMap: function () {
+            this.manipulateViewport();
+            Radio.trigger("Map", "updateSize");
+            $(window).on("resize", $.proxy(this.manipulateViewport, this));
         }
     });
 
