@@ -8,5 +8,5 @@
     <div class="rueckmeldung heading">Rückmeldung</div>
     <div class="rueckmeldung"><%= gfiContent[0].Rueck %></div>
     <div class="gemeldet-am"> Gemeldet am: <%= (startTime? startTime : "nicht bekannt.") %></div>
-    <div class="status">Status: <%= gfiContent[0].Statu + "." %></div>
+    <div class="status">Status: <%= gfiContent[0].Statu === "abgeschlossen" ? "Bearbeitet" + "." : gfiContent[0].Statu + "." %></div>
 </div>
