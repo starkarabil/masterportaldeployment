@@ -25,6 +25,11 @@ define(function () {
                 },
                 "renderContent": function () {
                     this.trigger("renderContent");
+                },
+                "fullScreen": function () {
+                    if (this.getIsVisible() === true) {
+                        this.trigger("fullScreen");
+                    }
                 }
             }, this);
 

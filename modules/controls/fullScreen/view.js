@@ -9,7 +9,10 @@ define(function (require) {
         className: "row",
         template: _.template("<div class='full-screen-button col-md-1 hidden-xs' title='Vollbild aktivieren'><span class='glyphicon glyphicon-resize-full'></span></div>"),
         events: {
-            "click .full-screen-button": "toggleFullScreen"
+            "click .full-screen-button": function () {
+                this.toggleFullScreen();
+                Radio.trigger("SimpleLister", "fullScreen");
+            }
         },
         prevDimensions: {
             height: "",
