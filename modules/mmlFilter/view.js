@@ -50,11 +50,11 @@ define(function (require) {
             }
         },
         createDatepicker: function () {
-            $("#fromDateDiv").datepicker({
+            $("#fromDate").datepicker({
                 onSelect: function (dateTxt) {
-                    $("#fromDateDiv .ui-datepicker").hide();
-                    $("#fromDate").val(dateTxt);
-                    $("#toDateDiv").datepicker("option", "minDate", $("#fromDateDiv").datepicker("getDate"));
+                    $("#fromDate .ui-datepicker").hide();
+                    $("#fromDateVal").val(dateTxt);
+                    $("#toDate").datepicker("option", "minDate", $("#fromDate").datepicker("getDate"));
                 },
                 minDate: this.model.getMinDate(),
                 maxDate: this.model.getMaxDate(),
@@ -65,11 +65,11 @@ define(function (require) {
                 monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
             });
 
-            $("#toDateDiv").datepicker({
+            $("#toDate").datepicker({
                 onSelect: function (dateTxt) {
-                    $("#toDateDiv .ui-datepicker").hide();
-                    $("#toDate").val(dateTxt);
-                    $("#fromDateDiv").datepicker("option", "maxDate", $("#toDateDiv").datepicker("getDate"));
+                    $("#toDate .ui-datepicker").hide();
+                    $("#toDateVal").val(dateTxt);
+                    $("#fromDate").datepicker("option", "maxDate", $("#toDate").datepicker("getDate"));
                 },
                 minDate: this.model.getMinDate(),
                 maxDate: this.model.getMaxDate(),
@@ -79,8 +79,8 @@ define(function (require) {
                 monthNames: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
                 monthNamesShort: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sept", "Okt", "Nov", "Dez"]
             });
-            $("#fromDateDiv .ui-datepicker").hide();
-            $("#toDateDiv .ui-datepicker").hide();
+            $("#fromDate .ui-datepicker").hide();
+            $("#toDate .ui-datepicker").hide();
         },
         /**
          * [@description Schließt das DOM und entfernt die View und das Model vollständig.]
@@ -184,27 +184,27 @@ define(function (require) {
             }
         },
         toggleFromDateBtn: function () {
-            var calAlreadyOpen = $("#fromDateDiv .ui-datepicker").is(":visible");
+            var calAlreadyOpen = $("#fromDate .ui-datepicker").is(":visible");
 
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
-                $("#fromDateDiv .ui-datepicker").hide();
+                $("#fromDate .ui-datepicker").hide();
             }
             else {
-                $("#toDateDiv .ui-datepicker").hide();
-                $("#fromDateDiv .ui-datepicker").show();
+                $("#toDate .ui-datepicker").hide();
+                $("#fromDate .ui-datepicker").show();
             }
         },
         toggleToDateBtn: function () {
-            var calAlreadyOpen = $("#toDateDiv .ui-datepicker").is(":visible");
+            var calAlreadyOpen = $("#toDate .ui-datepicker").is(":visible");
 
             // wenn Kalender schon offen ist, verstecke ihn
             if (calAlreadyOpen === true) {
-                $("#toDateDiv .ui-datepicker").hide();
+                $("#toDate .ui-datepicker").hide();
             }
             else {
-                $("#fromDateDiv .ui-datepicker").hide();
-                $("#toDateDiv .ui-datepicker").show();
+                $("#fromDate .ui-datepicker").hide();
+                $("#toDate .ui-datepicker").show();
             }
         },
         resetKategorien: function () {
@@ -236,10 +236,10 @@ define(function (require) {
                 fromDate,
                 toDate,
                 regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/,
-                fromDateVal = $("#fromDate").val(),
-                toDateVal = $("#toDate").val(),
-                fromDateTimeZoneOffset = $("#fromDateDiv").datepicker("getDate").getTimezoneOffset(),
-                toDateTimeZoneOffset = $("#toDateDiv").datepicker("getDate").getTimezoneOffset();
+                fromDateVal = $("#fromDateVal").val(),
+                toDateVal = $("#toDateVal").val(),
+                fromDateTimeZoneOffset = $("#fromDate").datepicker("getDate").getTimezoneOffset(),
+                toDateTimeZoneOffset = $("#toDate").datepicker("getDate").getTimezoneOffset();
 
             $(".div-mmlFilter-filter-kategorien").children(":checked").each(function (index, kategorie) {
                 selectedKat.push(kategorie.id);
@@ -260,18 +260,18 @@ define(function (require) {
                     // check #fromDate if valid input and setDate of datepicker. Else, set null
                     // check #toDate if valid input and setDate of datepicker. Else, set null
                     if (fromDateVal.match(regex) && toDateVal.match(regex)) {
-                        $("#fromDateDiv").datepicker("setDate", fromDateVal);
-                        $("#toDateDiv").datepicker("setDate", toDateVal);
+                        $("#fromDate").datepicker("setDate", fromDateVal);
+                        $("#toDate").datepicker("setDate", toDateVal);
+                        // retrieve dates vom datepicker
+                        fromDate = $("#fromDate").datepicker("getDate");
+                        fromDate.setMinutes(fromDate.getMinutes() - fromDateTimeZoneOffset);
+                        toDate = $("#toDate").datepicker("getDate");
+                        toDate.setMinutes(toDate.getMinutes() - toDateTimeZoneOffset);
                     }
                     else {
-                        $("#fromDateDiv").datepicker("setDate", null);
-                        $("#toDateDiv").datepicker("setDate", null);
+                        $("#fromDate").datepicker("setDate", null);
+                        $("#toDate").datepicker("setDate", null);
                     }
-                    // retrieve dates vom datepicker
-                    fromDate = $("#fromDateDiv").datepicker("getDate");
-                    fromDate.setMinutes(fromDate.getMinutes() - fromDateTimeZoneOffset);
-                    toDate = $("#toDateDiv").datepicker("getDate");
-                    toDate.setMinutes(toDate.getMinutes() - toDateTimeZoneOffset);
                 }
 
                 this.model.setSelectedKat(selectedKat);
