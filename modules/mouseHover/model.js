@@ -35,7 +35,11 @@ define(function (require) {
                 })
         },
         initialize: function () {
-            this.set("selectPointerMove", this.createInteraction());
+            var isViewMobile = Radio.request("Util", "isViewMobile");
+
+            if (isViewMobile === false) {
+                this.set("selectPointerMove", this.createInteraction());
+            }
             // Radio channel
             var channel = Radio.channel("MouseHover");
 
@@ -56,8 +60,10 @@ define(function (require) {
             }, this);
 
             // select interaction Listener
-            this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
-            Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
+            if (isViewMobile === false) {
+                this.get("selectPointerMove").on("select", this.checkForEachFeatureAtPixel, this);
+                Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
+            }
 
             // Erzeuge Overlay
             $("#lgv-container").append("<div id='mousehoverpopup' class='col-md-offset-4 col-xs-offset-3 col-md-2 col-xs-5'></div>");
@@ -75,7 +81,9 @@ define(function (require) {
                 "isVisible": this.setGFIPopupVisibility
             }, this);
 
-            Radio.trigger("Map", "registerListener", "moveend", this.normalStylesExceptGFI, this);
+            this.listenTo(Radio.channel("Map"), {
+                "changedExtent": this.normalStylesExceptGFI
+            });
             this.listenTo(Radio.channel("MapView"), {
                 "changedZoomLevel": function () {
                     this.setZoom(Radio.request("MapView", "getZoomLevel"));

@@ -39,7 +39,10 @@ define(function (require) {
                 Radio.trigger("SimpleLister", "setIsVisible", true);
                 $("#simple-lister-table").html(this.$el);
                 if (this.model.getZoomToFeature()) {
-                    Radio.trigger("MapView", "setCenter", this.model.getCoordinate(), 8);
+                    // take first coord of feature. The feature is is the model's theme.
+                    var coord = this.model.getTheme().getFeature().getGeometry().getFirstCoordinate();
+
+                    Radio.trigger("MapView", "setCenter", coord, 8);
                 }
             }
             else {

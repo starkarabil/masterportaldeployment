@@ -163,6 +163,11 @@ Ein Portal für die Veröffentlichung fertig machen.
 # grunt build --path=portalconfigs/mml* --name=mml --url=https://geoportal-hamburg.de/mml --dev=false
 ```
 
+**Wichtig: zur Zeit muss wegen eines chrome mobile bugs, mit einem custom ol4-build gebaut werden, bis der fix in einem stable release ist**
+**Dies befindet sich unter js/ol-custom_with_chrome_touch_fix.js**
+**Dazu in der components/build-config/tasks/require.js den Pfad anpassen**
+**https://github.com/openlayers/openlayers/pull/6778**
+
 - baut das Portal und alles, was es braucht in den Ordner dist/<pkg.version>
 - Pfade in index.html werden automatisch ersetzt
 - Pfade zu *Conf in config.js werden automatisch ersetzt
