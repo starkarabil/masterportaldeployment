@@ -178,7 +178,7 @@ Ein Portal für die Veröffentlichung fertig machen.
 - um für ein Projekt alle zugehörigen Portale in einen Ordner zu Bauen, kann am ende des Parameters path ein * gesetzt werden um alle mit diesem Pfad anfangenden Ordner zum Bauen zu verwenden.
 - beim verwenden des * im path wird der Code nur einmal hinterlegt und die Portale im gebauten Verzeichnis greifen alle auf die gleichen Quellen zu.
 - Beispiel für mml : grunt build --path=portalconfigs/mml* --name=mml --url=http://localhost:3000/lgv-cors --dev=true
-- Ergebnis ist ein mml Ordner in dem sich ein Versionsordner befindet mit der Version aus der package.json auf der gebaut wurde, in der sich der Code und die Portalordner mit ihren Konfig-Dateien befindet. 
+- Ergebnis ist ein mml Ordner in dem sich ein Versionsordner befindet mit der Version aus der package.json auf der gebaut wurde, in der sich der Code und die Portalordner mit ihren Konfig-Dateien befindet.
 
 ## grunt doc
 Die Dokumentation erzeugen. Zurzeit nur für portale/master/config.js.
