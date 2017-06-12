@@ -6,7 +6,7 @@ define(function (require) {
 
     GeoJSONLayer = Layer.extend({
         defaults: {
-            featuresToHide: new Array()
+            featuresToHide: []
         },
         /**
          * [createLayerSource description]
@@ -183,7 +183,7 @@ define(function (require) {
                 return 0;
             });
             source.addFeatures(features);
-            featuresToHide = _.difference(featuresToHide);
+            featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
         },
         /**
@@ -225,18 +225,52 @@ define(function (require) {
          */
         hideFeaturesByIds: function (featureIdList) {
             var source = this.getLayerSource(),
-                featuresToHide = this.getFeaturesToHide();
+                featuresToHide = this.getFeaturesToHide(),
+                sourceFeatures = source.getFeatures();
 
             _.each(featureIdList, function (id) {
-                var feature = this.getLayerSource().getFeatureById(id);
+                var feature = source.getFeatureById(id);
 
                 if (feature) {
                     featuresToHide.push(feature);
-                    source.removeFeature(feature);
                 }
             }, this);
+            sourceFeatures = _.difference(sourceFeatures, featuresToHide);
+            source.clear();
+            source.addFeatures(sourceFeatures);
+            this.checkIfGfiIsOutdated();
         },
 
+        /*
+        * Wenn Gfi aktiv ist, wird überprüft ob das GFI-Theme-Feature noch in der Source vorhanden ist.
+        * Wenn nicht, wird das GFI geschlossen
+        * Wenn das GFI-Theme-Feature noch in der Source ist, dann muss es gehighlighted werden
+        */
+        checkIfGfiIsOutdated: function () {
+            var gfiTheme = Radio.request("GFI", "getTheme"),
+                source = this.getLayerSource(),
+                sourceFeature,
+                gfiFeature;
+
+            // GFI ist offen
+            if (!_.isUndefined(gfiTheme)) {
+                gfiFeature = gfiTheme.getFeature();
+                sourceFeature = source.getFeatureById(gfiFeature.getId());
+                // wenn das Feature des GFi nicht mehr in der source ist: GFI schließen
+                if (_.isNull(sourceFeature)) {
+                    Radio.trigger("GFI", "setIsVisible", false);
+                }
+                // GFI-Feature highlighten
+                else {
+                    console.log("GFI highlighten");
+                    // Radio.trigger("Map", "changedExtent");
+                    Radio.trigger("MouseHover", "hoverByCoordinates", sourceFeature.getGeometry().getFirstCoordinate());
+                }
+            }
+            else {
+                console.log("kein GFI aktiv!");
+            }
+        },
         // getter for FeaturesToHide
         getFeaturesToHide: function () {
             return this.get("featuresToHide");

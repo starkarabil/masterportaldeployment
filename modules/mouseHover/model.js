@@ -56,7 +56,9 @@ define(function (require) {
             channel.on({
                 "hoverByCoordinates": this.hoverByCoordinates,
                 "resetStyle": this.resetStyle,
-                "styleDeselGFI": this.styleDeselGFI
+                "styleDeselGFI": this.styleDeselGFI,
+                "normalStylesExceptGFI": this.normalStylesExceptGFI,
+                "setGfiStyle": this.setGfiStyle
             }, this);
 
             // select interaction Listener
@@ -233,10 +235,35 @@ define(function (require) {
             }
             else {
                 hoverStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
-                if (_.isUndefined(feature.getStyle()[0]) === false) {
-                    feature.setStyle(hoverStyle.getHoverStyle());
-                }
+                // if (_.isUndefined(feature.getStyle()[0]) === false) {
+                //     feature.setStyle(hoverStyle.getHoverStyle());
+                // }
+                feature.setStyle(hoverStyle.getHoverStyle());
             }
+        },
+        setGfiStyle: function (feat) {
+            var hoverStyle,
+                hoverLayer = this.getHoverLayer(),
+                // source = hoverLayer.getSource() instanceof ol.source.Cluster ? hoverLayer.getSource().getSource() : hoverLayer.getSource(),
+                source = hoverLayer.getSource(),
+                // feature = source.getFeatureById(id);
+                feature = source.getClosestFeatureToCoordinate(feat.getGeometry().getFirstCoordinate());
+                // console.log(feature);
+                // console.log(feature.getStyle());
+                // feature.setStyle(hoverStyle.getHoverStyle());
+                // console.log(feature.getStyle());
+                if (feature.get("features").length > 1) {
+                    hoverStyle = Radio.request("StyleList", "returnModelById", "mml_cluster_hover");
+                    feature.setStyle(hoverStyle.getHoverClusterStyle(feature));
+                }
+                else {
+                    hoverStyle = Radio.request("StyleList", "returnModelById", "mml_hover");
+                    // if (_.isUndefined(feature.getStyle()[0]) === false) {
+                        console.log(feature);
+                        feature.setStyle(hoverStyle.getHoverStyle());
+                        console.log(feature);
+                    // }
+                }
         },
 
         // Deselected Features: Symbol zurücksetzen
@@ -345,6 +372,7 @@ define(function (require) {
             }, this);
         },
         normalStylesExceptGFI: function () {
+            console.log(123);
             var clusterSource = _.size(this.getHoverLayer()) !== 0 ? this.getHoverLayer().getSource() : null,
                 clusterFeatures = clusterSource ? clusterSource.getFeatures() : null,
                 theme = Radio.request("GFI", "getTheme"),
@@ -633,6 +661,7 @@ define(function (require) {
                 zoom = this.getZoom();
 
             feature = this.getFeatureByCoord(coordinate);
+            console.log(1);
             this.styleSelFunc(feature, zoom);
         },
 
