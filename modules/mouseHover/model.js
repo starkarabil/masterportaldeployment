@@ -605,7 +605,7 @@ define(function (require) {
                 if (oldFeature) {
                     source.removeFeature(oldFeature);
                 }
-                geom.setCoordinates([anchor[0] - ((options.scale / 100) ), anchor[1]]); // Abstand 1% vom Maßstab
+                geom.setCoordinates([anchor[0] - ((options.scale / 100)), anchor[1]]); // Abstand 1% vom Maßstab
                 geom.rotate(i * radians, anchor);
                 feature.setGeometry(geom);
                 newClusterFeature.setGeometry(geom);

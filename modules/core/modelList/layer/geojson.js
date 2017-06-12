@@ -173,8 +173,8 @@ define(function (require) {
                 return _.contains(featureIdList, String(feature.getId()));
             });
             features.sort(function (a, b) {
-                var a_id = parseInt(a.getId()),
-                    b_id = parseInt(b.getId());
+                var a_id = parseInt(a.getId(), 10),
+                    b_id = parseInt(b.getId(), 10);
 
                 if (a_id < b_id) {
                     return -1;
@@ -210,8 +210,8 @@ define(function (require) {
         },
         sortFeaturesByAttr: function (features, attr) {
             return features.sort(function (a, b) {
-                var a_id = parseInt(a.get(attr)),
-                    b_id = parseInt(b.get(attr));
+                var a_id = parseInt(a.get(attr), 10),
+                    b_id = parseInt(b.get(attr), 10);
 
                 if (a_id < b_id) {
                     return -1;
@@ -271,6 +271,7 @@ define(function (require) {
                     * Ein direktes feuern durch Radio.trigger("Map", "changedExtent") blieb erfolglos.
                     */
                     var newCenter = Radio.request("MapView", "getCenter");
+
                     newCenter[0] = newCenter[0] - 0.00001;
                     Radio.trigger("MapView", "setCenter", newCenter);
                 }
