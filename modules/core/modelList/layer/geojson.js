@@ -262,13 +262,15 @@ define(function (require) {
                 }
                 // GFI-Feature highlighten
                 else {
-                    console.log("GFI highlighten");
-                    // Radio.trigger("Map", "changedExtent");
-                    Radio.trigger("MouseHover", "hoverByCoordinates", sourceFeature.getGeometry().getFirstCoordinate());
+                    /*
+                    * Hack um mouseHover model dazu zu bringen die Features neu zu zeichnen und damit das aktive Feature auch zu hovern.
+                    * Das MouseHover Model hört auf "changedExtent". Durch minimales Versetzen des Centers wird das Event gefeuert.
+                    * Ein direktes feuern durch Radio.trigger("Map", "changedExtent") blieb erfolglos.
+                    */
+                    var newCenter = Radio.request("MapView", "getCenter");
+                    newCenter[0] = newCenter[0] - 0.00001;
+                    Radio.trigger("MapView", "setCenter", newCenter);
                 }
-            }
-            else {
-                console.log("kein GFI aktiv!");
             }
         },
         // getter for FeaturesToHide
