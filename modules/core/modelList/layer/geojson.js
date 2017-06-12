@@ -142,6 +142,7 @@ define(function (require) {
             source.addFeatures(featuresToHide);
             featuresToHide = [];
             this.setFeaturesToHide(featuresToHide);
+            this.checkIfGfiIsOutdated();
         },
 
         /**
@@ -156,6 +157,7 @@ define(function (require) {
                 featuresToHide.push(feature);
             });
             source.clear();
+            this.checkIfGfiIsOutdated();
         },
 
         /**
@@ -185,6 +187,7 @@ define(function (require) {
             source.addFeatures(features);
             featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
+            this.checkIfGfiIsOutdated();
         },
         /**
          * Zeigt nur die Features an, deren Attr übergeben wird
