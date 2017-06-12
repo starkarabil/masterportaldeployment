@@ -6,7 +6,7 @@ define(function (require) {
 
     GeoJSONLayer = Layer.extend({
         defaults: {
-            featuresToHide: new Array()
+            featuresToHide: []
         },
         /**
          * [createLayerSource description]
@@ -142,6 +142,7 @@ define(function (require) {
             source.addFeatures(featuresToHide);
             featuresToHide = [];
             this.setFeaturesToHide(featuresToHide);
+            this.checkIfGfiIsOutdated();
         },
 
         /**
@@ -156,6 +157,7 @@ define(function (require) {
                 featuresToHide.push(feature);
             });
             source.clear();
+            this.checkIfGfiIsOutdated();
         },
 
         /**
@@ -171,8 +173,8 @@ define(function (require) {
                 return _.contains(featureIdList, String(feature.getId()));
             });
             features.sort(function (a, b) {
-                var a_id = parseInt(a.getId()),
-                    b_id = parseInt(b.getId());
+                var a_id = parseInt(a.getId(), 10),
+                    b_id = parseInt(b.getId(), 10);
 
                 if (a_id < b_id) {
                     return -1;
@@ -183,8 +185,9 @@ define(function (require) {
                 return 0;
             });
             source.addFeatures(features);
-            featuresToHide = _.difference(featuresToHide);
+            featuresToHide = _.difference(featuresToHide, features);
             this.setFeaturesToHide(featuresToHide);
+            this.checkIfGfiIsOutdated();
         },
         /**
          * Zeigt nur die Features an, deren Attr übergeben wird
@@ -207,8 +210,8 @@ define(function (require) {
         },
         sortFeaturesByAttr: function (features, attr) {
             return features.sort(function (a, b) {
-                var a_id = parseInt(a.get(attr)),
-                    b_id = parseInt(b.get(attr));
+                var a_id = parseInt(a.get(attr), 10),
+                    b_id = parseInt(b.get(attr), 10);
 
                 if (a_id < b_id) {
                     return -1;
@@ -225,18 +228,56 @@ define(function (require) {
          */
         hideFeaturesByIds: function (featureIdList) {
             var source = this.getLayerSource(),
-                featuresToHide = this.getFeaturesToHide();
+                featuresToHide = this.getFeaturesToHide(),
+                sourceFeatures = source.getFeatures();
 
             _.each(featureIdList, function (id) {
-                var feature = this.getLayerSource().getFeatureById(id);
+                var feature = source.getFeatureById(id);
 
                 if (feature) {
                     featuresToHide.push(feature);
-                    source.removeFeature(feature);
                 }
             }, this);
+            sourceFeatures = _.difference(sourceFeatures, featuresToHide);
+            source.clear();
+            source.addFeatures(sourceFeatures);
+            this.checkIfGfiIsOutdated();
         },
 
+        /*
+        * Wenn Gfi aktiv ist, wird überprüft ob das GFI-Theme-Feature noch in der Source vorhanden ist.
+        * Wenn nicht, wird das GFI geschlossen
+        * Wenn das GFI-Theme-Feature noch in der Source ist, dann muss es gehighlighted werden
+        */
+        checkIfGfiIsOutdated: function () {
+            var gfiTheme = Radio.request("GFI", "getTheme"),
+                source = this.getLayerSource(),
+                sourceFeature,
+                gfiFeature,
+                newCenter;
+
+            // GFI ist offen
+            if (!_.isUndefined(gfiTheme)) {
+                gfiFeature = gfiTheme.getFeature();
+                sourceFeature = source.getFeatureById(gfiFeature.getId());
+                // wenn das Feature des GFi nicht mehr in der source ist: GFI schließen
+                if (_.isNull(sourceFeature)) {
+                    Radio.trigger("GFI", "setIsVisible", false);
+                }
+                // GFI-Feature highlighten
+                else {
+                    /*
+                    * Hack um mouseHover model dazu zu bringen die Features neu zu zeichnen und damit das aktive Feature auch zu hovern.
+                    * Das MouseHover Model hört auf "changedExtent". Durch minimales Versetzen des Centers wird das Event gefeuert.
+                    * Ein direktes feuern durch Radio.trigger("Map", "changedExtent") blieb erfolglos.
+                    */
+                    newCenter = Radio.request("MapView", "getCenter");
+
+                    newCenter[0] = newCenter[0] - 0.00001;
+                    Radio.trigger("MapView", "setCenter", newCenter);
+                }
+            }
+        },
         // getter for FeaturesToHide
         getFeaturesToHide: function () {
             return this.get("featuresToHide");

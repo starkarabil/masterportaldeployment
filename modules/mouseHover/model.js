@@ -56,7 +56,8 @@ define(function (require) {
             channel.on({
                 "hoverByCoordinates": this.hoverByCoordinates,
                 "resetStyle": this.resetStyle,
-                "styleDeselGFI": this.styleDeselGFI
+                "styleDeselGFI": this.styleDeselGFI,
+                "normalStylesExceptGFI": this.normalStylesExceptGFI
             }, this);
 
             // select interaction Listener
@@ -604,7 +605,7 @@ define(function (require) {
                 if (oldFeature) {
                     source.removeFeature(oldFeature);
                 }
-                geom.setCoordinates([anchor[0] - ((options.scale / 100) ), anchor[1]]); // Abstand 1% vom Maßstab
+                geom.setCoordinates([anchor[0] - ((options.scale / 100)), anchor[1]]); // Abstand 1% vom Maßstab
                 geom.rotate(i * radians, anchor);
                 feature.setGeometry(geom);
                 newClusterFeature.setGeometry(geom);
