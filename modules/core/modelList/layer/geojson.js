@@ -253,7 +253,8 @@ define(function (require) {
             var gfiTheme = Radio.request("GFI", "getTheme"),
                 source = this.getLayerSource(),
                 sourceFeature,
-                gfiFeature;
+                gfiFeature,
+                newCenter;
 
             // GFI ist offen
             if (!_.isUndefined(gfiTheme)) {
@@ -270,7 +271,7 @@ define(function (require) {
                     * Das MouseHover Model hört auf "changedExtent". Durch minimales Versetzen des Centers wird das Event gefeuert.
                     * Ein direktes feuern durch Radio.trigger("Map", "changedExtent") blieb erfolglos.
                     */
-                    var newCenter = Radio.request("MapView", "getCenter");
+                    newCenter = Radio.request("MapView", "getCenter");
 
                     newCenter[0] = newCenter[0] - 0.00001;
                     Radio.trigger("MapView", "setCenter", newCenter);
