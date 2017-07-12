@@ -49,7 +49,17 @@ define(function (require) {
                             if (source instanceof ol.source.Cluster) {
                                 source = source.getSource();
                             }
+                            // Also add featuresToHide so that we have the whole data in the source.
+                            // Thus we prevent adding of duplicate features by source.addFeatures()
+                            source.addFeatures(model.get("featuresToHide"));
                             source.addFeatures(this.getFeatures());
+
+                            var featuresToShow = source.getFeatures();
+
+                            // After adding the new features, remove the featuresToHide from the source
+                            featuresToShow = _.difference(featuresToShow, model.get("featuresToHide"));
+                            source.clear();
+                            source.addFeatures(featuresToShow);
                         }
                     }
                 }
