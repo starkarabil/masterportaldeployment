@@ -2865,9 +2865,6 @@ neben Filterfenster
     margin: 0;
     padding: 0;
   }
-  #searchInput {
-    min-width: 200px;
-  }
   /*mml template*/
   #searchForm-mml #searchInput {
     max-width: 350px;
