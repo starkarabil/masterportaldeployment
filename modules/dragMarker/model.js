@@ -82,7 +82,6 @@ define(function (require) {
             Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
 
             // Set defaults
-            this.setPosition(this.get("coordinate"));
             this.readConfig();
             this.getBoundaryHH();
 
@@ -135,6 +134,7 @@ define(function (require) {
 
         parse: function (data) {
             this.getFeatureFromResponse(data);
+            this.setPosition(this.get("coordinate"));
         },
 
         // sets polygon of hamburg
@@ -158,14 +158,17 @@ define(function (require) {
         // sets feature to specific coordiante without zooming
         setPosition: function (coordinate) {
             var pointFeature = new ol.Feature({
-                name: this.get("featureName"),
-                geometry: new ol.geom.Point(coordinate)
-            });
+                    name: this.get("featureName"),
+                    geometry: new ol.geom.Point(coordinate)
+                }),
+                isInside = this.isInsideHH(coordinate);
 
-            this.get("dragMarkerLayer").getSource().clear();
-            this.get("dragMarkerLayer").getSource().addFeature(pointFeature);
-            this.set("coordinate", coordinate);
-            this.requestNewAddress();
+            if (isInside) {
+                this.get("dragMarkerLayer").getSource().clear();
+                this.get("dragMarkerLayer").getSource().addFeature(pointFeature);
+                this.set("coordinate", coordinate);
+                this.requestNewAddress();
+            }
         },
 
         // replies specific coordinate of feature
