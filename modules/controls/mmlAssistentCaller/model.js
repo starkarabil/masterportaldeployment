@@ -85,6 +85,7 @@ define(function (require) {
 
             // Abbruch, wenn Punkt nicht in Hamburg
             if (!isInside) {
+                alert("Der Kartenmittelpunkt liegt außerhalb Hamburgs. Bitte verschieben Sie den Kartenausschnitt.");
                 return;
             }
 
