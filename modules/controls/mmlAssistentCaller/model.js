@@ -10,7 +10,8 @@ define(function (require) {
             assistantURL: "", // URL to open
             welcomeScreen: false,
             landesgrenzeURL: "", // URL mit Landesgrenze
-            sourceHH: null
+            sourceHH: null,
+            isOutsideMessage: "Es können nur Anliegen in Hamburg gemeldet werden. Bitte verschieben Sie den Kartenausschnitt."
         },
         initialize: function () {
             this.getConfiguration();
@@ -27,6 +28,7 @@ define(function (require) {
                 visible = mmlNewIssueControl && mmlNewIssueControl.visible ? mmlNewIssueControl.visible : false,
                 url = mmlNewIssueControl && mmlNewIssueControl.assistantURL ? mmlNewIssueControl.assistantURL : "",
                 welcomeScreen = mmlNewIssueControl && mmlNewIssueControl.welcomeScreen ? mmlNewIssueControl.welcomeScreen : false,
+                isOutsideMessage = mmlNewIssueControl && mmlNewIssueControl.isOutsideMessage ? mmlNewIssueControl.isOutsideMessage : this.getIsOutsideMessage(),
                 mapMarkerModul = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
                 landesgrenzeId = mapMarkerModul.dragMarkerLandesgrenzeId ? mapMarkerModul.dragMarkerLandesgrenzeId.toString() : null,
                 landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
@@ -36,6 +38,7 @@ define(function (require) {
             this.setAssistantURL(url);
             this.setWelcomeScreen(welcomeScreen);
             this.setVisible(visible);
+            this.setIsOutsideMessage(isOutsideMessage);
         },
 
         // liest die landesgrenze_hh.json ein und ruft dann parse auf
@@ -85,7 +88,7 @@ define(function (require) {
 
             // Abbruch, wenn Punkt nicht in Hamburg
             if (!isInside) {
-                alert("Der Kartenmittelpunkt liegt außerhalb Hamburgs. Bitte verschieben Sie den Kartenausschnitt.");
+                Radio.trigger("Alert", "alert", {text: this.getIsOutsideMessage(), kategorie: "alert-info"});
                 return;
             }
 
@@ -172,6 +175,15 @@ define(function (require) {
          */
         getWelcomeScreen: function () {
             return this.get("welcomeScreen");
+        },
+
+        // getter for isOutsideMessage
+        getIsOutsideMessage: function () {
+            return this.get("isOutsideMessage");
+        },
+        // setter for isOutsideMessage
+        setIsOutsideMessage: function (value) {
+            this.set("isOutsideMessage", value);
         }
     });
 
