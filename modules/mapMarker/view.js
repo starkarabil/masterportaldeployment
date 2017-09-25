@@ -74,7 +74,8 @@ define([
                             right: rightSM
                         };
                     }
-                }
+                },
+                "getPosition": this.getMarkerPosition
             }, this);
 
             channel.on({
@@ -259,6 +260,10 @@ define([
         */
         hideMarker: function () {
             this.$el.hide();
+        },
+
+        getMarkerPosition: function () {
+            return this.model.get("marker").getPosition();
         }
     });
 
