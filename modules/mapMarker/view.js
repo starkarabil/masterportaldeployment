@@ -263,7 +263,9 @@ define([
         },
 
         getMarkerPosition: function () {
-            return this.model.get("marker").getPosition();
+            var isVisible = this.$el.is(":visible");
+
+            return isVisible === true ? this.model.get("marker").getPosition() : undefined;
         }
     });
 
