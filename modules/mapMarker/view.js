@@ -75,7 +75,8 @@ define([
                         };
                     }
                 },
-                "getPosition": this.getMarkerPosition
+                "getPosition": this.getMarkerPosition,
+                "isMarkerInVisibleExtent": this.isMarkerInVisibleExtent
             }, this);
 
             channel.on({
@@ -266,6 +267,20 @@ define([
             var isVisible = this.$el.is(":visible");
 
             return isVisible === true ? this.model.get("marker").getPosition() : undefined;
+        },
+
+        isMarkerInVisibleExtent: function () {
+            var extent = Radio.request("Map", "getExtent"),
+                xmin = extent[0],
+                ymin = extent[1],
+                xmax = extent[2],
+                ymax = extent[3],
+                pos = this.getMarkerPosition(),
+                xpos = !_.isUndefined(pos) ? pos[0] : null,
+                ypos = !_.isUndefined(pos) ? pos[1] : null,
+                isInside = _.isUndefined(pos) ? false : xpos >= xmin && xpos <= xmax && ypos >= ymin && ypos <= ymax ? true : false;
+
+            return isInside;
         }
     });
 

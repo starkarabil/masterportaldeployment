@@ -79,8 +79,8 @@ define(function (require) {
          */
         getParameterValues: function () {
             var url = this.getAssitentURL(),
-                mapMarkerPosition = Radio.request("MapMarker", "getPosition"),
-                center = _.isUndefined(mapMarkerPosition) ? Radio.request("MapView", "getCenter") : mapMarkerPosition,
+                isMapMarkerInExtent = Radio.request("MapMarker", "isMarkerInVisibleExtent"),
+                center = isMapMarkerInExtent ? Radio.request("MapMarker", "getPosition") : Radio.request("MapView", "getCenter"),
                 isInside = this.isInsideHH(center),
                 centerString = center.join(),
                 zoomlevel = Radio.request("MapView", "getZoomLevel").toString(),
