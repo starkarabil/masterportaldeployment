@@ -136,6 +136,7 @@ Gibt an ob der in der Karte verwendete Marker verschiebbar sein soll.
 |----|-------------|---|-------|------------|
 |marker|nein|String||Bei "dragMarker" wird der Marker auf der Karte verschiebbar, bei allen anderen Eingaben wird ein Marker verwendet, der nicht verschiebbar ist.|
 |visible|nein|Boolean|true|Gibt an ob der Marker beim initialen Laden der Karte sichtbar ist oder nicht.|
+|dragMarkerLandesgrenzeId|ja|String||ID, die in der [services.json](services.json.md) beschrieben ist. Wird sowohl bei marker: "mapMarker", als auch bei marker: "dragMarker" verwendet.|
 
 ******
 
@@ -148,6 +149,7 @@ Konfiguriert den Button zum Aufruf des MML-Assistenten.
 |visible|ja|Boolean|false|Definiert, ob der Button initial angezeigt werden soll.|
 |assistantURL|ja|String||URL, die aufgerufen werden soll.|
 |welcomeScreen|nein|Boolean|false|Definiert, ob initial ein WelcomeScreen modal angezeigt werden soll.|
+|isOutsideMessage|nein|String|"Es können nur Anliegen in Hamburg gemeldet werden. Bitte verschieben Sie den Kartenausschnitt."|Hinweistext, wenn für Aufruf der assistantURL eine Koordinate außerhalb des Polygons aus [dragMarkerLandesgrenzeId](#markdown-header-portalconfigmapmarkermodul).|
 
 ******
 

@@ -50,9 +50,36 @@ define(function (require) {
         },
 
         initialize: function () {
+            var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+
+            if (_.has(searchConf, "zoomLevelStreet")) {
+                this.setZoomLevelStreet(searchConf.zoomLevelStreet);
+            }
+
+            // internal Listeners
+            this.listenTo(this, {"change:nearestAddress": this.sendNewAddress});
+
+            // Prepare Map
+            Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
+            Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
+
+            // Set defaults
+            this.readConfig();
+            this.getBoundaryHH();
+        },
+
+        readConfig: function () {
+            var config = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
+                landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
+                landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
+                url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
+
+            this.set("url", url);
+        },
+
+        registerEvents: function () {
             // Radio channel
-            var channel = Radio.channel("DragMarker"),
-            searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+            var channel = Radio.channel("DragMarker");
 
             channel.on({
                 "handleDragEvent": this.handleDragEvent,
@@ -73,31 +100,6 @@ define(function (require) {
 
             // external Radio channel
             Radio.on("ReverseGeocoder", "addressComputed", this.setNearestAddress, this);
-
-            // internal Listeners
-            this.listenTo(this, {"change:nearestAddress": this.sendNewAddress});
-
-            // Prepare Map
-            Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
-            Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
-
-            // Set defaults
-            this.setPosition(this.get("coordinate"));
-            this.readConfig();
-            this.getBoundaryHH();
-
-            if (_.has(searchConf, "zoomLevelStreet")) {
-                this.setZoomLevelStreet(searchConf.zoomLevelStreet);
-            }
-        },
-
-        readConfig: function () {
-            var config = Radio.request("Parser", "getPortalConfig").mapMarkerModul,
-                landesgrenzeId = config.dragMarkerLandesgrenzeId ? config.dragMarkerLandesgrenzeId.toString() : null,
-                landesgrenzeLayer = landesgrenzeId ? Radio.request("RawLayerList", "getLayerWhere", {id: landesgrenzeId}) : "",
-                url = landesgrenzeLayer ? landesgrenzeLayer.get("url") : "";
-
-            this.set("url", url);
         },
 
         checkInitialVisibility: function () {
@@ -135,6 +137,8 @@ define(function (require) {
 
         parse: function (data) {
             this.getFeatureFromResponse(data);
+            this.registerEvents();
+            this.setPosition(this.get("coordinate"));
         },
 
         // sets polygon of hamburg
@@ -158,14 +162,17 @@ define(function (require) {
         // sets feature to specific coordiante without zooming
         setPosition: function (coordinate) {
             var pointFeature = new ol.Feature({
-                name: this.get("featureName"),
-                geometry: new ol.geom.Point(coordinate)
-            });
+                    name: this.get("featureName"),
+                    geometry: new ol.geom.Point(coordinate)
+                }),
+                isInside = this.isInsideHH(coordinate);
 
-            this.get("dragMarkerLayer").getSource().clear();
-            this.get("dragMarkerLayer").getSource().addFeature(pointFeature);
-            this.set("coordinate", coordinate);
-            this.requestNewAddress();
+            if (isInside) {
+                this.get("dragMarkerLayer").getSource().clear();
+                this.get("dragMarkerLayer").getSource().addFeature(pointFeature);
+                this.set("coordinate", coordinate);
+                this.requestNewAddress();
+            }
         },
 
         // replies specific coordinate of feature
