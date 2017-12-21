@@ -314,10 +314,10 @@ Radio.request("RemoteInterface", "getDragMarkerPosition");
 ## Auf newDragMarkerAddress registrieren
 *(newDragMarkerAddress)*
 
-Mit diesem Aufruf kann sich auf das *newDragMarkerAddress* Event registriert werden. Jedesmal, wenn Informationen über eine neue DragMarkerAddress vorliegen, wird die callback-Funktion ausgeführt. Das Event wird auch gefeuert, wenn keine Adresse ermittelt werden kann (z.B. bei Diensteproblemen), liefert dann aber ein ErrorObject zurück.
+Mit diesem Aufruf kann sich auf das *newDragMarkerAddress* Event registriert werden. Jedesmal, wenn Informationen über eine neue DragMarkerAddress vorliegen, wird die callback-Funktion ausgeführt. Das Event wird auch gefeuert, wenn keine Adresse ermittelt werden kann (z.B. bei Diensteproblemen), liefert dann aber ein ErrorObject zurück. Zusätzlich wird noch eine Flag (Boolean) mitgeliefert, ob es sich um die erste (initiale) Adresse des DragMarkers handelt oder nicht.
 
 
-**Returns** (dragMarkerAddress)
+**Returns** (dragMarkerAddress, initialDMA)
 ```
 #!js
 {
@@ -327,15 +327,16 @@ Mit diesem Aufruf kann sich auf das *newDragMarkerAddress* Event registriert wer
    housenumberaffix: String,
    postcode: String,
    streetname: String
-}
+}, Boolean
 ```
 
 
 **Beispiel-Aufruf für ein- und ausschalten des Handlers**
 ```
 #!js
-Radio.on("RemoteInterface", "newDragMarkerAddress", function (dragMarkerAddress) {
+Radio.on("RemoteInterface", "newDragMarkerAddress", function (dragMarkerAddress, initialDMA) {
    console.log(dragMarkerAddress);
+   console.log(initialDMA);
 });
 Radio.off("RemoteInterface", "newDragMarkerAddress");
 ```

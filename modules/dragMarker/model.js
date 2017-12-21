@@ -50,10 +50,15 @@ define(function (require) {
         },
 
         initialize: function () {
-            var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+            var searchConf = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr,
+                centerParamUrl = Radio.request("ParametricURL", "getCenter") ? Radio.request("ParametricURL", "getCenter") : null,
+                coordinate = centerParamUrl ? [centerParamUrl.x, centerParamUrl.y] : null;
 
             if (_.has(searchConf, "zoomLevelStreet")) {
                 this.setZoomLevelStreet(searchConf.zoomLevelStreet);
+            }
+            if (coordinate) {
+                this.setCoordinate(coordinate);
             }
 
             // internal Listeners
@@ -323,6 +328,15 @@ define(function (require) {
         */
         getFirstDMAdress: function () {
             return this.get("firstDMA");
+        },
+
+        // getter for coordinates
+        getCoordinate: function () {
+            return this.get("coordinate");
+        },
+        // setter for coordinates
+        setCoordinate: function (value) {
+            this.set("coordinate", value);
         }
     });
 
