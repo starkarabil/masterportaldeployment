@@ -158,8 +158,8 @@ define(function () {
             Radio.trigger("RemoteInterface", "changedExtent", extent);
         },
 
-        newDragMarkerAddress: function (dragMarkerAddress) {
-            Radio.trigger("RemoteInterface", "newDragMarkerAddress", dragMarkerAddress);
+        newDragMarkerAddress: function (dragMarkerAddress, firstDMA) {
+            Radio.trigger("RemoteInterface", "newDragMarkerAddress", dragMarkerAddress, firstDMA);
         },
 
         requestDragMarkerAddress: function () {
