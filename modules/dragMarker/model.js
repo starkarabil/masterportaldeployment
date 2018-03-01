@@ -61,9 +61,6 @@ define(function (require) {
                 this.setCoordinate(coordinate);
             }
 
-            // internal Listeners
-            this.listenTo(this, {"change:nearestAddress": this.sendNewAddress});
-
             // Prepare Map
             Radio.trigger("Map", "addLayerToIndex", [this.get("dragMarkerLayer"), Radio.request("Map", "getLayers").getArray().length]);
             Radio.trigger("Map", "addInteraction", this.get("dragInteraction"));
@@ -104,7 +101,7 @@ define(function (require) {
             EventBus.on("searchbar:hit", this.searchbarhit, this);
 
             // external Radio channel
-            Radio.on("ReverseGeocoder", "addressComputed", this.setNearestAddress, this);
+            Radio.on("ReverseGeocoder", "addressComputed", this.sendNewAddress, this);
         },
 
         checkInitialVisibility: function () {
@@ -234,8 +231,9 @@ define(function (require) {
         },
 
         // Wird auf listenTo "change:nearestAddress" registriert. Liefert Adressobjekt bzw. Fehlerobjekt aus.
-        sendNewAddress: function () {
-            Radio.trigger("DragMarker", "newAddress", this.get("nearestAddress"), this.getFirstDMAdress());
+        sendNewAddress: function (nearestAdress) {
+            this.setNearestAddress(nearestAdress);
+            Radio.trigger("DragMarker", "newAddress", nearestAdress, this.getFirstDMAdress());
             if (this.getFirstDMAdress() === true) {
                 this.setFirstDMAdress(false);
             }
