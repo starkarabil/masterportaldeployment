@@ -82,6 +82,9 @@ define([
         ajaxSuccess: function (response) {
             var exeResp = $("wps\\:ExecuteResponse,ExecuteResponse", response),
                 data = exeResp && $(exeResp).find("wps\\:ComplexData,ComplexData")[0] ? $(exeResp).find("wps\\:ComplexData,ComplexData")[0] : null,
+                anfrage = data && $(data).find("wps\\:Anfrage,Anfrage")[0] ? $(data).find("wps\\:Anfrage,Anfrage")[0] : null,
+                requestCoordX = anfrage && $(anfrage).find("wps\\:XKoordinate,XKoordinate")[0] ? $(anfrage).find("wps\\:XKoordinate,XKoordinate")[0].textContent : "",
+                requestCoordY = anfrage && $(anfrage).find("wps\\:YKoordinate,YKoordinate")[0] ? $(anfrage).find("wps\\:YKoordinate,YKoordinate")[0].textContent : "",
                 ergebnis = data && $(data).find("wps\\:Ergebnis,Ergebnis")[0] ? $(data).find("wps\\:Ergebnis,Ergebnis")[0] : null,
                 strasse = ergebnis && $(ergebnis).find("wps\\:Strasse,Strasse")[0] ? $(ergebnis).find("wps\\:Strasse,Strasse")[0].textContent : "",
                 hsnr = ergebnis && $(ergebnis).find("wps\\:Hausnr,Hausnr")[0] ? $(ergebnis).find("wps\\:Hausnr,Hausnr")[0].textContent : "",
@@ -92,6 +95,7 @@ define([
                 y = ergebnis && $(ergebnis).find("wps\\:YKoordinate,YKoordinate")[0] ? $(ergebnis).find("wps\\:YKoordinate,YKoordinate")[0].textContent : "";
 
             Radio.trigger("ReverseGeocoder", "addressComputed", {
+                requestCoordinate: [parseFloat(requestCoordX), parseFloat(requestCoordY)],
                 distance: Number(parseFloat(distance).toFixed(3)),
                 coordinate: [parseFloat(x), parseFloat(y)],
                 streetname: strasse,

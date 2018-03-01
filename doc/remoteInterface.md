@@ -326,7 +326,8 @@ Mit diesem Aufruf kann sich auf das *newDragMarkerAddress* Event registriert wer
    housenumber: String,
    housenumberaffix: String,
    postcode: String,
-   streetname: String
+   streetname: String,
+   requestCoordinate: [Number, Number]
 }, Boolean
 ```
 
