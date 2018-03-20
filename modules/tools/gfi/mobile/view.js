@@ -14,8 +14,12 @@ define(function (require) {
          * Zeichnet das Template und erstellt das Bootstrap Modal
          */
         render: function () {
-            var attr = this.model.toJSON();
+            var attr = this.model.toJSON(),
+                theme = this.model.getTheme(),
+                street = theme.getFeature().get("str"),
+                housenumber = theme.getFeature().get("hsnr");
 
+            attr.address = street + " " + housenumber;
             $(".ol-overlaycontainer-stopevent").append(this.$el.html(this.template(attr)));
             $("#gfi-mobile").modal({
                 backdrop: "static",
