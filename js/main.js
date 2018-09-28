@@ -1,3 +1,9 @@
+/**
+ * Disable Google Analytics that tracks a random percentage (currently 1%) of players loaded from the CDN.
+ * @link https://www.npmjs.com/package/video.js#quick-start
+ */
+window.HELP_IMPROVE_VIDEOJS = false;
+
 var scriptTags = document.getElementsByTagName("script"),
     scriptTagsArray = Array.prototype.slice.call(scriptTags),
     configPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1) + "config",
@@ -44,8 +50,7 @@ require.config({
         slider: "../node_modules/bootstrap-slider/dist/bootstrap-slider.min",
         text: "../node_modules/requirejs-text/text",
         underscore: "../node_modules/underscore/underscore-min",
-        videojs: "../node_modules/video.js/dist/video.min",
-        videojsflash: "../node_modules/videojs-flash/dist/videojs-flash.min"
+        videojs: "../node_modules/video.js/dist/video.min"
     },
     shim: {
         bootstrap: {
@@ -56,11 +61,6 @@ require.config({
         },
         openlayers: {
             exports: "ol"
-        }
-    },
-    map: {
-        "videojsflash": {
-            "video.js": "videojs"
         }
     },
     urlArgs: "bust=" + (new Date()).getTime()

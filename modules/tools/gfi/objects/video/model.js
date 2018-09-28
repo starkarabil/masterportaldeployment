@@ -1,13 +1,6 @@
 define(function (require) {
-    var videojs = require("videojs"),
+    var VideoJs = require("videojs"),
         VideoModel;
-
-    /**
-     * Disable Google Analytics that tracks a random percentage (currently 1%) of players loaded from the CDN.
-     * @link https://videojs.com/getting-started/
-     */
-    window.HELP_IMPROVE_VIDEOJS = false;
-    require("videojsflash");
 
     VideoModel = Backbone.Model.extend({
         defaults: {
@@ -38,7 +31,7 @@ define(function (require) {
         startStreaming: function (callback) {
             var videoEle = document.getElementById(this.get("id"));
 
-            videojs(videoEle, {"autoplay": true, "preload": "auto", "controls": false}, callback);
+            VideoJs(videoEle, {"autoplay": true, "preload": "auto", "controls": false}, callback);
         },
 
         /**
@@ -54,7 +47,7 @@ define(function (require) {
 
         /**
          * Zerstört das Modul vollständig
-         * stop videojs
+         * stop VideoJs
          * remove Radio-Listener
          * remove Backbone-Listener
          * clear Attributes
@@ -64,7 +57,7 @@ define(function (require) {
         destroy: function () {
             var videoEle = document.getElementById(this.get("id"));
 
-            videojs(videoEle).dispose();
+            VideoJs(videoEle).dispose();
             this.stopListening();
             this.off();
             this.clear();
