@@ -1,19 +1,19 @@
 define(function (require) {
 
     var Backbone = require("backbone"),
-        VideoTemplate = require("text!modules/tools/gfi/objects/video/template.html"),
-        VideoModel = require("modules/tools/gfi/objects/video/model"),
-        VideoView;
+        VideoStreamingTemplate = require("text!modules/tools/gfi/objects/videostreaming/template.html"),
+        VideoStreamingModel = require("modules/tools/gfi/objects/videostreaming/model"),
+        VideoStreamingView;
 
-    VideoView = Backbone.View.extend({
+    VideoStreamingView = Backbone.View.extend({
         initialize: function (url) {
-            this.model = new VideoModel(url);
+            this.model = new VideoStreamingModel(url);
             this.listenTo(this.model, {
                 "removeView": this.remove
             });
             this.render();
         },
-        template: _.template(VideoTemplate),
+        template: _.template(VideoStreamingTemplate),
         render: function () {
             var attr = this.model.toJSON();
 
@@ -22,5 +22,5 @@ define(function (require) {
         }
     });
 
-    return VideoView;
+    return VideoStreamingView;
 });

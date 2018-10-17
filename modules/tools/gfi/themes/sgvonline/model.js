@@ -3,7 +3,7 @@ define(function (require) {
     var Theme = require("modules/tools/gfi/themes/model"),
         Radio = require("backbone.radio"),
         ImgView = require("modules/tools/gfi/objects/image/view"),
-        VideoView = require("modules/tools/gfi/objects/video/view"),
+        VideoStreamingView = require("modules/tools/gfi/objects/videostreaming/view"),
         RoutableView = require("modules/tools/gfi/objects/routingButton/view"),
         SgvOnlineTheme;
 
@@ -47,46 +47,51 @@ define(function (require) {
                 children.push(element);
             }
             else {
-                _.each(element, function (ele) {
+                element[0] = this.filterVideoTag(element[0]);
+                _.each(element, function (ele, index) {
                     _.each(ele, function (val, key) {
-                        var imgView,
-                            videoView;
+                        var copyright,
+                            imgView,
+                            videoStreamingView,
+                            valString = String(val);
 
-                        if (key === "Bild") {
-                            imgView = new ImgView(val);
+                        if (valString.substr(0, 4) === "http"
+                            && (valString.search(/\.jpg/i) !== -1 || valString.search(/\.png/i) !== -1 || valString.search(/\.jpeg/i) !== -1 || valString.search(/\.gif/i) !== -1)) {
+                            // Prüfen, ob es auch ein Copyright für das Bild gibt, dann dieses ebenfalls an ImgView übergeben, damit es im Bild dargestellt wird
+                            copyright = "";
 
-                            element[key] = "#";
+                            if (element[index].Copyright !== null) {
+                                copyright = element[index].Copyright;
+                                element[index].Copyright = "#";
+                            }
+                            else if (element[index].copyright !== null) {
+                                copyright = element[index].copyright;
+                                element[index].copyright = "#";
+                            }
+
+                            imgView = new ImgView(valString, copyright);
+
+                            element[index][key] = "#";
+
                             children.push({
                                 key: imgView.model.get("id"),
-                                val: imgView
+                                val: imgView,
+                                type: "image"
                             });
                         }
-                        else if (key === "video" && Radio.request("Util", "isAny") === null) {
-                            videoView = new VideoView(val);
+                        else if (key === "video" || key === "mobil_video") {
+                            videoStreamingView = new VideoStreamingView(valString);
 
-                            element[key] = "#";
-                            children.push({
-                                key: videoView.model.get("id"),
-                                val: videoView
-                            });
-                            if (_.has(element, "mobil_video")) {
-                                element.mobil_video = "#";
-                            }
-                        }
-                        else if (key === "mobil_video" && Radio.request("Util", "isAny")) {
-                            videoView = new VideoView(val);
+                            element[index][key] = "#";
 
-                            element[key] = "#";
                             children.push({
-                                key: videoView.model.get("id"),
-                                val: videoView
+                                key: videoStreamingView.model.get("id"),
+                                val: videoStreamingView,
+                                type: "video"
                             });
-                            if (_.has(element, "video")) {
-                                element.video = "#";
-                            }
                         }
                         // lösche leere Dummy-Einträge wieder raus.
-                        element = _.omit(element, function (value) {
+                        element[index] = _.omit(element[index], function (value) {
                             return value === "#";
                         });
                     }, this);
@@ -97,6 +102,7 @@ define(function (require) {
             }
             this.set("gfiContent", element);
         },
+
         getAmtlVergAddr: function () {
             var key = "Amtlich vergebene Adresse",
                 val;
@@ -110,6 +116,22 @@ define(function (require) {
                     this.get("gfiContent")[0][key] = "Nein";
                 }
             }
+        },
+
+        /**
+         * Prüft auf videotags und filtert entsprechend dem Devicetyp nach mobil oder desktop.
+         * @param   {object}    gfiContent  GFI-Infos
+         * @returns {object}    GFI-Infos
+         */
+        filterVideoTag: function (gfiContent) {
+            if (_.has(gfiContent, "video") || _.has(gfiContent, "mobil_video")) {
+                if (Radio.request("Util", "isAny")) {
+                    return _.omit(gfiContent, "video");
+                }
+                return _.omit(gfiContent, "mobil_video");
+            }
+
+            return gfiContent;
         }
     });
 

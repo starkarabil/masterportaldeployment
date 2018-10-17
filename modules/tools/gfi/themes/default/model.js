@@ -3,7 +3,7 @@ define(function (require) {
     var Theme = require("modules/tools/gfi/themes/model"),
         Radio = require("backbone.radio"),
         ImgView = require("modules/tools/gfi/objects/image/view"),
-        VideoStreamingView = require("modules/tools/gfi/objects/video/view"),
+        VideoStreamingView = require("modules/tools/gfi/objects/videostreaming/view"),
         RoutableView = require("modules/tools/gfi/objects/routingButton/view"),
         DefaultTheme;
 
