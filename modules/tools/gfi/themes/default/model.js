@@ -3,7 +3,7 @@ define(function (require) {
     var Theme = require("modules/tools/gfi/themes/model"),
         Radio = require("backbone.radio"),
         ImgView = require("modules/tools/gfi/objects/image/view"),
-        VideoView = require("modules/tools/gfi/objects/video/view"),
+        VideoStreamingView = require("modules/tools/gfi/objects/video/view"),
         RoutableView = require("modules/tools/gfi/objects/routingButton/view"),
         DefaultTheme;
 
@@ -53,11 +53,12 @@ define(function (require) {
                 children.push(element);
             }
             else {
+                element[0] = this.filterVideoTag(element[0]);
                 _.each(element, function (ele, index) {
                     _.each(ele, function (val, key) {
                         var copyright,
                             imgView,
-                            videoView,
+                            videoStreamingView,
                             valString = String(val);
 
                         if (valString.substr(0, 4) === "http"
@@ -84,31 +85,16 @@ define(function (require) {
                                 type: "image"
                             });
                         }
-                        else if (key === "video" && Radio.request("Util", "isAny") === null) {
-                            videoView = new VideoView(valString);
+                        else if (key === "video" || key === "mobil_video") {
+                            videoStreamingView = new VideoStreamingView(valString);
 
                             element[index][key] = "#";
+
                             children.push({
-                                key: videoView.model.get("id"),
-                                val: videoView,
+                                key: videoStreamingView.model.get("id"),
+                                val: videoStreamingView,
                                 type: "video"
                             });
-                            if (_.has(element, "mobil_video")) {
-                                element.mobil_video = "#";
-                            }
-                        }
-                        else if (key === "mobil_video" && Radio.request("Util", "isAny")) {
-                            videoView = new VideoView(valString);
-
-                            element[index][key] = "#";
-                            children.push({
-                                key: videoView.model.get("id"),
-                                val: videoView,
-                                type: "mobil_video"
-                            });
-                            if (_.has(element, "video")) {
-                                element.video = "#";
-                            }
                         }
                         // lösche leere Dummy-Einträge wieder raus.
                         element[index] = _.omit(element[index], function (value) {
@@ -121,6 +107,22 @@ define(function (require) {
                 this.set("children", children);
             }
             this.set("gfiContent", element);
+        },
+
+        /**
+         * Prüft auf videotags und filtert entsprechend dem Devicetyp nach mobil oder desktop.
+         * @param   {object}    gfiContent  GFI-Infos
+         * @returns {object}    GFI-Infos
+         */
+        filterVideoTag: function (gfiContent) {
+            if (_.has(gfiContent, "video") || _.has(gfiContent, "mobil_video")) {
+                if (Radio.request("Util", "isAny")) {
+                    return _.omit(gfiContent, "video");
+                }
+                return _.omit(gfiContent, "mobil_video");
+            }
+
+            return gfiContent;
         }
     });
 
