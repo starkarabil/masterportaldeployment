@@ -6,16 +6,11 @@ define(function (require) {
         defaults: {
             id: _.uniqueId("video"),
             url: "",
-            type: "",
-            width: "400px",
-            height: "300px"
+            type: "application/x-mpegURL"
         },
 
-        initialize: function (url, type, width, height) {
+        initialize: function (url) {
             this.setUrl(url);
-            this.setType(type);
-            this.setWidth(width);
-            this.setHeight(height);
 
             this.listenTo(Radio.channel("GFI"), {
                 "afterRender": this.startStreaming,
@@ -31,7 +26,7 @@ define(function (require) {
         startStreaming: function (callback) {
             var videoEle = document.getElementById(this.get("id"));
 
-            VideoJs(videoEle, {"autoplay": true, "preload": "auto", "controls": false}, callback);
+            VideoJs(videoEle, {"autoplay": true, "preload": "auto", "controls": false, "fluid": true}, callback);
         },
 
         /**
@@ -72,21 +67,6 @@ define(function (require) {
         // setter for url
         setUrl: function (value) {
             this.set("url", value);
-        },
-
-        // setter for type
-        setType: function (value) {
-            this.set("type", value);
-        },
-
-        // setter for width
-        setWidth: function (value) {
-            this.set("width", value);
-        },
-
-        // setter for height
-        setHeight: function (value) {
-            this.set("height", value);
         }
     });
     return VideoModel;
