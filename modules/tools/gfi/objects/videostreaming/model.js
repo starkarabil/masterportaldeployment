@@ -1,5 +1,4 @@
 import * as videojs from "video.js";
-import "videojs-flash";
 
 
 /**
@@ -9,20 +8,15 @@ import "videojs-flash";
 window.HELP_IMPROVE_VIDEOJS = false;
 
 
-const VideoModel = Backbone.Model.extend({
+const VideoStreamingModel = Backbone.Model.extend({
     defaults: {
         id: _.uniqueId("video"),
         url: "",
-        type: "",
-        width: "400px",
-        height: "300px"
+        type: "application/x-mpegURL"
     },
 
-    initialize: function (url, type, width, height) {
+    initialize: function (url) {
         this.setUrl(url);
-        this.setType(type);
-        this.setWidth(width);
-        this.setHeight(height);
 
         this.listenTo(Radio.channel("GFI"), {
             "afterRender": this.startStreaming,
@@ -38,7 +32,7 @@ const VideoModel = Backbone.Model.extend({
     startStreaming: function (callback) {
         var videoEle = document.getElementById(this.get("id"));
 
-        videojs(videoEle, {"autoplay": true, "preload": "auto", "controls": false}, callback);
+        videojs(videoEle, {"autoplay": true, "preload": "auto", "controls": false, "fluid": true}, callback);
     },
 
     /**
@@ -54,7 +48,7 @@ const VideoModel = Backbone.Model.extend({
 
     /**
      * Zerstört das Modul vollständig
-     * stop videojs
+     * stop VideoJs
      * remove Radio-Listener
      * remove Backbone-Listener
      * clear Attributes
@@ -62,7 +56,7 @@ const VideoModel = Backbone.Model.extend({
      * @returns {void}
      */
     destroy: function () {
-        var videoEle = document.getElementById(this.get("id"));
+        const videoEle = document.getElementById(this.get("id"));
 
         videojs(videoEle).dispose();
         this.stopListening();
@@ -79,22 +73,8 @@ const VideoModel = Backbone.Model.extend({
     // setter for url
     setUrl: function (value) {
         this.set("url", value);
-    },
-
-    // setter for type
-    setType: function (value) {
-        this.set("type", value);
-    },
-
-    // setter for width
-    setWidth: function (value) {
-        this.set("width", value);
-    },
-
-    // setter for height
-    setHeight: function (value) {
-        this.set("height", value);
     }
+
 });
 
-export default VideoModel;
+export default VideoStreamingModel;

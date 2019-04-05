@@ -1,6 +1,6 @@
 import Theme from "../model";
 import ImgView from "../../objects/image/view";
-import VideoView from "../../objects/video/view";
+import VideoView from "../../objects/videostreaming/view";
 
 const ActiveCityMapsTheme = Theme.extend({
     initialize: function () {
