@@ -1,5 +1,4 @@
-import * as videojs from "video.js";
-
+import videojs from 'video.js'
 
 /**
  * Disable Google Analytics that tracks a random percentage (currently 1%) of players loaded from the CDN.

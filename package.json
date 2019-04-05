@@ -36,8 +36,8 @@
     "rbush": "^2.0.2",
     "underscore": "1.x",
     "vcs-oblique": "^2.0.1",
-    "zip-a-folder": "0.0.6",
-    "video.js": "7.x"
+    "video.js": "7.x",
+    "zip-a-folder": "0.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
