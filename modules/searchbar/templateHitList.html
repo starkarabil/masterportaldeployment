@@ -4,19 +4,44 @@
     <% if (type !== "Fachthema") {
     hitListOfType = _.sortBy(hitListOfType, "name");
 } %>
-    <li class="list-group-item type"><span class="badge"><%= hitListOfType.length %></span><%= type %></li><div style="max-height: 220px; overflow-y: auto; overflow-x: hidden; display: none;">
+<li class="list-group-item type"><span class="badge"><%= hitListOfType.length %></span><%= type %></li><div style="max-height: 220px; overflow-y: auto; overflow-x: hidden; display: none;">
         <% _.each(hitListOfType, function (hit) { %>
-            <li id="<%= hit.id %>" class="list-group-item hit" data-toggle="tooltip" data-placement="bottom" title="<%= hit.metaName %>">
-                <p id="searchInputLi">
-                    <% if (hit.glyphicon !== undefined) { %>
-                        <span class="glyphicon <%= hit.glyphicon %>"></span>
-                    <% } else { %>
-                        <img src="<%= hit.imageSrc %>">
-                    <% } %>
-                    <span class="list-group-item-name"><%= _.isUndefined(hit.shortName)? hit.name : hit.shortName %></span>
-                    <small class="list-group-item-theme"><%= _.isUndefined(hit.additionalInfo)? hit.type: hit.additionalInfo %></small>
-                </p>
-            </li>
+            <% if (handleMultipleStreetResults === true && hit.type === "Straße") { %>
+                <li id="<%= hit.id %>" class="list-group-item hit" data-toggle="tooltip" data-placement="bottom" title="<%= hit.name %>">
+                    <p id="searchInputLi">
+                        <div class ="container-fluid">
+                            <div class="row">
+                                <div class ="col-lg-10">
+                                        <% if (hit.glyphicon !== undefined) { %>
+                                            <span class="glyphicon <%= hit.glyphicon %>"></span>
+                                        <% } else { %> 
+                                            <img src="<%= hit.imageSrc %>">
+                                        <% } %>
+                                        <span class="list-group-item-name"><%= _.isUndefined(hit.shortName)? hit.name : hit.shortName %></span>
+                                        <small class="list-group-item-theme"><%= _.isUndefined(hit.additionalInfo)? hit.type: hit.additionalInfo %></small>
+                                </div>
+                                <div class="col-lg-1">
+                                    <button type="button" class="btn btn-primary HouseNo-btn-Search" aria-label="HausnummernSuche">
+                                            <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </li>
+            <% } else { %> 
+                <li id="<%= hit.id %>" class="list-group-item hit" data-toggle="tooltip" data-placement="bottom" title="<%= hit.metaName %>">
+                    <p id="searchInputLi">
+                        <% if (hit.glyphicon !== undefined) { %>
+                            <span class="glyphicon <%= hit.glyphicon %>"></span>
+                        <% } else { %>
+                            <img src="<%= hit.imageSrc %>">
+                        <% } %>
+                        <span class="list-group-item-name"><%= _.isUndefined(hit.shortName)? hit.name : hit.shortName %></span>
+                        <small class="list-group-item-theme"><%= _.isUndefined(hit.additionalInfo)? hit.type: hit.additionalInfo %></small>
+                    </p>
+                </li>
+            <% } %>
         <% }); %>
     </div>
     <% if (!_.isUndefined(uiStyle) && uiStyle === "TABLE") { %>

@@ -48,7 +48,11 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         "click .list-group-item.type": "clickListGroupItem",
         "click .btn-search-question": "clickBtnQuestion",
         "keydown": "navigateList",
-        "click": "clickHandler"
+        "click": "clickHandler",
+        "click .HouseNo-btn-Search": function (evt) {
+            this.houseNoClick(evt);
+            this.hitSelected(evt);
+        }
     },
 
     /**
@@ -390,6 +394,33 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
     },
 
     /**
+     * handles the search for housenumbers to the selcted street
+     * @param {evt} evt - click event
+     * @returns {void}
+     */
+    houseNoClick: function (evt) {
+        var modelHitList = this.model.get("hitList"),
+            hit, buttons;
+
+        setTimeout(function () {
+            if (_.has(evt, "currentTarget") === true && evt.currentTarget.title) {
+                hit = evt.currentTarget.title;
+            }
+            else {
+                hit = modelHitList[0].name;
+            }
+            Radio.trigger("Gaz", "houseNumberViaButton", hit);
+            $(".dropdown-menu-search").show();
+            setTimeout(function () {
+                buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                _.each(buttons, function (button) {
+                    $(button).hide();
+                });
+            }, 500);
+        }, 1000);
+    },
+
+    /**
      * Set focus in searchInput
      * @returns {void}
      */
@@ -685,7 +716,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         // The paste event occurs before the value is inserted into the element
         setTimeout(function () {
             that.controlEvent(evt);
-        }, 0);
+        }, 250);
     },
 
     /**

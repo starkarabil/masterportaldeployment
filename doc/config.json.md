@@ -159,6 +159,7 @@ Konfiguration des Gazetteer Suchdienstes
 |searchStreetKey|nein|Boolean|false|Gibt an ob nach Straßenschlüsseln gesucht werden soll.|false|
 |searchStreet|nein|Boolean|false|Gibt an ob nach Straßen gesucht werden soll. Vorraussetzung für **searchHouseNumbers**.|false|
 |serviceID|ja|String||Id des Suchdienstes. Wird aufgelöst in der [rest-services.json](rest-services.json.md).|false|
+|handleMultipleStreetResults|nein|Boolean|false|Händelt die Suche für das Auftreten mehrerer Straßen mit demselben Namen.|false|
 
 **Beispiel**
 ```
@@ -170,7 +171,8 @@ Konfiguration des Gazetteer Suchdienstes
     "searchHouseNumbers": true,
     "searchDistricts": true,
     "searchParcels": true,
-    "searchStreetKey": true
+    "searchStreetKey": true,
+    "handleMultipleStreetResults": true
 }
 ```
 

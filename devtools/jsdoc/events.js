@@ -1042,6 +1042,58 @@
  * @example Radio.trigger("Searchbar", "hit", hit);
  */
 
+/** -------------------- SEARCHBAR GAZ -------------------- */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerFindStreets
+ * @description Todo
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerFindHouseNumbers
+ * @description Todo
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerAdressSearch
+ * @description Todo
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerHouseNumberViaButton
+ * @description triggers the search for housenumbers for a certain street after a button click
+ * @example Radio.trigger("Gaz", "houseNumberViaButton")
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerStreetSearch
+ * @description Todo
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerStreetNames
+ * @description Todo
+ * @example Radio.trigger("Gaz", "streetNames", names);
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerHouseNumbers
+ * @description Todo
+ * @example Radio.trigger("Gaz", "houseNumbers", houseNumbers);
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerGetAdress
+ * @description Todo
+ * @example  Radio.trigger("Gaz", "getAdress", data);
+ */
+
+/**
+ * @event Searchbar.Gaz#RadioTriggerGetStreets
+ * @description Todo
+ * @example Radio.trigger("Gaz", "getStreets", streets);
+ */
+
 
 /** -------------------- MENU -------------------- */
 

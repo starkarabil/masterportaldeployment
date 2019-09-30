@@ -10,7 +10,8 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
         isInitialSearch: true,
         isInitialRecommendedListCreated: false,
         knownInitialSearchTasks: ["gazetteer", "specialWFS", "bkg", "tree", "osm"],
-        activeInitialSearchTasks: []
+        activeInitialSearchTasks: [],
+        handleMultipleStreetResults: false
     },
 
     /**
@@ -30,6 +31,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @property {Boolean} isInitialRecommendedListCreated=false Has the recommended list already been generated after the initial search?
      * @property {String[]} knownInitialSearchTasks=["gazetteer", "specialWFS", "bkg", "tree", "osm"] Search algorithms for which an initial search is possible
      * @property {Array} activeInitialSearchTasks=[] Search algorithms for which an initial search is activated
+     * @property {Boolean} handleMultipleStreetResults=false Flag if multiple streets with the same name need to be handled
      * @listens Searchbar#RadioTriggerSearchbarCreateRecommendedList
      * @listens Searchbar#RadioTriggerSearchbarPushHits
      * @listens Searchbar#RadioTriggerSearchbarRemoveHits
@@ -61,6 +63,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
             this.set("isInitialRecommendedListCreated", true);
         }
 
+        this.setHandleMultipleStreetResults(Radio.request("Parser", "getPortalConfig").searchBar.gazetteer.handleMultipleStreetResults);
     },
 
     /**
@@ -363,6 +366,15 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      */
     setHitIsClick: function (value) {
         this.set("hitIsClick", value);
+    },
+
+    /**
+     * Setter for "handleMultipleStreetResults"
+     * @param {Boolean} value - true if multiple streets with the same name need to be handled 
+     * @returns {void}
+     */
+    setHandleMultipleStreetResults: function (value) {
+        this.set("handleMultipleStreetResults", value);
     }
 });
 

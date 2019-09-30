@@ -1,6 +1,6 @@
 import "../model";
 
-const GazetteerModel = Backbone.Model.extend({
+const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype */{
     defaults: {
         namespace: "http://www.adv-online.de/namespaces/adv/dog",
         minChars: 3,
@@ -10,6 +10,7 @@ const GazetteerModel = Backbone.Model.extend({
         searchDistricts: false,
         searchParcels: false,
         searchStreetKey: false,
+        handleMultipleStreetResults: false,
         onlyOneStreetName: "",
         searchStringRegExp: "",
         houseNumbers: [],
@@ -17,15 +18,37 @@ const GazetteerModel = Backbone.Model.extend({
         typeOfRequest: ""
     },
     /**
-     * @description Initialisierung der Gazetteer Suche
-     * @param {Object} config - Das Konfigurationsobjekt für die Gazetteer-Suche.
-     * @param {string} config.serviceId - ID aus rest-conf für URL des GAZ.
-     * @param {boolean} [config.searchStreets=false] - Soll nach Straßennamen gesucht werden? Vorraussetzung für searchHouseNumbers.
-     * @param {boolean} [config.searchHouseNumbers=false] - Sollen auch Hausnummern gesucht werden oder nur Straßen?
-     * @param {boolean} [config.searchDistricts=false] - Soll nach Stadtteilen gesucht werden?
-     * @param {boolean} [config.searchParcels=false] - Soll nach Flurstücken gesucht werden?
-     * @param {integer} [config.minCharacters=3] - Mindestanzahl an Characters im Suchstring, bevor Suche initieert wird.
-     * @returns {void}
+     * @class GazetteerModel
+     * @extends Backbone.Model
+     * @memberof Searchbar.Gaz
+     * @constructs
+     * @param {Object} config config
+     * @property {String} namespace="http://www.adv-online.de/namespaces/adv/dog" - Todo
+     * @property {Number} minChars=3 - Todo
+     * @property {String} gazetteerURL="" - Todo
+     * @property {Boolean} searchStreets=false - Todo
+     * @property {Boolean} searchHouseNumbers=false - Todo
+     * @property {Boolean} searchDistricts=false - Todo
+     * @property {Boolean} searchParcels= false - Todo
+     * @property {Boolean} searchStreetKey=false - Todo
+     * @property {Boolean} handleMultipleStreetResults=false - Handles occurence of multiple streets with the same name in different counties
+     * @property {String} onlyOneStreetName="" - Todo
+     * @property {String} searchStringRegExp="" - Todo
+     * @property {Array} houseNumbers=[] - Todo
+     * @property {Object} ajaxRequests={} - Todo
+     * @property {String} typeOfRequest="" - Todo
+     * @listens Searchbar#RadioTriggerSearchbarSearch
+     * @listens Searchbar#RadioTriggerSearchbarSetPastedHouseNumber
+     * @listens Searchbar.Gaz#RadioTriggerFindStreets
+     * @listens Searchbar.Gaz#RadioTriggerFindHouseNumbers
+     * @listens Searchbar.Gaz#RadioTriggerAdressSearch
+     * @listens Searchbar.Gaz#RadioTriggerHouseNumberViaButton
+     * @listens Searchbar.Gaz#RadioTriggerStreetSearch
+     * @fires Gaz#RadioTriggerStreetNames
+     * @fires Gaz#RadioTriggerHouseNumbers
+     * @fires Gaz#RadioTriggerGetAdress
+     * @fires Gaz#RadioTriggerGetStreets
+     * @listens ParametricURL#RadioRequestsParametricUrlGetInitString
      */
     initialize: function (config) {
         var gazService = Radio.request("RestReader", "getServiceById", config.serviceId);
@@ -38,7 +61,8 @@ const GazetteerModel = Backbone.Model.extend({
         this.listenTo(Radio.channel("Gaz"), {
             "findStreets": this.findStreets,
             "findHouseNumbers": this.findHouseNumbers,
-            "adressSearch": this.adressSearch
+            "adressSearch": this.adressSearch,
+            "houseNumberViaButton": this.houseNumberViaButton
         });
         Radio.channel("Gaz").reply({
             "adressSearch": this.adressSearch,
@@ -66,26 +90,137 @@ const GazetteerModel = Backbone.Model.extend({
         if (config.minChars) {
             this.set("minChars", config.minChars);
         }
+        if (config.handleMultipleStreetResults) {
+            this.setHandleMultipleStreetResults(config.handleMultipleStreetResults);
+        }
         if (_.isUndefined(Radio.request("ParametricURL", "getInitString")) === false) {
             this.directSearch(Radio.request("ParametricURL", "getInitString"));
         }
     },
 
-    // für Copy/Paste bei Adressen
+    /**
+    * für Copy/Paste bei Adressen
+    * @param {*} value - Todo
+    * @returns {*} Todo
+    */
     setPastedHouseNumber: function (value) {
         this.set("pastedHouseNumber", value);
     },
 
+    /**
+     * handles the search process
+     * @param {String} pattern - Searchstring
+     * @returns {void} Todo
+     */
     search: function (pattern) {
         var gemarkung, flurstuecksnummer,
-            searchString = pattern;
+            searchString = pattern,
+            splittedSearchString = [],
+            lastElementIndex,            
+            splittedCompleteAdress,
+            splittedStreetHouseNo,
+            data,
+            buttons;
 
         this.set("searchString", searchString);
         if (searchString.length >= this.get("minChars")) {
-            if (this.get("searchStreets") === true) {
+            if (this.get("searchStreets") === true && this.get("handleMultipleStreetResults") === true) {
+                searchString = searchString.replace(/ {1,}/g," ");
+                splittedSearchString = searchString.trim().split(" ");
+                lastElementIndex = splittedSearchString.length - 1;
+                splittedCompleteAdress = searchString.trim().split(",");
+                splittedStreetHouseNo = splittedCompleteAdress[0].trim().split(" ");
+
+                // Searches for Streetname with housenumber
+                // Check if searchString includes a streetname and a housenumber
+                if (!_.isNaN(Number(splittedSearchString[lastElementIndex]))) {
+                    data = this.searchStreetWithHouseNo(splittedSearchString, lastElementIndex);
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseOhneZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1], this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 1500);
+                }
+                // Searches for Streetname with housenumber and additional address
+                // Checks if searchString includes a streetname, a housenumber and additional address with space between housenumber and additional address
+                else if (splittedSearchString[lastElementIndex].length === 1 && _.isString(splittedSearchString[lastElementIndex]) && !_.isNaN(Number(splittedSearchString[splittedSearchString.length - 2]))) {
+                    data = this.searchStreetWithHouseNoAndAdditionalAddress(splittedSearchString, lastElementIndex);
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2], this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 1500);
+                }
+                // Searches for Streetname with housenumber and additional address
+                // Checks if searchString includes a streetname, a housenumber and additional address without space between housenumber and additional address
+                else if (!_.isNull(splittedSearchString[lastElementIndex].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/))) {
+                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExp(splittedSearchString, lastElementIndex)
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2], this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 1500);   
+                }
+                // Searches for Streetname with housenumber in a certain county
+                // Checks if searchString includes a housenumber
+                else if (!_.isNaN(Number(splittedStreetHouseNo[splittedStreetHouseNo.length - 1]))) {
+                    data = this.searchStreetWithHouseNoInCounty(splittedCompleteAdress, splittedStreetHouseNo);
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseVollstaendigOhneZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&postleitzahl=" + data[2] + "&ortsnamepost=" + encodeURIComponent(data[3]), this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 2000);
+                }
+                // Searches for Streetname with housenumber with additional address in a certain county
+                // Checks if searchString includes a housenumber and additional address
+                else if (splittedStreetHouseNo[splittedStreetHouseNo.length - 1].length === 1 && _.isString(splittedStreetHouseNo[splittedStreetHouseNo.length - 1]) && !_.isNaN(Number(splittedStreetHouseNo[splittedStreetHouseNo.length - 2]))) {
+                    data = this.searchStreetWithHouseNoAndAdditionalAddressInCounty(splittedCompleteAdress, splittedStreetHouseNo);
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseVollstaendigMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2] + "&postleitzahl=" + data[3] + "&ortsnamepost=" + encodeURIComponent(data[4]), this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 2000);
+                }
+                // Searches for Streetname with housenumber and additional addres in a certain county
+                // Checks if searchString includes a housenumber and additional address without space between housenumber and additional address
+                else if (!_.isNull(splittedStreetHouseNo[splittedStreetHouseNo.length - 1].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/))) {
+                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExpInCounty(splittedCompleteAdress, splittedStreetHouseNo)
+                    this.setTypeOfRequest("handleMultipleStreetResults");
+                    this.sendRequest("StoredQuery_ID=AdresseVollstaendigMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2] + "&postleitzahl=" + data[3] + "&ortsnamepost=" + encodeURIComponent(data[4]), this.getStreets, this.get("typeOfRequest"));
+                    setTimeout(function () {
+                        buttons = document.getElementsByClassName("HouseNo-btn-Search");
+                        _.each(buttons, function (button) {
+                            $(button).hide();
+                        });
+                    }, 2000);
+                }
+                else {
+                    searchString = searchString.replace(/[()]/g, "\\$&");
+                    this.set("searchStringRegExp", new RegExp(searchString.replace(/ /g, ""), "i")); // Erst join dann als regulärer Ausdruck
+                    this.setOnlyOneStreetName("");
+                    this.setTypeOfRequest("searchStreets");
+                    this.sendRequest("StoredQuery_ID=findeStrasse&strassenname=" + encodeURIComponent(searchString), this.getStreets, this.get("typeOfRequest"));
+                }
+            }
+            else if (this.get("searchStreets") === true) {
                 searchString = searchString.replace(/[()]/g, "\\$&");
                 this.set("searchStringRegExp", new RegExp(searchString.replace(/ /g, ""), "i")); // Erst join dann als regulärer Ausdruck
-                this.set("onlyOneStreetName", "");
+                this.setOnlyOneStreetName("");
                 this.setTypeOfRequest("searchStreets");
 
                 searchString = searchString.replace(/\s*$/, "");
@@ -121,10 +256,203 @@ const GazetteerModel = Backbone.Model.extend({
         }
     },
 
+    /**
+     * filters the streetname and the housenumber from the passed search string
+     * @param {String[]} splittedSearchString - Array with all words of the search string
+     * @param {Number} lastElementIndex - index of last element in splittedSearchString
+     * @return {String[]} - Array with the streetname and the housenumber 
+    */
+    searchStreetWithHouseNo: function (splittedSearchString, lastElementIndex) {
+        var streetname = "",
+            housenumber;
+
+        housenumber = Number(splittedSearchString[lastElementIndex]);
+        splittedSearchString.forEach(function (string, index) {
+            if (index < lastElementIndex) {
+                streetname += string + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+
+        return [streetname, housenumber];
+    },
+
+    /**
+     * filters the streetname, the housenumber and the additional address from the passed search string
+     * @param {String[]} splittedSearchString - Array with all words of the search string
+     * @param {Number} lastElementIndex - index of last element in splittedSearchString
+     * @return {String[]} - Array with the streetname, the housenumber and the additional address
+    */
+    searchStreetWithHouseNoAndAdditionalAddress: function (splittedSearchString, lastElementIndex) {
+        var streetname = "",
+            housenumber,
+            zusatz;
+
+        housenumber = Number(splittedSearchString[splittedSearchString.length - 2]);
+        zusatz = splittedSearchString[lastElementIndex];
+        splittedSearchString.forEach(function (string, index) {
+            if (index < splittedSearchString.length - 2) {
+                streetname += string + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+
+        return [streetname, housenumber, zusatz];
+    },
+
+    /**
+     * filters the streetname, the housenumber and the additional address from the passed search string
+     * even when there is no space between housenumber and additional address
+     * @param {String[]} splittedSearchString - Array with all words of the search string
+     * @param {Number} lastElementIndex - index of last element in splittedSearchString
+     * @return {String[]} Array with the streetname, the housenumber and the additional address
+    */
+    searchStreetWithHouseNoAndAdditionalAddressRegExp: function (splittedSearchString, lastElementIndex) {
+        var regExpSearchString,
+            streetname = "",
+            housenumber,
+            zusatz;
+
+        regExpSearchString = splittedSearchString[lastElementIndex].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/);
+        housenumber = regExpSearchString[1];
+        zusatz = regExpSearchString[2];
+        splittedSearchString.forEach(function (string, index) {
+            if (index < lastElementIndex) {
+                streetname += string + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+
+        return [streetname, housenumber, zusatz];
+    },
+
+    /**
+     * filters the streetname, the housenumber, the postcode and the county name from the passed search string
+     * @param {String[]} splittedCompleteAdress - Array with complete address including postcode and county name
+     * @param {String[]} splittedStreetHouseNo - Array with search string part with streetname, housenumber and additional address 
+     * @return {String[]} Array with the streetname, the housenumber, the postcode and the county name 
+    */
+    searchStreetWithHouseNoInCounty: function (splittedCompleteAdress, splittedStreetHouseNo) {
+        var splittedCountyPlz,
+            streetname = "",
+            housenumber,
+            plz,
+            countyName = "";
+
+        splittedCountyPlz = splittedCompleteAdress[1].trim().split(" ");
+
+        splittedStreetHouseNo.forEach(function (addressPart, index) {
+            if (index < splittedStreetHouseNo.length - 1) {
+                streetname += addressPart + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+
+        housenumber = splittedStreetHouseNo[splittedStreetHouseNo.length - 1];
+        plz = splittedCountyPlz[splittedCountyPlz.length - 1].replace("(", "").replace(")", "");
+
+        splittedCountyPlz.forEach(function (addressPart, index) {
+            if (index < splittedCountyPlz.length - 1) {
+                countyName += addressPart + " ";
+            }
+        });
+        countyName = countyName.substring(0, countyName.length - 1);
+
+        return [streetname, housenumber, plz, countyName];
+    },
+
+    /**
+     * filters the streetname, the housenumber and the additional address, the postcode and the county name from the passed search string
+     * @param {String[]} splittedCompleteAdress - Array with complete address including postcode and county name
+     * @param {String[]} splittedStreetHouseNo - Array with search string part with streetname, housenumber and additional address
+     * @returns {String[]} Array with the streetname, the housenumber, the additional address, the postcode and the county name
+    */
+    searchStreetWithHouseNoAndAdditionalAddressInCounty: function (splittedCompleteAdress, splittedStreetHouseNo) {
+        var splittedCountyPlz,
+            streetname = "",
+            housenumber,
+            zusatz,
+            plz,
+            countyName = "";
+
+        splittedCountyPlz = splittedCompleteAdress[1].trim().split(" ");
+
+        splittedStreetHouseNo.forEach(function (addressPart, index) {
+            if (index < splittedStreetHouseNo.length - 2) {
+                streetname += addressPart + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+
+        housenumber = splittedStreetHouseNo[splittedStreetHouseNo.length - 2];
+        zusatz = splittedStreetHouseNo[splittedStreetHouseNo.length - 1];
+        plz = splittedCountyPlz[splittedCountyPlz.length - 1].replace("(", "").replace(")", "");
+
+        splittedCountyPlz.forEach(function (addressPart, index) {
+            if (index < splittedCountyPlz.length - 1) {
+                countyName += addressPart + " ";
+            }
+        });
+        countyName = countyName.substring(0, countyName.length - 1);
+
+        return [streetname, housenumber, zusatz, plz, countyName];
+    },
+
+    /**
+     * filters the streetname, the housenumber, the additional address, the postcode and the county name from the passed search string
+     * even when there is no space between housenumber and additional address
+     * @param {String[]} splittedCompleteAdress - Array with complete address including postcode and county name
+     * @param {String[]} splittedStreetHouseNo - Array with search string part with streetname, housenumber and additional address
+     * @returns {String[]} Array with the streetname, the housenumber, the additional address, the postcode and the county name
+    */
+    searchStreetWithHouseNoAndAdditionalAddressRegExpInCounty: function (splittedCompleteAdress, splittedStreetHouseNo) {
+        var splittedCountyPlz,
+            regExpSearchString,
+            streetname = "",
+            housenumber,
+            zusatz,
+            plz,
+            countyName = "";
+
+        splittedCountyPlz = splittedCompleteAdress[1].trim().split(" ");
+        regExpSearchString = splittedStreetHouseNo[splittedStreetHouseNo.length - 1].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/);
+
+        housenumber = regExpSearchString[1];
+        zusatz = regExpSearchString[2];
+
+        splittedStreetHouseNo.forEach(function (addressPart, index) {
+            if (index < splittedStreetHouseNo.length - 1) {
+                streetname += addressPart + " ";
+            }
+        });
+        streetname = streetname.substring(0, streetname.length - 1);
+        plz = splittedCountyPlz[splittedCountyPlz.length - 1].replace("(", "").replace(")", "");
+
+        splittedCountyPlz.forEach(function (addressPart, index) {
+            if (index < splittedCountyPlz.length - 1) {
+                countyName += addressPart + " ";
+            }
+        });
+        countyName = countyName.substring(0, countyName.length - 1);
+
+        return [streetname, housenumber, zusatz, plz, countyName];
+    },
+
+    /**
+     * Todo
+     * @param {*} searchString - Todo
+     * @returns {*} Todo
+     */
     findStreets: function (searchString) {
         this.sendRequest("StoredQuery_ID=findeStrasse&strassenname=" + encodeURIComponent(searchString), this.parseStreets, true);
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @event Gaz#RadioTriggerStreetNames
+     * @return {*} Todo
+     */
     parseStreets: function (data) {
         var hits = $("wfs\\:member,member", data),
             streetNames = [];
@@ -137,10 +465,31 @@ const GazetteerModel = Backbone.Model.extend({
         return streetNames.sort();
     },
 
+    /**
+     * Triggers the search process of housenumbers after the housenumber button was clicked
+     * @param {String} street - Name of the Street for which the housenumbers must be searched
+     * @returns {void} Todo
+     */
+    houseNumberViaButton: function (street) {
+        this.setOnlyOneStreetName(street);
+        this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(street), this.handleHouseNumbers, this.get("typeOfRequest")); 
+    },
+
+    /**
+     * Todo
+     * @param {*} street - Todo
+     * @returns {*} Todo
+     */
     findHouseNumbers: function (street) {
         this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(street), this.parseHousenumbers, true);
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @event Gaz#RadioTriggerHouseNumbers
+     * @returns {void} Todo
+     */
     parseHousenumbers: function (data) {
         var hits = $("wfs\\:member,member", data),
             sortedHouseNumbers,
@@ -177,6 +526,12 @@ const GazetteerModel = Backbone.Model.extend({
             this.sendRequest("StoredQuery_ID=AdresseOhneZusatz&strassenname=" + encodeURIComponent(adress.streetname) + "&hausnummer=" + encodeURIComponent(adress.housenumber), this.triggerGetAdress, this.get("typeOfRequest"));
         }
     },
+
+    /**
+     * Todo
+     * @param {*} adress - Todo
+     * @returns {*} Todo
+     */
     streetsSearch: function (adress) {
         this.setTypeOfRequest("searchHouseNumbers1");
         this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(adress.name), this.triggerGetStreets, this.get("typeOfRequest"));
@@ -195,7 +550,7 @@ const GazetteerModel = Backbone.Model.extend({
         // Suche nach Straße, Hausnummer
         if (searchString.search(",") !== -1) {
             splitInitString = searchString.split(",");
-            this.set("onlyOneStreetName", splitInitString[0]);
+            this.setOnlyOneStreetName(splitInitString[0]);
             searchString = searchString.replace(/ /g, "");
             this.set("searchStringRegExp", new RegExp(searchString.replace(/,/g, ""), "i")); // Erst join dann als regulärer Ausdruck
             this.setTypeOfRequest("onlyOneStreetName1");
@@ -203,7 +558,7 @@ const GazetteerModel = Backbone.Model.extend({
         }
         else {
             this.set("searchStringRegExp", new RegExp(searchString.replace(/ /g, ""), "i")); // Erst join dann als regulärer Ausdruck
-            this.set("onlyOneStreetName", "");
+            this.setOnlyOneStreetName("");
             this.setTypeOfRequest("onlyOneStreetName2");
             this.sendRequest("StoredQuery_ID=findeStrasse&strassenname=" + encodeURIComponent(searchString), this.getStreets, this.get("typeOfRequest"));
         }
@@ -226,6 +581,7 @@ const GazetteerModel = Backbone.Model.extend({
     /**
     * @description Methode zur Weiterleitung der adressSearch
     * @param {xml} data - Response
+    * @event Gaz#RadioTriggerGetAdress
     * @returns {void}
     */
     triggerGetAdress: function (data) {
@@ -235,6 +591,7 @@ const GazetteerModel = Backbone.Model.extend({
     /**
      * Trigger die gefundenen Hausnummern
      * @param  {xml} data Response
+     * @event Gaz#RadioTriggerGetAdress
      * @returns {void}
      */
     triggerGetStreets: function (data) {
@@ -242,48 +599,70 @@ const GazetteerModel = Backbone.Model.extend({
         Radio.trigger("Gaz", "getStreets", this.get("houseNumbers"));
     },
     /**
-     * [getStreets description]
-     * @param  {String} data [description]
+      * Handles the answer of search query for streets and adds it to the hitlist
+     * @param  {String} data - answer of search query
+     * @fires Searchbar#RadioTriggerSearchbarPushHits
+     * @fires Searchbar#RadioTriggerSearchbarCreateRecommendedList
      * @returns {void}
      */
     getStreets: function (data) {
         var hits = $("wfs\\:member,member", data),
             coordinates,
+            position,
             hitNames = [],
             hitName;
 
-        _.each(hits, function (hit) {
-            coordinates = $(hit).find("gml\\:posList,posList")[0].textContent.split(" ");
-            hitName = $(hit).find("dog\\:strassenname, strassenname")[0].textContent;
-            hitNames.push(hitName);
+        if (this.get("handleMultipleStreetResults") === true) {
+            _.each(hits, function (hit) {
+                position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
+                coordinates = [parseFloat(position[0]), parseFloat(position[1])];
+                hitName = $(hit).find("iso19112\\:geographicIdentifier")[0].textContent;
+                hitNames.push(hitName);
 
-            // "Hitlist-Objekte"
-            Radio.trigger("Searchbar", "pushHits", "hitList", {
-                name: hitName,
-                type: "Straße",
-                coordinate: coordinates,
-                glyphicon: "glyphicon-road",
-                id: hitName.replace(/ /g, "") + "Straße"
+                // "Hitlist-Objekte"
+                Radio.trigger("Searchbar", "pushHits", "hitList", {
+                    name: hitName,
+                    type: "Straße",
+                    coordinate: coordinates,
+                    glyphicon: "glyphicon-road",
+                    id: hitName.replace(/ /g, "") + "Straße"
+                });
             });
-        }, this);
+        }
+        else {
+            _.each(hits, function (hit) {
+                coordinates = $(hit).find("gml\\:posList,posList")[0].textContent.split(" ");
+                hitName = $(hit).find("dog\\:strassenname, strassenname")[0].textContent;
+                hitNames.push(hitName);
 
-        if (this.get("searchHouseNumbers") === true) {
-            if (hits.length === 1) {
-                this.set("onlyOneStreetName", hitName);
-                this.setTypeOfRequest("searchHouseNumbers1");
-                this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(hitName), this.handleHouseNumbers, this.get("typeOfRequest"));
-            }
-            else if (hits.length === 0) {
-                this.searchInHouseNumbers();
-            }
-            else {
-                _.each(hitNames, function (value) {
-                    if (value.toLowerCase() === this.get("searchString").toLowerCase()) {
-                        this.set("onlyOneStreetName", value);
-                        this.setTypeOfRequest("searchHouseNumbers2");
-                        this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(value), this.handleHouseNumbers, this.get("typeOfRequest"));
-                    }
-                }, this);
+                // "Hitlist-Objekte"
+                Radio.trigger("Searchbar", "pushHits", "hitList", {
+                    name: hitName,
+                    type: "Straße",
+                    coordinate: coordinates,
+                    glyphicon: "glyphicon-road",
+                    id: hitName.replace(/ /g, "") + "Straße"
+                });
+            }, this);
+
+            if (this.get("searchHouseNumbers") === true) {
+                if (hits.length === 1) {
+                    this.setOnlyOneStreetName(hitName);
+                    this.setTypeOfRequest("searchHouseNumbers1");
+                    this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(hitName), this.handleHouseNumbers, this.get("typeOfRequest"));
+                }
+                else if (hits.length === 0) {
+                    this.searchInHouseNumbers();
+                }
+                else {
+                    _.each(hitNames, function (value) {
+                        if (value.toLowerCase() === this.get("searchString").toLowerCase()) {
+                            this.setOnlyOneStreetName(value);
+                            this.setTypeOfRequest("searchHouseNumbers2");
+                            this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(value), this.handleHouseNumbers, this.get("typeOfRequest"));
+                        }
+                    }, this);
+                }
             }
         }
         Radio.trigger("Searchbar", "createRecommendedList", "gazetteer_streetsOrHouseNumbers");
@@ -292,7 +671,7 @@ const GazetteerModel = Backbone.Model.extend({
     /**
      * [getDistricts description]
      * @param  {String} data [description]
-     * @return {void}
+     * @returns {void}
      */
     getDistricts: function (data) {
         var hits = $("wfs\\:member,member", data),
@@ -319,6 +698,10 @@ const GazetteerModel = Backbone.Model.extend({
         Radio.trigger("Searchbar", "createRecommendedList");
     },
 
+    /**
+     * Handles the answer of the search query for housenumbers and adds it to the hitlist
+     * @returns {void}
+     */
     searchInHouseNumbers: function () {
         var address, number;
 
@@ -338,25 +721,46 @@ const GazetteerModel = Backbone.Model.extend({
             _.each(this.get("houseNumbers"), function (houseNumber) {
                 address = houseNumber.name.replace(/ /g, "");
 
-                if (address.search(this.get("searchStringRegExp")) !== -1) {
+                if (this.get("handleMultipleStreetResults") === true) {
+                    Radio.trigger("Searchbar", "pushHits", "hitList", houseNumber, "paste");
+                }
+                else if (address.search(this.get("searchStringRegExp")) !== -1) {
                     Radio.trigger("Searchbar", "pushHits", "hitList", houseNumber);
                 }
             }, this);
         }
     },
 
+    /**
+     * handles housenumber results
+     * @param {Object} data - results of search query for housenumbers
+     * @fires Searchbar#RadioTriggerSearchbarCheckInitialSearch
+     * @fires Searchbar#RadioTriggerSearchbarCreateRecommendedList
+     * @returns {void}
+     */
     handleHouseNumbers: function (data) {
         this.createHouseNumbers(data);
         this.searchInHouseNumbers();
+        Radio.trigger("Searchbar", "checkInitialSearch");
         Radio.trigger("Searchbar", "createRecommendedList", "gazetteer_streetsOrHouseNumbers");
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @returns {*} Todo
+     */
     createHouseNumbers: function (data) {
         var streetname = this.get("onlyOneStreetName");
 
-        this.setHouseNumbers(data, streetname);
+        this.createHouseNumbersArray(data, streetname);
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @returns {*} Todo
+     */
     getParcel: function (data) {
         var hits = $("wfs\\:member,member", data),
             coordinate,
@@ -384,6 +788,11 @@ const GazetteerModel = Backbone.Model.extend({
         Radio.trigger("Searchbar", "createRecommendedList", "gazetter_parcel");
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @returns {*} Todo
+     */
     getStreetKey: function (data) {
         var hits = $("wfs\\:member,member", data),
             coordinates,
@@ -405,6 +814,7 @@ const GazetteerModel = Backbone.Model.extend({
         }, this);
         Radio.trigger("Searchbar", "createRecommendedList", "gazetteer_streetKey");
     },
+
     /**
      * @description Führt einen HTTP-GET-Request aus.
      * @param {String} data - Data to be sent to the server
@@ -422,6 +832,13 @@ const GazetteerModel = Backbone.Model.extend({
         this.ajaxSend(data, successFunction, type);
     },
 
+    /**
+     * Todo
+     * @param {*} data - Todo
+     * @param {*} successFunction - Todo
+     * @param {*} typeRequest - Todo
+     * @returns {*} Todo
+     */
     ajaxSend: function (data, successFunction, typeRequest) {
         this.get("ajaxRequests")[typeRequest] = $.ajax({
             url: this.get("gazetteerURL"),
@@ -485,12 +902,12 @@ const GazetteerModel = Backbone.Model.extend({
     },
 
     /**
-     * Setter für houseNumbers
-     * @param  {xml} data       Antwort des Dienstes
-     * @param  {string} streetname Straßenname
+     * Creates an Array with all search results for housenumbers
+     * @param  {xml} data - response of service
+     * @param  {string} streetname - streetname of search query
      * @returns {void}
      */
-    setHouseNumbers: function (data, streetname) {
+    createHouseNumbersArray: function (data, streetname) {
         var hits = $("wfs\\:member,member", data),
             number,
             affix,
@@ -499,13 +916,33 @@ const GazetteerModel = Backbone.Model.extend({
             name,
             adress = {},
             obj = {},
-            houseNumbers = [];
+            houseNumbers = [],
+            street;
 
         _.each(hits, function (hit) {
             position = $(hit).find("gml\\:pos,pos")[0].textContent.split(" ");
             coordinate = [parseFloat(position[0]), parseFloat(position[1])];
             number = $(hit).find("dog\\:hausnummer,hausnummer")[0].textContent;
-            if ($(hit).find("dog\\:hausnummernzusatz,hausnummernzusatz")[0] !== undefined) {
+            if (this.get("handleMultipleStreetResults") === true) {
+                street = streetname.split(",");
+                if ($(hit).find("dog\\:hausnummernzusatz,hausnummernzusatz")[0] !== undefined) {
+                    affix = $(hit).find("dog\\:hausnummernzusatz,hausnummernzusatz")[0].textContent;
+                    name = street[0] + " " + number + affix + ", " + street[1];
+                    adress = {
+                        streetname: streetname,
+                        housenumber: number,
+                        affix: affix
+                    };
+                }
+                else {
+                    name = street[0] + " " + number + ", " + street[1];
+                    adress = {
+                        streetname: streetname,
+                        housenumber: number
+                    };
+                }
+            }
+            else if ($(hit).find("dog\\:hausnummernzusatz,hausnummernzusatz")[0] !== undefined) {
                 affix = $(hit).find("dog\\:hausnummernzusatz,hausnummernzusatz")[0].textContent;
                 name = streetname + " " + number + affix;
                 adress = {
@@ -534,8 +971,34 @@ const GazetteerModel = Backbone.Model.extend({
 
             houseNumbers.push(obj);
         }, this);
+        this.setHouseNumbers(houseNumbers);
+    },
 
+    /**
+     * Setter for housenumbers
+     * @param {String[]} houseNumbers - Array with all housenumbers of one street
+     * @returns {void}
+     */
+    setHouseNumbers: function (houseNumbers) {
         this.set("houseNumbers", houseNumbers);
+    },
+
+    /**
+     * Setter for Streetname
+     * @param {String} name - Name of the street
+     * @returns {void}
+     */
+    setOnlyOneStreetName: function (name) {
+        this.set("onlyOneStreetName", name);
+    },
+
+    /**
+     * Setter for handleMultipleStreetResults
+     * @param {*} value - value
+     * @returns {void}
+     */
+    setHandleMultipleStreetResults: function (value) {
+        this.set("handleMultipleStreetResults", value);
     }
 });
 
