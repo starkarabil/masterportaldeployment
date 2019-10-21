@@ -52,6 +52,10 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         "click .HouseNo-btn-Search": function (evt) {
             this.houseNoClick(evt);
             this.hitSelected(evt);
+        },
+        "touchstart .HouseNo-btn-Search": function (evt) {
+            this.houseNoClick(evt);
+            this.hitSelected(evt);
         }
     },
 
