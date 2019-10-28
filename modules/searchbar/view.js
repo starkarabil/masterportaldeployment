@@ -407,7 +407,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
             hit, buttons;
 
         setTimeout(function () {
-            if (_.has(evt, "currentTarget") === true && evt.currentTarget.title) {
+            if (_.has(evt, "currentTarget") === true && evt.currentTarget.title && evt.currentTarget.tagName !== "BUTTON") {
                 hit = evt.currentTarget.title;
             }
             else {

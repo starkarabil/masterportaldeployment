@@ -370,7 +370,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
 
     /**
      * Setter for "handleMultipleStreetResults"
-     * @param {Boolean} value - true if multiple streets with the same name need to be handled 
+     * @param {Boolean} value - true if multiple streets with the same name need to be handled
      * @returns {void}
      */
     setHandleMultipleStreetResults: function (value) {

@@ -116,7 +116,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
         var gemarkung, flurstuecksnummer,
             searchString = pattern,
             splittedSearchString = [],
-            lastElementIndex,            
+            lastElementIndex,
             splittedCompleteAdress,
             splittedStreetHouseNo,
             data,
@@ -125,7 +125,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
         this.set("searchString", searchString);
         if (searchString.length >= this.get("minChars")) {
             if (this.get("searchStreets") === true && this.get("handleMultipleStreetResults") === true) {
-                searchString = searchString.replace(/ {1,}/g," ");
+                searchString = searchString.replace(/ {1,}/g, " ");
                 splittedSearchString = searchString.trim().split(" ");
                 lastElementIndex = splittedSearchString.length - 1;
                 splittedCompleteAdress = searchString.trim().split(",");
@@ -160,7 +160,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
                 // Searches for Streetname with housenumber and additional address
                 // Checks if searchString includes a streetname, a housenumber and additional address without space between housenumber and additional address
                 else if (!_.isNull(splittedSearchString[lastElementIndex].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/))) {
-                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExp(splittedSearchString, lastElementIndex)
+                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExp(splittedSearchString, lastElementIndex);
                     this.setTypeOfRequest("handleMultipleStreetResults");
                     this.sendRequest("StoredQuery_ID=AdresseMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2], this.getStreets, this.get("typeOfRequest"));
                     setTimeout(function () {
@@ -168,7 +168,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
                         _.each(buttons, function (button) {
                             $(button).hide();
                         });
-                    }, 1500);   
+                    }, 1500);
                 }
                 // Searches for Streetname with housenumber in a certain county
                 // Checks if searchString includes a housenumber
@@ -199,7 +199,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
                 // Searches for Streetname with housenumber and additional addres in a certain county
                 // Checks if searchString includes a housenumber and additional address without space between housenumber and additional address
                 else if (!_.isNull(splittedStreetHouseNo[splittedStreetHouseNo.length - 1].match(/^([1-9]{1}\d*)([A-Za-z]{1})$/))) {
-                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExpInCounty(splittedCompleteAdress, splittedStreetHouseNo)
+                    data = this.searchStreetWithHouseNoAndAdditionalAddressRegExpInCounty(splittedCompleteAdress, splittedStreetHouseNo);
                     this.setTypeOfRequest("handleMultipleStreetResults");
                     this.sendRequest("StoredQuery_ID=AdresseVollstaendigMitZusatz&strassenname=" + encodeURIComponent(data[0]) + "&hausnummer=" + data[1] + "&zusatz=" + data[2] + "&postleitzahl=" + data[3] + "&ortsnamepost=" + encodeURIComponent(data[4]), this.getStreets, this.get("typeOfRequest"));
                     setTimeout(function () {
@@ -260,7 +260,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
      * filters the streetname and the housenumber from the passed search string
      * @param {String[]} splittedSearchString - Array with all words of the search string
      * @param {Number} lastElementIndex - index of last element in splittedSearchString
-     * @return {String[]} - Array with the streetname and the housenumber 
+     * @return {String[]} - Array with the streetname and the housenumber
     */
     searchStreetWithHouseNo: function (splittedSearchString, lastElementIndex) {
         var streetname = "",
@@ -329,8 +329,8 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
     /**
      * filters the streetname, the housenumber, the postcode and the county name from the passed search string
      * @param {String[]} splittedCompleteAdress - Array with complete address including postcode and county name
-     * @param {String[]} splittedStreetHouseNo - Array with search string part with streetname, housenumber and additional address 
-     * @return {String[]} Array with the streetname, the housenumber, the postcode and the county name 
+     * @param {String[]} splittedStreetHouseNo - Array with search string part with streetname, housenumber and additional address
+     * @return {String[]} Array with the streetname, the housenumber, the postcode and the county name
     */
     searchStreetWithHouseNoInCounty: function (splittedCompleteAdress, splittedStreetHouseNo) {
         var splittedCountyPlz,
@@ -472,7 +472,7 @@ const GazetteerModel = Backbone.Model.extend(/** @lends GazetteerModel.prototype
      */
     houseNumberViaButton: function (street) {
         this.setOnlyOneStreetName(street);
-        this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(street), this.handleHouseNumbers, this.get("typeOfRequest")); 
+        this.sendRequest("StoredQuery_ID=HausnummernZuStrasse&strassenname=" + encodeURIComponent(street), this.handleHouseNumbers, this.get("typeOfRequest"));
     },
 
     /**
