@@ -112,7 +112,8 @@ const MapMarkerView = Backbone.View.extend(/** @lends MapMarkerView.prototype */
             case "Straße": {
                 this.model.setWkt("POLYGON", coord);
 
-                Radio.trigger("Map", "zoomToExtent", this.model.getExtent(), {maxZoom: index});
+                Radio.trigger("MapView", "setCenter", coord, this.model.get("zoomLevel"));
+                // Radio.trigger("Map", "zoomToExtent", this.model.getExtent(), {maxZoom: index - 1});
                 break;
             }
             case "Parcel": {

@@ -440,7 +440,8 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
     hitSelected: function (evt) {
         var hit,
             hitID,
-            modelHitList = this.model.get("hitList");
+            modelHitList = this.model.get("hitList"),
+            evtTarget = evt.target;
 
         // Ermittle Hit
         if (_.has(evt, "cid")) { // in diesem Fall ist evt = model
@@ -462,13 +463,16 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         this.hideMenu();
         // 3. Hide das GFI
         Radio.trigger("GFI", "setIsVisible", false);
-        // 4. Zoome ggf. auf Ergebnis oder Sonderbehandlung
-        if (_.has(hit, "triggerEvent")) {
-            this.model.setHitIsClick(true);
-            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true);
-        }
-        else {
-            Radio.trigger("MapMarker", "zoomTo", hit, 5000);
+        // Zoome nicht auf das Ergebnis wenn HausnummerSuchen Button geklickt wurde
+        if (!_.contains(evtTarget.classList, "HouseNo-btn-Search") && !_.contains(evtTarget.parentNode.classList, "HouseNo-btn-Search")) {
+            // 4. Zoome ggf. auf Ergebnis oder Sonderbehandlung
+            if (_.has(hit, "triggerEvent")) {
+                this.model.setHitIsClick(true);
+                Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true);
+            }
+            else {
+                Radio.trigger("MapMarker", "zoomTo", hit, 1000);
+            }
         }
         // 5. Triggere Treffer über Radio
         // Wird benötigt für IDA und sgv-online, ...
