@@ -1,3 +1,5 @@
+let translateFooter = false;
+
 const FooterModel = Backbone.Model.extend(/** @lends FooterModel.prototype */{
     defaults: {
         urls: [
@@ -48,8 +50,11 @@ const FooterModel = Backbone.Model.extend(/** @lends FooterModel.prototype */{
                 url.aliasKey = url.alias.substring("translate#".length);
                 url.alias = i18next.t(url.aliasKey);
             }
+            if (url.bezeichnung.indexOf("translate#") === 0 || translateFooter === true) {
+                translateFooter = true;
+                urls[0].bezeichnung = i18next.t("common:modules.footer.designation");
+            }
         }, this);
-        urls[0].bezeichnung = i18next.t("common:modules.footer.designation");
         this.set({
             urls: urls,
             versionText: i18next.t("common:modules.footer.version"),
