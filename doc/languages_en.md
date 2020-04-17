@@ -64,7 +64,6 @@ We decided to split translations into three different files:
 
 1. common
 2. additional
-3. custom
 
 See the **[architecture](i18next.jpeg)**
 
@@ -75,10 +74,6 @@ This includes common modules as well as most used menu entries and application l
 
 ### Additional Language File - additional.json
 The Additional Language File is used for addons (former custom modules).
-
-### Custom Language File - custom.json
-The Custom Language File is used for translations of the instanz of the MP (the portal).
-
 
 
 
@@ -253,12 +248,19 @@ Similar to the menu the tree of topics (german: "Themenbaum") can be translated 
 
 **Please be aware**: A translation key added to an item in the tree of topics will overwrite any titles or names coming from services.
 
+If the treeType is "default" or "custom" the name of the folder can be specified. In the example below, the tree would then contain the value for the key "foo.bar.exampleSubjectData" instead of "Fachdaten".
+
+Default translations:
+Baselayer: Background maps
+Overlay: Subject data
+3d-layer: 3D data
 
 Part of the config.json you can edit for translation of the tree of topics
 ```
 {
     "Themenconfig": {
         "Fachdaten": {
+            "name": "translate##example:foo.bar.exampleSubjectData",
             "Layer": [
                   {
                     "id": "2128",
@@ -315,13 +317,87 @@ const DrawTool = Tool.extend(/** @lends DrawTool.prototype */{
 ## Translations in addons
 
 
-The language files must be stored under ./addons/locales/{language}/additional.json
+The language files must be stored under ./addons/{addon-name}/locales/{language}/additional.json
 
 A Translation is implemented this way:
 ```
 i18next.t("additional:modules.tools.example.title"),
 
 ```
+[sample](https://bitbucket.org/geowerkstatt-hamburg/addons/src/master/einwohnerabfrage/)
+
+## Interesting i18nxt translation functions
+
+### Interpolation
+
+Integrate dynamic values into your translations.
+
+key
+```
+{
+    "key": "{{what}} is {{how}}"
+}
+```
+sample
+```
+i18next.t('key', { what: 'i18next', how: 'great' });
+// -> "i18next is great"
+```
+[link](https://www.i18next.com/translation-function/interpolation#basic)
+
+### Singular / Plural
+
+Automatic recognition of singular and plural.
+
+Note: The variable name must be count!
+
+keys
+```
+{
+  "key": "item",
+  "key_plural": "items",
+  "keyWithCount": "{{count}} item",
+  "keyWithCount_plural": "{{count}} items"
+}
+```
+sample
+```
+i18next.t('key', {count: 0}); // -> "items"
+i18next.t('key', {count: 1}); // -> "item"
+i18next.t('key', {count: 5}); // -> "items"
+i18next.t('key', {count: 100}); // -> "items"
+i18next.t('keyWithCount', {count: 0}); // -> "0 items"
+i18next.t('keyWithCount', {count: 1}); // -> "1 item"
+i18next.t('keyWithCount', {count: 5}); // -> "5 items"
+i18next.t('keyWithCount', {count: 100}); // -> "100 items"
+```
+[link](https://www.i18next.com/translation-function/plurals#singular-plural)
+
+
+### Nesting
+
+Nesting allows you to reference other keys in a translation. 
+
+keys
+```
+{
+    "nesting1": "1 $t(nesting2)",
+    "nesting2": "2 $t(nesting3)",
+    "nesting3": "3",
+}
+```
+sample
+```
+i18next.t('nesting1'); // -> "1 2 3"
+```
+[link](https://www.i18next.com/translation-function/nesting#basic)
+
+
+### Formatting
+
+[link](https://www.i18next.com/translation-function/formatting#formatting)
+
+
 
 ## Common errors
 

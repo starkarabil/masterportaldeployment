@@ -63,7 +63,6 @@ Wir haben uns entschieden, die Übersetzungen in drei verschiedene Dateien aufzu
 
 1. common
 2. additional
-3. custom
 
 Hier ein Link zur **[Architektur](i18next.jpeg)**
 
@@ -74,10 +73,6 @@ Dies beinhaltet sowohl die allgemeinen Module als auch die am häufigsten verwen
 
 ### Additional Sprachdatei - additional.json
 Die Additional Sprachdatei wird für Addons (ehemalige custom modules) verwendet.
-
-### Custom Sprachdatei - custom.json
-Die Custom Sprachdatei wird für Übersetzungen der Instanzen des MP (das Portal) verwendet.
-Es ist noch nicht klar wofür wir diese Datei brauchen, sie entfällt vielleicht.
 
 
 
@@ -251,12 +246,20 @@ Da das Menü bereits so programmiert ist, dass es auf den Übersetzungspräfix (
 
 **Achtung**: Ein Übersetzungsschlüssel, der zu einem Eintrag im Themenbaum hinzugefügt wird, überschreibt alle Titel oder Namen, die von Diensten stammen.
 
+Ist der treeType "default" oder "custom" kann der Name des Ordners angegeben werden. Im Beispiel unten würde dann im Baum nicht "Fachdaten" sondern der Wert zum Schlüssel "foo.bar.exampleSubjectData" stehen.
+
+Default-Übersetzungen:
+Baselayer: Hintergrundkarten
+Overlayer: Fachthemen
+3d-Layer: 3D Daten
+
 
 Der Teil der config.json, den du für die Übersetzung des Themenbaums bearbeiten kannst:
 ```
 {
     "Themenconfig": {
         "Fachdaten": {
+            "name": "translate##example:foo.bar.exampleSubjectData",
             "Layer": [
                   {
                     "id": "2128",
@@ -313,14 +316,85 @@ const DrawTool = Tool.extend(/** @lends DrawTool.prototype */{
 ## Übersetzungen in den addons
 
 
-Die Sprachdateien befinden sich unter ./addons/locales/{language}/additional.json
+Die Sprachdateien befinden sich unter ./addons/{addon-Name}/locales/{language}/additional.json
 
 Eine Übersetzung wird dann wie folgt implementiert:
 ```
 i18next.t("additional:modules.tools.example.title"),
 
 ```
+[Beispiel](https://bitbucket.org/geowerkstatt-hamburg/addons/src/master/einwohnerabfrage/)
 
+## Interessante Übersetzungsfunktionen von i18nxt
+
+### Interpolation
+
+Übergabe von Parametern.
+
+Schlüssel
+```
+{
+    "key": "{{what}} is {{how}}"
+}
+```
+Beispiel
+```
+i18next.t('key', { what: 'i18next', how: 'great' });
+// -> "i18next is great"
+```
+[Link](https://www.i18next.com/translation-function/interpolation#basic)
+
+### Singular / Plural
+
+Automatische Erkennung von Einzahl und Mehrzahl.
+
+**Achtung**: Der Variablenname muss count heissen!
+
+Schlüssel
+```
+{
+  "key": "item",
+  "key_plural": "items",
+  "keyWithCount": "{{count}} item",
+  "keyWithCount_plural": "{{count}} items"
+}
+```
+Beispiel
+```
+i18next.t('key', {count: 0}); // -> "items"
+i18next.t('key', {count: 1}); // -> "item"
+i18next.t('key', {count: 5}); // -> "items"
+i18next.t('key', {count: 100}); // -> "items"
+i18next.t('keyWithCount', {count: 0}); // -> "0 items"
+i18next.t('keyWithCount', {count: 1}); // -> "1 item"
+i18next.t('keyWithCount', {count: 5}); // -> "5 items"
+i18next.t('keyWithCount', {count: 100}); // -> "100 items"
+```
+[Link](https://www.i18next.com/translation-function/plurals#singular-plural)
+
+
+### Verschachtelung
+
+Andere Übersetzungs-Schlüssel in einer Übersetzung referenzieren.
+
+Schlüssel
+```
+{
+    "nesting1": "1 $t(nesting2)",
+    "nesting2": "2 $t(nesting3)",
+    "nesting3": "3",
+}
+```
+Beispiel
+```
+i18next.t('nesting1'); // -> "1 2 3"
+```
+[Link](https://www.i18next.com/translation-function/nesting#basic)
+
+
+### Formatierung
+
+[Link](https://www.i18next.com/translation-function/formatting#formatting)
 
 ## Häufige Fehler
 
