@@ -2240,12 +2240,12 @@ Hier werden Entities3D typische Attribute aufgelistet.
 [inherits]: # (Themenconfig.Layer)
 [type:Extent]: # (Datatypes.Extent)
 
-Hier werden typische Attribute für ein StaticImage aufgelistet.
+Mit StaticImage lassen sich Bilder als Layer laden und georeferenziert auf der Karte darstellen. Es werden die Formate jpeg und png unterstützt.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
 |id|ja|String|"Eineindeutige-ID7711"|Es muss eine eineindeutige ID vergeben werden.|false|
-|typ|ja|String|"StaticImage"|Setzt den Layertypen auf StaticImage, welcher statische Bilder als Layer darstellen kann.|false|
+|typ|ja|String|"StaticImage"|Setzt den Layertypen auf StaticImage welcher statische Bilder als Layer darstellen kann.|false|
 |url|ja|String|"https://meinedomain.de/bild.png"|Link zu dem anzuzeigenden Bild.|false|
 |name|ja|String|"Static Image Name"|Setzt den Namen des Layers für den Layerbaum.|false|
 |extent|ja|**[Extent](#markdown-header-datatypesextent)**|[560.00, 5950.00, 560.00, 5945.00]|Gibt die Georeferenzierung des Bildes an. Als Koordinatenpaar werden im EPSG25832 Format die Koordinate für die Bildecke oben links und unten rechts erwartet.|false|
@@ -2255,13 +2255,14 @@ Hier werden typische Attribute für ein StaticImage aufgelistet.
 ```
 #!json
 {
+    "id": "12345",
     "typ": "StaticImage",
     "url": "https://www.w3.org/Graphics/PNG/alphatest.png",
     "name": "Testing PNG File",
     "visibility": true,
     "extent": [560296.72, 5932154.22, 562496.72, 5933454.22]
 }
-```
+`````
 
 ***
 #### Themenconfig.Layer.Vector
