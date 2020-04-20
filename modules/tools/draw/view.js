@@ -63,7 +63,6 @@ const DrawToolView = Backbone.View.extend(/** @lends DrawToolView.prototype */{
      * @return {Backbone.View} DrawView
      */
     render: function (model, isActive) {
-
         if (isActive && this.model.get("renderToWindow")) {
             this.renderSurface(model);
         }
@@ -81,7 +80,7 @@ const DrawToolView = Backbone.View.extend(/** @lends DrawToolView.prototype */{
      */
     renderAfterLngChanged: function (model, isActive) {
         if (isActive && this.model.get("renderToWindow")) {
-            this.renderSurface(model, model.get("lastDrawTypeIndex"));
+            this.renderSurface(model, model.get("lastDrawTypeIndex"), true);
         }
         else {
             this.removeSurface();
@@ -93,14 +92,17 @@ const DrawToolView = Backbone.View.extend(/** @lends DrawToolView.prototype */{
      * render this tool
      * @param {Backbone.model} model - draw model
      * @param {Number} lastDrawTypeIndex - index of the last select for drawtype
+     * @param {boolean} afterLngChange - states if the render-function is called after a language change or not.
      * @return {void}
      */
-    renderSurface: function (model, lastDrawTypeIndex) {
+    renderSurface: function (model, lastDrawTypeIndex, afterLngChange = false) {
         this.setElement(document.getElementsByClassName("win-body")[0]);
         this.$el.html(this.template(model.toJSON()));
         this.delegateEvents();
         this.renewSurface(lastDrawTypeIndex);
-        this.registerListener();
+        if (afterLngChange === false) {
+            this.registerListener();
+        }
         this.model.toggleInteraction("draw");
     },
 
