@@ -35,6 +35,7 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
      * @property {Boolean} isExpanded=false Flag if folder is expanded.
      * @property {Boolean} isInitiallyExpanded=false Flag if folder is expanded initially.
      * @property {Boolean} isSelected=false Flag if all children are selected.
+     * @property {Boolean} isPinned=false Flag if tree is pinned
      * @property {String} type="" Flag what kind of item it is. "folder".
      * @property {String} parentId="" Id of parent node.
      * @property {Boolean} isLeafFolder=false Flag if folder does not have subfolders.
@@ -111,6 +112,15 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
      */
     setIsExpanded: function (value, options) {
         this.set("isExpanded", value, options);
+    },
+    /**
+     * Setter for attribute "isPinned".
+     * @param {Boolean} value Flag for isPinned.
+     * @param {Object} options Backbone options for setter
+     * @returns {void}
+     */
+    setIsPinned: function (value, options) {
+        this.set("isPinned", value, options);
     },
 
     /**

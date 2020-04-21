@@ -545,7 +545,7 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
             overLayers = this.get("overlayer"),
             overLayers3d = this.get("overlayer_3d"),
             baseLayersName = baseLayers && _.has(baseLayers, "name") ? baseLayers.name : i18next.t("common:tree.backgroundMaps"),
-            overLayersName = overLayers && _.has(overLayers, "name") ? overLayers.name :  i18next.t("common:tree.subjectData"),
+            overLayersName = overLayers && _.has(overLayers, "name") ? overLayers.name : i18next.t("common:tree.subjectData"),
             overLayers3DName = baseLayers && _.has(overLayers3d, "name") ? overLayers3d.name : i18next.t("common:tree.subjectData3D"),
             isQuickHelpSet = Radio.request("QuickHelp", "isSet");
 
@@ -611,12 +611,11 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @param {String} treeType type of tree
      * @param {boolean} isMobile vsible map mode from portal
      * @param {object} overLayer3d contains layer fro 3d mode
-     * @param {String} overLayers3DName Name of folder.
      * @fires QuickHelp#RadioRequestQuickHelpIsSet
      * @fires Core.ModelList#RadioTriggerModelListRemoveModelsById
      * @returns {void}
      */
-    addOrRemove3DFolder: function (treeType, isMobile, overLayer3d, overLayers3DName) {
+    addOrRemove3DFolder: function (treeType, isMobile, overLayer3d) {
         var id3d = "3d_daten";
 
         if (!isMobile && (treeType === "default" || !_.isUndefined(overLayer3d))) {
