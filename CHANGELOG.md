@@ -25,7 +25,7 @@ NEU:
     - StyleIds können nun vom Typ Array sein
     - Zeichnen: Das Tool wurde erweitert und verbessert. Es können nun beispielsweise auch Doppelkreise gezeichnet werden.
     - Zeichnung Herunterladen: Funktion wurde erweitert
-- Internationalisierung wurde hinzugefügt
+- Internationalisierung wurde für einige Module hinzugefügt
 - Sidebar: Breite ist nun konfigurierbar
 - Layerslider: Das Tool wurde erweitert und verbessert.
 - 3D:
