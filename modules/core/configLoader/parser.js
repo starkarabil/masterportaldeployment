@@ -544,19 +544,36 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
             baseLayers = this.get("baselayer"),
             overLayers = this.get("overlayer"),
             overLayers3d = this.get("overlayer_3d"),
-            baseLayersName = baseLayers && _.has(baseLayers, "name") ? baseLayers.name : i18next.t("common:tree.backgroundMaps"),
-            overLayersName = overLayers && _.has(overLayers, "name") ? overLayers.name : i18next.t("common:tree.subjectData"),
-            overLayers3DName = baseLayers && _.has(overLayers3d, "name") ? overLayers3d.name : i18next.t("common:tree.subjectData3D"),
-            isQuickHelpSet = Radio.request("QuickHelp", "isSet");
+            baseLayersName = baseLayers && _.has(baseLayers, "name") ? baseLayers.name : null,
+            overLayersName = overLayers && _.has(overLayers, "name") ? overLayers.name : null,
+            overLayers3DName = baseLayers && _.has(overLayers3d, "name") ? overLayers3d.name : null,
+            isQuickHelpSet = Radio.request("QuickHelp", "isSet"),
+            baseLayersDefaultKey = "common:tree.backgroundMaps",
+            overLayersDefaultKey = "common:tree.subjectData";
+        let baseLayerI18nextTranslate = null,
+            overLayerI18nextTranslate = null;
+
+        if (!baseLayersName && !baseLayers.i18nextTranslate) {
+            // no name and no translation-function found: provide translation of default key
+            baseLayerI18nextTranslate = function (setter) {
+                if (typeof setter === "function" && i18next.exists(baseLayersDefaultKey)) {
+                    setter("name", i18next.t(baseLayersDefaultKey));
+                }
+            };
+        }
+        if (!overLayersName && !overLayers.i18nextTranslate) {
+            // no name and no translation-function found: provide translation of default key
+            overLayerI18nextTranslate = function (setter) {
+                if (typeof setter === "function" && i18next.exists(overLayersDefaultKey)) {
+                    setter("name", i18next.t(overLayersDefaultKey));
+                }
+            };
+        }
 
         this.addItem({
             type: "folder",
-            name: baseLayersName,
-            i18nextTranslate: function (setter) {
-                if (typeof setter === "function" && i18next.exists("common:tree.backgroundMaps")) {
-                    setter("name", i18next.t("common:tree.backgroundMaps"));
-                }
-            },
+            name: baseLayersName ? baseLayersName : i18next.t(baseLayersDefaultKey),
+            i18nextTranslate: baseLayers.i18nextTranslate ? baseLayers.i18nextTranslate : baseLayerI18nextTranslate,
             glyphicon: "glyphicon-plus-sign",
             id: "Baselayer",
             parentId: "tree",
@@ -571,12 +588,8 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
 
         this.addItem({
             type: "folder",
-            name: overLayersName,
-            i18nextTranslate: function (setter) {
-                if (typeof setter === "function" && i18next.exists("common:tree.subjectData")) {
-                    setter("name", i18next.t("common:tree.subjectData"));
-                }
-            },
+            name: overLayersName ? overLayersName : i18next.t(overLayersDefaultKey),
+            i18nextTranslate: overLayers.i18nextTranslate ? overLayers.i18nextTranslate : overLayerI18nextTranslate,
             glyphicon: "glyphicon-plus-sign",
             id: "Overlayer",
             parentId: "tree",
@@ -611,22 +624,30 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @param {String} treeType type of tree
      * @param {boolean} isMobile vsible map mode from portal
      * @param {object} overLayer3d contains layer fro 3d mode
+     * @param {String} overLayers3DName name of the layer
      * @fires QuickHelp#RadioRequestQuickHelpIsSet
      * @fires Core.ModelList#RadioTriggerModelListRemoveModelsById
      * @returns {void}
      */
-    addOrRemove3DFolder: function (treeType, isMobile, overLayer3d) {
+    addOrRemove3DFolder: function (treeType, isMobile, overLayer3d, overLayers3DName) {
         var id3d = "3d_daten";
 
-        if (!isMobile && (treeType === "default" || !_.isUndefined(overLayer3d))) {
+        if (!isMobile && (treeType === "default" || overLayer3d !== undefined)) {
+            const defaultKey = "common:tree.subjectData3D";
+            let i18nextTranslate = null;
+
+            if (!overLayers3DName && !overLayer3d.i18nextTranslate) {
+                // no name and no translation-function found: provide translation of default key
+                i18nextTranslate = function (setter) {
+                    if (typeof setter === "function" && i18next.exists(defaultKey)) {
+                        setter("name", i18next.t(defaultKey));
+                    }
+                };
+            }
             this.addItemByPosition({
                 type: "folder",
-                name: i18next.t("common:tree.subjectData3D"),
-                i18nextTranslate: function (setter) {
-                    if (typeof setter === "function" && i18next.exists("common:tree.subjectData3D")) {
-                        setter("name", i18next.t("common:tree.subjectData3D"));
-                    }
-                },
+                name: overLayers3DName ? overLayers3DName : i18next.t(defaultKey),
+                i18nextTranslate: overLayer3d.i18nextTranslate ? overLayer3d.i18nextTranslate : i18nextTranslate,
                 id: id3d,
                 parentId: "tree",
                 isInThemen: true,
