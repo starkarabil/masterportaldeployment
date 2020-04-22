@@ -537,16 +537,16 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @returns {void}
      */
     addTreeMenuItems: function (treeType) {
-        const menu = _.has(this.get("portalConfig"), "menu") ? this.get("portalConfig").menu : undefined,
-            tree = !_.isUndefined(menu) && _.has(menu, "tree") ? menu.tree : undefined,
-            isAlwaysExpandedList = !_.isUndefined(tree) && _.has(tree, "isAlwaysExpanded") ? tree.isAlwaysExpanded : [],
+        const menu = this.get("portalConfig").hasOwnProperty("menu") ? this.get("portalConfig").menu : undefined,
+            tree = menu !== undefined && menu.hasOwnProperty("tree") ? menu.tree : undefined,
+            isAlwaysExpandedList = tree !== undefined && tree.hasOwnProperty("isAlwaysExpanded") ? tree.isAlwaysExpanded : [],
             isMobile = Radio.request("Util", "isViewMobile"),
             baseLayers = this.get("baselayer"),
             overLayers = this.get("overlayer"),
             overLayers3d = this.get("overlayer_3d"),
-            baseLayersName = baseLayers && _.has(baseLayers, "name") ? baseLayers.name : null,
-            overLayersName = overLayers && _.has(overLayers, "name") ? overLayers.name : null,
-            overLayers3DName = baseLayers && _.has(overLayers3d, "name") ? overLayers3d.name : null,
+            baseLayersName = baseLayers && baseLayers.hasOwnProperty("name") ? baseLayers.name : null,
+            overLayersName = overLayers && overLayers.hasOwnProperty("name") ? overLayers.name : null,
+            overLayers3DName = overLayers3d && overLayers3d.hasOwnProperty("name") ? overLayers3d.name : null,
             isQuickHelpSet = Radio.request("QuickHelp", "isSet"),
             baseLayersDefaultKey = "common:tree.backgroundMaps",
             overLayersDefaultKey = "common:tree.subjectData";
@@ -630,7 +630,7 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
      * @returns {void}
      */
     addOrRemove3DFolder: function (treeType, isMobile, overLayer3d, overLayers3DName) {
-        var id3d = "3d_daten";
+        const id3d = "3d_daten";
 
         if (!isMobile && (treeType === "default" || overLayer3d !== undefined)) {
             const defaultKey = "common:tree.subjectData3D";
