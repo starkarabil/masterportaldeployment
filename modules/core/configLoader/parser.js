@@ -289,19 +289,25 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
     },
 
     /**
-     * todo
-     * @param {*} name - todo
-     * @param {*} id - todo
-     * @param {*} parentId - todo
-     * @param {*} level - todo
-     * @param {*} isExpanded - todo
+     * Creates a new folder and adds it.
+     * @param {String} name - name of the folder
+     * @param {String} id - id of the layer
+     * @param {String} parentId - id of the parent
+     * @param {Number} level - level of the folder
+     * @param {Boolean} isExpanded - if true, folder will be expanded
+     * @param {String} i18nKey - key for the name to translate
      * @fires QuickHelp#RadioRequestQuickHelpIsSet
      * @returns {void}
      */
-    addFolder: function (name, id, parentId, level, isExpanded) {
-        var folder = {
+    addFolder: function (name, id, parentId, level, isExpanded, i18nKey) {
+        const folder = {
             type: "folder",
-            name: name,
+            name: i18nKey ? i18next.t(i18nKey) : name,
+            i18nextTranslate: i18nKey ? function (setter) {
+                if (typeof setter === "function" && i18next.exists(i18nKey)) {
+                    setter("name", i18next.t(i18nKey));
+                }
+            } : null,
             glyphicon: "glyphicon-plus-sign",
             id: id,
             parentId: parentId,
@@ -433,12 +439,12 @@ const Parser = Backbone.Model.extend(/** @lends Parser.prototype */{
                     parentId = "extthema";
                     level = 2;
                     if (!this.getItemByAttributes({id: "ExternalLayer"})) {
-                        this.addFolder("Externe Fachdaten", "ExternalLayer", "tree", 0);
+                        this.addFolder("Externe Fachdaten", "ExternalLayer", "tree", 0, false, "common:tree.externalTechnicalData");
                         Radio.trigger("ModelList", "renderTree");
                         $("#Overlayer").parent().after($("#ExternalLayer").parent());
                     }
                     if (!this.getItemByAttributes({id: parentId})) {
-                        this.addFolder("Fachthema", parentId, "ExternalLayer", 1, true);
+                        this.addFolder("Fachthema", parentId, "ExternalLayer", 1, true, "common:tree.subjectData");
                     }
                 }
                 gdiLayer = Object.assign(gdiLayer, {
