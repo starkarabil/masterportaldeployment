@@ -43,6 +43,7 @@
     "moment": "2.x",
     "mqtt": "^2.15.x",
     "olcs": "^2.10.0",
+    "polyfill-object.fromentries": "^1.0.1",
     "rbush": "^2.0.2",
     "url-polyfill": "^1.1.8",
     "vcs-oblique": "^2.0.1",
