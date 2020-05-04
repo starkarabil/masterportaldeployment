@@ -11,6 +11,7 @@ import Legend from "../modules/legend/store/indexLegend";
 import Map from "../modules/map/store/indexMap";
 import MapMarker from "../modules/mapMarker/store/indexMapMarker";
 import QuickHelp from "../modules/quickHelp/store/indexQuickHelp";
+import Searchbar from "../modules/searchbar/store/indexSearchbar";
 import Title from "../modules/title/store/indexTitle";
 import WmsTime from "../modules/wmsTime/store/indexWmsTime";
 
@@ -45,7 +46,8 @@ const store = new Vuex.Store({
         },
         Tools: {
             ...toolsModule
-        }
+        },
+        Searchbar
     },
     state,
     mutations,

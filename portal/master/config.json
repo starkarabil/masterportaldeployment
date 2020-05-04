@@ -113,24 +113,10 @@
         "glyphicon": "glyphicon-list",
         "isInitOpen": false
       },
-      "ansichten": {
-        "name": "translate#common:menu.views.name",
-        "glyphicon": "glyphicon-list",
-        "children": {
-          "view1": {
-            "name": "translate#common:menu.views.view01",
-            "type": "viewpoint",
-            "glyphicon": "glyphicon-screenshot",
-            "heading": -0.30858728378862876,
-            "tilt": 0.9321791580603296,
-            "altitude": 272.3469798217454,
-            "center": [
-              564028.7954571751,
-              5934555.967867207
-            ],
-            "zoomLevel": 7.456437968949651
-          }
-        }
+      "legend":
+      {
+        "name": "translate#common:menu.legend",
+        "glyphicon": "glyphicon-book"
       },
       "filter": {
         "name": "translate#common:menu.filter",
@@ -503,34 +489,10 @@
         }
       }
     },
-    "controls": {
-      "fullScreen": true,
-      "orientation3d": true,
-      "zoom": true,
-      "orientation": {
-        "zoomMode": "once",
-        "poiDistances": [
-          500,
-          1000,
-          2000
-        ]
-      },
-      "totalView": true,
-      "attributions": {
-        "isInitOpenDesktop": true,
-        "isInitOpenMobile": true
-      },
-      "overviewMap": {
-        "layerId": "452",
-        "isInitOpen": false
-      },
-      "mousePosition": true,
-      "button3d": true,
-      "buttonOblique": true,
-      "freeze": true,
-      "backForward": true
-    },
-    "layersRemovable": true
+    "controls":
+    {
+      "zoom": true
+    }
   },
   "Themenconfig": {
     "Hintergrundkarten": {
