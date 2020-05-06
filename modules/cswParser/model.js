@@ -195,7 +195,7 @@ const CswParserModel = Backbone.Model.extend(/** @lends CswParserModel.prototype
             abstractTextContent = abstractText.textContent;
         }
         else {
-            abstractTextContent = "Fehler beim Laden der Vorschau der Metadaten.";
+            abstractTextContent = "Keine Metadaten vorhanden.";
         }
 
         if (abstractTextContent.length > 1000) {
