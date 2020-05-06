@@ -9,15 +9,15 @@
 ### Added
 - Internationalisierung ergänzt für:
     - den Parameter Flur in der Flurstückssuche
-    - den Menüparamter Information
+    - den Menüparameter Information
     - die Themenbäume (default und custom)
-- Die Konventionen zu folgenden Tehmen erweitert:
+- Die Konventionen zu folgenden Themen erweitert:
     - Die Nutzung von Underscore.js
     - Ort für Templates
     - Schreiben des Changelogs
 
 ### Changed
-- Die Dokumentation wurde an eineigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
+- Die Dokumentation wurde an einigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
 
 ### Deprecated
 
@@ -25,11 +25,13 @@
 - Underscore.js wurde aus der Package.json entfernt
 
 ### Fixed
+- Ein Problem wurde behoben, sodass der Maßstab nun auch bei besonders kleinen Maßstäben nicht umbricht.
+- Der URL-Parameter "LNG" funktioniert nun ausschließlich wenn die Mehrsprachigkeit in den Portalconfigs aktiviert wurde und wirft keinen Fehler mehr.
 - Die Scrollbar beim Starten im IE11 wurde entfernt
 - Ein Problem, dass beim parametrisierten Aufruf mit ?config= auftrat, wurde behoben
 - Ein Problem wurde behoben, welches mit fehlernder Konfifuration des Portaltitels auftrat
 - Das Problem, das bei der Änderung der Sprache bei einem geöffneten Werkzeug auftrat und zu einer falschen Darstellung führte, wurde behoben
-- Im Footer können nun wieder eigene Einträge konfiguriert werden, die durch die Mehrsprachigkeit nicht mehr Fehlerhaft angezeigt werden.
+- Im Footer können nun wieder eigene Einträge konfiguriert werden, die durch die Mehrsprachigkeit nicht mehr fehlerhaft angezeigt werden.
 - Ein Fehler wurde behoben, durch den Werkzeuge nach der Umschaltung der Sprache nicht mehr angezeigt wurden, da dort noch keine Mehrsprachigkeit implementiert ist
 - Die fehlerhafte Übersetzung mittels des URL Parameters ?lng= bei nicht konfigurierter Mehrsprachigkeit wurde behoben
 
@@ -88,7 +90,7 @@
 - Doku:
     - *setup.md* wurde angepasst
 - Konventionen: Wurden erweitert und überarbeitet.
-- Eslint: Überarbeitung der Regel function-paren-newline, sobald bei einem Paramter einer Funktion ein Zeilenumbruch verwendet wird ist dies bei allen Parametern erforderlich.
+- Eslint: Überarbeitung der Regel function-paren-newline, sobald bei einem Parameter einer Funktion ein Zeilenumbruch verwendet wird ist dies bei allen Parametern erforderlich.
 - master Portale: Intranet URL's entfernt.
 - Fonts: Erzeugung einer eigenen Fontclass MasterportalFont, um den Font des Masterportals zentral setzen zu können.
 - camelCase: Umbenennung diverser Ordner und Dateien entsprechend der camelCase Konvention.
@@ -104,7 +106,7 @@
 - Layer: Fortan können auch Layer deaktiviert werden, die im aktuellen Maßstab nicht sichtbar sind.
 - Filter: Der Filter kann im Internet Explorer wieder geöffnet werden.
 - Filter: Ein Fehler verhinderte die Verwendung des Filters. Dieser wurde behoben.
-- Elastic-Search: Es kann wieder nach konfigurierten Fachtemen gesucht werden.
+- Elastic-Search: Es kann wieder nach konfigurierten Fachthemen gesucht werden.
 - Suche: Ein Fehler wurde beseitig, der beim Entfernen des eingegebenen Suchbegriffs aufgetreten ist.
 - Messtool: Die voreingestellte Einheit (m² oder m) wurde auf die jeweilige Auswahl (Fläche oder Strecke) abgestimmt.
 - Themenbaum: Der Themenbaum lässt sich wieder inital öffnen.
@@ -170,7 +172,7 @@
 
 ## v2.4.0 - 2019-08-21
 ### Added
-  - Dependencies: Die Äbhängigkeit "lgv-config" wird nicht mehr benötigt, extern geladene Dateien (z.B. "services.json") werden über einen direkten Pfad oder eine URL bezogen
+  - Dependencies: Die Abhängigkeit "lgv-config" wird nicht mehr benötigt, extern geladene Dateien (z.B. "services.json") werden über einen direkten Pfad oder eine URL bezogen
   - Dependencies: Aktualisierung der Versionen diverser Abhängigkeiten
   - Basic-Portal: Das Basic-Portal wurde überarbeitet und enthält nun einen "ressources" Ordner mit Beispiel Daten
   - Pre-push-Hook: Code wird beim Pushen vor dem Push mit ES-Lint überprüft
