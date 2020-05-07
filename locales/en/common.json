@@ -236,6 +236,11 @@
                     "northingLabel": "Northing"
                 }
             },
+            "gfi": {
+                "themes": {
+                    "errorMessage": "An error has occurred when requesting information about the layer: <b>{{name}}</b> with the LayerId: <b>{{id}}</b> Please try again later. If the problem persists, please contact the operator of the service."
+                }
+            },
             "viomRouting": {
                 "startAddressLabel": "Start address",
                 "destinationAddressLabel": "Destination address",

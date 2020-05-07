@@ -140,8 +140,7 @@ const Theme = Backbone.Model.extend(/** @lends ThemeModel.prototype */{
     gfiErrorHandler: function (jqXHR) {
         this.setIsReady(true);
         console.warn("Error occured requesting GFI with status '" + jqXHR.status + "' and errorMessage '" + jqXHR.statusText + "'");
-        Radio.trigger("Alert", "alert", "Bei der Informationsabfrage des Layers: <b>" + this.get("name") + "</b> mit der LayerId: <b>" + this.get("id") + "</b> ist ein Fehler aufgetreten."
-            + "<br> Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut. Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes.");
+        Radio.trigger("Alert", "alert", i18next.t("common:modules.tools.gfi.themes.errorMessage", {name: this.get("name"), id: this.get("id")}));
     },
 
     /**
