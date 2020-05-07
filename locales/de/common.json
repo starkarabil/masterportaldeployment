@@ -79,7 +79,7 @@
             "noMetadataMessage": "Keine Metadaten vorhanden."
         },
         "layerInformation": {
-            "noMetadataMessage": "Keine Metadaten vorhanden."
+            "noMetadataMessage": "$t(modules.cswParser.noMetadataMessage)"
         },
         "quickHelp": {
             "titleTag": "Hilfe öffnen",
