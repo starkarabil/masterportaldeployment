@@ -190,7 +190,7 @@ const LayerInformationModel = Backbone.Model.extend(/** @lends LayerInformationM
         }
         else {
             this.set("title", this.get("layername"));
-            this.set("abstractText", "Keine Metadaten vorhanden.");
+            this.set("abstractText", i18next.t("common:modules.layerInformation.noMetadataMessage"));
             this.set("date", null);
             this.set("metaURL", null);
             this.set("downloadLinks", null);

@@ -75,6 +75,12 @@
         "language": {
             "languageTitle": "Please choose a language"
         },
+        "cswParser": {
+            "noMetadataMessage": "No metadata available."
+        },
+        "layerInformation": {
+            "noMetadataMessage": "No metadata available."
+        },
         "quickHelp": {
             "titleTag": "Open help",
             "search":{
