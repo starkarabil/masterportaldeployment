@@ -45,18 +45,41 @@
     },
     "tree": {
         "trafficCameras": "survey cameras (traffic)",
-        "topicsHelp": "Topics help Hilfe",
+        "topicsHelp": "Topics help",
         "mapBackground": "Map background grey/white",
         "pinTopicsTree": "Fix/remove topic tree",
         "hideAllTopics": "Hide all topics",
         "showAllTopics": "Show all topics",
-        "category": "Categorie"
+        "category": "Categorie",
+        "backgroundMaps": "Background maps",
+        "subjectData": "Subject data",
+        "subjectData3D": "3D data",
+        "selectedTopics": "Selected topics",
+        "removeSelection": "Remove selection",
+        "infosAndLegend": "Information und explanations",
+        "removeTopic": "Remove topic",
+        "showTopic": "Present topic",
+        "changeClassDivision":"Change class division",
+        "settings":"Settings",
+        "transparency": "Transparency",
+        "increaseTransparency": "Increase transparency",
+        "reduceTransparency": "Reduce transparency",
+        "removeLayer": "Remove Layer",
+        "levelUp": "Level up",
+        "levelDown": "Level down",
+        "externalTechnicalData": "External technical data"
     },
     "date": "Date",
     "time": "Time",
     "modules": {
         "language": {
             "languageTitle": "Please choose a language"
+        },
+        "cswParser": {
+            "noMetadataMessage": "No metadata available."
+        },
+        "layerInformation": {
+            "noMetadataMessage": "$t(modules.cswParser.noMetadataMessage)"
         },
         "quickHelp": {
             "titleTag": "Open help",
@@ -217,6 +240,11 @@
                 "cartesian": {
                     "eastingLabel": "Easting",
                     "northingLabel": "Northing"
+                }
+            },
+            "gfi": {
+                "themes": {
+                    "errorMessage": "An error has occurred when requesting information about the layer: <b>{{name}}</b> with the LayerId: <b>{{id}}</b> Please try again later. If the problem persists, please contact the operator of the service."
                 }
             },
             "viomRouting": {

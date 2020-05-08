@@ -22,6 +22,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @memberof Menu.Desktop.Layer
      * @constructs
     * @listens LayerInformation#RadioTriggerLayerInformationUnhighlightLayerInformationIcon
+    * @listens i18next#RadioTriggerLanguageChanged
      */
     initialize: function () {
         this.listenTo(this.model, {
@@ -33,6 +34,8 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
         this.listenTo(Radio.channel("LayerInformation"), {
             "unhighlightLayerInformationIcon": this.unhighlightLayerInformationIcon
         });
+        // translates the i18n-props into current user-language. is done this way, because model's listener to languageChange reacts too late (after render, which ist riggered by creating new Menu)
+        this.model.changeLang();
         this.render();
         this.toggleColor(this.model, this.model.get("isOutOfRange"));
     },
