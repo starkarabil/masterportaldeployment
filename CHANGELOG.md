@@ -18,6 +18,9 @@
 
 ### Changed
 - Die Dokumentation wurde an einigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
+- Die Überschriften in dem Control Layerattributions werden nun in der Schriftgröße 14px und nicht mehr fett dargestellt.
+- Die Meldung, die beim Fehlschlagen der GFI angezeigt wird, wurde überarbeitet.
+- In den Layerinformationen wird nun der Text "Keine Metadaten vorhanden." angezeigt, wenn keine Daten geladen wurden.
 
 ### Deprecated
 
