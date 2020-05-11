@@ -38,6 +38,7 @@
 - Ein Fehler wurde behoben, durch den Werkzeuge nach der Umschaltung der Sprache nicht mehr angezeigt wurden, da dort noch keine Mehrsprachigkeit implementiert ist
 - Die fehlerhafte Übersetzung mittels des URL Parameters ?lng= bei nicht konfigurierter Mehrsprachigkeit wurde behoben
 - Layer-Info-Fenster ist nun maximal 600px breit
+- Sensordaten werden nun wieder live gestylet.
 
 ---
 
