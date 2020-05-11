@@ -899,6 +899,9 @@ const SensorLayer = Layer.extend(/** @lends SensorLayer.prototype */{
         updatedFeature = this.aggregateDataStreamValue(feature);
         updatedFeature = this.aggregateDataStreamPhenomenonTime(feature);
 
+        this.get("layer").getSource().removeFeature(feature);
+        this.get("layer").getSource().addFeature(updatedFeature);
+
         Radio.trigger("GFI", "changeFeature", updatedFeature);
     },
 
