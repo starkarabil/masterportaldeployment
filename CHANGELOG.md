@@ -1,6 +1,6 @@
 # Changelog Masterportal
  Alle wichtigen Änderungen in diesem Projekt werden in dieser Datei abgelegt.
- 
+
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
@@ -37,6 +37,7 @@
 - Im Footer können nun wieder eigene Einträge konfiguriert werden, die durch die Mehrsprachigkeit nicht mehr fehlerhaft angezeigt werden.
 - Ein Fehler wurde behoben, durch den Werkzeuge nach der Umschaltung der Sprache nicht mehr angezeigt wurden, da dort noch keine Mehrsprachigkeit implementiert ist
 - Die fehlerhafte Übersetzung mittels des URL Parameters ?lng= bei nicht konfigurierter Mehrsprachigkeit wurde behoben
+- Layer-Info-Fenster ist nun maximal 600px breit
 
 ---
 
