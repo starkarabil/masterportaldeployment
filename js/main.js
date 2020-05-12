@@ -10,7 +10,7 @@ import "../css/bootstrap.less";
 import "../css/style.css";
 // polyfill für Promises im IE
 import "es6-promise/auto";
-import i18nextXHRBackend from "i18next-xhr-backend";
+import HttpApi from "i18next-http-backend";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 
 const scriptTags = document.getElementsByTagName("script"),
@@ -126,7 +126,8 @@ function initLanguage (portalLanguageConfig) {
             "en": "english"
         },
         "fallbackLanguage": "de",
-        "changeLanguageOnStartWhen": ["querystring", "localStorage", "navigator", "htmlTag"]
+        "changeLanguageOnStartWhen": ["querystring", "localStorage", "navigator", "htmlTag"],
+        "loadPath": "/locales/{{lng}}/{{ns}}.json"
     }, portalLanguageConfig);
 
     // init i18next
@@ -134,7 +135,7 @@ function initLanguage (portalLanguageConfig) {
         i18next.use(i18nextBrowserLanguageDetector);
     }
     i18next
-        .use(i18nextXHRBackend)
+        .use(HttpApi)
         .on("languageChanged", function (lng) {
             Radio.trigger("i18next", "languageChanged", lng);
         }, this)
@@ -171,7 +172,7 @@ function initLanguage (portalLanguageConfig) {
             defaultNS: "common",
 
             backend: {
-                loadPath: "/locales/{{lng}}/{{ns}}.json",
+                loadPath: portalLanguage.loadPath,
                 crossDomain: false
             },
 
