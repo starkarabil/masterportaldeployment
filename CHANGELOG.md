@@ -15,7 +15,7 @@
     - Die Nutzung von Underscore.js
     - Ort für Templates
     - Schreiben des Changelogs
-- Der Pfad zu den Sprachdateien ist jetzt in der config.js konfigurierbar und kann jetzt eine Funktion, einen Pfad oder ein Url enthalten.
+- Der Pfad zu den Sprachdateien ist jetzt in der config.js konfigurierbar und kann jetzt eine Funktion, einen Pfad oder eine Url enthalten.
 
 ### Changed
 - Die Dokumentation wurde an einigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
