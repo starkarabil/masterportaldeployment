@@ -40,6 +40,7 @@
 - Die fehlerhafte Übersetzung mittels des URL Parameters ?lng= bei nicht konfigurierter Mehrsprachigkeit wurde behoben
 - Layer-Info-Fenster ist nun maximal 600px breit
 - Sensordaten werden nun wieder live gestylet.
+- Bei der Suche nach multipart Polygonen wurde lediglich auf eines der Teilpolygone gezoomt und dieses gehighlighted, nun geschieht dies für das gesamte multipart Polygon.
 
 ---
 
