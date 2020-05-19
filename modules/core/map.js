@@ -33,6 +33,7 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
      * @listens Core#RadioRequestMapGetFeaturesAtPixel
      * @listens Core#RadioRequestMapRegisterListener
      * @listens Core#RadioRequestMapGetMap
+     * @listens Core#RadioRequestMapGetInitialLoading
      * @listens Core#RadioRequestMapGetMapMode
      * @listens Core#RadioTriggerMapAddLayer
      * @listens Core#RadioTriggerMapAddLayerToIndex
@@ -90,6 +91,9 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
             "registerListener": this.registerListener,
             "getMap": function () {
                 return this.get("map");
+            },
+            "getInitialLoading": function () {
+                return this.get("initialLoading");
             },
             "getLayerByName": this.getLayerByName,
             "getOverlayById": this.getOverlayById,
@@ -596,15 +600,9 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
     initalLoadingChanged: function () {
         var num = this.get("initalLoading");
 
-        if (num > 0) {
-            Radio.trigger("Util", "showLoader");
-        }
-        else if (num === 0) {
+        if (num === 0) {
             Radio.trigger("Util", "hideLoadingModule");
             this.stopListening(this, "change:initalLoading");
-            if (document.getElementById("loader") !== null && document.getElementById("loader").style.display !== "") {
-                Radio.trigger("Util", "hideLoader");
-            }
         }
     },
 
