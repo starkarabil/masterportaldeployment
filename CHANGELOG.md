@@ -41,7 +41,7 @@
 - Layer-Info-Fenster ist nun maximal 600px breit
 - Sensordaten werden nun wieder live gestylet.
 - Bei der Suche nach multipart Polygonen wurde lediglich auf eines der Teilpolygone gezoomt und dieses gehighlighted, nun geschieht dies für das gesamte multipart Polygon.
-- Ein Problem beim anzeigen des Loader-gif wurde behoben.
+- Ein Problem beim Anzeigen des Loader-gif wurde behoben.
 
 ---
 
