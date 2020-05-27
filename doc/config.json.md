@@ -736,25 +736,24 @@ Hier können die Menüeinträge und deren Anordnung konfiguriert werden. Die Rei
 ***
 
 #### Portalconfig.menu.info
-
 [inherits]: # (Portalconfig.menu.folder)
 
-Informations-Ordner in dem Werkzeuge oder Staticlinks eingetragen werden können.
+Dies ist ein Menüreiter, in dem typischerweise Links *("staticlinks")* zu Informationen angelegt werden. Es können aber auch Werkzeuge *("tools")* hinterlegt werden.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
-|children|nein|**[children](#markdown-header-portalconfigmenuinfochildren)**||Konfiguration der Kindelemente des Informations Ordners.|false|
+|children|nein|**[children](#markdown-header-portalconfigmenuinfochildren)**||Konfiguration der Kindelemente des Menüreiters.|false|
 
 ***
 
 ##### Portalconfig.menu.info.children
-[type:staticlinks]: # (Portalconfig.menu.staticlinks)
+[type:staticlink]: # (Portalconfig.menu.staticlinks.staticlink)
 
-Liste der Werkzeuge oder Staticlinks die im Info-Ordner erscheinen sollen.
+Liste der Werkzeuge *("tools")* oder Links *("staticlinks")*, die im Menüreiter *"info"* erscheinen sollen.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
-|children|nein|**[staticlinks](#markdown-header-portalconfigmenustaticlinks)**||Konfiguration der Kindelemente des Informations Ordners.|false|
+|staticlinks|nein|**[staticlink](#markdown-header-portalconfigmenustaticlinks)**[]||Konfigurationsobjekt zur Erstellung von Links im Menüreiter.|false|
 
 ***
 
@@ -964,49 +963,49 @@ Liste der Einstellungen zum Überschreiben von Vektorstyles bei GFI Abfragen.
 ***
 
 ##### Portalconfig.menu.tool.gfi.highlightVectorRules.fill
-Todo
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|color|nein|Float[]|[255, 255, 255, 0.5]|Mögliche Einstellung: color (RGBA)|false|
 
 ```
 #!json
-{
-    "color": [215, 102, 41, 0.9]
-}
+"fill": { "color": [215, 102, 41, 0.9] }
 ```
 
 ***
 
 ##### Portalconfig.menu.tool.gfi.highlightVectorRules.image
-Todo
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|scale|nein|Float|1|Mögliche Einstellung: scale|false|
 
 ```
 #!json
-{
-    "scale": 1.5
-}
+"image": { "scale": 1.5 }
 ```
 
 ***
 
 ##### Portalconfig.menu.tool.gfi.highlightVectorRules.stroke
-Todo
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|width|nein|Integer|1|Mögliche Einstellung: width|false|
 
 ```
 #!json
-{
-    "width": 4
-}
+"stroke": { "width": 4 }
 ```
 
 ***
 
 ##### Portalconfig.menu.tool.gfi.highlightVectorRules.text
-Todo
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|scale|nein|Float|1|Mögliche Einstellung: scale|false|
 
 ```
 #!json
-{
-    "scale": 2
-}
+"text": { "scale": 2 }
 ```
 
 ***
