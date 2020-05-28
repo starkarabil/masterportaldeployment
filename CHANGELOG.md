@@ -22,6 +22,7 @@
 - Die Überschriften in dem Control Layerattributions werden nun in der Schriftgröße 14px und nicht mehr fett dargestellt.
 - Die Meldung, die beim Fehlschlagen der GFI angezeigt wird, wurde überarbeitet.
 - In den Layerinformationen wird nun der Text "Keine Metadaten vorhanden." angezeigt, wenn keine Daten geladen wurden.
+- Bei abrufen des Druckreports wird die printAppId nun im Pfad mit angegeben.
 
 ### Deprecated
 
@@ -42,6 +43,8 @@
 - Sensordaten werden nun wieder live gestylet.
 - Bei der Suche nach multipart Polygonen wurde lediglich auf eines der Teilpolygone gezoomt und dieses gehighlighted, nun geschieht dies für das gesamte multipart Polygon.
 - Ein Problem beim Anzeigen des Loader-gif wurde behoben.
+- Bei Vektordaten (WFS) wird nun auch die Legende wieder aus dem Parameter legendURL ausgelesen, wenn dieser angegeben wurde.
+- Bei ausgegrauten Layern wird die Legende nun nicht mehr gedruckt.
 
 ---
 
