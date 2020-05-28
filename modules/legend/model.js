@@ -318,7 +318,7 @@ const LegendModel = Tool.extend(/** @lends LegendModel.prototype */{
      * @fires VectorStyle#RadioRequestStyleListReturnModelById
      * @param   {string} layername Name of layer to use in legend view
      * @param   {number} styleId styleId
-     * @param   {string|sting[]} legendURL can be a image path as sting or array of strings
+     * @param   {string} legendURL can be a image path as string or array of strings
      * @returns {object} legendObject legend item
      * @returns {string} legendObject.legendname layername
      * @returns {object[]} legendObject.legend Array of legend entries in this particular layer e.g. because of multiple categories
@@ -762,7 +762,7 @@ const LegendModel = Tool.extend(/** @lends LegendModel.prototype */{
      * @fires VectorStyle#RadioRequestStyleListReturnModelById
      * @param   {string} layername Name of layer to use in legend view
      * @param   {integer} styleId styleId
-     * @param   {string|sting[]}   legendURL can be a image path as sting or array of strings
+     * @param   {string|string[]}   legendURL can be a image path as string or array of strings
      * @returns {object} legendObject legend item
      * @returns {string} legendObject.legendname layername
      * @returns {object[]} legendObject.legend Array of legend entries in this particular layer e.g. because of multiple categories
