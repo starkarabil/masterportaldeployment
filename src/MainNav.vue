@@ -3,6 +3,8 @@
 import Title from "./modules/title/components/Title.vue";
 import LegendMenu from "./modules/legend/components/LegendMenu.vue";
 import {mapState, mapGetters} from "vuex";
+import Searchbar from "./modules/searchbar/components/Searchbar.vue";
+
 export default {
     name: "MainNav",
     components: {
@@ -14,7 +16,8 @@ export default {
             // listen to configJson changes for mounting the tools
             "configJson"
         ]),
-        ...mapGetters(["legendConfig"])
+        ...mapGetters(["legendConfig"]),
+        Searchbar
     }
 };
 </script>
@@ -49,6 +52,7 @@ export default {
                     </div>
                     <LegendMenu v-if="legendConfig" />
                     <Title />
+                    <Searchbar />
                 </div>
             </div>
         </nav>

@@ -5,16 +5,14 @@ import MapRegion from "./MapRegion.vue";
 import isDevMode from "./utils/isDevMode";
 import Footer from "./modules/footer/components/Footer.vue";
 import {checkIsURLQueryValid} from "./utils/parametricUrl/stateModifier";
-import Searchbar from "./modules/searchbar/components/Searchbar.vue";
 
 export default {
     name: "App",
     components: {
         MainNav,
         MapRegion,
-        Footer,
+        Footer
         // ,MapModuleDebug
-        Searchbar
     },
     data: () => ({isDevMode}),
     created () {
@@ -43,6 +41,7 @@ export default {
         class="masterportal-container"
     >
         <MainNav />
+        <Searchbar />
         <MapRegion class="map-region" />
         <Footer />
         <!-- <MapModuleDebug v-if="isDevMode" /> -->
