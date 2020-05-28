@@ -49,6 +49,11 @@ export default {
                             id="root"
                             class="nav-menu"
                         />
+                        <ul
+                            class="navbar-form navbar-right"
+                        >
+                            <Searchbar />
+                        </ul>
                     </div>
                     <LegendMenu v-if="legendConfig" />
                     <Title />

@@ -36,10 +36,10 @@ export default {
 </script>
 
 <template lang="html">
-    <div class="searchbar">
+    <div class="form-group">
         <input
             v-model="inputMessage"
-            class="inputField"
+            class="searchbar-inputField form-control"
             :placeholder="placeholder"
             @keyup="keyUp"
         >
@@ -56,19 +56,17 @@ export default {
 </template>
 
 <style scoped lang="less">
-    .searchbar {
-        right: 0px;
-        top: 40px;
-        position: absolute;
-        z-Index: 5;
-    }
-    .inputField {
-        width: 400px;
-        height: 30px;
+    @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
+
+    .searchbar-inputField {
+        &::placeholder {
+            font-family: @font_family_1;
+            font-size: 13px;
+        }
     }
     .glyphicon {
-        position: relative;
-        right: 20px;
+        position: absolute;
+        right: 0px;
     }
     .glyphicon-remove {
         cursor: pointer;

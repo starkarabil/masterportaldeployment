@@ -44,7 +44,7 @@ import FeatureLister from "../modules/tools/featureLister/view";
 import WfstView from "../modules/tools/wfst/view";
 // controls
 import ControlsView from "../modules/controls/view";
-import SearchbarView from "../modules/searchbar/view";
+// import SearchbarView from "../modules/searchbar/view";
 import Button3DView from "../modules/controls/button3d/view";
 import ButtonObliqueView from "../modules/controls/buttonOblique/view";
 import Orientation3DView from "../modules/controls/orientation3d/view";
@@ -249,9 +249,9 @@ async function loadApp () {
     sbconfig = Object.assign({}, Object.prototype.hasOwnProperty.call(Config, "quickHelp") ? {quickHelp: Config.quickHelp} : {});
     sbconfig = Object.assign(sbconfig, searchbarAttributes);
 
-    if (searchbarAttributes !== undefined && sbconfig) {
-        new SearchbarView(sbconfig);
-    }
+    // if (searchbarAttributes !== undefined && sbconfig) {
+    //     new SearchbarView(sbconfig);
+    // }
 
     if (Config.addons !== undefined) {
         Radio.channel("Addons");
