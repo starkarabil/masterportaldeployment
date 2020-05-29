@@ -16,6 +16,7 @@
     - Ort für Templates
     - Schreiben des Changelogs
 - Der Pfad zu den Sprachdateien ist jetzt in der config.js konfigurierbar und kann jetzt eine Funktion, einen Pfad oder eine Url enthalten.
+- Es wurde ein Konfigurationsparameter für das Druckwerkzeug eingefügt: currentLayoutName. Dadurch lässt sich das Standardlayout beim Starten des Werkzeugs konfigurieren.
 
 ### Changed
 - Die Dokumentation wurde an einigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
