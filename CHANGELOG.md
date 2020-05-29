@@ -4,8 +4,7 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
-## Unreleased - in development
-
+## v2.5.1 - 2020-05-29
 ### Added
 - Internationalisierung ergänzt für:
     - den Parameter Flur in der Flurstückssuche
