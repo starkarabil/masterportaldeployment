@@ -408,8 +408,7 @@
         "searchbar": {
             "placeholder": {
                 "addressHospitalBplan" : "Search for Address/Hospital/B-Plan",
-                "addressTopicParcel" : "Search address, district, topics, parcel",
-                "address" : "Search for Address"
+                "addressTopicParcel" : "Search address, district, topics, parcel"
             },
             "showAllResults": "Show all results",
             "type": {

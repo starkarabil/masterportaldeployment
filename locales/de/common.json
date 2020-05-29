@@ -408,8 +408,7 @@
         "searchbar": {
             "placeholder": {
                 "addressHospitalBplan" : "Suche nach Adresse/Krankenhaus/B-Plan",
-                "addressTopicParcel" : "Suche Adresse, Stadtteil, Themen, Flurstück",
-                "address" : "Suche nach Adresse"
+                "addressTopicParcel" : "Suche Adresse, Stadtteil, Themen, Flurstück"
             },
             "showAllResults": "alle Ergebnisse anzeigen",
             "type": {
