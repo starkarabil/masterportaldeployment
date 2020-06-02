@@ -1,5 +1,8 @@
 export default {
-    query (state, value) {
-        state.query = value;
+    searchInputValue (state, value) {
+        state.searchInputValue = value;
+    },
+    searchResults (state, value) {
+        state.searchResults.push(value);
     }
 };

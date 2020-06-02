@@ -1,6 +1,10 @@
+import bkg from "../components/BKGSearch.vue";
+import test from "../components/TestSearch.vue";
+
 export default {
     minimalCharacters: 3,
     placeholder: "Suche Beispiel",
+    searchInputValue: "",
     resultSettings: {
         length: 5,
         zoomLevelForPoint: 3,
@@ -9,10 +13,9 @@ export default {
         zoomOnClick: true,
         highlightOnClick: true
     },
-    modules: {
-        gazetter: {
-            serviceId: 8
-        }
+    components: {
+        bkg: bkg,
+        test: test
     },
-    query: ""
+    searchResults: []
 };

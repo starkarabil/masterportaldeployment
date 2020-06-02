@@ -5,7 +5,14 @@ export default {
     name: "Searchbar",
     data: () => ({inputMessage: ""}),
     computed: {
-        ...mapGetters("Searchbar", ["minimalCharacters", "placeholder", "resultSettings", "query"])
+        ...mapGetters("Searchbar", ["minimalCharacters", "placeholder", "resultSettings", "searchInputValue", "components", "searchResults"])
+    },
+    watch: {
+        searchResults (searchResults) {
+            // todo: nun die Vorschlagsliste anzeigen lassen!
+            console.error("Searchbar");
+            console.error(searchResults);
+        }
     },
     methods: {
         /**
@@ -18,17 +25,17 @@ export default {
 
             // todo abort search
             if (inputValue.length >= this.minimalCharacters) {
-                this.$store.commit("Searchbar/query", inputValue);
+                this.$store.commit("Searchbar/searchInputValue", inputValue);
             }
         },
 
         /**
-         * Clean the input field and the query in the store.
+         * Clean the input field and the search input value in the store.
          * @returns {void}
          */
         cleanInputMessage () {
             this.inputMessage = "";
-            this.$store.commit("Searchbar/query", "");
+            this.$store.commit("Searchbar/searchInputValue", "");
             // todo close recommended list
         }
     }
@@ -36,22 +43,33 @@ export default {
 </script>
 
 <template lang="html">
-    <div class="form-group">
-        <input
-            v-model="inputMessage"
-            class="searchbar-inputField form-control"
-            :placeholder="placeholder"
-            @keyup="keyUp"
+    <div class="searchbar">
+        <div
+            v-for="searchService in components"
+            :key="searchService.name"
         >
-        <span
-            v-if="inputMessage.length > 0"
-            class="glyphicon glyphicon-remove"
-            @click="cleanInputMessage"
-        />
-        <span
-            v-else
-            class="glyphicon glyphicon-search"
-        />
+            <component
+                :is="searchService"
+                :key="'searchService-' + searchService.name"
+            />
+        </div>
+        <div class="form-group">
+            <input
+                v-model="inputMessage"
+                class="searchbar-inputField form-control"
+                :placeholder="placeholder"
+                @keyup="keyUp"
+            >
+            <span
+                v-if="inputMessage.length > 0"
+                class="glyphicon glyphicon-remove"
+                @click="cleanInputMessage"
+            />
+            <span
+                v-else
+                class="glyphicon glyphicon-search"
+            />
+        </div>
     </div>
 </template>
 
@@ -63,10 +81,6 @@ export default {
             font-family: @font_family_1;
             font-size: 13px;
         }
-    }
-    .glyphicon {
-        position: absolute;
-        right: 0px;
     }
     .glyphicon-remove {
         cursor: pointer;
