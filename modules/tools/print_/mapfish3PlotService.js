@@ -13,6 +13,7 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
         // available layouts of the specified print configuration
         layoutList: [],
         currentLayout: undefined,
+        currentLayoutName: "",
         // available formats of the specified print configuration
         formatList: [],
         currentFormat: "pdf",
@@ -68,6 +69,7 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
      * @property {String} printAppId="master" - identifier of one of available mapfish print configurations
      * @property {Array} layoutList=[] - Array of available layouts of the specified print configuration
      * @property {undefined} currentLayout=undefined - Holder for the current selected layout
+     * @property {string} currentLayoutName="" - Choose which layout is the current layout
      * @property {Array} formatList=[] - Array of available formats of the specified print configuration
      * @property {String} currentFormat="pdf" - The current Format
      * @property {undefined} currentScale=undefined - Holder for the current rpint scale
@@ -95,6 +97,7 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
      * @property {String} scaleLabel Label text for print-window
      * @property {String} legendLabel Label text for print-window
      * @property {String} printLabel Label text for print-window
+     * @fires Core#RadioRequestMapViewGetOptions
      * @listens Print#ChangeIsActive
      * @listens MapView#RadioTriggerMapViewChangedOptions
      * @listens GFI#RadioTriggerGFIIsVisible
@@ -191,22 +194,33 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
     },
 
     /**
-     * todo
-     * @param {*} response - todo
-     * @fires todo
-     * @description todo
+     * Sets the capabilities from mapfish resonse.
+     * @param {object[]} response - config.yaml from mapfish.
+     * @fires Core#RadioRequestMapViewGetOptions
      * @returns {void}
      */
     parseMapfishCapabilities: function (response) {
         this.setLayoutList(response.layouts);
-        this.setCurrentLayout(response.layouts[0]);
-        this.setIsMetaDataAvailable(!_.isUndefined(this.getAttributeInLayoutByName("metadata")));
-        this.setIsGfiAvailable(!_.isUndefined(this.getAttributeInLayoutByName("gfi")));
-        this.setIsLegendAvailable(!_.isUndefined(this.getAttributeInLayoutByName("legend")));
-        this.setIsScaleAvailable(!_.isUndefined(this.getAttributeInLayoutByName("scale")));
+        this.setCurrentLayout(this.chooseCurrentLayout(response.layouts, this.get("currentLayoutName")));
+        this.setIsMetaDataAvailable(this.getAttributeInLayoutByName("metadata") !== undefined);
+        this.setIsGfiAvailable(this.getAttributeInLayoutByName("gfi") !== undefined);
+        this.setIsLegendAvailable(this.getAttributeInLayoutByName("legend") !== undefined);
+        this.setIsScaleAvailable(this.getAttributeInLayoutByName("scale") !== undefined);
         this.setFormatList(response.formats);
         this.setCurrentScale(Radio.request("MapView", "getOptions").scale);
         this.togglePostcomposeListener(this, true);
+    },
+
+    /**
+     * Choose the layout which is configured as currentlayout
+     * @param {object[]} [layouts=[]] - All Layouts.
+     * @param {string} [currentLayoutName=""] - The name from current layout.
+     * @returns {object} The choosen current layout.
+     */
+    chooseCurrentLayout: function (layouts = [], currentLayoutName = "") {
+        const currentLayout = layouts.filter(layout => layout.name === currentLayoutName);
+
+        return currentLayout.length === 1 ? currentLayout[0] : layouts[0];
     },
 
     /**
@@ -291,21 +305,22 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
     },
 
     /**
-     * sends a request to get the status for a print job until it is finished
-     * @param {JSON} response - todo
+     * Sends a request to get the status for a print job until it is finished.
+     * @param {JSON} response - Response of print job.
      * @returns {void}
      */
     waitForPrintJob: function (response) {
-        var url = this.get("mapfishServiceUrl") + "status/" + response.ref + ".json";
+        const printAppId = this.get("printAppId"),
+            url = this.get("mapfishServiceUrl") + printAppId + "/status/" + response.ref + ".json";
 
         this.sendRequest(url, "GET", function (status) {
-            // Fehlerverarbeitung...
+            // Error processing...
             if (!status.done) {
                 this.waitForPrintJob(response);
             }
             else {
                 Radio.trigger("Util", "hideLoader");
-                window.open(this.get("mapfishServiceUrl") + "report/" + response.ref);
+                window.open(this.get("mapfishServiceUrl") + printAppId + "/report/" + response.ref);
             }
         });
     },

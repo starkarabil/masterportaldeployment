@@ -7,6 +7,19 @@
 ## Unreleased - in development
 
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+---
+
+## v2.5.1 - 2020-05-29
+### Added
 - Internationalisierung ergänzt für:
     - den Parameter Flur in der Flurstückssuche
     - den Menüparameter Information
@@ -16,12 +29,14 @@
     - Ort für Templates
     - Schreiben des Changelogs
 - Der Pfad zu den Sprachdateien ist jetzt in der config.js konfigurierbar und kann jetzt eine Funktion, einen Pfad oder eine Url enthalten.
+- Es wurde ein Konfigurationsparameter für das Druckwerkzeug eingefügt: currentLayoutName. Dadurch lässt sich das Standardlayout beim Starten des Werkzeugs konfigurieren.
 
 ### Changed
 - Die Dokumentation wurde an einigen Stellen verbessert und der fehlende Teil für das Werkzeug AddWMS wurde hinzugefügt.
 - Die Überschriften in dem Control Layerattributions werden nun in der Schriftgröße 14px und nicht mehr fett dargestellt.
 - Die Meldung, die beim Fehlschlagen der GFI angezeigt wird, wurde überarbeitet.
 - In den Layerinformationen wird nun der Text "Keine Metadaten vorhanden." angezeigt, wenn keine Daten geladen wurden.
+- Bei abrufen des Druckreports wird die printAppId nun im Pfad mit angegeben.
 
 ### Deprecated
 
@@ -42,6 +57,8 @@
 - Sensordaten werden nun wieder live gestylet.
 - Bei der Suche nach multipart Polygonen wurde lediglich auf eines der Teilpolygone gezoomt und dieses gehighlighted, nun geschieht dies für das gesamte multipart Polygon.
 - Ein Problem beim Anzeigen des Loader-gif wurde behoben.
+- Bei Vektordaten (WFS) wird nun auch die Legende wieder aus dem Parameter legendURL ausgelesen, wenn dieser angegeben wurde.
+- Bei ausgegrauten Layern wird die Legende nun nicht mehr gedruckt.
 
 ---
 
