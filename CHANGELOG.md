@@ -15,6 +15,8 @@
 ### Removed
 
 ### Fixed
+- Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
+- Das Label der Version im Footer wird jetzt korrekt übersetzt. 
 
 ---
 
