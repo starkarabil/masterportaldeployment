@@ -80,6 +80,7 @@ const Util = Backbone.Model.extend(/** @lends Util.prototype */{
             "punctuate": this.punctuate,
             "sort": this.sort,
             "convertArrayOfObjectsToCsv": this.convertArrayOfObjectsToCsv,
+            "convertArrayElementsToString": this.convertArrayElementsToString,
             "getPathFromLoader": this.getPathFromLoader,
             "renameKeys": this.renameKeys,
             "renameValues": this.renameValues,
@@ -799,19 +800,32 @@ const Util = Backbone.Model.extend(/** @lends Util.prototype */{
     /**
      * Returns a copy of the object, filtered to omit the keys specified
      * (or array of blacklisted keys).
-     * @param {Object} object - the object.
-     * @param {Number[]} blacklist - blacklisted keys
+     * @param {Object} object - The object.
+     * @param {Number[]|String[]|Boolean[]} blacklist - Blacklisted keys.
      * @returns {Object} - returns the entry/entries without the blacklisted key/keys.
      */
     omit: function (object, blacklist) {
         const keys = Object.keys(object ? object : {}),
-            filteredKeys = keys.filter(key => !blacklist.includes(key)),
+            blacklistWithStrings = this.convertArrayElementsToString(blacklist),
+            filteredKeys = keys.filter(key => !blacklistWithStrings.includes(key)),
             filteredObj = filteredKeys.reduce((result, key) => {
                 result[key] = object[key];
                 return result;
             }, {});
 
         return filteredObj;
+    },
+
+    /**
+     * Converts elements of an array to strings.
+     * @param {Number[]|String[]|Boolean[]} [array=[]] - Array with elements.
+     * @returns {String[]} Array with elements as string.
+     */
+    convertArrayElementsToString: function (array = []) {
+        const arrayWithStrings = [];
+
+        array.forEach(element => arrayWithStrings.push(String(element)));
+        return arrayWithStrings;
     },
 
     /** Looks through the list and returns the firts value that matches all of the key-value pairs

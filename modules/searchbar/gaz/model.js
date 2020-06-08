@@ -424,6 +424,7 @@ const GazetteerModel = Backbone.Model.extend({
         const ajax = this.get("ajaxRequests");
 
         if (ajax[type] !== null && ajax[type] !== undefined) {
+            ajax[type].abort();
             this.polishAjax(type);
         }
         this.ajaxSend(data, successFunction, type);
@@ -477,13 +478,7 @@ const GazetteerModel = Backbone.Model.extend({
      */
     polishAjax: function (type) {
         const ajax = this.get("ajaxRequests"),
-            cleanedAjax = {};
-
-        Object.keys(ajax).forEach(function (key) {
-            if (key !== type) {
-                cleanedAjax[key] = ajax[key];
-            }
-        });
+            cleanedAjax = Radio.request("Util", "omit", ajax, Array.isArray(type) ? type : [type]);
 
         this.set("ajaxRequests", cleanedAjax);
     },
