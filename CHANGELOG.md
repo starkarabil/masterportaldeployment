@@ -11,6 +11,7 @@
 - Legenden, die den gleichen Namen und das gleiche Image haben, werden nur noch einmal für jeden Layer dargestellt.
 - In der Layerinformation wird, wenn keine Metadaten geladen wurden, der Link für "weitere Metadaten" nicht mehr dargestellt.
 - Der Infotext für Checkboxen wird nun beim Start nicht mehr ausgeklaptt und hat nun den richtigen Style.
+- Die Quickhelp wird nun wieder richtig positioniert.
 
 ---
 
