@@ -20,12 +20,16 @@
 ---
 
 ## v2.5.2 - 2020-06-09
+
+### Added
+- Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
+
 ### Fixed
 - Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
 - Das Label der Version im Footer wird jetzt korrekt übersetzt. 
 - Legenden, die den gleichen Namen und das gleiche Image haben, werden nur noch einmal für jeden Layer dargestellt.
 - In der Layerinformation wird, wenn keine Metadaten geladen wurden, der Link für "weitere Metadaten" nicht mehr dargestellt.
-- Der Infotext für Checkboxen wird nun beim Start nicht mehr ausgeklaptt und hat nun den richtigen Style.
+- Der Infotext für Checkboxen wird nun beim Start nicht mehr ausgeklappt und hat nun den richtigen Style.
 - Die Quickhelp wird nun wieder richtig positioniert.
 
 ---
@@ -58,7 +62,7 @@
 - Der URL-Parameter "LNG" funktioniert nun ausschließlich wenn die Mehrsprachigkeit in den Portalconfigs aktiviert wurde und wirft keinen Fehler mehr.
 - Die Scrollbar beim Starten im IE11 wurde entfernt
 - Ein Problem, dass beim parametrisierten Aufruf mit ?config= auftrat, wurde behoben
-- Ein Problem wurde behoben, welches mit fehlernder Konfifuration des Portaltitels auftrat
+- Ein Problem wurde behoben, welches mit fehlernder Konfiguration des Portaltitels auftrat
 - Das Problem, das bei der Änderung der Sprache bei einem geöffneten Werkzeug auftrat und zu einer falschen Darstellung führte, wurde behoben
 - Im Footer können nun wieder eigene Einträge konfiguriert werden, die durch die Mehrsprachigkeit nicht mehr fehlerhaft angezeigt werden.
 - Ein Fehler wurde behoben, durch den Werkzeuge nach der Umschaltung der Sprache nicht mehr angezeigt wurden, da dort noch keine Mehrsprachigkeit implementiert ist
@@ -102,7 +106,7 @@
 - 3D:
     - 3D: Features eines Layers können zum Ausblenden in 3D in der config.json konfiguriert werden.
     - Map-Marker kann nun 3D-Koordinaten bekommen. Dies ist möglich durch eine Konfiguration des Markers als Ebene.
-    - VectorLayer können nun ihre 3D-Koordinate oder duch Konfiguration erhöht dargestellt werden.
+    - VectorLayer können nun ihre 3D-Koordinate oder durch Konfiguration erhöht dargestellt werden.
 - GFI:
     - Konfigurierbar, um Vektordaten bei GFI Abfrage anders darzustellen.
     - Neues GFI-Theme *sensor*, *bildungatlas*
@@ -190,7 +194,7 @@
 ### Fixed
   - Shadow-Tool: Das Schattentool ist nun mobil nicht mehr verfügbar
   - QuickHelp: Ein Bug wurde gefixt, der verhindert hat, dass die Bilder über den angegebenen Dateipfad geladen werden
-  - Themenbaum: Es wird nun im DefaultTree nach der Suche eines Themas auf den enstprechenden Eintrag gescrollt
+  - Themenbaum: Es wird nun im DefaultTree nach der Suche eines Themas auf den entsprechenden Eintrag gescrollt
   - Searchbar: Ein Fehler wurde behoben der die Hausnummernsuche in der Gazetteer-Suche blockiert hat
   - WFS: Geoserver-WFS werden nun angezeigt
 
