@@ -4,16 +4,7 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
-## Unreleased - in development
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
+## v2.5.2 - 2020-06-09
 ### Fixed
 - Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
 - Das Label der Version im Footer wird jetzt korrekt übersetzt. 
