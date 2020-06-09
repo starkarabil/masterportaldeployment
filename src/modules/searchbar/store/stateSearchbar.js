@@ -1,4 +1,4 @@
-import bkg from "../components/BKGSearch.vue";
+import bkg from "../components/BkgSearch.vue";
 import test from "../components/TestSearch.vue";
 
 export default {
@@ -17,5 +17,5 @@ export default {
         bkg: bkg,
         test: test
     },
-    searchResults: []
+    searches: []
 };

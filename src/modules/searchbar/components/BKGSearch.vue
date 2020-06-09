@@ -3,33 +3,51 @@ import {mapGetters} from "vuex";
 import {fetch as fetchPolyfill} from "whatwg-fetch";
 
 export default {
-    name: "BKGSearch",
+    name: "BkgSearch",
     data () {
         // todo: daten aus der config.json holen und hier überschreiben!
         return {
-            "extent": [
+            id: "bkg",
+            extent: [
                 454591,
                 5809000,
                 700000,
                 6075769
             ],
-            "suggestCount": 10,
-            "epsg": "EPSG:25832",
-            "filter": "filter=(typ:*)",
-            "score": 0.6,
-            "suggestServiceURL": "/bkg_suggest",
-            "geosearchServiceURL": "/bkg_geosearch"
+            suggestCount: 10,
+            epsg: "EPSG:25832",
+            filter: "filter=(typ:*)",
+            score: 0.6,
+            suggestUrl: "/bkg_suggest",
+            geoSearchUrl: "/bkg_geosearch",
+            searchResults: []
         };
     },
     computed: {
         ...mapGetters("Searchbar", ["searchInputValue"])
     },
+
     watch: {
         searchInputValue (searchInputValue) {
             if (searchInputValue !== "") {
+                this.searchResults = [];
+                this.$store.commit("Searchbar/changeSearch", {
+                    id: this.id,
+                    isBusy: true,
+                    searchResults: [],
+                    searchResultsLength: 0
+                });
+
                 this.search(searchInputValue);
             }
         }
+    },
+    created () {
+        this.$store.commit("Searchbar/createSearch", {
+            id: this.id,
+            isBusy: false,
+            searchResults: []
+        });
     },
     methods: {
         /**
@@ -38,9 +56,9 @@ export default {
          * @returns {void}
          */
         search: function (searchInputValue) {
-            const suggestURL = this.createSuggestURL(searchInputValue);
+            const suggestUrl = this.createSuggestUrl(searchInputValue);
 
-            this.fetchDataFromBKGSearchService(suggestURL);
+            this.fetchDataFromBkgSuggestService(suggestUrl);
         },
 
         /**
@@ -48,24 +66,66 @@ export default {
          * @param {string} searchInputValue - The input string to search
          * @returns {string} The search string for search service from bkg.
          */
-        createSuggestURL: function (searchInputValue) {
-            return this.suggestServiceURL + "?bbox=" + this.extent + "&outputformat=json&srsName=" + this.epsg + "&query=" + encodeURIComponent(searchInputValue) + "&" + this.filter + "&count=" + this.suggestCount;
+        createSuggestUrl: function (searchInputValue) {
+            return this.suggestUrl + "?bbox=" + this.extent + "&outputformat=json&srsName=" + this.epsg + "&query=" + encodeURIComponent(searchInputValue) + "&" + this.filter + "&count=" + this.suggestCount;
         },
 
         /**
          * Featches the data form bkg search service.
-         * @param {string} suggestURL - URL with search parameters.
+         * @param {string} suggestUrl - URL with search parameters.
          * @returns {void}
          */
-        fetchDataFromBKGSearchService: function (suggestURL) {
-            // todo: Suche abbrechen, wenn neuer Suchstring eintrifft.
+        fetchDataFromBkgSuggestService: function (suggestUrl) {
+            this.fetch(suggestUrl, this.fetchDataFromBkgGeoSearchService);
+        },
 
-            fetchPolyfill(suggestURL)
+        /**
+         * Fetches data from geosearch bkg service.
+         * @param {object[]} searchResults - Results from search wiht bkg service.
+         * @returns {void}
+         */
+        fetchDataFromBkgGeoSearchService: function (searchResults) {
+            const resultsFilteredByScore = this.filterSearchResultsByScore(searchResults);
+
+            if (resultsFilteredByScore.length === 0) {
+                this.$store.commit("Searchbar/changeSearch", {
+                    id: this.id,
+                    isBusy: false,
+                    searchResults: []
+                });
+            }
+
+            this.searchResultLength = resultsFilteredByScore.length;
+
+            resultsFilteredByScore.forEach(result => {
+                const geoSearchUrl = this.createGeoSearchUrl(result.suggestion);
+
+                this.fetch(geoSearchUrl, this.addResultToLocalArray);
+            });
+        },
+
+        addResultToLocalArray: function (searchResult) {
+            let searchResults = [];
+
+            this.searchResults.push(searchResult);
+            searchResults = this.searchResults;
+
+            if (searchResults.length === this.searchResultLength) {
+                this.commitSearchResultsToStore(searchResults);
+            }
+        },
+
+        /**
+         * Function to fetches URLs.
+         * @param {string} url - URL to search.
+         * @param {function} successFunction - Function to work with success.
+         * @returns {void}
+         */
+        fetch: function (url, successFunction) {
+            fetchPolyfill(url)
                 .then(response => response.json())
                 .then(searchResults => {
-                    const resultsFilterByScore = this.filtersearchResultsByScore(searchResults);
-
-                    this.prepareSearchresults(resultsFilterByScore);
+                    successFunction(searchResults);
                 })
                 .catch(error => {
                     console.warn("The fetch of the data failed with the following error message: " + error);
@@ -77,23 +137,41 @@ export default {
          * @param {object[]} searchResults - Results from search wiht bkg service.
          * @returns {object[]} The filtered search results.
          */
-        filtersearchResultsByScore: function (searchResults) {
+        filterSearchResultsByScore: function (searchResults) {
             return searchResults.filter(result => result.score > this.score);
         },
 
         /**
-         * Prepare the results and commit to Searchbar results.
-         * @param {object[]} resultsFilterByScore - Filtered results from search wiht bkg service.
+         * todo
+         * @param {string} resultSuggestion - todo
          * @returns {void}
          */
-        prepareSearchresults: function (resultsFilterByScore) {
-            // todo: bkgSearch
-            resultsFilterByScore.forEach(result => {
-                this.$store.commit("Searchbar/searchResults", {
-                    name: result.suggestion,
-                    type: result.type,
-                    service: "bkg"
+        createGeoSearchUrl: function (resultSuggestion) {
+            return this.geoSearchUrl + "?bbox=" + this.extent + "&outputformat=json&srsName=" + this.epsg + "&count=1&query=" + encodeURIComponent(resultSuggestion);
+        },
+
+        /**
+         * Prepare the results and commit to Searchbar results.
+         * @param {object[]} searchResults - todo
+         * @returns {void}
+         */
+        commitSearchResultsToStore: function (searchResults) {
+            const preparedSearchResults = [];
+
+            searchResults.forEach(searchResult => {
+                preparedSearchResults.push({
+                    name: searchResult.features[0].properties.text,
+                    type: searchResult.features[0].properties.typ,
+                    geometry: searchResult.features[0].geometry,
+                    searchType: this.id
                 });
+            });
+
+            this.$store.commit("Searchbar/changeSearch", {
+                id: this.id,
+                isBusy: false,
+                searchResults: preparedSearchResults,
+                searchResultsLength: preparedSearchResults.length
             });
         }
     }
@@ -101,7 +179,7 @@ export default {
 </script>
 
 <template>
-    <div class="BKG-Searchbar">
+    <div class="Bkg-Searchbar">
         <!-- nothing -->
     </div>
 </template>

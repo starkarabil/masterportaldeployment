@@ -166,7 +166,8 @@
     "controls":
     {
       "zoom": true,
-      "totalView":true
+      "totalView": true,
+      "mousePosition": true
     }
   },
   "Themenconfig": {
