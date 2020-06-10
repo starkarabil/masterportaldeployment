@@ -4,6 +4,21 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
+## Unreleased - in development
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Die Legende für GruppenLayer wird nun wieder dargestellt.
+
+---
+
 ## v2.5.2 - 2020-06-09
 ### Fixed
 - Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
@@ -34,8 +49,6 @@
 - Die Meldung, die beim Fehlschlagen der GFI angezeigt wird, wurde überarbeitet.
 - In den Layerinformationen wird nun der Text "Keine Metadaten vorhanden." angezeigt, wenn keine Daten geladen wurden.
 - Bei abrufen des Druckreports wird die printAppId nun im Pfad mit angegeben.
-
-### Deprecated
 
 ### Removed
 - Underscore.js wurde aus der Package.json entfernt
