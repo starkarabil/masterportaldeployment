@@ -7,6 +7,7 @@
 ## Unreleased - in development
 
 ### Added
+- Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
 
 ### Changed
 
@@ -20,9 +21,6 @@
 ---
 
 ## v2.5.2 - 2020-06-09
-
-### Added
-- Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
 
 ### Fixed
 - Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
