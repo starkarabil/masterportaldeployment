@@ -825,7 +825,7 @@ const Util = Backbone.Model.extend(/** @lends Util.prototype */{
         let realArray = [];
         const arrayWithStrings = [];
 
-        if (typeof array !== "object") {
+        if (!Array.isArray(array)) {
             realArray = [array];
         }
         else {
