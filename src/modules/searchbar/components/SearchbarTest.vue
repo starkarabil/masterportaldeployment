@@ -3,7 +3,7 @@
 import {mapGetters} from "vuex";
 
 export default {
-    name: "TestSearch",
+    name: "SearchbarTest",
     data () {
         return {
             id: "test",

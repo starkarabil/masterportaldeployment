@@ -1,5 +1,5 @@
-import bkg from "../components/BkgSearch.vue";
-import test from "../components/TestSearch.vue";
+import bkg from "../components/SearchbarBkg.vue";
+import test from "../components/SearchbarTest.vue";
 
 export default {
     minimalCharacters: 3,

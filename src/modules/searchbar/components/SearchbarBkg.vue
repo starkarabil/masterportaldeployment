@@ -3,7 +3,7 @@ import {mapGetters} from "vuex";
 import {fetch as fetchPolyfill} from "whatwg-fetch";
 
 export default {
-    name: "BkgSearch",
+    name: "SearchbarBkg",
     data () {
         // todo: daten aus der config.json holen und hier überschreiben!
         return {
