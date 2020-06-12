@@ -11,6 +11,8 @@ export default {
         ...mapGetters("Searchbar", ["minimalCharacters", "placeholder", "resultSettings", "searchInputValue", "components", "searches"])
     },
     watch: {
+        // todo Bei starten der Suche alles zu allen Ergebnissen eine zeile anzeigen mit initial "Suche läuft"!
+        // Wenn Suche zu Ende ist Ergebnis anzeigen oder "Nichts gefunden!". Feedback für den Nutzer wichtig.
         searches (searches) {
             if (this.checkIfAllSearchesReady(searches) && this.searchInputValue !== "") {
                 this.resultList = this.findFirstResultsByType(searches);
@@ -25,6 +27,7 @@ export default {
          * @returns {boolean} Describes if all searches are terminated.
          */
         checkIfAllSearchesReady: function (searches) {
+            // todo nicht auf alle warten.
             return searches.every(singleSearch => singleSearch.isBusy === false);
         },
 
@@ -34,6 +37,8 @@ export default {
          * @returns {object[]} The first results.
          */
         findFirstResultsByType: function (searchResults) {
+            // todo: konfigurierbar machen ob nur das erste oder die ersten x angezeigt werden sollen.
+            // todo: Reihenfolge der Suchergebisse nach Reihenfolge der konfigurierten Suchen (oder index setzen!).
             const firstResults = [];
 
             searchResults.forEach(singleSearch => {
@@ -119,13 +124,14 @@ export default {
                     @click="showFirstResultsFromSearches"
                 />
             </span>
-            <div class="form-group has-feedback has-feedback">
+            <div class="form-group has-feedback">
                 <input
+                    id="searchbar-inputField"
                     v-model="inputMessage"
-                    class="searchbar-inputField form-control"
+                    class="form-control"
                     :placeholder="placeholder"
                     @keyup="keyUp"
-                >
+                />
                 <span
                     v-if="inputMessage.length > 0"
                     class="glyphicon glyphicon-remove form-control-feedback"
@@ -135,26 +141,26 @@ export default {
                     v-else
                     class="glyphicon glyphicon-search form-control-feedback"
                 />
-                <div>
-                    <ul class="list-group">
-                        <li
-                            v-for="result in resultList"
-                            :key="result.searchType + result.name"
-                            class="list-group-item"
-                            @click="zoomAndHighlightResult(result)"
+            </div>
+            <div id="result-container">
+                <ul class="list-group">
+                    <li
+                        v-for="result in resultList"
+                        :key="result.searchType + result.name"
+                        class="list-group-item"
+                        @click="zoomAndHighlightResult(result)"
+                    >
+                        {{ result.name }}
+                        <a
+                            href="#"
+                            class="list-group-item-theme"
+                            @click="showResultsFromClickedSearchId(result.searchId)"
                         >
-                            {{ result.name }}
-                            <a
-                                href="#"
-                                class="list-group-item-theme"
-                                @click="showResultsFromClickedSearchId(result.searchId)"
-                            >
-                                {{ result.searchId }}
-                                <span class="badge">{{ result.searchResultsLength }}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                            {{ result.searchId }}
+                            <span class="badge">{{ result.searchResultsLength }}</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -163,7 +169,8 @@ export default {
 <style scoped lang="less">
     @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
 
-    .searchbar-inputField {
+    #searchbar-inputField {
+        width: 400px;
         &::placeholder {
             font-family: @font_family_1;
             font-size: 13px;
@@ -173,6 +180,21 @@ export default {
     .glyphicon-remove {
         pointer-events: initial;
         cursor: pointer;
+        z-index: 3;
+    }
+
+    .glyphicon-search {
+        z-index: 3;
+    }
+
+    #result-container {
+        width: 100%;
+        z-index: 40;
+        top: 3em;
+        position: absolute;
+        max-height: 50vh;
+        overflow: auto;
+        left: 0;
     }
 
     .badge {

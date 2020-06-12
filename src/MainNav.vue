@@ -57,7 +57,6 @@ export default {
                     </div>
                     <LegendMenu v-if="legendConfig" />
                     <Title />
-                    <Searchbar />
                 </div>
             </div>
         </nav>

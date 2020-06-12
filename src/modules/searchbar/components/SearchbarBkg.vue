@@ -129,6 +129,7 @@ export default {
                     successFunction(searchResults);
                 })
                 .catch(error => {
+                    // todo isBusy auf false setzen
                     console.warn("The fetch of the data failed with the following error message: " + error);
                 });
         },
@@ -159,6 +160,7 @@ export default {
         commitSearchResultsToStore: function (searchResults) {
             const preparedSearchResults = [];
 
+            // todo nach Scoring sortieren.
             searchResults.forEach(searchResult => {
                 preparedSearchResults.push({
                     name: searchResult.features[0].properties.text,
