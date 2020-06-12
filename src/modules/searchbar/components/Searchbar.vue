@@ -119,6 +119,7 @@ export default {
         <div class="input-group">
             <span class="input-group-btn">
                 <button
+                    id="button-search-back"
                     type="submit"
                     class="btn btn-default glyphicon glyphicon-chevron-left"
                     @click="showFirstResultsFromSearches"
@@ -168,6 +169,10 @@ export default {
 
 <style scoped lang="less">
     @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
+
+    #button-search-back {
+        top:0;
+    }
 
     #searchbar-inputField {
         width: 400px;
