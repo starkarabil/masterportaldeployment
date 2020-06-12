@@ -4,6 +4,8 @@ export default {
     },
     createSearch (state, value) {
         state.searches.push(value);
+        console.log(state.searches);
+        
     },
     changeSearch (state, value) {
         const searches = [];
@@ -18,5 +20,7 @@ export default {
         });
 
         state.searches = searches;
+        console.log(state.searches);
+        
     }
 };

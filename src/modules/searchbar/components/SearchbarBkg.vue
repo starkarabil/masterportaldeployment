@@ -26,30 +26,42 @@ export default {
     computed: {
         ...mapGetters("Searchbar", ["searchInputValue"])
     },
-
     watch: {
+        /**
+         * Watcher for the attribute searchInputValue.
+         * Starts the search if this value is not an empty string.
+         * @param {string} searchInputValue - The input of the searchbar.
+         * @returns {void}
+         */
         searchInputValue (searchInputValue) {
             if (searchInputValue !== "") {
                 this.searchResults = [];
-                this.$store.commit("Searchbar/changeSearch", {
-                    id: this.id,
-                    isBusy: true,
-                    searchResults: [],
-                    searchResultsLength: 0
-                });
-
+                this.commitDataToStore("Searchbar/changeSearch", this.id, true, []);
                 this.search(searchInputValue);
             }
         }
     },
     created () {
-        this.$store.commit("Searchbar/createSearch", {
-            id: this.id,
-            isBusy: false,
-            searchResults: []
-        });
+        this.commitDataToStore("Searchbar/createSearch", this.id, false, []);
     },
     methods: {
+
+        /**
+         * Commits data to vuex store.
+         * @param {string} statetAttribute - The attribute in state.
+         * @param {string} id - The id of the search.
+         * @param {boolean} isBusy - Shows if the search is still working.
+         * @param {object[]} searchResults - The results from search.
+         * @returns {void}
+         */
+        commitDataToStore (statetAttribute, id = this.id, isBusy = false, searchResults = []) {
+            this.$store.commit(statetAttribute, {
+                id: id,
+                isBusy: isBusy,
+                searchResults: searchResults
+            });
+        },
+
         /**
          * Starts the search with bkg service.
          * @param {string} searchInputValue - The input string to search.
@@ -62,8 +74,8 @@ export default {
         },
 
         /**
-         * Creates the complete URL to send request for bkg search service.
-         * @param {string} searchInputValue - The input string to search
+         * Creates the complete URL to send request for bkg suggest search service.
+         * @param {string} searchInputValue - The input string to search.
          * @returns {string} The search string for search service from bkg.
          */
         createSuggestUrl: function (searchInputValue) {
@@ -88,11 +100,7 @@ export default {
             const resultsFilteredByScore = this.filterSearchResultsByScore(searchResults);
 
             if (resultsFilteredByScore.length === 0) {
-                this.$store.commit("Searchbar/changeSearch", {
-                    id: this.id,
-                    isBusy: false,
-                    searchResults: []
-                });
+                this.commitDataToStore("Searchbar/changeSearch", this.id, false, []);
             }
 
             this.searchResultLength = resultsFilteredByScore.length;
@@ -104,15 +112,22 @@ export default {
             });
         },
 
-        addResultToLocalArray: function (searchResult) {
-            let searchResults = [];
+        /**
+         * Filter out all results whose score is not greater than the specified score.
+         * @param {object[]} searchResults - Results from search wiht bkg service.
+         * @returns {object[]} The filtered search results.
+         */
+        filterSearchResultsByScore: function (searchResults) {
+            return searchResults.filter(result => result.score > this.score);
+        },
 
-            this.searchResults.push(searchResult);
-            searchResults = this.searchResults;
-
-            if (searchResults.length === this.searchResultLength) {
-                this.commitSearchResultsToStore(searchResults);
-            }
+        /**
+         * Creates the complete URL to send request for bkg geo search.
+         * @param {string} resultSuggestion - The result from suggest search.
+         * @returns {void}
+         */
+        createGeoSearchUrl: function (resultSuggestion) {
+            return this.geoSearchUrl + "?bbox=" + this.extent + "&outputformat=json&srsName=" + this.epsg + "&count=1&query=" + encodeURIComponent(resultSuggestion);
         },
 
         /**
@@ -129,27 +144,36 @@ export default {
                     successFunction(searchResults);
                 })
                 .catch(error => {
-                    // todo isBusy auf false setzen
+                    this.commitDataToStore("Searchbar/changeSearch", this.id, false, []);
                     console.warn("The fetch of the data failed with the following error message: " + error);
                 });
         },
 
         /**
-         * Filter out all results whose score is not greater than the specified score.
-         * @param {object[]} searchResults - Results from search wiht bkg service.
-         * @returns {object[]} The filtered search results.
-         */
-        filterSearchResultsByScore: function (searchResults) {
-            return searchResults.filter(result => result.score > this.score);
-        },
-
-        /**
-         * todo
-         * @param {string} resultSuggestion - todo
+         * Adds search results to the local array searchresults
+         * @param {object[]} searchResult - Results from search wiht bkg service.
          * @returns {void}
          */
-        createGeoSearchUrl: function (resultSuggestion) {
-            return this.geoSearchUrl + "?bbox=" + this.extent + "&outputformat=json&srsName=" + this.epsg + "&count=1&query=" + encodeURIComponent(resultSuggestion);
+        addResultToLocalArray: function (searchResult) {
+            let searchResults = [];
+
+            this.searchResults.push(searchResult);
+            searchResults = this.searchResults;
+
+            if (searchResults.length === this.searchResultLength) {
+                const sortedSearchResults = this.sortSearchResults(searchResults);
+
+                this.commitSearchResultsToStore(sortedSearchResults);
+            }
+        },
+
+        sortSearchResults: function (searchResults) {
+            console.log(searchResults);
+            searchResults.forEach(result => {
+                console.log(result);
+                
+            })
+            
         },
 
         /**
@@ -170,12 +194,9 @@ export default {
                     searchResultsLength: searchResults.length
                 });
             });
+console.log(preparedSearchResults);
 
-            this.$store.commit("Searchbar/changeSearch", {
-                id: this.id,
-                isBusy: false,
-                searchResults: preparedSearchResults
-            });
+            this.commitDataToStore("Searchbar/changeSearch", this.id, false, preparedSearchResults);
         }
     }
 };
