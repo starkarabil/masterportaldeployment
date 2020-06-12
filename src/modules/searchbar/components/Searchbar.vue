@@ -151,7 +151,11 @@ export default {
                         class="list-group-item"
                         @click="zoomAndHighlightResult(result)"
                     >
-                        {{ result.name }}
+                        <div 
+                            class="search-result-title"
+                        >
+                            {{ result.name }}
+                        </div>
                         <a
                             href="#"
                             class="list-group-item-theme"
@@ -168,7 +172,7 @@ export default {
 </template>
 
 <style scoped lang="less">
-    @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
+    @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif; /* Ist das nicht schon wo anders generisch von Dennis Sen? */
 
     #button-search-back {
         top:0;
@@ -178,7 +182,7 @@ export default {
         width: 400px;
         &::placeholder {
             font-family: @font_family_1;
-            font-size: 13px;
+            font-size: 13px; /* Nötig? */
         }
     }
 
@@ -195,7 +199,7 @@ export default {
     #result-container {
         width: 100%;
         z-index: 40;
-        top: 3em;
+        top: 100%;
         position: absolute;
         max-height: 50vh;
         overflow: auto;
@@ -203,16 +207,30 @@ export default {
     }
 
     .badge {
-        font-size: 90%;
+        font-size: 90%; /* Würde ich rausnehmen, weil unterschiedl. Schriftgrößen sehen schnell doof aus, gerade bei so kleinen Abstufungen. */
     }
 
     .list-group-item {
+        display:flex;
         cursor: pointer;
+        transition: background-color 0.15s;
+                
+        &:first-child {
+            border-top: none;
+        }
+        
+        &:hover {
+            background-color:#EEE;
+        }
+        
+        .search-result-title {
+            flex-grow:1;
+            word-break: break-all;
+        }
     }
-
+    
     .list-group-item-theme {
-        float: right;
         color: #337ab7;
-        font-size: 90%;
+        font-size: 90%; /* Würde ich rausnehmen, weil unterschiedl. Schriftgrößen sehen schnell doof aus, gerade bei so kleinen Abstufungen. */
     }
 </style>
