@@ -42,7 +42,8 @@ export default {
                     coordinates: [564570.63, 5937829.56],
                     type: "Point"
                 },
-                searchType: "test"
+                searchId: "test",
+                searchResultsLength: 3
             },
             {
                 name: "Test2" + searchInputValue,
@@ -51,7 +52,8 @@ export default {
                     coordinates: [123, 456],
                     type: "Line"
                 },
-                searchType: "test"
+                searchId: "test",
+                searchResultsLength: 3
             },
             {
                 name: "Test3" + searchInputValue,
@@ -60,14 +62,14 @@ export default {
                     coordinates: [123, 456],
                     type: "Polygon"
                 },
-                searchType: "test"
+                searchId: "test",
+                searchResultsLength: 3
             }];
 
             this.$store.commit("Searchbar/changeSearch", {
                 id: this.id,
                 isBusy: false,
-                searchResults: exampleArray,
-                searchResultsLength: exampleArray.length
+                searchResults: exampleArray
             });
         }
     }

@@ -64,13 +64,34 @@ export default {
         cleanInputMessage () {
             this.inputMessage = "";
             this.$store.commit("Searchbar/searchInputValue", "");
-            // this.$store.commit("Searchbar/searchResults", []);
             this.resultList = [];
+        },
+
+        /**
+         * Show results from a clicked search.
+         * @param {string} searchId - The id from clicked search.
+         * @returns {void}
+         */
+        showResultsFromClickedSearchId: function (searchId) {
+            const search = this.searches.find(singleSearch => singleSearch.id === searchId);
+
+            this.resultList = search.searchResults;
+        },
+
+        /**
+         * Show first results from searches.
+         * @returns {void}
+         */
+        showFirstResultsFromSearches: function () {
+            this.resultList = this.findFirstResultsByType(this.searches);
         },
 
         zoomAndHighlightResult: function (result) {
             const geometry = result.geometry;
 
+            // Todo andere Geometrien
+            // Highlighten der Geometrien bzw setzen eines Markers
+            // Was ist mit Einträgen ohne Koordinate z.B. Fachlayer aus der Suche tree?
             if (geometry.type.toUpperCase() === "POINT") {
                 Radio.trigger("MapView", "setCenter", geometry.coordinates, this.resultSettings.zoomLevelForPoint);
             }
@@ -90,40 +111,50 @@ export default {
                 :key="'searchService-' + searchService.name"
             />
         </div>
-        <div class="form-group has-feedback has-feedback-left">
-            <input
-                v-model="inputMessage"
-                class="searchbar-inputField form-control"
-                :placeholder="placeholder"
-                @keyup="keyUp"
-            >
-            <span
-                v-if="inputMessage.length > 0"
-                class="glyphicon glyphicon-remove form-control-feedback"
-                @click="cleanInputMessage"
-            />
-            <span
-                v-else
-                class="glyphicon glyphicon-search form-control-feedback"
-            />
-            <div>
-                <ul class="list-group">
-                    <li
-                        v-for="result in resultList"
-                        :key="result.searchType + result.name"
-                        class="list-group-item"
-                        @click="zoomAndHighlightResult(result)"
-                    >
-                        {{ result.name }}
-                        <a
-                            href="#"
-                            class="list-group-item-theme"
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button
+                    type="submit"
+                    class="btn btn-default glyphicon glyphicon-chevron-left"
+                    @click="showFirstResultsFromSearches"
+                />
+            </span>
+            <div class="form-group has-feedback has-feedback">
+                <input
+                    v-model="inputMessage"
+                    class="searchbar-inputField form-control"
+                    :placeholder="placeholder"
+                    @keyup="keyUp"
+                >
+                <span
+                    v-if="inputMessage.length > 0"
+                    class="glyphicon glyphicon-remove form-control-feedback"
+                    @click="cleanInputMessage"
+                />
+                <span
+                    v-else
+                    class="glyphicon glyphicon-search form-control-feedback"
+                />
+                <div>
+                    <ul class="list-group">
+                        <li
+                            v-for="result in resultList"
+                            :key="result.searchType + result.name"
+                            class="list-group-item"
+                            @click="zoomAndHighlightResult(result)"
                         >
-                            {{ result.searchType }}
-                            <!-- <span class="badge">10</span> -->
-                        </a>
-                    </li>
-                </ul>
+                            {{ result.name }}
+                            <a
+                                href="#"
+                                class="list-group-item-theme"
+                                @click="showResultsFromClickedSearchId(result.searchId)"
+                            >
+                                {{ result.searchId }}
+                                <span class="badge">{{ result.searchResultsLength }}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

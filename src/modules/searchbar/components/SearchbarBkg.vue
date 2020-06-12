@@ -122,6 +122,7 @@ export default {
          * @returns {void}
          */
         fetch: function (url, successFunction) {
+            // Todo abbrechbar machen, wenn ein weiterer Request kommt
             fetchPolyfill(url)
                 .then(response => response.json())
                 .then(searchResults => {
@@ -163,15 +164,15 @@ export default {
                     name: searchResult.features[0].properties.text,
                     type: searchResult.features[0].properties.typ,
                     geometry: searchResult.features[0].geometry,
-                    searchType: this.id
+                    searchId: this.id,
+                    searchResultsLength: searchResults.length
                 });
             });
 
             this.$store.commit("Searchbar/changeSearch", {
                 id: this.id,
                 isBusy: false,
-                searchResults: preparedSearchResults,
-                searchResultsLength: preparedSearchResults.length
+                searchResults: preparedSearchResults
             });
         }
     }
