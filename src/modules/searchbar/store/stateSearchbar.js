@@ -1,6 +1,6 @@
 import bkg from "../components/SearchbarBkg.vue";
 import test from "../components/SearchbarTest.vue";
-import test2 from "../components/SearchbarTest2.vue";
+// import test2 from "../components/SearchbarTest2.vue";
 
 export default {
     minimalCharacters: 3,

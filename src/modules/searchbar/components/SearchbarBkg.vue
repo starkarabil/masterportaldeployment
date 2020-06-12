@@ -98,8 +98,6 @@ export default {
          * @returns {void}
          */
         startFetchDataFromBkgGeoSearchService: function (searchResults) {
-            console.log(searchResults);
-            
             const resultsFilteredByScore = this.filterSearchResultsByScore(searchResults),
                 sortedSearchResults = this.sortSearchResults(resultsFilteredByScore);
 
@@ -109,7 +107,7 @@ export default {
 
             this.searchResultLength = sortedSearchResults.length;
 
-//Bevor das passiert, alle geosearches abborden.
+            // Bevor das passiert, alle geosearches abborden.
             sortedSearchResults.forEach(result => {
                 const geoSearchUrl = this.createGeoSearchUrl(result.suggestion);
 
@@ -209,7 +207,6 @@ export default {
                     searchResultsLength: searchResults.length
                 });
             });
-console.log(preparedSearchResults);
 
             this.commitDataToStore("Searchbar/changeSearch", this.id, false, preparedSearchResults);
         }

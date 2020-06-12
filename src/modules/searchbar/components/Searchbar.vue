@@ -151,7 +151,7 @@ export default {
                         class="list-group-item"
                         @click="zoomAndHighlightResult(result)"
                     >
-                        <div 
+                        <div
                             class="search-result-title"
                         >
                             {{ result.name }}
@@ -206,31 +206,26 @@ export default {
         left: 0;
     }
 
-    .badge {
-        font-size: 90%; /* Würde ich rausnehmen, weil unterschiedl. Schriftgrößen sehen schnell doof aus, gerade bei so kleinen Abstufungen. */
-    }
-
     .list-group-item {
         display:flex;
         cursor: pointer;
         transition: background-color 0.15s;
-                
+
         &:first-child {
             border-top: none;
         }
-        
+
         &:hover {
             background-color:#EEE;
         }
-        
+
         .search-result-title {
             flex-grow:1;
             word-break: break-all;
         }
     }
-    
+
     .list-group-item-theme {
         color: #337ab7;
-        font-size: 90%; /* Würde ich rausnehmen, weil unterschiedl. Schriftgrößen sehen schnell doof aus, gerade bei so kleinen Abstufungen. */
     }
 </style>
