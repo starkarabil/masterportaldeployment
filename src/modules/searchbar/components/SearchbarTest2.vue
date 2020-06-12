@@ -3,7 +3,7 @@
 import {mapGetters} from "vuex";
 
 export default {
-    name: "SearchbarTest",
+    name: "SearchbarTest2",
     data () {
         return {
             id: "test",
@@ -33,42 +33,11 @@ export default {
         });
     },
     methods: {
-        search: function (searchInputValue) {
-            const exampleArray = [{
-                name: "Test1" + searchInputValue,
-                type: "TesttypA",
-                geometry: {
-                    coordinates: [564570.63, 5937829.56],
-                    type: "Point"
-                },
-                searchId: "test",
-                searchResultsLength: 3
-            },
-            {
-                name: "Test2" + searchInputValue,
-                type: "TesttypA",
-                geometry: {
-                    coordinates: [123, 456],
-                    type: "Line"
-                },
-                searchId: "test",
-                searchResultsLength: 3
-            },
-            {
-                name: "Test3" + searchInputValue,
-                type: "TesttypB",
-                geometry: {
-                    coordinates: [123, 456],
-                    type: "Polygon"
-                },
-                searchId: "test",
-                searchResultsLength: 3
-            }];
-
+        search: function () {
             this.$store.commit("Searchbar/changeSearch", {
                 id: this.id,
                 isBusy: false,
-                searchResults: exampleArray
+                searchResults: []
             });
         }
     }

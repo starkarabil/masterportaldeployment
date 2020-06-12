@@ -11,13 +11,13 @@ export default {
         ...mapGetters("Searchbar", ["minimalCharacters", "placeholder", "resultSettings", "searchInputValue", "components", "searches"])
     },
     watch: {
-        // todo Bei starten der Suche alles zu allen Ergebnissen eine zeile anzeigen mit initial "Suche läuft"!
+        // todo Bei starten der Suche alles zu allen Ergebnissen eine Zeile anzeigen mit initial "Suche läuft"!
         // Wenn Suche zu Ende ist Ergebnis anzeigen oder "Nichts gefunden!". Feedback für den Nutzer wichtig.
         searches (searches) {
             if (this.checkIfAllSearchesReady(searches) && this.searchInputValue !== "") {
+                // Was ist mit leeren Ergebnisse oder undefined Ergebnisse?
                 this.resultList = this.findFirstResultsByType(searches);
             }
-
         }
     },
     methods: {
@@ -147,7 +147,7 @@ export default {
                 <ul class="list-group">
                     <li
                         v-for="result in resultList"
-                        :key="result.searchType + result.name"
+                        :key="result.type + result.name"
                         class="list-group-item"
                         @click="zoomAndHighlightResult(result)"
                     >
