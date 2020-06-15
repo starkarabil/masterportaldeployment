@@ -240,7 +240,7 @@ const SpecialWFSModel = Backbone.Model.extend({
             geometryName = definition.geometryName ? definition.geometryName : this.get("geometryName"),
             glyphicon = definition.glyphicon ? definition.glyphicon : this.get("glyphicon"),
             elements = data.getElementsByTagNameNS("*", typeName.split(":")[1]),
-            multiGeometries = ["MULTIPOINT", "MULTILINESTRING", "MULTIPOLYGON"];
+            multiGeometries = ["MULTIPOLYGON"];
         let geometry;
 
         for (const element of elements) {
@@ -254,7 +254,6 @@ const SpecialWFSModel = Backbone.Model.extend({
                 if (multiGeometries.includes(firstChildNameUpperCase)) {
                     const memberName = elementGeometryFirstChild.firstElementChild.localName,
                         geometryMembers = elementGeometryName.getElementsByTagNameNS("*", memberName),
-                        // todo: funktioniert das mit allen Multigeometrien?
                         coordinates = this.getInteriorAndExteriorPolygonMembers(geometryMembers);
 
                     geometry = coordinates[0];
@@ -292,7 +291,7 @@ const SpecialWFSModel = Backbone.Model.extend({
             geometryType: firstChildNameUpperCase,
             type: type,
             coordinate: geometry,
-            interiorPolygons: interiorGeometry,
+            interiorGeometry: interiorGeometry,
             glyphicon: glyphicon
         });
     },
