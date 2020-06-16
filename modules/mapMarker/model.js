@@ -179,7 +179,7 @@ const MapMarkerModel = Backbone.Model.extend(/** @lends MapMarkerModel.prototype
 
     /**
      * Help function for determining a feature with textual description.
-     * @param  {string} type - Geometrietype
+     * @param  {string} type - Type of geometry.
      * @param  {number[]} geometry - Array with coordinate values
      * @param {number[]} interiorGeometry  - Array with the indices/position of the interior polygons in geom
      * @returns {string} wkt WellKnownText-Geom
