@@ -1,7 +1,7 @@
 import Tool from "../../core/modelList/tool/model";
 import {Pointer} from "ol/interaction.js";
 import {toStringHDMS, toStringXY} from "ol/coordinate.js";
-import {getProjections, transformFromMapProjection} from "masterportalAPI/src/crs";
+import {getProjections, getProjection, transformFromMapProjection} from "masterportalAPI/src/crs";
 
 
 const CoordPopup = Tool.extend(/** @lends CoordPopup.prototype */{
@@ -9,6 +9,7 @@ const CoordPopup = Tool.extend(/** @lends CoordPopup.prototype */{
         selectPointerMove: null,
         projections: [],
         mapProjection: null,
+        namedProjections: [],
         positionMapProjection: [],
         updatePosition: true,
         currentProjectionName: "EPSG:25832",
@@ -99,7 +100,10 @@ const CoordPopup = Tool.extend(/** @lends CoordPopup.prototype */{
      * @returns {void}
      */
     createInteraction: function () {
-        this.setProjections(getProjections());
+        const projections = getProjections(),
+            sortedProjections = this.sortProjectionsByConfigOrder(projections, this.get("namedProjections"));
+
+        this.setProjections(sortedProjections);
         this.setMapProjection(Radio.request("MapView", "getProjection"));
         this.setSelectPointerMove(new Pointer({
             handleMoveEvent: function (evt) {
@@ -111,6 +115,24 @@ const CoordPopup = Tool.extend(/** @lends CoordPopup.prototype */{
         }, this));
 
         Radio.trigger("Map", "addInteraction", this.get("selectPointerMove"));
+    },
+
+    /**
+     * Sorts the projections according to the order in the config.js.
+     * @param {object[]} [projections=[]] - The possible projections.
+     * @param {array[]} [namedProjections=[]] - The projection from the config.js.
+     * @returns {string[]} The orderd projections.
+     */
+    sortProjectionsByConfigOrder: function (projections = [], namedProjections = []) {
+        const sortedProjections = [];
+
+        namedProjections.forEach(namedProjection => {
+            sortedProjections.push(projections.find(projection => {
+                return projection.name === getProjection(namedProjection[0]).name;
+            }));
+        });
+
+        return sortedProjections;
     },
 
     removeInteraction: function () {

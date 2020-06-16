@@ -36,4 +36,13 @@ describe("getCoordModel", function () {
             expect(model.getCartesian(position1)).to.equal("564337.37, 5935980.05");
         });
     });
+
+    describe("sortProjectionsByConfigOrder", function () {
+        it("should return an empty array for empty arrays as input", function () {
+            expect(model.sortProjectionsByConfigOrder([], [])).to.be.an("array").that.is.empty;
+        });
+        it("should return an empty array for undefined as input", function () {
+            expect(model.sortProjectionsByConfigOrder(undefined, undefined)).to.be.an("array").that.is.empty;
+        });
+    });
 });
