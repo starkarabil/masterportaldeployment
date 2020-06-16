@@ -287,7 +287,7 @@ const MapMarkerModel = Backbone.Model.extend(/** @lends MapMarkerModel.prototype
     },
 
     /**
-     * Creates and set gemeotry as wkt to model.
+     * Sets geometry as wkt to model.
      * @param {string} type - Type of the geometry.
      * @param {string[]} geometry - The coordinates of the geometry.
      * @param {string[]} interiorGeometry - Array with the position of the interior Geometries in geometry.
