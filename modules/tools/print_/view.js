@@ -54,10 +54,10 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
      * @return {Backbone.View} itself
      */
     render: function (model) {
-        var attributes = model.toJSON();
+        const attributes = model.toJSON();
 
         if (model.get("isActive") && model.get("currentLayout")) {
-            _.extend(attributes, {"scaleList": model.getPrintMapScales()});
+            Object.assign(attributes, {"scaleList": model.getPrintMapScales()});
             this.setElement(document.getElementsByClassName("win-body")[0]);
             this.$el.html(this.template(attributes));
             this.delegateEvents();
@@ -117,6 +117,7 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
      */
     setTitle: function (evt) {
         this.model.setTitle(evt.target.value);
+        this.model.setTitlePlaceholder(evt.target.value);
     },
 
     /**

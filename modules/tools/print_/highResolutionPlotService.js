@@ -1295,6 +1295,15 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      */
     setEventListener: function (value) {
         this.set("eventListener", value);
+    },
+
+    /**
+     * Setter for placeholder.
+     * @param {string} value - Placeholder for the title.
+     * @returns {void}
+     */
+    setTitlePlaceholder: function (value) {
+        this.set("titlePlaceholder", value);
     }
 });
 
