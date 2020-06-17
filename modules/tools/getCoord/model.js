@@ -121,7 +121,7 @@ const CoordPopup = Tool.extend(/** @lends CoordPopup.prototype */{
      * Sorts the projections according to the order in the config.js.
      * @param {object[]} [projections=[]] - The possible projections.
      * @param {array[]} [namedProjections=[]] - The projection from the config.js.
-     * @returns {string[]} The orderd projections.
+     * @returns {string[]} The ordered projections.
      */
     sortProjectionsByConfigOrder: function (projections = [], namedProjections = []) {
         const sortedProjections = [];
