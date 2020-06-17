@@ -17,6 +17,7 @@
 
 ### Fixed
 - Die Legende für GruppenLayer wird nun wieder dargestellt.
+- Themenbaum/ Externe Fachdaten: Ein visuelles Problem beim Schliessen der Ordners wurde beseitigt.
 
 ---
 
