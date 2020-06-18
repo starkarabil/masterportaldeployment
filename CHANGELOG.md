@@ -23,7 +23,6 @@
 - Der Titel wird im Druckmodul nun beibehalten wenn der Maßstab geändert oder in der Karte gezoomt wird.
 - Die Legende wir für GruppenLayer wird nun nur noch einmal angezeigt.
 - Im Ausdrucken aus dem Druckmodul wird nun die Legende für GruppenLayer wieder angezeigt.
-- Externe Daten im Themenbaum lassen sich nur wieder einklappen.
 
 ---
 
