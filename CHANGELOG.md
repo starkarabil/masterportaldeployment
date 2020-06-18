@@ -7,9 +7,11 @@
 ## Unreleased - in development
 
 ### Added
-- Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
+- Multipolygone werden nun von der SpecialWFS Suche verarbeitet. Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
 
 ### Changed
+- Der erste Buchstabe wird für Einträge in der Legend aus WFS-Diensten nun immer groß geschrieben.
+- Das Werkzeug zur Koordinatenabfrage zeigt die Koordinatensysteme nun enstprechend der Reihenfolge der konfigurierten namedProjections aus der config.js an.
 
 ### Deprecated
 
@@ -18,6 +20,10 @@
 ### Fixed
 - Die Legende für GruppenLayer wird nun wieder dargestellt.
 - Themenbaum/ Externe Fachdaten: Ein visuelles Problem beim Schliessen der Ordners wurde beseitigt.
+- Der Titel wird im Druckmodul nun beibehalten wenn der Maßstab geändert oder in der Karte gezoomt wird.
+- Die Legende wir für GruppenLayer wird nun nur noch einmal angezeigt.
+- Im Ausdrucken aus dem Druckmodul wird nun die Legende für GruppenLayer wieder angezeigt.
+- Externe Daten im Themenbaum lassen sich nur wieder einklappen.
 
 ---
 
