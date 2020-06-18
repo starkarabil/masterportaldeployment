@@ -133,21 +133,21 @@ const WMSLayer = Layer.extend({
      * @return {void}
      */
     createLegendURL: function () {
-        var layerNames,
-            legendURL = [],
+        const legendURL = [],
             version = this.get("version");
 
         if (this.get("legendURL") === "" || this.get("legendURL") === undefined) {
-            layerNames = this.get("layers").split(",");
+            const layerNames = this.get("layers").split(",");
 
             if (layerNames.length === 1) {
-                legendURL.push(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + this.get("layers"));
+                legendURL.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + this.get("layers")));
             }
             else if (layerNames.length > 1) {
-                _.each(layerNames, function (layerName) {
-                    legendURL.push(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + layerName);
-                }, this);
+                layerNames.forEach(layerName => {
+                    legendURL.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + layerName));
+                });
             }
+
             this.set("legendURL", legendURL);
         }
     },
