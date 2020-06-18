@@ -264,7 +264,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
                 return new Filter(attrs, options);
             }
             else if (attrs.id === "coord") {
-                return new GetCoord(attrs, options);
+                return new GetCoord(Object.assign(attrs, Config.hasOwnProperty("namedProjections") ? {namedProjections: Config.namedProjections} : {}), options);
             }
             else if (attrs.id === "shadow") {
                 return new Shadow(attrs, options);
