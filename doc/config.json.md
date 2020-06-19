@@ -102,6 +102,7 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
 |suggestCount|nein|Integer|20|Anzahl der Vorschläge.|false|
 |suggestServiceId|ja|String||Id des Vorschlagsdienstes. Wird aufgelöst in der **[rest-services.json](rest-services.json.md)**.|false|
 |zoomToResult|nein|Boolean||Gibt an, ob auf das Feature beim Mousehover auf die Adresse gezoomt werden soll.|false|
+|zoomLevel|nein|Boolean|7|Gibt an, auf welches ZoomLevel gezoomt werden soll.|false|
 
 **Beispiel**
 ```
@@ -115,7 +116,8 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
     "epsg": "EPSG:25832",
     "filter": "filter=(typ:*)",
     "score": 0.6,
-    "zoomToResult": true
+    "zoomToResult": true,
+    "zoomLevel": 10
 }
 ```
 
