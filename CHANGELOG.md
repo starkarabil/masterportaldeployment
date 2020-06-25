@@ -9,7 +9,7 @@
 ### Added
 - Multipolygone werden nun von der SpecialWFS Suche verarbeitet. Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
 - Ein Konfigurationsparameter für das ZoomLevel bei der BKG-Suche wurde eingeführt.
-- In der BKG-Suche wurden die Parameter zoomToResultOnHover und zoomToResultOnClick zum steuern der Anzeige der Suchergebnisse eingeführt.
+- In der BKG-Suche wurden die Parameter zoomToResultOnHover und zoomToResultOnClick zum Steuern der Anzeige der Suchergebnisse eingeführt.
 
 ### Changed
 - Der erste Buchstabe wird für Einträge in der Legend aus WFS-Diensten nun immer groß geschrieben.
