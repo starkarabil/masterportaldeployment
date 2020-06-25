@@ -439,7 +439,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         // 4. Zoom if necessary on the result otherwise special handling
         if (hit.hasOwnProperty("triggerEvent")) {
             this.model.setHitIsClick(true);
-            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true);
+            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true, evt.handleObj.type);
         }
         else {
             Radio.trigger("MapMarker", "zoomTo", hit, 5000);
@@ -862,7 +862,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
 
         // with gdi-search no action on mousehover or on GFI onClick
         if (hit && hit.hasOwnProperty("triggerEvent") && hit.type !== i18next.t("common:modules.searchbar.type.subject") && hit.triggerEvent.event !== "gfiOnClick") {
-            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true);
+            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true, evt.handleObj.type);
             return;
         }
         else if (hit && hit.hasOwnProperty("coordinate")) {
