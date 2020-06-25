@@ -8,12 +8,14 @@
 
 ### Added
 - Multipolygone werden nun von der SpecialWFS Suche verarbeitet. Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
+- In der BKG-Suche wurden die Parameter zoomToResultOnHover und zoomToResultOnClick zum steuern der Anzeige der Suchergebnisse eingeführt.
 
 ### Changed
 - Der erste Buchstabe wird für Einträge in der Legend aus WFS-Diensten nun immer groß geschrieben.
 - Das Werkzeug zur Koordinatenabfrage zeigt die Koordinatensysteme nun enstprechend der Reihenfolge der konfigurierten namedProjections aus der config.js an.
 
 ### Deprecated
+- Der URL-Parameter zoomToResult ist deprecated. Bitte zoomToResultOnHover und zoomToResultOnClick benutzen.
 
 ### Removed
 
