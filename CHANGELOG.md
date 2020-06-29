@@ -4,8 +4,7 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
-## Unreleased - in development
-
+## v2.5.3 - 2020-06-29
 ### Added
 - Multipolygone werden nun von der SpecialWFS Suche verarbeitet. Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
 - Ein Konfigurationsparameter für das ZoomLevel bei der BKG-Suche wurde eingeführt.
@@ -18,8 +17,6 @@
 ### Deprecated
 - Der URL-Parameter zoomToResult ist deprecated. Bitte zoomToResultOnHover und zoomToResultOnClick benutzen.
 
-### Removed
-
 ### Fixed
 - Die Legende für GruppenLayer wird nun wieder dargestellt.
 - Themenbaum/ Externe Fachdaten: Ein visuelles Problem beim Schliessen der Ordners wurde beseitigt.
@@ -30,7 +27,6 @@
 ---
 
 ## v2.5.2 - 2020-06-09
-
 ### Fixed
 - Die Portal-Konfiguration "singleBaselayer": "true" führt jetzt dazu, dass immer nur ein Hauptlayer ausgewählt werden kann.
 - Das Label der Version im Footer wird jetzt korrekt übersetzt. 
