@@ -4,6 +4,19 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
+## Unreleased - in development
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+---
+
 ## v2.5.3 - 2020-06-29
 ### Added
 - Multipolygone werden nun von der SpecialWFS Suche verarbeitet. Interne Polygone bspw. von B-Plänen werden fortan berücksichtigt und bei der Darstellung ausgespart.
