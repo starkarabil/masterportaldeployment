@@ -173,7 +173,7 @@ const TileSetLayer = Layer.extend(/** @lends TileSetLayer.prototype */{
      * @override
      */
     isLayerValid: function () {
-        return this.get("tileset") !== undefined;
+        return this.get("tileSet") !== undefined;
     },
 
     /**
@@ -182,7 +182,7 @@ const TileSetLayer = Layer.extend(/** @lends TileSetLayer.prototype */{
      * @override
      */
     isLayerSourceValid: function () {
-        return !_.isUndefined(this.get("tileset"));
+        return this.isLayerValid();
     },
 
     /**
