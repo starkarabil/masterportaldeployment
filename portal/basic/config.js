@@ -21,7 +21,8 @@ const Config = {
     },
     layerConf: "./ressources/services-internet.json",
     restConf: "./ressources/rest-services-internet.json",
-    styleConf: "./ressources/style_v3.json",
+    //styleConf: "./ressources/style_v3.json",
+    styleConf: "../../lgv-config/style_v3.json",
     scaleLine: true,
     mouseHover: {
         numFeaturesToShow: 2,
