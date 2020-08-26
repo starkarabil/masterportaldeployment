@@ -15,7 +15,7 @@
 
 ### Fixed
 - 3D Tileset Layer werden nun korrekt über die Legende aktiviert/deaktiviert
-- Ein Fehler der beim der Suche mittels des Gazetters bei Hausnummern mit Zusatz aufgetreten ist wurde behoben.
+- Ein Fehler in der Suche mittels des Gazetters, der bei Hausnummern mit Zusatz aufgetreten ist wurde behoben.
 
 ---
 
