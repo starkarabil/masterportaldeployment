@@ -4,6 +4,19 @@
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
 
+## Unreleased - in development
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+---
+
 ## v2.5.4 - 2020-08-27
 ### Fixed
 - 3D Tileset Layer werden nun korrekt über die Legende aktiviert/deaktiviert
