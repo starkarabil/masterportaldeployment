@@ -409,7 +409,8 @@
             "placeholder": {
                 "addressHospitalBplan" : "Search for Address/Hospital/B-Plan",
                 "addressTopicParcel" : "Search address, district, topics, parcel",
-                "address": "Search for Address"
+                "address": "Search for Address",
+                "addressWfs": "Search for Address, aktive WFS"
             },
             "showAllResults": "Show all results",
             "type": {
