@@ -1,7 +1,8 @@
 import Tool from "../../core/modelList/tool/model";
+import getProxyUrl from "../../../src/utils/getProxyUrl";
 
 const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         isCurrentWin: false,
         isCollapsed: false,
         glyphicon: "glyphicon-tint",
@@ -16,7 +17,26 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
         styleClassAttributes: [],
         styleWMSName: "",
         styleableLayerList: [],
-        wmsSoftware: "OGC"
+        wmsSoftware: "OGC",
+        // translations
+        currentLng: "",
+        noStyleableLayers: "",
+        theme: "",
+        chooseTheme: "",
+        attribute: "",
+        chooseAttribute: "",
+        countOfClasses: "",
+        chooseNumberOfClasses: "",
+        rangeOfValues: "",
+        reset: "",
+        apply: "",
+        from: "",
+        to: "",
+        pleaseEnterInteger: "",
+        pleaseChooseColor: "",
+        checkTheValues: "",
+        overlappingValueRanges: "",
+        useProxy: false
     }),
 
     /**
@@ -49,6 +69,24 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @property {String} styleableLayer.name Name of styleable Layer
      * @property {String} styleableLayer.id Id of styleable Layer
      * @property {String} wmsSoftware="OGC" Flag of sld has to be created according to ogc standards or in esri style
+     * @property {String} currentLng: "" contains the translated text
+     * @property {String} noStyleableLayers: "" contains the translated text
+     * @property {String} theme: "" contains the translated text
+     * @property {String} chooseTheme: "" contains the translated text
+     * @property {String} attribute: "" contains the translated text
+     * @property {String} chooseAttribute: "" contains the translated text
+     * @property {String} countOfClasses: "" contains the translated text
+     * @property {String} chooseNumberOfClasses: "" contains the translated text
+     * @property {String} rangeOfValues: "" contains the translated text
+     * @property {String} reset: "" contains the translated text
+     * @property {String} apply: "" contains the translated text
+     * @property {String} from: "" contains the translated text
+     * @property {String} to: "" contains the translated text
+     * @property {String} pleaseEnterInteger: "" contains the translated text
+     * @property {String} pleaseChooseColor: "" contains the translated text
+     * @property {String} checkTheValues: "" contains the translated text
+     * @property {String} overlappingValueRanges: "" contains the translated text
+     * @property {Boolean} useProxy=false Attribute to request the URL via a reverse proxy.
      * @listens StyleWMS#RadioTriggerStyleWMSopenStyleWMS
      * @listens StyleWMS#changeModel
      * @listens StyleWMS#changeAttributeName
@@ -58,14 +96,12 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @fires List#RadioRequestModelListGetModelsByAttributes
      * @fires List#RadioTriggerModelListSetModelAttributesById
      * @fires List#RadioRequestModelListGetModelByAttributes
-     * @fires Util#RadioRequestUtilGetProxyUrl
-     * @fires StyleWMS#RadioTriggerStyleWMSResetParamsStyleWMS
-     * @fires StyleWMS#RadioTriggerStyleWMSUpdateParamsStyleWMS
      * @fires StyleWMSModel#sync
      * @fires StyleWMSModel#changeIsactive
+     * @listens i18next#RadioTriggerLanguageChanged
      */
     initialize: function () {
-        var channel = Radio.channel("StyleWMS");
+        const channel = Radio.channel("StyleWMS");
 
         this.superInitialize();
         channel.on({
@@ -115,6 +151,37 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
                 }
             }
         });
+        this.listenTo(Radio.channel("i18next"), {
+            "languageChanged": this.changeLang
+        });
+
+        this.changeLang();
+    },
+    /**
+     * change language - sets default values for the language
+     * @param {String} lng - new language to be set
+     * @returns {Void} -
+     */
+    changeLang: function (lng) {
+        this.set({
+            "noStyleableLayers": i18next.t("common:modules.tools.styleWMS.noStyleableLayers"),
+            "theme": i18next.t("common:modules.tools.styleWMS.theme"),
+            "chooseTheme": i18next.t("common:modules.tools.styleWMS.chooseTheme"),
+            "attribute": i18next.t("common:modules.tools.styleWMS.attribute"),
+            "chooseAttribute": i18next.t("common:modules.tools.styleWMS.chooseAttribute"),
+            "countOfClasses": i18next.t("common:modules.tools.styleWMS.countOfClasses"),
+            "chooseNumberOfClasses": i18next.t("common:modules.tools.styleWMS.chooseNumberOfClasses"),
+            "rangeOfValues": i18next.t("common:modules.tools.styleWMS.rangeOfValues"),
+            "reset": i18next.t("common:modules.tools.styleWMS.reset"),
+            "apply": i18next.t("common:modules.tools.styleWMS.apply"),
+            "from": i18next.t("common:modules.tools.styleWMS.from"),
+            "to": i18next.t("common:modules.tools.styleWMS.to"),
+            "pleaseEnterInteger": i18next.t("common:modules.tools.styleWMS.pleaseEnterInteger"),
+            "pleaseChooseColor": i18next.t("common:modules.tools.styleWMS.pleaseChooseColor"),
+            "checkTheValues": i18next.t("common:modules.tools.styleWMS.checkTheValues"),
+            "overlappingValueRanges": i18next.t("common:modules.tools.styleWMS.overlappingValueRanges"),
+            "currentLng": lng
+        });
     },
 
     /**
@@ -124,13 +191,12 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @returns {void}
      */
     refreshStyleableLayerList: function () {
-        var styleableLayerList = [],
-            layerModelList,
-            result;
+        const styleableLayerList = [],
+            layerModelList = Radio.request("ModelList", "getModelsByAttributes", {styleable: true, isSelected: true});
 
-        layerModelList = Radio.request("ModelList", "getModelsByAttributes", {styleable: true, isSelected: true});
+        let result;
 
-        _.each(layerModelList, function (layerModel) {
+        layerModelList.forEach(layerModel => {
             styleableLayerList.push({name: layerModel.get("name"), id: layerModel.get("id")});
         });
 
@@ -138,9 +204,9 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
 
         // If current layer model is not selected any more, remove it
         if (this.get("model") !== null && this.get("model") !== undefined) {
-            result = _.find(styleableLayerList, function (styleableLayer) {
+            result = styleableLayerList.find(styleableLayer => {
                 return styleableLayer.id === this.get("model").get("id");
-            }, this);
+            });
 
             if (result === undefined) {
                 this.setModel(null);
@@ -157,50 +223,56 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @see {@link http://backbonejs.org/#Model-validate|Backbone}
      */
     validate: function (attributes) {
-        var prevMax = -1,
-            errors = [],
-            regExp = new RegExp("^[0-9]+$");
 
-        _.each(attributes.styleClassAttributes, function (element, index) {
-            var min = parseInt(element.startRange, 10),
+        const errors = [],
+            regExp = new RegExp("^[0-9]+$"),
+            pleaseEnterInteger = this.get("pleaseEnterInteger"),
+            pleaseChooseColor = this.get("pleaseChooseColor"),
+            checkTheValues = this.get("checkTheValues"),
+            overlappingValueRanges = this.get("overlappingValueRanges");
+
+        let prevMax = -1;
+
+        attributes.styleClassAttributes.forEach(function (element, index) {
+            const min = parseInt(element.startRange, 10),
                 max = parseInt(element.stopRange, 10);
 
             if (regExp.test(element.startRange) === false) {
                 errors.push({
-                    minText: "Bitte tragen Sie eine ganze Zahl ein.",
+                    minText: pleaseEnterInteger,
                     minIndex: index
                 });
             }
             if (regExp.test(element.stopRange) === false) {
                 errors.push({
-                    maxText: "Bitte tragen Sie eine ganze Zahl ein.",
+                    maxText: pleaseEnterInteger,
                     maxIndex: index
                 });
             }
             if (element.color === "") {
                 errors.push({
-                    colorText: "Bitte wählen Sie eine Farbe aus.",
+                    colorText: pleaseChooseColor,
                     colorIndex: index
                 });
             }
             if (min >= max) {
                 errors.push({
-                    rangeText: "Überprüfen Sie die Werte.",
+                    rangeText: checkTheValues,
                     rangeIndex: index
                 });
             }
             if (prevMax >= min) {
                 errors.push({
-                    intersectText: "Überprüfen Sie die Werte. Wertebereiche dürfen sich nicht überschneiden.",
+                    intersectText: overlappingValueRanges,
                     intersectIndex: index,
                     prevIndex: index - 1
                 });
             }
             prevMax = max;
-        }, this);
+        });
 
         this.setErrors(errors);
-        if (_.isEmpty(errors) === false) {
+        if (errors.length !== 0) {
             return errors;
         }
 
@@ -212,7 +284,7 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @returns {void}
      */
     createSLD: function () {
-        var sld = "";
+        let sld = "";
 
         if (this.isValid() === true) {
             if (this.get("wmsSoftware") === "ESRI") {
@@ -231,7 +303,7 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @returns {void}
      */
     removeSLDBody: function () {
-        var source = this.get("model").get("layer").getSource(),
+        const source = this.get("model").get("layer").getSource(),
             params = source.getParams();
 
         /* eslint-disable-next-line no-undefined */
@@ -267,7 +339,7 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @returns {void}
      */
     setModelById: function (id) {
-        var model = null;
+        let model = null;
 
         if (id !== "") {
             model = Radio.request("ModelList", "getModelByAttributes", {id: id});
@@ -279,13 +351,19 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
     /**
      * Checks the current service if it is made from esri software or not.
      * @param {Layer} model WmsLayerModel The model of the layer to be checked
-     * @fires Util#RadioRequestUtilGetProxyUrl
      * @returns {void}
      */
     requestWmsSoftware: function (model) {
+        /**
+         * @deprecated in the next major-release!
+         * useProxy
+         * getProxyUrl()
+         */
+        const url = this.get("useProxy") ? getProxyUrl(model.get("url")) : model.get("url");
+
         if (model) {
             $.ajax({
-                url: Radio.request("Util", "getProxyURL", model.get("url")) + "?SERVICE=" + model.get("typ") + "&VERSION=" + model.get("version") + "&REQUEST=GetCapabilities",
+                url: url + "?SERVICE=" + model.get("typ") + "&VERSION=" + model.get("version") + "&REQUEST=GetCapabilities",
                 context: this,
                 success: this.checkWmsSoftwareResponse,
                 async: false
@@ -311,23 +389,61 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
     },
 
     /**
-     * Triggers the legend to update itself
+     * Updates the legend of the layer
      * @param {Object[]} attributes Attributes for creating the legend from StyleWMS
-     * @fires StyleWMS#RadioTriggerStyleWmsUpdateParamsStyleWMS
      * @returns {void}
      */
     updateLegend: function (attributes) {
-        attributes.styleWMSName = this.get("model").get("name");
-        Radio.trigger("StyleWMS", "updateParamsStyleWMS", attributes);
+        const layer = this.get("model"),
+            legend = [];
+
+        attributes.forEach(attribute => {
+            const graphic = this.createSvgGraphic(attribute.color);
+
+            legend.push({
+                name: attribute.startRange + " - " + attribute.stopRange,
+                graphic: graphic
+            });
+        });
+        layer.setLegend(legend);
+    },
+
+    createSvgGraphic: function (color) {
+        let svg = "data:image/svg+xml;charset=utf-8,";
+
+        svg += "<svg height='35' width='35' version='1.1' xmlns='http://www.w3.org/2000/svg'>";
+        svg += "<polygon points='5,5 30,5 30,30 5,30' style='fill:";
+        svg += this.hexToRgbString(color);
+        svg += ";'/>";
+        svg += "</svg>";
+
+        return svg;
+    },
+
+    /**
+     * Converts hex value to rgbarray.
+     * @param {String} hex Color as hex string.
+     * @returns {String} - Color als rgb string.
+     */
+    hexToRgbString: function (hex) {
+        const rgbArray = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => "#" + r + r + g + g + b + b)
+            .substring(1).match(/.{2}/g)
+            .map(x => parseInt(x, 16));
+        let rgbString = rgbArray.toString(", ");
+
+        rgbString = "rgb(" + rgbString + ")";
+
+        return rgbString;
     },
 
     /**
      * Triggers the legend to reset the stylewms params
-     * @fires StyleWMS#RadioTriggerStyleWmsResetParamsStyleWMS
      * @returns {void}
      */
     resetLegend: function () {
-        Radio.trigger("StyleWMS", "resetParamsStyleWMS", this.get("model"));
+        const layer = this.get("model");
+
+        layer.createLegend();
     },
 
     /**
@@ -412,15 +528,15 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @return {string} rules-tags
      */
     createEsriRules: function () {
-        var rule = "";
+        let rule = "";
 
         if (this.get("geomType") === "Polygon") {
-            _.each(this.get("styleClassAttributes"), function (obj) {
+            this.get("styleClassAttributes").forEach(obj => {
                 rule += "<sld:Rule>" +
                             this.createFilter(obj.startRange, obj.stopRange) +
                             this.createEsriPolygonSymbolizer(obj.color) +
                         "</sld:Rule>";
-            }, this);
+            });
         }
         else {
             console.error("Type of geometry is not supported, abort styling.");
@@ -433,15 +549,15 @@ const StyleWmsModel = Tool.extend(/** @lends StyleWmsModel.prototype */{
      * @return {string} rules-tags
      */
     createOgcRules: function () {
-        var rule = "";
+        let rule = "";
 
         if (this.get("geomType") === "Polygon") {
-            _.each(this.get("styleClassAttributes"), function (obj) {
+            this.get("styleClassAttributes").forEach(obj => {
                 rule += "<Rule>" +
                             this.createFilter(obj.startRange, obj.stopRange) +
                             this.createOgcPolygonSymbolizer(obj.color) +
                         "</Rule>";
-            }, this);
+            });
         }
         else {
             console.error("Type of geometry is not supported, abort styling.");

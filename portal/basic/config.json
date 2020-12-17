@@ -1,6 +1,6 @@
 {
 	"Portalconfig": {
-		"treeType": "light",
+    "treeType": "light",
 		"searchBar": {
 			"osm": {
 				"minChars": 3,
@@ -11,11 +11,11 @@
 			},
       "visibleVector": {},
       "tree": {},
-			"startoomLevel": 9,
+			"startZoomLevel": 9,
 			"placeholder": "Suche nach: - Adresse - Aktiven WFS"
 		},
 		"mapView": {
-			"backgroundImage": "./ressources/img/backgroundCanvas.jpeg",
+			"backgroundImage": "./resources/img/backgroundCanvas.jpeg",
 			"startCenter": [561210, 5932600],
 			"extent": [510000.0, 5850000.0, 625000.4, 6000000.0],
 			"startZoomLevel": 1
@@ -28,24 +28,27 @@
 				"name": "Werkzeuge",
 				"children": {
 					"gfi": {
-						"name": "Informationen abfragen",
-						"isActive": true
+            "name": "Informationen abfragen",
+            "glyphicon": "glyphicon-info-sign",
+						"active": true
 					},
 					"searchByCoord": {
 						"name": "Koordinatensuche"
 					},
-					"coord": {
-						"name": "Koordinaten abfragen"
+					"supplyCoord": {
+						"name": "Koordinaten abfragen",
+						"glyphicon": "glyphicon-screenshot"
 					},
 					"measure": {
 						"name": "Strecke / Fläche messen"
 					},
 					"draw": {
 						"name": "Zeichnen / Schreiben",
-						"glyphicon": "glyphicon-pencil"
+            "glyphicon": "glyphicon-pencil"
 					},
-					"kmlimport": {
-						"name": "KML Import"
+					"fileImport": {
+            "name": "Datei Import",
+            "glyphicon": "glyphicon-import"
 					},
 					"saveSelection": {
 						"name": "Auswahl speichern"
@@ -80,13 +83,13 @@
 		"Hintergrundkarten": {
 			"Layer": [
 				{
-                  "id": "453",
-                  "name": "Stadtplan",
+          "id": "453",
+          "name": "Stadtplan",
 				  "visibility": true
 				},
 				{
-                  "id": "452",
-                  "name": "Luftbilder DOP 20"
+          "id": "452",
+          "name": "Luftbilder DOP 20"
 				},
 				{
 				  "id": ["717", "718", "719", "720", "13712", "13709", "13714", "13716"],
@@ -97,21 +100,20 @@
 		"Fachdaten": {
 			"Layer": [
 				{
-                  "id": "2426",
-                  "name": "Bezirke",
-                  "layerAttribution": "<span>Hier Text angeben, der angezeigt wird sobald der Layer sichtbar ist.</span>"
+					"id": "2426",
+					"name": "Bezirke",
+					"layerAttribution": "<span>Hier Text angeben, der angezeigt wird sobald der Layer sichtbar ist.</span>"
 				},
 				{
-                  "id": "4561",
-                  "name": "Eventflächen",
-                  "infoFormat": "text/html",
-                  "maxScale": "100000",
-				  "minScale": "40000"
+					"id": "4561",
+					"name": "Eventflächen",
+					"infoFormat": "text/html",
+					"maxScale": "100000",
+					"minScale": "40000"
 				},
 				{
-                  "id": "3302",
-                  "name": "Trinkwasser",
-				  "gfiTheme": "trinkwasser"
+					"id": "3302",
+					"name": "Trinkwasser"
 				},
 				{
 				  "id": "myId2",
@@ -126,23 +128,23 @@
 				  "name": "Kita und Krankenhäuser"
 				},
 				{
-                  "id": "2003",
-                  "name": "WFS Schutzgebiete",
-				  "styleId": "2003",
-				  "mouseHoverField": "gebietsname"
+					"id": "2003",
+					"name": "WFS Schutzgebiete",
+					"styleId": "2003",
+					"mouseHoverField": "gebietsname"
 				},
 				{
-                  "id": "2404",
-                  "name": "WFS Bike and Ride Parkplätze",
-				  "styleId": "45",
-				  "clusterDistance": 40
+					"id": "2404",
+					"name": "WFS Bike and Ride Parkplätze",
+					"styleId": "45",
+					"clusterDistance": 40
 				},
 				{
-                  "id": "1711",
-                  "name": "WFS Krankenhäuser",
-				  "styleId": "1711",
-				  "mouseHoverField": "name",
-				  "searchField":  "name"
+					"id": "1711",
+					"name": "WFS Krankenhäuser",
+					"styleId": "1711",
+					"mouseHoverField": "name",
+					"searchField":  "name"
 				},
 				{
 				  "id": "8712",
@@ -163,10 +165,6 @@
 				  "id": "1133",
 				  "name": "WFS Line (Default Style)"
 				}
-                
-                
-               
-                
 			]
 		}
 	}

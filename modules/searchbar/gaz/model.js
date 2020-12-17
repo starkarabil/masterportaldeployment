@@ -40,11 +40,7 @@ const GazetteerModel = Backbone.Model.extend({
             "findStreets": this.findStreets,
             "findHouseNumbers": this.findHouseNumbers,
             "adressSearch": this.adressSearch,
-            "streetsWithoutHouseNumberSearch": this.streetsWithoutHouseNumberSearch
-        });
-
-        Radio.channel("Gaz").reply({
-            "adressSearch": this.adressSearch,
+            "streetsWithoutHouseNumberSearch": this.streetsWithoutHouseNumberSearch,
             "streetsSearch": this.streetsSearch
         });
 
@@ -80,7 +76,8 @@ const GazetteerModel = Backbone.Model.extend({
     },
 
     search: function (pattern) {
-        var gemarkung, flurstuecksnummer,
+        let gemarkung,
+            flurstuecksnummer,
             searchString = pattern;
 
         this.set("searchString", searchString);
@@ -149,7 +146,7 @@ const GazetteerModel = Backbone.Model.extend({
             houseNumbers = [];
         let sortedHouseNumbers = null;
 
-        hits.each(function (i, hit) {
+        hits.toArray().forEach(hit => {
             houseNumbers.push({
                 position: $(hit).find("gml\\:pos,pos")[0].textContent,
                 number: $(hit).find("dog\\:hausnummer,hausnummer")[0].textContent,

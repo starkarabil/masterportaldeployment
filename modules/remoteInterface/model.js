@@ -1,11 +1,12 @@
 import {getCenter} from "ol/extent.js";
+import store from "../../src/app-store";
 
 const RemoteInterface = Backbone.Model.extend({
     defaults: {
         postMessageUrl: "https://localhost:8080"
     },
     initialize: function () {
-        var channel = Radio.channel("RemoteInterface");
+        const channel = Radio.channel("RemoteInterface");
 
         channel.reply({
             "getMapState": this.getMapState,
@@ -61,10 +62,10 @@ const RemoteInterface = Backbone.Model.extend({
             Radio.trigger("Map", "zoomToExtent", event.data.zoomToExtent);
         }
         else if (event.data.hasOwnProperty("highlightfeature")) {
-            Radio.trigger("Highlightfeature", "highlightfeature", event.data.highlightfeature);
+            store.commit("Map/setVectorFeaturesLoaded", {type: "viaLayerAndLayerId", layerAndLayerId: event.data.highlightfeature});
         }
         else if (event.data === "hidePosition") {
-            Radio.trigger("MapMarker", "hideMarker");
+            store.dispatch("MapMarker/removePointMarker");
         }
     },
     /**
@@ -73,7 +74,7 @@ const RemoteInterface = Backbone.Model.extend({
      * @returns {void}
      */
     postMessage: function (content) {
-        if (!_.isUndefined(parent)) {
+        if (typeof parent !== "undefined") {
             parent.postMessage(content, this.get("postMessageUrl"));
         }
     },
@@ -84,24 +85,24 @@ const RemoteInterface = Backbone.Model.extend({
      * @returns {void}
      */
     showPositionByFeatureId: function (featureId, layerId) {
-        var model = Radio.request("ModelList", "getModelByAttributes", {id: layerId}),
+        const model = Radio.request("ModelList", "getModelByAttributes", {id: layerId}),
             feature = model.get("layerSource").getFeatureById(featureId),
             extent = feature.getGeometry().getExtent(),
             center = getCenter(extent);
 
-        Radio.trigger("MapMarker", "showMarker", center);
+        store.dispatch("MapMarker/placingPointMarker", center);
         Radio.trigger("MapView", "setCenter", center);
     },
     showPositionByExtent: function (extent) {
-        var center = getCenter(extent);
+        const center = getCenter(extent);
 
-        Radio.trigger("MapMarker", "showMarker", center);
+        store.dispatch("MapMarker/placingPointMarker", center);
         Radio.trigger("MapView", "setCenter", center);
     },
     showPositionByExtentNoScroll: function (extent) {
-        var center = getCenter(extent);
+        const center = getCenter(extent);
 
-        Radio.trigger("MapMarker", "showMarker", center);
+        store.dispatch("MapMarker/placingPointMarker", center);
     },
     showAllFeatures: function (id) {
         Radio.trigger("ModelList", "showAllFeatures", id);
@@ -117,7 +118,7 @@ const RemoteInterface = Backbone.Model.extend({
     },
     resetView: function () {
         Radio.trigger("MapView", "resetView");
-        Radio.trigger("MapMarker", "hideMarker");
+        store.dispatch("MapMarker/removePointMarker");
     },
     getMapState: function () {
         return Radio.request("SaveSelection", "getMapState");

@@ -42,9 +42,9 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
          */
         "clusterType": "circle",
         // for type circle
-        "clusterCircleRadius": 10,
-        "clusterCircleFillColor": [0, 153, 255, 1],
-        "clusterCircleStrokeColor": [0, 0, 0, 1],
+        "clusterCircleRadius": 15,
+        "clusterCircleFillColor": [0, 154, 205, 1],
+        "clusterCircleStrokeColor": [0, 0, 0, 0],
         "clusterCircleStrokeWidth": 2,
         // for type icon
         "clusterImageName": "blank.png",
@@ -66,7 +66,8 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
         "circleBarCircleFillColor": [0, 0, 0, 1],
         "circleBarCircleStrokeColor": [0, 0, 0, 1],
         "circleBarCircleStrokeWidth": 1,
-        "circleBarLineStrokeColor": [0, 0, 0, 1]
+        "circleBarLineStrokeColor": [0, 0, 0, 1],
+        "scalingAttribute": ""
     },
 
     initialize: function (feature, styles, isClustered) {
@@ -86,7 +87,8 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
     * @returns {ol/style} - The created style.
     */
     getStyle: function () {
-        const isClustered = this.get("isClustered"),
+        const type = this.get("type").toLowerCase(),
+            isClustered = this.get("isClustered"),
             feature = this.get("feature");
 
         if (isClustered && feature.get("features").length > 1) {
@@ -98,16 +100,16 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
             }
         }
 
-        if (this.get("type") === "icon") {
+        if (type === "icon") {
             return this.createIconPointStyle();
         }
-        else if (this.get("type") === "circle") {
+        else if (type === "circle") {
             return this.createCirclePointStyle();
         }
-        else if (this.get("type") === "nominal") {
+        else if (type === "nominal") {
             return this.createNominalPointStyle();
         }
-        else if (this.get("type") === "interval") {
+        else if (type === "interval") {
             return this.createIntervalPointStyle();
         }
 
@@ -224,6 +226,7 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
      */
     createNominalPointStyle: function () {
         const feature = this.get("feature"),
+            workingFeature = Array.isArray(feature.get("features")) ? feature.get("features")[0] : feature,
             styleScalingShape = this.get("scalingShape").toUpperCase(),
             imageName = this.get("imageName"),
             imageNameDefault = this.defaults.imageName;
@@ -233,13 +236,13 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
             imageStyle;
 
         if (styleScalingShape === "CIRCLESEGMENTS") {
-            svgPath = this.createNominalCircleSegments(feature);
+            svgPath = this.createNominalCircleSegments(workingFeature);
             style = this.createSVGStyle(svgPath);
         }
 
         // create style from svg and image
         if (imageName !== imageNameDefault) {
-            imageStyle = this.createSimplePointStyle(feature, false);
+            imageStyle = this.createIconPointStyle();
             style = [style, imageStyle];
         }
 
@@ -576,7 +579,9 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
             circleBarCircleStrokeColor = this.returnColor(this.get("circleBarCircleStrokeColor"), "hex"),
             circleBarCircleStrokeWidth = this.get("circleBarCircleStrokeWidth"),
             circleBarLineStrokeColor = this.returnColor(this.get("circleBarLineStrokeColor"), "hex"),
-            scalingAttribute = feature.get(this.get("scalingAttribute")),
+            featureProperties = feature.getProperties(),
+            preparedField = this.prepareField(featureProperties, this.get("scalingAttribute")),
+            scalingAttribute = preparedField === "undefined" ? undefined : preparedField,
             stateValue = scalingAttribute !== undefined && scalingAttribute.indexOf(" ") !== -1 ? scalingAttribute.split(" ")[0] : scalingAttribute,
             size = this.calculateSizeIntervalCircleBar(stateValue, circleBarScalingFactor, circleBarLineStroke, circleBarRadius),
             barLength = this.calculateLengthIntervalCircleBar(size, circleBarRadius, stateValue, circleBarScalingFactor);

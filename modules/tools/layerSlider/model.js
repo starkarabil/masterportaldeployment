@@ -14,7 +14,13 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
         sliderType: "player",
         dataSliderMin: "0",
         dataSliderMax: "",
-        dataSliderTicks: ""
+        dataSliderTicks: "",
+        // translations
+        displayLayers: "",
+        titleNotConfigured: "",
+        serviceOne: "",
+        serviceTwo: "",
+        serviceThree: ""
     }),
 
     /**
@@ -72,6 +78,12 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      */
     changeLang: function (lng) {
         this.set({
+            "displayLayers": i18next.t("common:modules.tools.layerSlider.displayLayers"),
+            "title": i18next.t("common:modules.tools.layerSlider.title"),
+            "titleNotConfigured": i18next.t("common:modules.tools.layerSlider.titleNotConfigured"),
+            "serviceOne": i18next.t("common:modules.tools.layerSlider.serviceOne"),
+            "serviceTwo": i18next.t("common:modules.tools.layerSlider.serviceTwo"),
+            "serviceThree": i18next.t("common:modules.tools.layerSlider.serviceThree"),
             "currentLng": lng
         });
     },
@@ -89,7 +101,12 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
             this.initHandle();
         }
         else {
-            Radio.trigger("Alert", "alert", "Konfiguration von Werkzeug <b>" + this.get("name") + "</b> fehlerhaft: <b>sliderType</b> \"" + sliderType + "\" ist noch nicht implementiert!");
+            const alertMessage = {
+                x: this.get("name"),
+                y: sliderType
+            };
+
+            Radio.trigger("Alert", "alert", i18next.t("common:modules.tools.layerSlider.key", {alertMessage}));
         }
     },
 
@@ -209,11 +226,11 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     checkIfLayermodelExist: function (layerIds) {
-        _.each(layerIds, function (layer) {
+        layerIds.forEach(layer => {
             if (Radio.request("ModelList", "getModelsByAttributes", {id: layer.layerId}).length === 0) {
                 this.addLayerModel(layer.layerId);
             }
-        }, this);
+        });
     },
 
     /**
@@ -234,11 +251,11 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     toggleLayerVisibility: function (activeLayerId) {
-        _.each(this.get("layerIds"), function (layer) {
-            var status = layer.layerId === activeLayerId;
+        this.get("layerIds").forEach(layer => {
+            const status = layer.layerId === activeLayerId;
 
             this.sendModification(layer.layerId, status);
-        }, this);
+        });
     },
 
     /**
@@ -263,7 +280,7 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {integer} - Index im Array mit activeLayerId.
      */
     getActiveIndex: function () {
-        return _.findIndex(this.get("layerIds"), function (layer) {
+        return this.get("layerIds").findIndex(function (layer) {
             return layer.layerId === this.get("activeLayer").layerId;
         }, this);
     },
@@ -293,10 +310,10 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     startInterval: function () {
-        var windowsInterval = this.get("windowsInterval"),
+        const windowsInterval = this.get("windowsInterval"),
             timeInterval = this.get("timeInterval");
 
-        if (_.isNull(windowsInterval)) {
+        if (windowsInterval === null) {
             this.forwardLayer();
             this.setWindowsInterval(this.forwardLayer, timeInterval);
         }
@@ -307,9 +324,9 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     stopInterval: function () {
-        var windowsInterval = this.get("windowsInterval");
+        const windowsInterval = this.get("windowsInterval");
 
-        if (!_.isUndefined(windowsInterval)) {
+        if (typeof windowsInterval !== "undefined") {
             clearInterval(windowsInterval);
             this.set("windowsInterval", null);
         }
@@ -320,7 +337,7 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     backwardLayer: function () {
-        var index = this.getActiveIndex(),
+        const index = this.getActiveIndex(),
             max = this.get("layerIds").length - 1;
 
         if (index > 0) {
@@ -336,7 +353,7 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {void}
      */
     forwardLayer: function () {
-        var index = this.getActiveIndex(),
+        const index = this.getActiveIndex(),
             max = this.get("layerIds").length - 1;
 
         if (index > -1 && index < max) {
@@ -354,7 +371,7 @@ const LayerSliderModel = Tool.extend(/** @lends LayerSliderModel.prototype */{
      * @returns {object} Invalid Layer oder undefined
      */
     checkIfAllLayersAvailable: function (layers) {
-        var invalidLayers = [];
+        const invalidLayers = [];
 
         layers.forEach(function (layerObject) {
             if (

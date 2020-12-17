@@ -9,6 +9,7 @@
 /img/*.db
 /jsdoc
 /nbproject/private/
+styleguide
 
 addons/*
 !addons/readme.txt
@@ -44,3 +45,10 @@ debug.log
 devtools/proxyconf.json
 lintfixed.html
 npm-debug.log
+
+# ignore all dev portals except the four standard portals
+/portal/*
+!/portal/basic
+!/portal/master
+!/portal/masterCustom
+!/portal/masterDefault

@@ -7,6 +7,7 @@ const AnimationView = Backbone.View.extend({
         "click .csv-download": "createAlertBeforeDownload",
         "click .btn-remove-features": "removeFeatures",
         "change #select-kreis": "setKreis",
+        "change #pendler-check-gemeinde": "checkGemeinde",
         "change #select-gemeinde": "setGemeinde",
         "change #select-trefferAnzahl": "setTrefferAnzahl",
         "change input[type=radio]": "setDirection"
@@ -17,7 +18,7 @@ const AnimationView = Backbone.View.extend({
             // ändert sich der Fensterstatus wird neu gezeichnet
             "change:isActive": this.render,
             // ändert sich eins dieser Attribute wird neu gezeichnet
-            "change:gemeinden change:gemeinde change:trefferAnzahl change:direction change:emptyResult change:animating change:pendlerLegend": this.render,
+            "change:gemeinden change:gemeinde change:trefferAnzahl change:direction change:emptyResult change:animating change:pendlerLegend change:featureType": this.render,
             "render": this.render,
             "change:currentLng": () => {
                 this.render(this.model, this.model.get("isActive"));
@@ -25,6 +26,22 @@ const AnimationView = Backbone.View.extend({
         });
         this.listenTo(Radio.channel("i18next"), {
             "languageChanged": this.model.changeLang
+        });
+        this.model.set({
+            "workplace": i18next.t("common:modules.tools.pendler.animation.workplace"),
+            "domicile": i18next.t("common:modules.tools.pendler.animation.domicile"),
+            "chooseDistrict": i18next.t("common:modules.tools.pendler.animation.chooseDistrict"),
+            "chooseBorough": i18next.t("common:modules.tools.pendler.animation.chooseBorough"),
+            "relationshipsToDisplay": i18next.t("common:modules.tools.pendler.animation.relationshipsToDisplay"),
+            "deleteGeometries": i18next.t("common:modules.tools.pendler.animation.deleteGeometries"),
+            "noCommutersKnown": i18next.t("common:modules.tools.pendler.animation.noCommutersKnown"),
+            "people": i18next.t("common:modules.tools.pendler.animation.people"),
+            "csvDownload": i18next.t("common:modules.tools.pendler.animation.csvDownload"),
+            "reset": i18next.t("common:modules.tools.pendler.animation.reset"),
+            "start": i18next.t("common:modules.tools.pendler.animation.start"),
+            "top5": i18next.t("common:modules.tools.pendler.animation.top5"),
+            "top10": i18next.t("common:modules.tools.pendler.animation.top10"),
+            "top15": i18next.t("common:modules.tools.pendler.animation.top15")
         });
     },
 
@@ -58,6 +75,15 @@ const AnimationView = Backbone.View.extend({
 
     setKreis: function (evt) {
         this.model.setKreis(evt.target.value);
+    },
+
+    checkGemeinde: function (evt) {
+        if (evt.currentTarget.checked === true) {
+            this.model.setFeatureType(this.model.get("wfsappGemeinde"));
+        }
+        else {
+            this.model.setFeatureType(this.model.get("wfsappKreise"));
+        }
     },
 
     setGemeinde: function (evt) {

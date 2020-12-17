@@ -14,7 +14,9 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
         "keyup input[type='text']": "setTitle",
         "click #printLegend": "setIsLegendSelected",
         "click #printGfi": "setIsGfiSelected",
-        "click button": "print"
+        "click button": "print",
+        "mouseenter .hint": "showHintInfoScale",
+        "mouseleave .hint": "showHintInfoScale"
     },
 
     /**
@@ -25,6 +27,8 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
     * @listens Print#ChangeIsActive
     * @listens Print#ChangeIsGfiActive
     * @listens Print#ChangeCurrentScale
+    * @listens Print#ChangeCurrentLng
+    * @listens Print#ChangeCurrentMapScale
     */
     initialize: function () {
         this.template = _.template(PrintTemplate);
@@ -42,6 +46,9 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
                     this.render(model);
                 }
                 else if (changed.currentLng) {
+                    this.render(model);
+                }
+                else if (changed.currentMapScale) {
                     this.render(model);
                 }
             }
@@ -76,7 +83,7 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
      * @returns {void}
      */
     setCurrentLayout: function (evt) {
-        var newLayout = this.model.getLayoutByName(this.model.get("layoutList"), evt.target.value);
+        const newLayout = this.model.getLayoutByName(this.model.get("layoutList"), evt.target.value);
 
         this.model.setCurrentLayout(newLayout);
         this.model.setIsScaleSelectedManually(false);
@@ -101,7 +108,7 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
      * @returns {void}
      */
     setCurrentScale: function (evt) {
-        var scale = parseInt(evt.target.value, 10),
+        const scale = parseInt(evt.target.value, 10),
             optimalResolution = this.model.getOptimalResolution(scale, Radio.request("Map", "getSize"), this.model.getPrintMapSize());
 
         this.model.setCurrentScale(scale);
@@ -144,6 +151,24 @@ const PrintView = Backbone.View.extend(/** @lends PrintView.prototype */{
      */
     print: function () {
         this.model.print();
+    },
+
+    /**
+     * Showing the hint information if the current print scale and the current map scale are not the same
+     * @param {Event} evt - event that triggered from the mouseenter or mouseleave action
+     * @returns {void}
+     */
+    showHintInfoScale: function (evt) {
+        if (!evt?.type) {
+            return;
+        }
+
+        if (evt.type === "mouseenter") {
+            document.querySelector(".hint-info").style.display = "block";
+        }
+        else {
+            document.querySelector(".hint-info").style.display = "none";
+        }
     }
 });
 

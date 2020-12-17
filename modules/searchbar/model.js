@@ -1,21 +1,22 @@
 const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype */{
     defaults: {
         placeholder: "Suche",
-        recommendedList: "",
+        recommendedList: [],
         recommendedListLength: 5,
         quickHelp: false,
         searchString: "",
         hitList: [],
-        minChars: "",
         isInitialSearch: true,
         isInitialRecommendedListCreated: false,
-        knownInitialSearchTasks: ["gazetteer", "specialWFS", "bkg", "tree", "osm"],
+        knownInitialSearchTasks: ["gazetteer", "specialWFS", "bkg", "tree", "osm", "locationFinder", "elasticSearch"],
         activeInitialSearchTasks: [],
         // translations
         i18nextTranslate: null,
         buttonSearchTitle: "",
         buttonOpenHelpTitle: "",
         tempCounter: 0,
+        sortByName: true,
+        selectRandomHits: true,
         timeoutReference: null,
         showAllResultsText: ""
     },
@@ -27,15 +28,14 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @memberof Searchbar
      * @constructs
      * @property {String} placeholder="" todo
-     * @property {String} recommendedList="" todo
+     * @property {Object[]} recommendedList=[] the list of shown (recommended) hits
      * @property {Number} recommendedListLength=5 todo
      * @property {Boolean} quickHelp=false todo
      * @property {String} searchString="" the current string in the search mask
-     * @property {Array} hitList=[] todo
-     * @property {String} minChars="" todo
+     * @property {Object[]} hitList=[] an array of object{id, name, type} with optional values: coordinate, glyphicon, geom, adress, locationFinder, metaName, osm, marker, geometryType, interiorGeometry
      * @property {Boolean} isInitialSearch=true Flag that is set to false at the end of the initial search (ParametricURL).
      * @property {Boolean} isInitialRecommendedListCreated=false Has the recommended list already been generated after the initial search?
-     * @property {String[]} knownInitialSearchTasks=["gazetteer", "specialWFS", "bkg", "tree", "osm"] Search algorithms for which an initial search is possible
+     * @property {String[]} knownInitialSearchTasks=["gazetteer", "specialWFS", "bkg", "tree", "osm", "locationFinder"] Search algorithms for which an initial search is possible
      * @property {Array} activeInitialSearchTasks=[] Search algorithms for which an initial search is activated
      * @property {function} i18nextTranslate=null translation function named i18nextTranslate := function(setter), set during parsing the file "config.json"
      * @property {String} buttonSearchTitle="", filled with "Suchen"- translated
@@ -120,17 +120,18 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @returns {void}
      */
     checkInitialSearch: function () {
-        var allDone = true;
+        let allDone = true;
         // Ist mindestens ein Suchalgorithmus noch als ausstehend markiert?
 
-        _.forEach(this.get("activeInitialSearchTasks"), function (taskName) {
-            var status = this.get("initialSearch_" + taskName);
+        this.get("activeInitialSearchTasks").forEach(taskName => {
+
+            const status = this.get("initialSearch_" + taskName);
 
             if (!status) {
                 allDone = false;
             }
 
-        }, this);
+        });
 
         if (allDone) {
             // Sobald alle Ergebnisse vorliegen, wird der Modus "Initiale Suche"
@@ -163,13 +164,13 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @returns {void}
      */
     setInitialSearchTasks: function (config) {
-        var searchTasks = this.get("knownInitialSearchTasks"),
+        const searchTasks = this.get("knownInitialSearchTasks"),
             activeSearchTasks = [];
 
         // Prüfe für jeden bekannten Suchalgorithmus ob er aktiviert ist. Wenn ja markiere ihn als
         // "Ergebnis ausstehend" und füge ihn der Liste aktiver Suchalgorithmen hinzu.
-        _.forEach(searchTasks, function (taskName) {
-            if (_.has(config, taskName) === true) {
+        searchTasks.forEach(taskName => {
+            if (config.hasOwnProperty(taskName)) {
                 if (taskName === "gazetteer") {
                     // Der Suchalgorithmus "gazetteer" ist ein Sonderfall, da er mehrere Suchen durchführen kann
                     this.set("initialSearch_gazetteer_streetsOrHouseNumbers", false);
@@ -182,7 +183,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
                     activeSearchTasks.push(taskName);
                 }
             }
-        }, this);
+        });
 
         this.set("activeInitialSearchTasks", activeSearchTasks);
     },
@@ -205,8 +206,8 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
     * @returns {void}
     */
     setSearchString: function (value, eventType) {
-        var splitAdress = value.split(" "),
-            houseNumber,
+        const splitAdress = value.split(" ");
+        let houseNumber,
             streetName;
 
         // für Copy/Paste bei Adressen
@@ -218,7 +219,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
             this.set("searchString", streetName);
             Radio.trigger("Searchbar", "setPastedHouseNumber", houseNumber);
         }
-        else {
+        else if (value.length >= 3) {
             this.set("searchString", value);
         }
         this.set("hitList", []);
@@ -235,25 +236,25 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @return {void}
      */
     pushHits: function (attribute, value, evtType) {
-        var tempArray = _.clone(this.get(attribute)),
+        let tempArray = [...this.get(attribute)],
             valueWithNumbers;
 
         tempArray.push(value);
 
         // removes addresses without house number, if more than one exists
-        if (evtType === "paste" && !_.isUndefined(tempArray) && tempArray.length > 1) {
+        if (evtType === "paste" && tempArray !== undefined && tempArray.length > 1) {
             valueWithNumbers = tempArray.filter(function (val) {
-                var valueArray = val.name.split(",")[0].split(" ");
+                const valueArray = val.name.split(",")[0].split(" ");
 
-                return !_.isNaN(parseInt(valueArray[valueArray.length - 1], 10));
+                return !isNaN(parseInt(valueArray[valueArray.length - 1], 10));
             });
 
-            tempArray = _.isUndefined(valueWithNumbers) ? tempArray : valueWithNumbers;
+            tempArray = valueWithNumbers === undefined ? tempArray : valueWithNumbers;
         }
 
-        this.set(attribute, _.flatten(tempArray));
+        this.set(attribute, [].concat(...[].concat(...tempArray)));
 
-        if (!_.isUndefined(valueWithNumbers) && this.get("eventType") === "paste") {
+        if (valueWithNumbers !== undefined && this.get("eventType") === "paste") {
             Radio.trigger("ViewZoom", "hitSelected");
         }
     },
@@ -265,23 +266,23 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @return {Void} Nothing
      */
     removeHits: function (attribute, filter) {
-        var toRemove, i,
-            tempArray = _.clone(this.get(attribute));
+        const tempArray = [...this.get(attribute)];
+        let toRemove;
 
-        if (_.isObject(filter)) {
-            toRemove = _.where(tempArray, filter);
-            _.each(toRemove, function (item) {
+        if (typeof filter === "function" || typeof filter === "object") {
+            toRemove = tempArray.filter(item => Object.keys(filter).every(key => item[key] === filter[key]));
+            toRemove.forEach(item => {
                 tempArray.splice(tempArray.indexOf(item), 1);
             });
         }
         else {
-            for (i = tempArray.length - 1; i >= 0; i--) {
+            for (let i = tempArray.length - 1; i >= 0; i--) {
                 if (tempArray[i] === filter) {
                     tempArray.splice(i, 1);
                 }
             }
         }
-        this.set(attribute, _.flatten(tempArray));
+        this.set(attribute, Array.isArray(tempArray) ? tempArray.reduce((acc, val) => acc.concat(val), []) : tempArray);
     },
 
     /**
@@ -291,7 +292,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @return {String} file extension
      */
     changeFileExtension: function (src, ext) {
-        if (_.isUndefined(src)) {
+        if (src === undefined) {
             return src;
         }
         if (src.substring(src.lastIndexOf("."), src.length) !== ext) {
@@ -307,7 +308,7 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
      * @returns {string} s todo
      */
     shortenString: function (s, length) {
-        if (_.isUndefined(s)) {
+        if (s === undefined) {
             return s;
         }
         if (s.length > length && length > 0) {
@@ -328,7 +329,9 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
         let recommendedList = [],
             hitList = this.get("hitList");
 
-        hitList = Radio.request("Util", "sort", "address", hitList, "name");
+        if (this.get("sortByName")) {
+            hitList = Radio.request("Util", "sort", "address", hitList, "name");
+        }
         this.setHitList(hitList);
 
         // Die Funktion "createRecommendedList" wird vielfach (von jedem Suchalgorithmus) aufgerufen.
@@ -344,12 +347,23 @@ const SearchbarModel = Backbone.Model.extend(/** @lends SearchbarModel.prototype
         }
 
         if (hitList.length > max) {
-            recommendedList = this.getRandomEntriesOfEachType(hitList, max);
+
+            if (this.get("selectRandomHits")) {
+                recommendedList = this.getRandomEntriesOfEachType(hitList, max);
+            }
+            else {
+                recommendedList = hitList.slice(0, max);
+            }
+
         }
         else {
             recommendedList = hitList;
         }
-        recommendedList = Radio.request("Util", "sort", "address", recommendedList, "name");
+
+        if (this.get("sortByName")) {
+            recommendedList = Radio.request("Util", "sort", "address", recommendedList, "name");
+        }
+
         this.setRecommendedList(recommendedList);
         this.setTypeList(this.prepareTypeList(hitList));
         this.trigger("renderRecommendedList");

@@ -1,13 +1,15 @@
 import Layer from "./model";
 import Collection from "vcs-oblique/src/vcs/oblique/collection";
 import {get} from "ol/proj.js";
+import getProxyUrl from "../../../../src/utils/getProxyUrl";
 
 const ObliqueLayer = Layer.extend(/** @lends  ObliqueLayer.prototype*/{
-    defaults: _.extend({}, Layer.prototype.defaults, {
+    defaults: Object.assign({}, Layer.prototype.defaults, {
         supported: ["none"],
         showSettings: false,
         isVisibleInTree: false,
-        selectionIDX: -1
+        selectionIDX: -1,
+        useProxy: false
     }),
     /**
      * @class ObliqueLayer
@@ -17,6 +19,7 @@ const ObliqueLayer = Layer.extend(/** @lends  ObliqueLayer.prototype*/{
      * @property {String[]} supported=["none"] Shows that this layer is not supported in "2D" and "3D".
      * @property {Boolean} showSettings=false Flag that for this layer the layerinformation can not be displayed.
      * @property {Boolean} isVisibleInTree=false Flag that shows that layer is not visible in layertree.
+     * @property {Boolean} useProxy=false Attribute to request the URL via a reverse proxy.
      * @fires ObliqueMap#RadioTriggerObliqueMapRegisterLayer
      * @fires ObliqueMap#RadioRequestObliqueMapIsActive
      * @fires ObliqueMap#RadioTriggerObliqueMapActivateLayer
@@ -55,7 +58,17 @@ const ObliqueLayer = Layer.extend(/** @lends  ObliqueLayer.prototype*/{
      * @returns {Promise} - Oblique Collection
      */
     getObliqueCollection: function () {
-        var projection, proj, obliqueCollection, hideLevels, minZoom;
+        /**
+         * @deprecated in the next major-release!
+         * useProxy
+         * getProxyUrl()
+         */
+        const url = this.get("useProxy") ? getProxyUrl(this.get("url")) : this.get("url");
+        let projection = "",
+            proj = "",
+            obliqueCollection = "",
+            hideLevels = "",
+            minZoom = "";
 
         if (this.has("obliqueCollection")) {
             return Promise.resolve(this.get("obliqueCollection"));
@@ -70,7 +83,7 @@ const ObliqueLayer = Layer.extend(/** @lends  ObliqueLayer.prototype*/{
             hideLevels: hideLevels,
             minZoom: minZoom
         });
-        return obliqueCollection.loadData(this.get("url")).then(function () {
+        return obliqueCollection.loadData(url).then(function () {
             this.setObliqueCollection(obliqueCollection);
             return obliqueCollection;
         }.bind(this));

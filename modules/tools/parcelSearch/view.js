@@ -1,4 +1,5 @@
 import ParcelSearchTemplate from "text-loader!./template.html";
+import store from "../../../src/app-store";
 
 const ParcelSearchView = Backbone.View.extend({
     events: {
@@ -66,7 +67,7 @@ const ParcelSearchView = Backbone.View.extend({
         }
         else {
             this.$el.empty();
-            Radio.trigger("MapMarker", "hideMarker");
+            store.dispatch("MapMarker/removePointMarker");
         }
 
         return this;
@@ -75,7 +76,7 @@ const ParcelSearchView = Backbone.View.extend({
      * Renderer, wenn parcelSearch ohne Menubar angezeigt wird, z.B. in IDA
      */
     render2DOM: function () {
-        var attr = this.model.toJSON();
+        const attr = this.model.toJSON();
 
         this.$el.html(this.template(attr));
     },
@@ -83,7 +84,7 @@ const ParcelSearchView = Backbone.View.extend({
         if (this.model.get("districtNumber") !== "0" &&
             (this.model.get("cadastralDistrictField") === false || this.model.get("cadastralDistrictNumber") !== "0") &&
             this.model.get("parcelNumber") !== "" &&
-            _.isNumber(parseInt(this.model.get("parcelNumber"), 10)) &&
+            typeof parseInt(this.model.get("parcelNumber"), 10) === "number" &&
             (this.model.get("parcelDenominatorField") === false || this.model.get("ParcelDenominatorNumber") !== "")) {
             this.$("#submitbutton").attr("disabled", false);
             this.$("#reportbutton").attr("disabled", false);
@@ -94,7 +95,7 @@ const ParcelSearchView = Backbone.View.extend({
         }
     },
     cadastralDistrictFieldChanged: function () {
-        var value = this.$("#cadastralDistrictField").val();
+        const value = this.$("#cadastralDistrictField").val();
 
         if (value !== "0") {
             this.model.setCadastralDistrictNumber(this.$("#cadastralDistrictField").val());
@@ -107,7 +108,7 @@ const ParcelSearchView = Backbone.View.extend({
         }
     },
     districtFieldChanged: function () {
-        var value = this.$("#districtField").val();
+        const value = this.$("#districtField").val();
 
         if (value !== "0") {
             if (this.model.get("cadastralDistrictField") === true) {
@@ -134,7 +135,7 @@ const ParcelSearchView = Backbone.View.extend({
      * Setzt die gültigen Fluren für die ausgewählte Gemarkung in select.
      */
     insertCadastralDistricts: function (districtNumber) {
-        var cadastralDistricts = this.model.get("cadastralDistricts");
+        const cadastralDistricts = this.model.get("cadastralDistricts");
 
         this.model.setCadastralDistrictNumber("0");
         this.$("#cadastralDistrictField").empty();

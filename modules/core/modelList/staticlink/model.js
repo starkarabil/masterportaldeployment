@@ -21,12 +21,12 @@ const StaticLink = Item.extend({
         inSubMenue: false
     },
     triggerRadioEvent: function () {
-        _.each(this.get("onClickTrigger"), function (trigger) {
+        this.get("onClickTrigger").forEach(trigger => {
             this.triggerEvent(trigger);
-        }, this);
+        });
     },
     triggerEvent: function (triggerParams) {
-        var data = triggerParams.data;
+        const data = triggerParams.data;
 
         if (triggerParams.event !== "" && triggerParams.channel !== "") {
             Radio.trigger(triggerParams.channel, triggerParams.event, data);
@@ -38,7 +38,7 @@ const StaticLink = Item.extend({
         this.set("onClickTrigger", value);
     },
     getViewElementClasses: function () {
-        var classes = "dropdown";
+        let classes = "dropdown";
 
         if (this.get("parentId") === "root") {
             classes += " menu-style hidden-sm";

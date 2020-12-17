@@ -164,7 +164,6 @@ const ButtonObliqueView = Backbone.View.extend(/** @lends ButtonObliqueView.prot
             this.$("#ObliqueTable-title-open").hide();
             this.$("#ObliqueTable-title-close").show();
             Radio.trigger("ObliqueMap", "activate");
-            Radio.trigger("Alert", "alert", i18next.t("common:modules.controls.oblique.betaWarningOblique"));
         }
     }
 });

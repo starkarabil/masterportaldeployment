@@ -4,7 +4,7 @@ import {Heatmap} from "ol/layer.js";
 
 const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
 
-    defaults: _.extend({}, Layer.prototype.defaults, {
+    defaults: Object.assign({}, Layer.prototype.defaults, {
         attribute: "",
         value: "",
         radius: 10,
@@ -154,16 +154,17 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
      * @returns {void}
      */
     initializeHeatmap: function (features) {
-        var attribute = this.get("attribute"),
+        const attribute = this.get("attribute"),
             value = this.get("value"),
-            layerSource = this.get("layerSource"),
             weightAttribute = this.get("weightAttribute"),
             weightAttributeMax = this.get("weightAttributeMax"),
             cloneFeatures = [];
 
+        let layerSource = this.get("layerSource");
+
         features.forEach(function (feature) {
-            var cloneFeature = feature.clone(),
-                count;
+            const cloneFeature = feature.clone();
+            let count;
 
             if (attribute !== "" && value !== "") {
                 count = this.countStates(feature, attribute, value);
@@ -203,12 +204,13 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
      * @returns {void}
      */
     updateHeatmap: function (feature) {
-        var attribute = this.get("attribute"),
+        const attribute = this.get("attribute"),
             value = this.get("value"),
             layerSource = this.get("layerSource"),
             featureId = feature.getId(),
-            cloneFeature = feature.clone(),
-            heatmapFeature,
+            cloneFeature = feature.clone();
+
+        let heatmapFeature,
             count;
 
         cloneFeature.setId(featureId);
@@ -248,9 +250,11 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
      * @returns {void}
      */
     normalizeWeight: function (featuresWithValue) {
-        var max = _.max(featuresWithValue, function (feature) {
-            return feature.get("weightForHeatmap");
-        }).get("weightForHeatmap");
+        const maxScales = [];
+        let max = 0;
+
+        featuresWithValue.forEach(feature => maxScales.push(parseInt(feature.get("weightForHeatmap"), 10)));
+        max = Math.max(...maxScales);
 
         featuresWithValue.forEach(function (feature) {
             feature.set("weightForHeatmap", feature.get("weightForHeatmap") / max);
@@ -265,9 +269,9 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
      * @return {String[]}  - count.
      */
     countStates: function (feature, heatmapAttribute, heatmapValue) {
-        var state = String(feature.get(heatmapAttribute)),
-            states,
-            count;
+        const state = String(feature.get(heatmapAttribute));
+        let states,
+            count = 0;
 
         // split features with multiple values
         if (state.indexOf("|") !== -1) {

@@ -43,7 +43,7 @@ const TreeFilterView = Backbone.View.extend({
         });
         // http://holdirbootstrap.de/javascript/#dropdowns
         $(document.body).on("hidden.bs.dropdown", "#categoryToggle", this, function (evt) {
-            if (_.contains(evt.data.model.get("categoryArray"), $("#categoryInput").val()) === false && evt.data.model.get("categoryArray").length !== 73) {
+            if (evt.data.model.get("categoryArray").indexOf($("#categoryInput").val()) === -1 && evt.data.model.get("categoryArray").length !== 73) {
                 // $(".dropdown-toggle-category").dropdown("toggle");
                 // evt.data.focusOnEnd($("#categoryInput"));
             }
@@ -52,7 +52,7 @@ const TreeFilterView = Backbone.View.extend({
             }
         });
         $(document.body).on("hidden.bs.dropdown", "#typeToggle", this, function (evt) {
-            if (_.contains(evt.data.model.get("typeArray"), $("#typeInput").val()) === false && $("#typeInput").val() !== "") {
+            if (evt.data.model.get("typeArray").indexOf($("#typeInput").val()) === -1 && $("#typeInput").val() !== "") {
                 // $(".dropdown-toggle-type").dropdown("toggle");
                 // evt.data.focusOnEnd($("#typeInput"));
             }
@@ -63,7 +63,7 @@ const TreeFilterView = Backbone.View.extend({
     },
     template: _.template(TreeFilterTemplate),
     render: function () {
-        var attr = this.model.toJSON();
+        const attr = this.model.toJSON();
 
         if (this.model.get("isActive")) {
             this.setElement(document.getElementsByClassName("win-body")[0]);
@@ -95,7 +95,7 @@ const TreeFilterView = Backbone.View.extend({
      * @returns {void}
      */
     focusOnEnd: function (element) {
-        var strLength = element.val().length * 2;
+        const strLength = element.val().length * 2;
 
         element.focus();
         element[0].setSelectionRange(strLength, strLength);

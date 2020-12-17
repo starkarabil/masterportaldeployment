@@ -60,7 +60,7 @@ For beginners we recommend a short look into JSON guides:
 ## Language Files
 
 Language files are the core of the translations. Any language needs its own translation files.
-We decided to split translations into three different files:
+We decided to split translations into two different files:
 
 1. common
 2. additional
@@ -312,7 +312,7 @@ const DrawTool = Tool.extend(/** @lends DrawTool.prototype */{
     defaults: Object.assign({}, Tool.prototype.defaults, {
         name: "Zeichnen / Schreiben",
         ...
-```     
+```
 
 If it should be translated, the key for the translation of the name can be entered in the field "nameTranslationKey".
 ```
@@ -383,7 +383,7 @@ i18next.t('keyWithCount', {count: 100}); // -> "100 items"
 
 ### Nesting
 
-Nesting allows you to reference other keys in a translation. 
+Nesting allows you to reference other keys in a translation.
 
 keys
 ```
@@ -403,7 +403,6 @@ i18next.t('nesting1'); // -> "1 2 3"
 ### Formatting
 
 [link](https://www.i18next.com/translation-function/formatting#formatting)
-
 
 
 ## Common errors

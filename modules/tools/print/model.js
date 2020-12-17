@@ -2,9 +2,10 @@ import Tool from "../../core/modelList/tool/model";
 import {Icon} from "ol/style.js";
 import {Circle, Polygon} from "ol/geom.js";
 import {DEVICE_PIXEL_RATIO} from "ol/has.js";
+import "../print_/RadioBridge.js";
 
 const PrintModel = Tool.extend({
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         printID: "99999",
         MM_PER_INCHES: 25.4,
         POINTS_PER_INCH: 72,
@@ -46,9 +47,10 @@ const PrintModel = Tool.extend({
      * Ermittelt die URL zum Fetchen in setStatus durch Abfrage der ServiceId
      */
     url: function () {
-        var resp = Radio.request("RestReader", "getServiceById", this.get("printID")),
-            url = resp && resp.get("url") ? resp.get("url") : null,
-            printurl;
+        const resp = Radio.request("RestReader", "getServiceById", this.get("printID")),
+            url = resp && resp.get("url") ? resp.get("url") : null;
+
+        let printurl;
 
         if (url) {
             printurl = url + this.get("configYAML");
@@ -88,16 +90,14 @@ const PrintModel = Tool.extend({
     },
     // Setzt den Maßstab für den Ausdruck über die Druckeinstellungen.
     setScale: function (index) {
-        var scaleval = this.get("scales")[index].valueInt;
+        const scaleval = this.get("scales")[index].valueInt;
 
         Radio.trigger("MapView", "setScale", scaleval);
     },
 
     // Setzt den Maßstab für den Ausdruck über das Zoomen in der Karte.
     setScaleByMapView: function () {
-        var newScale = _.find(this.get("scales"), function (scale) {
-            return scale.valueInt === Radio.request("MapView", "getOptions").scale;
-        });
+        const newScale = this.get("scales") !== undefined ? this.get("scales").find(scale => scale.valueInt === Radio.request("MapView", "getOptions").scale) : undefined;
 
         this.set("scale", newScale);
     },
@@ -109,7 +109,7 @@ const PrintModel = Tool.extend({
 
     //
     setStatus: function (bmodel, value) {
-        var scaletext;
+        let scaletext;
 
         if (value && this.get("layouts") === undefined) {
             if (this.get("fetched") === false) {
@@ -117,13 +117,13 @@ const PrintModel = Tool.extend({
                 this.fetch({
                     cache: false,
                     success: function (model) {
-                        _.each(model.get("scales"), function (scale) {
+                        model.get("scales").forEach(scale => {
                             scale.valueInt = parseInt(scale.value, 10);
                             scaletext = scale.valueInt.toString();
                             scaletext = scaletext < 10000 ? scaletext : scaletext.substring(0, scaletext.length - 3) + " " + scaletext.substring(scaletext.length - 3);
                             scale.name = "1: " + scaletext;
                         });
-                        model.set("layout", _.findWhere(model.get("layouts"), {name: "A4 Hochformat"}));
+                        model.set("layout", model.get("layouts").find(layout => layout.name === "A4 Hochformat"));
                         model.setScaleByMapView();
                         model.set("isCollapsed", false);
                         model.set("fetched", true);
@@ -147,10 +147,10 @@ const PrintModel = Tool.extend({
     updatePrintPage: function () {
         if (this.has("scale") && this.has("layout")) {
             if (this.get("isActive")) {
-                if (_.isEmpty(this.get("precomposeListener"))) {
+                if (Object.keys(this.get("precomposeListener")).length === 0) {
                     this.setPrecomposeListener(Radio.request("Map", "registerListener", "precompose", this.handlePreCompose.bind(this)));
                 }
-                if (_.isEmpty(this.get("postcomposeListener"))) {
+                if (Object.keys(this.get("postcomposeListener")).length === 0) {
                     this.setPostcomposeListener(Radio.request("Map", "registerListener", "postcompose", this.handlePostCompose.bind(this)));
                 }
             }
@@ -163,7 +163,7 @@ const PrintModel = Tool.extend({
     },
 
     getLayersForPrint: function () {
-        var drawLayer = Radio.request("Draw", "getLayer");
+        const drawLayer = Radio.request("Draw", "getLayer");
 
         this.set("layerToPrint", []);
         this.setWMSLayerToPrint(Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, typ: "WMS", isOutOfRange: false}));
@@ -176,20 +176,14 @@ const PrintModel = Tool.extend({
     },
 
     setGROUPLayerToPrint: function (layers) {
-        var sortedLayers;
+        layers.sort((layerA, layerB) => layerA.get("selectionIDX") - layerB.get("selectionIDX"));
 
-        sortedLayers = _.sortBy(layers, function (layer) {
-            return layer.get("selectionIDX");
-        });
-        _.each(sortedLayers, function (groupLayer) {
-            var layerList = groupLayer.get("layerSource");
+        layers.forEach(groupLayer => {
+            const layerList = groupLayer.get("layerSource");
 
-            _.each(layerList, function (layer) {
-                var params = {},
-                    style = [],
-                    numberOfLayer,
-                    i,
-                    defaultStyle;
+            layerList.forEach(layer => {
+                const params = {},
+                    style = [];
 
                 if (layer.get("typ") === "WMS") {
                     if (layer.has("styles")) {
@@ -199,10 +193,10 @@ const PrintModel = Tool.extend({
                     // Wenn ein Style mit einem Blank angegeben wird,
                     // wird der Default-Style des Layers verwendet. Beispiel für 3 Layer: countries,,cities
                     else {
-                        numberOfLayer = layer.get("layers").split(",").length;
-                        defaultStyle = "";
+                        const numberOfLayer = layer.get("layers").split(",").length;
+                        let defaultStyle = "";
 
-                        for (i = 1; i < numberOfLayer; i++) {
+                        for (let i = 1; i < numberOfLayer; i++) {
                             defaultStyle += ",";
                         }
                         style.push(defaultStyle);
@@ -218,24 +212,18 @@ const PrintModel = Tool.extend({
                         styles: style
                     });
                 }
-            }, this);
-        }, this);
+            });
+        });
     },
 
     setWMSLayerToPrint: function (layers) {
-        var sortedLayers;
+        layers.sort((layerA, layerB) => layerA.get("selectionIDX") - layerB.get("selectionIDX"));
 
-        sortedLayers = _.sortBy(layers, function (layer) {
-            return layer.get("selectionIDX");
-        });
-        _.each(sortedLayers, function (layer) {
+        layers.forEach(layer => {
             // nur wichtig für treeFilter
-            var params = {},
-                style = [],
-                layerURL = layer.get("url"),
-                numberOfLayer,
-                i,
-                defaultStyle;
+            const params = {},
+                style = [];
+            let layerURL = layer.get("url");
 
             if (layer.has("SLDBody")) {
                 params.SLD_BODY = layer.get("SLDBody");
@@ -250,10 +238,10 @@ const PrintModel = Tool.extend({
             // Wenn ein Style mit einem Blank angegeben wird,
             // wird der Default-Style des Layers verwendet. Beispiel für 3 Layer: countries,,cities
             else {
-                numberOfLayer = layer.get("layers").split(",").length;
-                defaultStyle = "";
+                const numberOfLayer = layer.get("layers").split(",").length;
+                let defaultStyle = "";
 
-                for (i = 1; i < numberOfLayer; i++) {
+                for (let i = 1; i < numberOfLayer; i++) {
                     defaultStyle += ",";
                 }
                 style.push(defaultStyle);
@@ -278,39 +266,40 @@ const PrintModel = Tool.extend({
                 customParams: params,
                 styles: style
             });
-        }, this);
+        });
     },
 
     setLayer: function (layer) {
-        var features = [],
+        const features = [],
             featureStyles = {},
-            printStyleObj = {},
-            layerId = layer.get("id"),
-            layerModel,
+            layerId = layer.get("id");
+
+        let layerModel,
             isClustered,
+            printStyleObj = {},
             styleModel;
 
-        if (!_.isUndefined(layer)) {
+        if (layer !== undefined) {
             // get styleModel if layerId is defined.
             // layer id is not defined for portal-internal layer like animationLayer and import_draw_layer
             // then the style is located directly at the feature, see line 312
-            if (!_.isUndefined(layerId)) {
+            if (layerId !== undefined) {
                 layerModel = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
-                isClustered = !_.isUndefined(layerModel.get("clusterDistance"));
+                isClustered = layerModel.get("clusterDistance") !== undefined;
                 styleModel = Radio.request("StyleList", "returnModelById", layerModel.get("styleId"));
             }
             // Alle features die eine Kreis-Geometrie haben
-            _.each(layer.getSource().getFeatures(), function (feature) {
+            layer.getSource().getFeatures().forEach(feature => {
                 if (feature.getGeometry() instanceof Circle) {
                     // creates a regular polygon from a circle with 32(default) sides
                     feature.setGeometry(Polygon.fromCircle(feature.getGeometry()));
                 }
             });
 
-            _.each(layer.getSource().getFeatures(), function (feature, index) {
-                var type = feature.getGeometry().getType(),
-                    styles = !_.isUndefined(feature.getStyleFunction()) ? feature.getStyleFunction().call(feature) : styleModel.createStyle(feature, isClustered),
-                    style = _.isArray(styles) ? styles[0] : styles,
+            layer.getSource().getFeatures().forEach((feature, index) => {
+                const type = feature.getGeometry().getType(),
+                    styles = feature.getStyleFunction() !== undefined ? feature.getStyleFunction().call(feature) : styleModel.createStyle(feature, isClustered),
+                    style = Array.isArray(styles) ? styles[0] : styles,
                     coordinates = feature.getGeometry().getCoordinates();
 
                 features.push({
@@ -338,7 +327,7 @@ const PrintModel = Tool.extend({
                         strokeWidth: style.getStroke().getWidth()
                     };
                 }
-            }, this);
+            });
             this.push("layerToPrint", {
                 type: "Vector",
                 styles: featureStyles,
@@ -350,24 +339,24 @@ const PrintModel = Tool.extend({
         }
     },
     createPointStyleForPrint: function (style) {
-        var pointStyleObject = {},
+        let pointStyleObject = {},
             imgPath = this.createImagePath(),
             imgName = style.getImage() instanceof Icon ? style.getImage().getSrc() : undefined;
 
         // Punkte ohne Text
-        if (_.isNull(style.getText()) || _.isUndefined(style.getText())) {
+        if (style.getText() === null || style.getText() === undefined) {
             // style image is an Icon
-            if (!_.isUndefined(imgName)) {
+            if (imgName !== undefined) {
                 // get imagename from src path
                 imgName = imgName.match(/(?:[^/]+)$/g)[0];
                 imgPath += imgName;
                 imgPath = encodeURI(imgPath);
                 pointStyleObject = {
                     externalGraphic: imgPath,
-                    graphicWidth: _.isArray(style.getImage().getSize()) ? style.getImage().getSize()[0] * style.getImage().getScale() : 20,
-                    graphicHeight: _.isArray(style.getImage().getSize()) ? style.getImage().getSize()[1] * style.getImage().getScale() : 20,
-                    graphicXOffset: !_.isNull(style.getImage().getAnchor()) ? -style.getImage().getAnchor()[0] : 0,
-                    graphicYOffset: !_.isNull(style.getImage().getAnchor()) ? -style.getImage().getAnchor()[1] : 0
+                    graphicWidth: Array.isArray(style.getImage().getSize()) ? style.getImage().getSize()[0] * style.getImage().getScale() : 20,
+                    graphicHeight: Array.isArray(style.getImage().getSize()) ? style.getImage().getSize()[1] * style.getImage().getScale() : 20,
+                    graphicXOffset: style.getImage().getAnchor() !== null ? -style.getImage().getAnchor()[0] : 0,
+                    graphicYOffset: style.getImage().getAnchor() !== null ? -style.getImage().getAnchor()[1] : 0
                 };
             }
             // style is an Circle or Point without Icon
@@ -391,7 +380,7 @@ const PrintModel = Tool.extend({
         return pointStyleObject;
     },
     createImagePath: function () {
-        var imgPath = window.location.origin + "/lgv-config/img/";
+        let imgPath = window.location.origin + "/lgv-config/img/";
 
         // for local IDE take path to
         if (imgPath.indexOf("localhost") !== -1) {
@@ -401,21 +390,22 @@ const PrintModel = Tool.extend({
     },
 
     setSpecification: function (gfiPosition) {
-        var layers = Radio.request("Map", "getLayers").getArray(),
+        const layers = Radio.request("Map", "getLayers").getArray(),
             animationLayer = layers.filter(function (layer) {
                 return layer.get("name") === "animationLayer";
             }),
             wfsLayer = layers.filter(function (layer) {
                 return layer.get("typ") === "WFS" && layer.get("visible") === true && layer.getSource().getFeatures().length > 0;
-            }),
-            specification;
+            });
+
+        let specification = {};
 
         if (animationLayer.length > 0) {
             this.setLayer(animationLayer[0]);
         }
-        _.each(wfsLayer, function (layer) {
+        wfsLayer.forEach(layer => {
             this.setLayer(layer);
-        }, this);
+        });
         specification = {
             layout: this.get("layout").name,
             srs: Radio.request("MapView", "getProjection").getCode(),
@@ -436,9 +426,10 @@ const PrintModel = Tool.extend({
         };
 
         if (gfiPosition !== null) {
-            _.each(_.flatten(this.get("gfiParams")), function (element, index) {
+            (Array.isArray(this.get("gfiParams")) ? this.get("gfiParams").reduce((acc, val) => acc.concat(val), []) : this.get("gfiParams")).forEach((element, index) => {
                 specification.pages[0]["attr_" + index] = element;
-            }, this);
+            });
+
             specification.pages[0].layerName = this.get("gfiTitle");
         }
         this.set("specification", specification);
@@ -493,10 +484,10 @@ const PrintModel = Tool.extend({
     * @returns {void}
     */
     getGfiForPrint: function () {
-        var gfis = Radio.request("GFI", "getIsVisible") === true ? Radio.request("GFI", "getGfiForPrint") : null,
-            gfiParams = _.isArray(gfis) === true ? _.pairs(gfis[0]) : null, // Parameter
-            gfiTitle = _.isArray(gfis) === true ? gfis[1] : "", // Layertitel
-            gfiPosition = _.isArray(gfis) === true ? gfis[2] : null, // Koordinaten des GFI
+        const gfis = Radio.request("GFI", "getIsVisible") === true ? Radio.request("GFI", "getGfiForPrint") : null,
+            gfiParams = Array.isArray(gfis) === true ? Object.entries(gfis[0]) : null, // Parameter
+            gfiTitle = Array.isArray(gfis) === true ? gfis[1] : "", // Layertitel
+            gfiPosition = Array.isArray(gfis) === true ? gfis[2] : null, // Koordinaten des GFI
             // printGFI = this.get("printGFI"), // soll laut config Parameter gedruckt werden?
             printGFI = this.get("gfi"), // soll laut config Parameter gedruckt werden?
             printurl = this.get("printurl"); // URL des Druckdienstes
@@ -504,7 +495,7 @@ const PrintModel = Tool.extend({
         this.set("gfiParams", gfiParams);
         this.set("gfiTitle", gfiTitle);
         // Wenn eine GFIPos vorhanden ist, und die Anzahl der gfiParameter != 0 ist
-        if (!_.isNull(gfiPosition) && printGFI === true && gfiParams && gfiParams.length > 0) {
+        if (gfiPosition !== null && printGFI === true && gfiParams && gfiParams.length > 0) {
             this.set("createURL", printurl + "_gfi_" + this.get("gfiParams").length.toString() + "/create.json");
         }
         else {
@@ -560,10 +551,10 @@ const PrintModel = Tool.extend({
      * @returns {void}
      */
     push: function (attribute, value) {
-        var tempArray = _.clone(this.get(attribute));
+        const tempArray = {...this.get(attribute)};
 
         tempArray.push(value);
-        this.set(attribute, _.flatten(tempArray));
+        this.set(attribute, Array.isArray(tempArray) ? tempArray.reduce((acc, val) => acc.concat(val), []) : tempArray);
     },
 
     // Prüft ob es sich um einen rgb(a) oder hexadezimal String handelt.
@@ -571,7 +562,7 @@ const PrintModel = Tool.extend({
     // Wenn vorhanden, wird die Opacity(default = 1) überschrieben.
     // Gibt den hexadezimal String und die Opacity zurück.
     getColor: function (value) {
-        var color = value,
+        let color = value,
             opacity = 1;
 
         // color kommt als array--> parsen als String
@@ -604,19 +595,19 @@ const PrintModel = Tool.extend({
 
     // Ein Integer (color) wird in ein hexadezimal String umgewandelt und zurückgegeben.
     componentToHex: function (color) {
-        var hex = color.toString(16);
+        const hex = color.toString(16);
 
         return hex.length === 1 ? "0" + hex : hex;
     },
 
     handlePreCompose: function (evt) {
-        var ctx = evt.context;
+        const ctx = evt.context;
 
         ctx.save();
     },
 
     handlePostCompose: function (evt) {
-        var ctx = evt.context,
+        const ctx = evt.context,
             size = evt.target.getSize(),
             height = size[1] * DEVICE_PIXEL_RATIO,
             width = size[0] * DEVICE_PIXEL_RATIO,
@@ -647,7 +638,7 @@ const PrintModel = Tool.extend({
     },
 
     calculatePageBoundsPixels: function (mapSize) {
-        var s = this.get("scale").value,
+        const s = this.get("scale").value,
             width = this.get("layout").map.width,
             height = this.get("layout").map.height,
             resolution = Radio.request("MapView", "getOptions").resolution,
@@ -655,12 +646,11 @@ const PrintModel = Tool.extend({
             h = height / this.get("POINTS_PER_INCH") * this.get("MM_PER_INCHES") / 1000.0 * s / resolution * DEVICE_PIXEL_RATIO,
             center = [mapSize[0] * DEVICE_PIXEL_RATIO / 2,
                 mapSize[1] * DEVICE_PIXEL_RATIO / 2],
-            minx, miny, maxx, maxy;
+            minx = center[0] - (w / 2),
+            miny = center[1] - (h / 2),
+            maxx = center[0] + (w / 2),
+            maxy = center[1] + (h / 2);
 
-        minx = center[0] - (w / 2);
-        miny = center[1] - (h / 2);
-        maxx = center[0] + (w / 2);
-        maxy = center[1] + (h / 2);
         return [minx, miny, maxx, maxy];
     },
 

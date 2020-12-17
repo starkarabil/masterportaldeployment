@@ -117,7 +117,7 @@ const WindowView = Backbone.View.extend(/** @lends WindowView.prototype */{
 
             if (Radio.request("Util", "getUiStyle") === "TABLE") {
                 this.$el.html(this.templateTable(attr));
-                document.getElementsByClassName("masterportal-container")[0].appendChild(this.el);
+                document.getElementById("masterportal-container").appendChild(this.el);
                 currentClass = $("#window").attr("class").split(" ");
 
                 this.$el.addClass("table-tool-win-all");
@@ -162,6 +162,11 @@ const WindowView = Backbone.View.extend(/** @lends WindowView.prototype */{
         else {
             this.$el.hide("slow");
         }
+
+        if (this.model.get("isCollapsed")) {
+            this.minimize();
+        }
+
         return this;
     },
 
@@ -170,11 +175,14 @@ const WindowView = Backbone.View.extend(/** @lends WindowView.prototype */{
      * @returns {void}
      */
     minimize: function () {
-        this.model.set("maxPosTop", this.$el.css("top"));
-        this.model.set("maxPosLeft", this.$el.css("left"));
+        if (!this.model.get("isCollapsed")) {
+            this.model.setCollapse(true);
+            this.model.set("maxPosTop", this.$el.css("top"));
+            this.model.set("maxPosLeft", this.$el.css("left"));
+        }
         this.$(".win-body").hide();
         this.$(".glyphicon-minus").hide();
-        this.$el.css({"top": "auto", "bottom": "0", "left": "0", "margin-bottom": "60px"});
+        this.$el.css({"top": "auto", "bottom": "0", "left": "0", "margin-bottom": "75px"});
         this.$(".header").addClass("header-min");
         this.$el.draggable("disable");
         this.resetSize();
@@ -186,6 +194,7 @@ const WindowView = Backbone.View.extend(/** @lends WindowView.prototype */{
      */
     maximize: function () {
         if (this.$(".win-body").css("display") === "none") {
+            this.model.setCollapse(false);
             this.$(".win-body").show();
             this.$(".glyphicon-minus").show();
             this.$el.css({"top": this.model.get("maxPosTop"), "bottom": "", "left": this.model.get("maxPosLeft"), "margin-bottom": "30px"});
@@ -205,7 +214,9 @@ const WindowView = Backbone.View.extend(/** @lends WindowView.prototype */{
         const toolModel = Radio.request("ModelList", "getModelByAttributes", {id: this.model.get("winType")});
 
         // Dont let event bubble to .header element which would trigger maximize again!
-        event.stopPropagation();
+        if (event !== undefined) {
+            event.stopPropagation();
+        }
 
         if (toolModel) {
             toolModel.setIsActive(false);

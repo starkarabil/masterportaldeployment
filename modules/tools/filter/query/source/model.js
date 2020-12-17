@@ -8,7 +8,7 @@ const SourceModel = QueryModel.extend({
         isInitialLoad: true
     },
     initializeFunction: function () {
-        var modelList = Radio.request("ModelList", "getModelByAttributes", {id: this.get("layerId")});
+        const modelList = Radio.request("ModelList", "getModelByAttributes", {id: this.get("layerId")});
 
         this.superInitialize();
         this.prepareQuery();
@@ -26,7 +26,7 @@ const SourceModel = QueryModel.extend({
      * @return {ol.Feature[]} openlayers Features
      */
     prepareQuery: function () {
-        var layerId = this.get("layerId"),
+        const layerId = this.get("layerId"),
             features = this.getFeaturesByLayerId(layerId);
 
         if (features.length > 0) {
@@ -44,9 +44,9 @@ const SourceModel = QueryModel.extend({
         this.buildQueryDatastructure();
     },
     collectAllFeatureIds: function (features) {
-        var featureIds = [];
+        const featureIds = [];
 
-        _.each(features, function (feature) {
+        features.forEach(feature => {
             featureIds.push(feature.getId());
         });
         return featureIds;
@@ -91,11 +91,11 @@ const SourceModel = QueryModel.extend({
      * @return {Object} - olFeatures
      */
     getFeaturesByLayerId: function (layerId) {
-        var model = Radio.request("ModelList", "getModelByAttributes", {id: layerId}),
-            features = [],
-            layerSource;
+        const model = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
+        let layerSource,
+            features = [];
 
-        if (!_.isUndefined(model)) {
+        if (model !== undefined) {
             layerSource = model.get("layerSource");
             layerSource = this.retrieveLayerSource(layerSource, layerId);
             features = layerSource.getFeatures();
@@ -111,13 +111,11 @@ const SourceModel = QueryModel.extend({
      * @returns {object} layerSource
      */
     retrieveLayerSource: function (layerSource, layerId) {
-        var layer,
+        let layer,
             groupLayerSource = layerSource;
 
-        if (_.isArray(layerSource)) {
-            layer = _.find(layerSource, function (child) {
-                return child.get("id") === layerId;
-            });
+        if (Array.isArray(layerSource)) {
+            layer = layerSource.find(child => child.get("id") === layerId);
             groupLayerSource = layer.get("layerSource");
         }
 
@@ -125,12 +123,12 @@ const SourceModel = QueryModel.extend({
     },
 
     buildQueryDatastructure: function () {
-        var layerObject = getLayerWhere({id: this.get("layerId")});
+        const layerObject = getLayerWhere({id: this.get("layerId")});
 
         if (this.get("searchInMapExtent") === true) {
             this.addSearchInMapExtentSnippet();
         }
-        if (!_.isUndefined(layerObject)) {
+        if (layerObject !== undefined) {
             this.buildQueryDatastructureByType(layerObject);
         }
     },
@@ -141,10 +139,10 @@ const SourceModel = QueryModel.extend({
      * @return {object} - Mapobject containing names and types
      */
     parseResponse: function (response) {
-        var elements = $("element", response),
+        const elements = $("element", response),
             featureAttributesMap = [];
 
-        _.each(elements, function (element) {
+        elements.forEach(element => {
             featureAttributesMap.push({name: $(element).attr("name"), type: $(element).attr("type")});
         });
         this.createSnippets(featureAttributesMap);
@@ -157,9 +155,9 @@ const SourceModel = QueryModel.extend({
      * @return {string[]} [description]
      */
     getValuesFromFeature: function (feature, attrName) {
-        var values = this.parseValuesFromString(feature, attrName);
+        const values = this.parseValuesFromString(feature, attrName);
 
-        return _.unique(values);
+        return [...new Set(values)];
     },
 
     /**
@@ -169,40 +167,40 @@ const SourceModel = QueryModel.extend({
      * @return {string[]} array of string[] || number[]
      */
     parseValuesFromString: function (feature, attributeName) {
-        var values = [],
-            attributeValue = feature.get(attributeName),
-            attributeValues = [];
+        const values = [],
+            attributeValue = feature.get(attributeName);
+        let attributeValues = [];
 
-        if (!_.isUndefined(attributeValue)) {
-            if (_.isString(attributeValue) && attributeValue.indexOf("|") !== -1) {
+        if (attributeValue !== undefined) {
+            if (typeof attributeValue === "string" && attributeValue.indexOf("|") !== -1) {
                 attributeValues = attributeValue.split("|");
 
-                _.each(attributeValues, function (value) {
+                attributeValues.forEach(value => {
                     if (this.isValid(value)) {
                         values.push(this.trimValue(value));
                     }
-                }, this);
+                });
             }
-            else if (_.isArray(attributeValue)) {
-                _.each(attributeValue, function (value) {
+            else if (Array.isArray(attributeValue)) {
+                attributeValue.forEach(value => {
                     if (this.isValid(value)) {
                         values.push(this.trimValue(value));
                     }
-                }, this);
+                });
             }
             else if (this.isValid(attributeValue)) {
                 values.push(this.trimValue(attributeValue));
             }
         }
-        return _.unique(values);
+        return [...new Set(values)];
     },
     isValid: function (value) {
-        return value !== null && !_.isUndefined(value);
+        return value !== null && value !== undefined;
     },
     trimValue: function (value) {
-        var trimmedValue = value;
+        let trimmedValue = value;
 
-        if (_.isString(value)) {
+        if (typeof value === "string") {
             trimmedValue = value.trim();
         }
         return trimmedValue;
@@ -213,17 +211,17 @@ const SourceModel = QueryModel.extend({
      * @returns {ol.feature[]} features that passed the predefined rules
      */
     runPredefinedRules: function () {
-        var features = this.get("features"),
+        const features = this.get("features"),
             newFeatures = [];
 
-        if (!_.isUndefined(this.get("predefinedRules")) && this.get("predefinedRules").length > 0) {
-            _.each(features, function (feature) {
-                _.each(this.get("predefinedRules"), function (rule) {
-                    if (_.contains(rule.values, feature.get(rule.attrName))) {
+        if (this.get("predefinedRules") !== undefined && this.get("predefinedRules").length > 0) {
+            features.forEach(feature => {
+                this.get("predefinedRules").forEach(rule => {
+                    if (rule.values.includes(feature.get(rule.attrName))) {
                         newFeatures.push(feature);
                     }
                 });
-            }, this);
+            });
         }
         else {
             return features;
@@ -238,7 +236,7 @@ const SourceModel = QueryModel.extend({
      * @return {void}
      */
     runFilter: function () {
-        var features = this.runPredefinedRules(),
+        const features = this.runPredefinedRules(),
             selectedAttributes = [],
             featureIds = [];
 
@@ -249,18 +247,18 @@ const SourceModel = QueryModel.extend({
         });
 
         if (selectedAttributes.length > 0) {
-            _.each(features, function (feature) {
-                var isMatch = this.isFilterMatch(feature, selectedAttributes);
+            features.forEach(feature => {
+                const isMatch = this.isFilterMatch(feature, selectedAttributes);
 
                 if (isMatch) {
                     featureIds.push(feature.getId());
                 }
-            }, this);
+            });
         }
         else {
-            _.each(features, function (feature) {
+            features.forEach(feature => {
                 featureIds.push(feature.getId());
-            }, this);
+            });
         }
 
         this.updateSnippets(features, selectedAttributes);
@@ -269,14 +267,14 @@ const SourceModel = QueryModel.extend({
     },
 
     sendFeaturesToRemote: function () {
-        var model = Radio.request("ModelList", "getModelByAttributes", {id: this.get("layerId")}),
-            features = [],
-            feature;
+        const model = Radio.request("ModelList", "getModelByAttributes", {id: this.get("layerId")}),
+            features = [];
+        let feature;
 
-        _.each(this.get("featureIds"), function (id) {
+        this.get("featureIds").forEach(id => {
             feature = model.get("layerSource").getFeatureById(id);
             feature.set("extent", feature.getGeometry().getExtent());
-            features.push(_.omit(feature.getProperties(), ["geometry", "geometry_EPSG_25832", "geometry_EPSG_4326"]));
+            features.push(Radio.request("Util", "omit", feature.getProperties(), ["geometry", "geometry_EPSG_25832", "geometry_EPSG_4326"]));
         });
 
         Radio.trigger("RemoteInterface", "postMessage", {"features": JSON.stringify(features), "layerId": model.get("id"), "layerName": model.get("name")});
@@ -285,29 +283,28 @@ const SourceModel = QueryModel.extend({
      * determines the attributes and their values that are still selectable
      * @param  {ol.Feature[]} features olfeatures
      * @param  {object[]} selectedAttributes attribute object
-     * @param  {object[]} allAttributes      array of all attributes and their values
+     * @param  {object[]} [allAttributes=[]]      array of all attributes and their values
      * @return {object[]}                    array of attributes and their values that are still selectable
      */
-    collectSelectableOptions: function (features, selectedAttributes, allAttributes) {
-        var selectableOptions = [],
-            selectableValues = [];
+    collectSelectableOptions: function (features, selectedAttributes, allAttributes = []) {
+        const selectableOptions = [];
+        let selectableValues = [];
 
-        _.each(allAttributes, function (attribute) {
+        allAttributes.forEach(attribute => {
             selectableValues = {name: attribute.name, displayName: attribute.displayName, type: attribute.type, values: [], matchingMode: attribute.matchingMode};
 
-            _.each(features, function (feature) {
-                var isMatch = this.isFilterMatch(feature, selectedAttributes.filter(function (attr) {
+            features.forEach(feature => {
+                const isMatch = this.isFilterMatch(feature, selectedAttributes.filter(function (attr) {
                     return attr.attrName !== attribute.name;
                 }));
 
                 if (isMatch) {
                     selectableValues.values.push(this.parseValuesFromString(feature, attribute.name));
                 }
-            }, this);
-            selectableValues.values = _.unique(_.flatten(selectableValues.values));
-
+            });
+            selectableValues.values = [...new Set(Array.isArray(selectableValues.values) ? selectableValues.values.reduce((acc, val) => acc.concat(val), []) : selectableValues.values)];
             selectableOptions.push(selectableValues);
-        }, this);
+        });
 
         return selectableOptions;
     },
@@ -318,14 +315,15 @@ const SourceModel = QueryModel.extend({
      * @returns {void}
      */
     updateSnippets: function (features, selectedAttributes) {
-        var snippets = this.get("snippetCollection"),
+        const snippets = this.get("snippetCollection"),
             selectableOptions = this.collectSelectableOptions(features, selectedAttributes, this.get("featureAttributesMap"));
 
-        _.each(snippets.where({"snippetType": "dropdown"}), function (snippet) {
-            var attribute;
+        snippets.where({"snippetType": "dropdown"}).forEach(snippet => {
+            let attribute = {};
 
             snippet.resetValues();
-            attribute = _.find(selectableOptions, {name: snippet.get("name")});
+            attribute = selectableOptions.find(option => option.name === snippet.get("name"));
+
             snippet.updateSelectableValues(attribute.values);
         });
     },
@@ -336,26 +334,24 @@ const SourceModel = QueryModel.extend({
      * @return {Boolean}               true if feature has attribute that contains value
      */
     isValueMatch: function (feature, attribute) {
-        var featureMap = _.findWhere(this.get("featureAttributesMap"), {name: attribute.attrName});
+        const featureMap = this.get("featureAttributesMap").find(featureAttribute => featureAttribute.name === attribute.attrName);
 
         attribute.matchingMode = featureMap.matchingMode;
         return attribute.matchingMode === "OR" ? this.isORMatch(feature, attribute) : this.isANDMatch(feature, attribute);
     },
     isORMatch: function (feature, attribute) {
-        var isMatch = false;
+        let isMatch = false;
 
-        isMatch = _.find(attribute.values, function (value) {
+        isMatch = attribute.values.find(value => {
             return this.containsValue(feature, attribute, value);
-        }, this);
-        return !_.isUndefined(isMatch);
+        });
+        return isMatch !== undefined;
     },
     isANDMatch: function (feature, attribute) {
-        return _.every(attribute.values, function (value) {
-            return this.containsValue(feature, attribute, value);
-        }, this);
+        return attribute.values.every(value => this.containsValue(feature, attribute, value));
     },
     containsValue: function (feature, attribute, value) {
-        if (_.isUndefined(feature.get(attribute.attrName)) === false) {
+        if (feature.get(attribute.attrName) !== undefined) {
             return feature.get(attribute.attrName).indexOf(value) !== -1;
         }
         return false;
@@ -368,19 +364,20 @@ const SourceModel = QueryModel.extend({
      * @return {boolean} flag if value is in range
      */
     isNumberInRange: function (feature, attributeName, values) {
-        var valueList = _.extend([], values),
-            featureValue = feature.get(attributeName),
-            isNumberInRange;
+        const featureValue = feature.get(attributeName),
+            valueList = Object.assign([], values);
+        let isNumberInRange = false;
 
         valueList.push(featureValue);
-        valueList = _.sortBy(valueList);
+        valueList.sort((valueA, valueB) => valueA - valueB);
+
         isNumberInRange = valueList[1] === featureValue;
 
         return isNumberInRange;
     },
 
     isFeatureInExtent: function (feature) {
-        var mapExtent = Radio.request("MapView", "getCurrentExtent");
+        const mapExtent = Radio.request("MapView", "getCurrentExtent");
 
         return intersects(mapExtent, feature.getGeometry().getExtent());
     },
@@ -392,9 +389,9 @@ const SourceModel = QueryModel.extend({
      * @return {Boolean}            [description]
      */
     isFilterMatch: function (feature, filterAttr) {
-        var isMatch = false;
+        let isMatch = false;
 
-        isMatch = _.every(filterAttr, function (attribute) {
+        isMatch = filterAttr.every(attribute => {
             if (feature.get(attribute.attrName) === null) {
                 return false;
             }
@@ -406,8 +403,8 @@ const SourceModel = QueryModel.extend({
             }
 
             return this.isValueMatch(feature, attribute);
+        });
 
-        }, this);
         return isMatch;
     },
 

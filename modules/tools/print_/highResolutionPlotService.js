@@ -2,9 +2,10 @@ import Tool from "../../core/modelList/tool/model";
 import {Icon} from "ol/style.js";
 import {Circle, Polygon} from "ol/geom.js";
 import {DEVICE_PIXEL_RATIO} from "ol/has.js";
+import "./RadioBridge.js";
 
 const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel.prototype */{
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         layoutList: [],
         currentLayout: undefined,
         scaleList: [],
@@ -19,7 +20,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
         isMetaDataAvailable: false,
         isScaleAvailable: false,
         eventListener: {},
-        printID: "99999",
+        printID: "",
         title: "PrintResult",
         outputFilename: "Ausdruck",
         outputFormat: "pdf",
@@ -50,7 +51,16 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
         MM_PER_INCHES: 25.4,
         POINTS_PER_INCH: 72,
         DOTS_PER_INCH: 72,
-        INCHES_PER_METER: 39.37
+        INCHES_PER_METER: 39.37,
+        titleLabel: "",
+        titlePlaceholder: "",
+        layoutLabel: "",
+        formatLabel: "",
+        scaleLabel: "",
+        withLegendLabel: "",
+        withInfoLabel: "",
+        printLabel: "",
+        layoutNameList: []
     }),
 
     /**
@@ -72,7 +82,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @property {Boolean} isMetaDataAvailable=false - Flag if the current layout supports meta data
      * @property {Boolean} isScaleAvailable=false - Flag if the current layout supports scale
      * @property {Object} eventListener={} - Holder for an eventListener
-     * @property {String} printID="99999" - Service id for the plot service
+     * @property {String} printID="" - Service id for the plot service
      * @property {String} title="PrintResult" - Initial tilte for the print page
      * @property {String} outputFilename="Ausdruck" - Filename for print page
      * @property {String} outputFormat="pdf" - Format for file of print page
@@ -90,6 +100,14 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @property {Number} POINTS_PER_INCH=72 - Points per Inch
      * @property {Number} DOTS_PER_INCH=72 - Dots per inch
      * @property {Number} INCHES_PER_METER=39.37 - Inches per meter
+     * @property {String} titleLabel="" - Label text for print-window
+     * @property {String} titlePlaceholder="" placeholder text for print-window
+     * @property {String} layoutLabel="" Label text for print-window
+     * @property {String} formatLabel="" Label text for print-window
+     * @property {String} scaleLabel="" Label text for print-window
+     * @property {String} withLegendLabel="" Label text for print-window
+     * @property {String} printLabel="" Label text for print-window
+     * @property {String} layoutNameList=[] Label text for the Layouts
      * @listens Print#ChangeIsAvtive
      * @listens Print#ChangeSpecification
      * @listens MapView#RadioTriggerMapViewChangedOptions
@@ -98,7 +116,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @listens Print#CreatePrintJob
      */
     initialize: function () {
-        var channel = Radio.channel("Print");
+        const channel = Radio.channel("Print");
 
         this.superInitialize();
 
@@ -133,6 +151,43 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
         channel.on({
             "createPrintJob": this.createPrintJob
         }, this);
+
+        this.listenTo(Radio.channel("i18next"), {
+            "languageChanged": this.changeLang
+        });
+
+        this.setParams();
+        this.changeLang();
+    },
+
+    /**
+     * sets the configured values for print parameter
+     * @returns {void}
+     */
+    setParams: function () {
+        this.setPrintID(this.get("mapfishServiceId"));
+        this.setOutputFilename(this.get("filename"));
+        this.setTitle(this.get("title"));
+    },
+
+    /**
+     * change language - sets default values for the language
+     * @param {String} lng the language changed to
+     * @returns {Void}  -
+     */
+    changeLang: function (lng) {
+        this.set({
+            titleLabel: i18next.t("common:modules.tools.print.titleLabel"),
+            titlePlaceholder: i18next.t("common:modules.tools.print.titlePlaceholder"),
+            layoutLabel: i18next.t("common:modules.tools.print.layoutLabel"),
+            formatLabel: i18next.t("common:modules.tools.print.formatLabel"),
+            scaleLabel: i18next.t("common:modules.tools.print.scaleLabel"),
+            withLegendLabel: i18next.t("common:modules.tools.print.withLegendLabel"),
+            printLabel: i18next.t("common:modules.tools.print.printLabel"),
+            withInfoLabel: i18next.t("common:modules.tools.print.withInfoLabel"),
+            layoutNameList: i18next.t("common:modules.tools.print.layoutNameList", {returnObjects: true}),
+            currentLng: lng
+        });
     },
 
     /**
@@ -142,9 +197,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     getCapabilities: function () {
-        var resp = Radio.request("RestReader", "getServiceById", this.get("printID")),
-            url = resp && resp.get("url") ? resp.get("url") : null,
-            printurl;
+        const resp = Radio.request("RestReader", "getServiceById", this.get("printID")),
+            url = resp && resp.get("url") ? resp.get("url") : null;
+
+        let printurl;
 
         if (url) {
             if (this.get("configYAML")) {
@@ -176,10 +232,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {String} - shows if the function succeeds or fails
      */
     updateParameter: function (response) {
-        var result = "success",
+        let result = "success",
             isError = true;
 
-        if (!_.isUndefined(response) && !_.isNull(response) &&
+        if (response !== undefined && response !== null &&
                 response.layouts && response.scales && response.outputFormats &&
                 response.layouts.length > 0 && response.scales.length > 0 && response.outputFormats.length > 0) {
             this.set("response", response);
@@ -188,10 +244,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
             this.setScaleList(response.scales);
             this.setFormatList(response.outputFormats);
             this.setCurrentScale(Radio.request("MapView", "getOptions").scale);
-            this.setIsGfiAvailable(!_.isUndefined(this.getAttributeInLayoutByName("gfi")));
-            this.setIsLegendAvailable(!_.isUndefined(this.getAttributeInLayoutByName("legend")));
-            this.setIsScaleAvailable(!_.isUndefined(this.getAttributeInLayoutByName("scale")));
-            this.setIsMetaDataAvailable(!_.isUndefined(this.getAttributeInLayoutByName("metadata")));
+            this.setIsGfiAvailable(this.getAttributeInLayoutByName("gfi") !== undefined);
+            this.setIsLegendAvailable(this.getAttributeInLayoutByName("legend") !== undefined);
+            this.setIsScaleAvailable(this.getAttributeInLayoutByName("scale") !== undefined);
+            this.setIsMetaDataAvailable(this.getAttributeInLayoutByName("metadata") !== undefined);
             this.togglePostcomposeListener(this, true);
             isError = false;
         }
@@ -215,7 +271,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     print: function () {
-        var drawLayer = Radio.request("Draw", "getLayer");
+        const drawLayer = Radio.request("Draw", "getLayer");
 
         this.set("layerToPrint", []);
         this.setWMSLayerToPrint(Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, typ: "WMS", isOutOfRange: false}));
@@ -234,9 +290,27 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {object} layout
      */
     getLayoutByName: function (layoutList, layoutName) {
-        return _.find(layoutList, function (layout) {
+        return layoutList.find(layout => {
             return layout.name === layoutName;
         });
+    },
+
+    /**
+     * returns the scales that are available for printing
+     * @returns {number[]} All available Scales of Print service
+     */
+    getPrintMapScales: function () {
+        return this.get("scaleList").sort(this.sortNumbers);
+    },
+
+    /**
+     * sorts an array numerically and ascanding
+     * @param {number} a - first value
+     * @param {number} b - next value
+     * @return {void} a negative, zero or positive value
+     */
+    sortNumbers: function (a, b) {
+        return a - b;
     },
 
     /**
@@ -267,9 +341,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     createPrintMask: function (evt) {
-        var frameState = evt.frameState,
-            context = evt.context,
-            scale;
+        const frameState = evt.frameState,
+            context = evt.context;
+
+        let scale;
 
         // scale was selected by the user over the view
         if (this.get("isScaleSelectedManually")) {
@@ -292,7 +367,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     drawMask: function (mapSize, context) {
-        var mapWidth = mapSize[0] * DEVICE_PIXEL_RATIO,
+        const mapWidth = mapSize[0] * DEVICE_PIXEL_RATIO,
             mapHeight = mapSize[1] * DEVICE_PIXEL_RATIO;
 
         context.beginPath();
@@ -315,7 +390,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     drawPrintPage: function (mapSize, resolution, printMapSize, scale, context) {
-        var center = [mapSize[0] * DEVICE_PIXEL_RATIO / 2, mapSize[1] * DEVICE_PIXEL_RATIO / 2],
+        const center = [mapSize[0] * DEVICE_PIXEL_RATIO / 2, mapSize[1] * DEVICE_PIXEL_RATIO / 2],
             boundWidth = printMapSize[0] / this.get("DOTS_PER_INCH") / this.get("INCHES_PER_METER") * scale / resolution * DEVICE_PIXEL_RATIO,
             boundHeight = printMapSize[1] / this.get("DOTS_PER_INCH") / this.get("INCHES_PER_METER") * scale / resolution * DEVICE_PIXEL_RATIO,
             minx = center[0] - (boundWidth / 2),
@@ -341,25 +416,22 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {number | String} the optimal scale or an Error String
      */
     getOptimalScale: function (mapSize, resolution, printMapSize, scaleList) {
-        var mapWidth,
-            mapHeight,
-            scaleWidth,
-            scaleHeight,
-            scale,
-            optimalScale,
-            undefVal = mapSize === undefined || resolution === undefined || printMapSize === undefined || scaleList === undefined,
+
+        const undefVal = mapSize === undefined || resolution === undefined || printMapSize === undefined || scaleList === undefined,
             nullVal = mapSize === null || resolution === null || printMapSize === null || scaleList === null;
 
         if (undefVal || nullVal) {
             return "Error";
         }
 
-        mapWidth = mapSize[0] * resolution;
-        mapHeight = mapSize[1] * resolution;
-        scaleWidth = mapWidth * this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH") / printMapSize[0];
-        scaleHeight = mapHeight * this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH") / printMapSize[1];
-        scale = Math.min(scaleWidth, scaleHeight);
-        optimalScale = scaleList[0];
+        /* eslint-disable-next-line one-var */
+        const mapWidth = mapSize[0] * resolution,
+            mapHeight = mapSize[1] * resolution,
+            scaleWidth = mapWidth * this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH") / printMapSize[0],
+            scaleHeight = mapHeight * this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH") / printMapSize[1],
+            scale = Math.min(scaleWidth, scaleHeight);
+
+        let optimalScale = scaleList[0];
 
         if (isNaN(mapWidth) || isNaN(mapHeight) || isNaN(scaleWidth) || isNaN(scaleHeight) || scaleList.length === 0) {
             return "Error";
@@ -370,6 +442,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
                 optimalScale = printMapScale;
             }
         });
+
         return optimalScale;
     },
 
@@ -379,7 +452,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setScaleByMapView: function () {
-        var newScale = _.find(this.get("scaleList"), function (scale) {
+        const newScale = this.get("scaleList").find(scale => {
             return parseInt(scale, 10) === Radio.request("MapView", "getOptions").scale;
         });
 
@@ -416,10 +489,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
     updatePrintPage: function () {
         if (this.has("scale") && this.has("currentLayout")) {
             if (this.get("isActive")) {
-                if (_.isEmpty(this.get("precomposeListener"))) {
+                if (Object.keys(this.get("precomposeListener")).length === 0) {
                     this.setPrecomposeListener(Radio.request("Map", "registerListener", "precompose", this.handlePreCompose.bind(this)));
                 }
-                if (_.isEmpty(this.get("postcomposeListener"))) {
+                if (Object.keys(this.get("postcomposeListener")).length === 0) {
                     this.setPostcomposeListener(Radio.request("Map", "registerListener", "postcompose", this.handlePostCompose.bind(this)));
                 }
             }
@@ -437,20 +510,15 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setGROUPLayerToPrint: function (layers) {
-        var sortedLayers;
 
-        sortedLayers = _.sortBy(layers, function (layer) {
-            return layer.get("selectionIDX");
-        });
-        _.each(sortedLayers, function (groupLayer) {
-            var layerList = groupLayer.get("layerSource");
+        const sortedLayers = Radio.request("Util", "sortBy", layers, (layer) => layer.get("selectionIDX"));
 
-            _.each(layerList, function (layer) {
-                var params = {},
-                    style = [],
-                    numberOfLayer,
-                    i,
-                    defaultStyle;
+        sortedLayers.forEach(groupLayer => {
+            const layerList = groupLayer.get("layerSource");
+
+            layerList.forEach(layer => {
+                const params = {},
+                    style = [];
 
                 if (layer.get("typ") === "WMS") {
                     if (layer.has("styles")) {
@@ -460,10 +528,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
                     // If a style is given with a blank,
                     // the Default-Style of the layer is used. Example for 3 layers: countries,,cities
                     else {
-                        numberOfLayer = layer.get("layers").split(",").length;
-                        defaultStyle = "";
+                        const numberOfLayer = layer.get("layers").split(",").length;
+                        let defaultStyle = "";
 
-                        for (i = 1; i < numberOfLayer; i++) {
+                        for (let i = 1; i < numberOfLayer; i++) {
                             defaultStyle += ",";
                         }
                         style.push(defaultStyle);
@@ -489,19 +557,15 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setWMSLayerToPrint: function (layers) {
-        var sortedLayers;
 
-        sortedLayers = _.sortBy(layers, function (layer) {
-            return layer.get("selectionIDX");
-        });
-        _.each(sortedLayers, function (layer) {
+        const sortedLayers = Radio.request("Util", "sortBy", layers, (layer) => layer.get("selectionIDX"));
+
+        sortedLayers.forEach(layer => {
             // only important for treeFilter
-            var params = {},
-                style = [],
-                layerURL = layer.get("url"),
-                numberOfLayer,
-                i,
-                defaultStyle;
+            const params = {},
+                style = [];
+
+            let layerURL = layer.get("url");
 
             if (layer.has("SLDBody")) {
                 params.SLD_BODY = layer.get("SLDBody");
@@ -516,10 +580,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
             // If a style is given with a blank,
             // the Default-Style of the layer is used. Example for 3 layers: countries,,cities
             else {
-                numberOfLayer = layer.get("layers").split(",").length;
-                defaultStyle = "";
+                const numberOfLayer = layer.get("layers").split(",").length;
+                let defaultStyle = "";
 
-                for (i = 1; i < numberOfLayer; i++) {
+                for (let i = 1; i < numberOfLayer; i++) {
                     defaultStyle += ",";
                 }
                 style.push(defaultStyle);
@@ -555,35 +619,36 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setLayer: function (layer) {
-        var features = [],
-            featureStyles = {},
-            printStyleObj = {},
-            layerId = layer.get("id"),
-            layerModel,
-            isClustered,
-            styleModel;
+        const layerId = layer.get("id"),
+            features = [],
+            featureStyles = {};
 
-        if (!_.isUndefined(layer)) {
+        let layerModel,
+            isClustered,
+            styleModel,
+            printStyleObj = {};
+
+        if (layer !== undefined) {
             // get styleModel if layerId is defined.
             // layer id is not defined for portal-internal layer like animationLayer and import_draw_layer
             // then the style is located directly at the feature, see line 312
-            if (!_.isUndefined(layerId) || !_.isUndefined(layer.id)) {
+            if (layerId !== undefined || layer.id !== undefined) {
                 layerModel = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
-                isClustered = !_.isUndefined(layerModel.get("clusterDistance"));
+                isClustered = layerModel.get("clusterDistance") !== undefined;
                 styleModel = Radio.request("StyleList", "returnModelById", layerModel.get("styleId"));
             }
             // All features that have a circle-geometry
-            _.each(layer.getSource().getFeatures(), function (feature) {
+            layer.getSource().getFeatures().forEach(feature => {
                 if (feature.getGeometry() instanceof Circle) {
                     // creates a regular polygon from a circle with 32(default) sides
                     feature.setGeometry(Polygon.fromCircle(feature.getGeometry()));
                 }
             });
 
-            _.each(layer.getSource().getFeatures(), function (feature, index) {
-                var type = feature.getGeometry().getType(),
-                    styles = !_.isUndefined(feature.getStyleFunction()) ? feature.getStyleFunction().call(feature) : styleModel.createStyle(feature, isClustered),
-                    style = _.isArray(styles) ? styles[0] : styles,
+            layer.getSource().getFeatures().forEach((feature, index) => {
+                const type = feature.getGeometry().getType(),
+                    styles = feature.getStyleFunction() !== undefined ? feature.getStyleFunction().call(feature) : styleModel.createStyle(feature, isClustered),
+                    style = Array.isArray(styles) ? styles[0] : styles,
                     coordinates = feature.getGeometry().getCoordinates();
 
                 features.push({
@@ -629,24 +694,24 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {Object} - Point with styles
      */
     createPointStyleForPrint: function (style) {
-        var pointStyleObject = {},
+        let pointStyleObject = {},
             imgPath = this.createImagePath(),
             imgName = style.getImage() instanceof Icon ? style.getImage().getSrc() : undefined;
 
         // Points without text
-        if (_.isNull(style.getText()) || _.isUndefined(style.getText())) {
+        if (style.getText() !== null || style.getText() !== undefined) {
             // style image is an Icon
-            if (!_.isUndefined(imgName)) {
+            if (imgName !== undefined) {
                 // get imagename from src path
                 imgName = imgName.match(/(?:[^/]+)$/g)[0];
                 imgPath += imgName;
                 imgPath = encodeURI(imgPath);
                 pointStyleObject = {
                     externalGraphic: imgPath,
-                    graphicWidth: _.isArray(style.getImage().getSize()) ? style.getImage().getSize()[0] * style.getImage().getScale() : 20,
-                    graphicHeight: _.isArray(style.getImage().getSize()) ? style.getImage().getSize()[1] * style.getImage().getScale() : 20,
-                    graphicXOffset: !_.isNull(style.getImage().getAnchor()) ? -style.getImage().getAnchor()[0] : 0,
-                    graphicYOffset: !_.isNull(style.getImage().getAnchor()) ? -style.getImage().getAnchor()[1] : 0
+                    graphicWidth: Array.isArray(style.getImage().getSize()) ? style.getImage().getSize()[0] * style.getImage().getScale() : 20,
+                    graphicHeight: Array.isArray(style.getImage().getSize()) ? style.getImage().getSize()[1] * style.getImage().getScale() : 20,
+                    graphicXOffset: style.getImage().getAnchor() !== null ? -style.getImage().getAnchor()[0] : 0,
+                    graphicYOffset: style.getImage().getAnchor() !== null ? -style.getImage().getAnchor()[1] : 0
                 };
             }
             // style is an Circle or Point without Icon
@@ -675,7 +740,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {String} - path of the image
      */
     createImagePath: function () {
-        var imgPath = window.location.origin + "/lgv-config/img/";
+        let imgPath = window.location.origin + "/lgv-config/img/";
 
         // for local IDE take path to
         if (imgPath.indexOf("localhost") !== -1) {
@@ -693,42 +758,41 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setSpecification: function (gfiPosition) {
-        var layers = Radio.request("Map", "getLayers").getArray(),
-            animationLayer = _.filter(layers, function (layer) {
+        const layers = Radio.request("Map", "getLayers").getArray(),
+            animationLayer = layers.filter(layer => {
                 return layer.get("name") === "animationLayer";
             }),
-            wfsLayer = _.filter(layers, function (layer) {
+            wfsLayer = layers.filter(layer => {
                 return layer.get("typ") === "WFS" && layer.get("visible") === true && layer.getSource().getFeatures().length > 0;
             }),
-            specification;
+            specification = {
+                layout: this.get("currentLayout").name,
+                srs: Radio.request("MapView", "getProjection").getCode(),
+                units: "m",
+                outputFilename: this.get("outputFilename"),
+                outputFormat: this.get("currentFormat"),
+                layers: this.get("layerToPrint"),
+                pages: [
+                    {
+                        center: Radio.request("MapView", "getCenter"),
+                        scale: this.get("currentScale"),
+                        scaleText: "1 : " + this.get("currentScale"),
+                        geodetic: true,
+                        dpi: "96",
+                        mapTitle: this.get("title")
+                    }
+                ]
+            };
 
         if (animationLayer.length > 0) {
             this.setLayer(animationLayer[0]);
         }
-        _.each(wfsLayer, function (layer) {
+        wfsLayer.forEach(layer => {
             this.setLayer(layer);
-        }, this);
-        specification = {
-            layout: this.get("currentLayout").name,
-            srs: Radio.request("MapView", "getProjection").getCode(),
-            units: "m",
-            outputFilename: this.get("outputFilename"),
-            outputFormat: this.get("currentFormat"),
-            layers: this.get("layerToPrint"),
-            pages: [
-                {
-                    center: Radio.request("MapView", "getCenter"),
-                    scale: this.get("currentScale"),
-                    scaleText: "1 : " + this.get("currentScale"),
-                    geodetic: true,
-                    dpi: "96",
-                    mapTitle: this.get("title")
-                }
-            ]
-        };
+        });
 
         if (gfiPosition !== null) {
-            _.each(_.flatten(this.get("gfiParams")), function (element, index) {
+            [].concat(...this.get("gfiParams")).forEach((element, index) => {
                 specification.pages[0]["attr_" + index] = element;
             }, this);
             specification.pages[0].layerName = this.get("gfiTitle");
@@ -788,17 +852,17 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
     */
     getGfiForPrint: function () {
-        var gfis = Radio.request("GFI", "getIsVisible") === true ? Radio.request("GFI", "getGfiForPrint") : null,
-            gfiParams = _.isArray(gfis) === true ? _.pairs(gfis[0]) : null, // Parameter
-            gfiTitle = _.isArray(gfis) === true ? gfis[1] : "", // Layertitle
-            gfiPosition = _.isArray(gfis) === true ? gfis[2] : null, // Coordinates of GFI
+        const gfis = Radio.request("GFI", "getIsVisible") === true ? Radio.request("GFI", "getGfiForPrint") : null,
+            gfiParams = Array.isArray(gfis) ? Object.entries(gfis[0]) : null, // Parameter
+            gfiTitle = Array.isArray(gfis) ? gfis[1] : "", // Layertitle
+            gfiPosition = Array.isArray(gfis) ? gfis[2] : null, // Coordinates of GFI
             printGFI = this.get("gfi"), // should be printed according to config parameter?
             printurl = this.get("printurl"); // URL of print service
 
         this.set("gfiParams", gfiParams);
         this.set("gfiTitle", gfiTitle);
         // If GFIPos exists and number of gfiParameter is != 0
-        if (!_.isNull(gfiPosition) && printGFI === true && gfiParams && gfiParams.length > 0) {
+        if (gfiPosition !== null && printGFI === true && gfiParams && gfiParams.length > 0) {
             this.set("createURL", printurl + "_gfi_" + this.get("gfiParams").length.toString() + "/create.json");
         }
         else {
@@ -856,10 +920,10 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     push: function (attribute, value) {
-        var tempArray = _.clone(this.get(attribute));
+        const tempArray = JSON.parse(JSON.stringify(this.get(attribute)));
 
         tempArray.push(value);
-        this.set(attribute, _.flatten(tempArray));
+        this.set(attribute, tempArray.flat(Infinity));
     },
 
     /**
@@ -870,7 +934,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {String} - hexadecimal String and opacity or an Error String
      */
     getColor: function (value) {
-        var color = value,
+        let color = value,
             opacity = 1;
 
         if (color !== null && color !== undefined) {
@@ -921,7 +985,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {String} - hex color code
      */
     componentToHex: function (color) {
-        var hex;
+        let hex = "";
 
         if (isNaN(color)) {
             return undefined;
@@ -937,7 +1001,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     handlePreCompose: function (evt) {
-        var ctx = evt.context;
+        const ctx = evt.context;
 
         ctx.save();
     },
@@ -949,7 +1013,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     handlePostCompose: function (evt) {
-        var ctx = evt.context,
+        const ctx = evt.context,
             size = Radio.request("Map", "getSize"),
             height = size[1] * DEVICE_PIXEL_RATIO,
             width = size[0] * DEVICE_PIXEL_RATIO,
@@ -986,13 +1050,20 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {Array | String} - page bounds in pixels or an Error String
      */
     calculatePageBoundsPixels: function (mapSize) {
-        var s = this.get("scale"),
+        const s = this.get("scale");
+
+        let w = "",
+            h = "",
+            center = "",
+            minx = "",
+            miny = "",
+            maxx = "",
+            maxy = "",
             width = this.get("currentLayout"),
             height = this.get("currentLayout"),
-            resolution = Radio.request("MapView", "getOptions"),
-            w, h, center, minx, miny, maxx, maxy;
+            resolution = Radio.request("MapView", "getOptions");
 
-        if (_.isUndefined(s) || _.isUndefined(width) || _.isUndefined(height) || _.isUndefined(resolution) || _.isUndefined(mapSize) || _.isNull(mapSize)) {
+        if (s === undefined || width === undefined || height === undefined || resolution === undefined || mapSize === undefined || mapSize === null) {
             return "Error";
         }
 
@@ -1004,7 +1075,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
         center = [mapSize[0] * DEVICE_PIXEL_RATIO / 2,
             mapSize[1] * DEVICE_PIXEL_RATIO / 2];
 
-        if (_.isNaN(w) || _.isNaN(h) || _.isNaN(center[0]) || _.isNaN(center[1])) {
+        if (isNaN(w) || isNaN(h) || isNaN(center[0]) || isNaN(center[1])) {
             return "Error";
         }
 
@@ -1024,9 +1095,9 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {number | String} - the optimal resolution or an Error String
      */
     getOptimalResolution: function (scale, mapSize, printMapSize) {
-        var dotsPerMeter = this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH"),
-            resolutionX,
-            resolutiony;
+        const dotsPerMeter = this.get("INCHES_PER_METER") * this.get("DOTS_PER_INCH");
+        let resolutionX = "",
+            resolutiony = "";
 
         if (scale === undefined || mapSize === undefined || printMapSize === undefined || scale === null || mapSize === null || printMapSize === null) {
             return "Error";
@@ -1047,7 +1118,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @return {number[]} - width and height
      */
     getPrintMapSize: function () {
-        var layoutMapInfo = this.getAttributeInLayoutByName("map");
+        const layoutMapInfo = this.getAttributeInLayoutByName("map");
 
         return [layoutMapInfo.width, layoutMapInfo.height];
     },
@@ -1085,13 +1156,32 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsMetaDataAvailable: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isMetaDataAvailable", value);
         }
         else {
             this.set("isMetaDataAvailable", false);
         }
     },
+
+    /**
+     * Setter for printID
+     * @param {String} value - printID
+     * @returns {void}
+     */
+    setPrintID: function (value) {
+        this.set("printID", value);
+    },
+
+    /**
+     * Setter for outputFilename
+     * @param {String} value - outputFilename
+     * @returns {void}
+     */
+    setOutputFilename: function (value) {
+        this.set("outputFilename", value);
+    },
+
 
     /**
      * Sets the title for the print page
@@ -1153,7 +1243,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsGfiAvailable: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isGfiAvailable", value);
         }
         else {
@@ -1167,7 +1257,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsGfiActive: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isGfiActive", value);
         }
         else {
@@ -1181,7 +1271,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsGfiSelected: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isGfiSelected", value);
         }
         else {
@@ -1195,7 +1285,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsLegendAvailable: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isLegendAvailable", value);
         }
         else {
@@ -1209,7 +1299,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsScaleAvailable: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isScaleAvailable", value);
         }
         else {
@@ -1241,11 +1331,13 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setLayoutList: function (layouts) {
-        var that = this;
+        const that = this;
 
-        _.each(layouts, function (layout) {
-            that.get("layoutList").push(layout);
-        });
+        if (Array.isArray(layouts)) {
+            layouts.forEach(layout => {
+                that.get("layoutList").push(layout);
+            });
+        }
     },
 
     /**
@@ -1254,11 +1346,13 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setFormatList: function (formats) {
-        var that = this;
+        const that = this;
 
-        _.each(formats, function (format) {
-            that.get("formatList").push(format.name);
-        });
+        if (Array.isArray(formats)) {
+            formats.forEach(format => {
+                that.get("formatList").push(format.name);
+            });
+        }
     },
 
     /**
@@ -1267,11 +1361,13 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setScaleList: function (scales) {
-        var that = this;
+        const that = this;
 
-        _.each(scales, function (scale) {
-            that.get("scaleList").push(scale.value);
-        });
+        if (Array.isArray(scales)) {
+            scales.forEach(scale => {
+                that.get("scaleList").push(scale.value);
+            });
+        }
     },
 
     /**
@@ -1280,7 +1376,7 @@ const HighResolutionPrintModel = Tool.extend(/** @lends HighResolutionPrintModel
      * @returns {void}
      */
     setIsScaleSelectedManually: function (value) {
-        if (_.isBoolean(value)) {
+        if (typeof value === "boolean") {
             this.set("isScaleSelectedManually", value);
         }
         else {

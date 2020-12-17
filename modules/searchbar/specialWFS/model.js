@@ -134,7 +134,7 @@ const SpecialWFSModel = Backbone.Model.extend({
             data += "<ogc:Or>";
         }
         for (propertyName of propertyNames) {
-            data += "<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'><ogc:PropertyName>" + propertyName + "</ogc:PropertyName><ogc:Literal>*" + _.escape(searchString) + "*</ogc:Literal></ogc:PropertyIsLike>";
+            data += "<ogc:PropertyIsLike matchCase='false' wildCard='*' singleChar='#' escapeChar='!'><ogc:PropertyName>" + propertyName + "</ogc:PropertyName><ogc:Literal>*" + encodeURIComponent(searchString) + "*</ogc:Literal></ogc:PropertyIsLike>";
         }
         if (propertyNames.length > 1) {
             data += "</ogc:Or>";
@@ -279,18 +279,18 @@ const SpecialWFSModel = Backbone.Model.extend({
     },
 
     /**
-     * Trigger function pushHits in Searchbar and send result objects for hit list.
-     * @param {string} type - Type name.
-     * @param {string} identifier - Name frmom target result.
-     * @param {string} firstChildNameUpperCase - Geometrie type.
-     * @param {string[]} geometry - The coordinates from exterior geometry.
-     * @param {string[]} interiorGeometry - The coordinates from interior geometry.
-     * @param {string} glyphicon - The glyphicon for hit.
-     * @returns {void}
-     */
+    * Trigger function pushHits in Searchbar and send result objects for hit list.
+    * @param {string} type - Type name.
+    * @param {string} identifier - Name frmom target result.
+    * @param {string} firstChildNameUpperCase - Geometrie type.
+    * @param {string[]} geometry - The coordinates from exterior geometry.
+    * @param {string[]} interiorGeometry - The coordinates from interior geometry.
+    * @param {string} glyphicon - The glyphicon for hit.
+    * @returns {void}
+    */
     pushHitListObjects: function (type, identifier, firstChildNameUpperCase, geometry, interiorGeometry, glyphicon) {
         Radio.trigger("Searchbar", "pushHits", "hitList", {
-            id: _.uniqueId(type.toString()),
+            id: Radio.request("Util", "uniqueId", type.toString()),
             name: identifier.trim(),
             geometryType: firstChildNameUpperCase,
             type: type,
@@ -311,10 +311,11 @@ const SpecialWFSModel = Backbone.Model.extend({
             interiorPositions = [];
 
         for (let i = 0; i < lengthIndex; i++) {
-            const coords = [];
+            const coords = [],
+                posListPolygonMembers = polygonMembers[i].getElementsByTagNameNS("*", "posList");
 
-            for (const key in Object.keys(polygonMembers[i].getElementsByTagNameNS("*", "posList"))) {
-                coords.push(polygonMembers[i].getElementsByTagNameNS("*", "posList")[key].textContent);
+            for (const key in Object.keys(posListPolygonMembers)) {
+                coords.push(posListPolygonMembers[key].textContent);
             }
             coords.forEach(coordArray => coordinateArray.push(Object.values(coordArray.replace(/\s\s+/g, " ").split(" "))));
 

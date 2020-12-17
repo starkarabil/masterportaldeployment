@@ -10,9 +10,9 @@ const GeoJsonQueryModel = SourceModel.extend({
      * @returns {void}
      */
     buildQueryDatastructureByType: function () {
-        var features = this.get("features"),
-            snippetType = this.get("snippetType"),
-            featureAttributesMap = [];
+        const features = this.get("features"),
+            snippetType = this.get("snippetType");
+        let featureAttributesMap = [];
 
         featureAttributesMap = this.createFeatureAttributesMap(features, snippetType);
 
@@ -26,12 +26,12 @@ const GeoJsonQueryModel = SourceModel.extend({
      * @returns {void}
      */
     createFeatureAttributesMap: function (features, snippetType) {
-        var featureAttributesMap = [],
-            firstFeature = !_.isUndefined(features) ? features[0] : undefined,
-            keys = !_.isUndefined(firstFeature) ? _.without(firstFeature.getKeys(), "geometry") : [];
+        const featureAttributesMap = [],
+            firstFeature = features !== undefined ? features[0] : undefined,
+            keys = firstFeature !== undefined ? firstFeature.getKeys().filter(feature => feature !== "geometry") : [];
 
-        _.each(keys, function (key) {
-            var type = !_.isUndefined(snippetType) ? String(snippetType) : typeof firstFeature.get(key);
+        keys.forEach(key => {
+            const type = snippetType !== undefined ? String(snippetType) : typeof firstFeature.get(key);
 
             featureAttributesMap.push({name: key, type: type});
         });

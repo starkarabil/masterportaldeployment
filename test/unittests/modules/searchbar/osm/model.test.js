@@ -2,31 +2,31 @@ import Model from "@modules/searchbar/osm/model.js";
 import {expect} from "chai";
 
 describe("modules/searchbar/osm", function () {
-    var model = {},
-        config = {
-            "searchBar":
-            {
-                "osm": {
-                    "minChars": 3,
-                    "serviceId": "10",
-                    "limit": 60,
-                    "states": "Hamburg",
-                    "classes": "place,highway,building,shop,historic,leisure"
-                },
-                "visibleWFS":
-                {
-                    "minChars": 3
-                },
-                "zoomLevel": 9,
-                "placeholder": "Suche nach Adresse/Krankenhaus/B-Plan"
-            }
-        };
+    let model = {};
+
+    const config = {
+        "searchBar": {
+            "osm": {
+                "minChars": 3,
+                "serviceId": "10",
+                "limit": 60,
+                "states": "Hamburg",
+                "classes": "place,highway,building,shop,historic,leisure"
+            },
+            "visibleWFS": {
+                "minChars": 3
+            },
+            "zoomLevel": 9,
+            "placeholder": "Suche nach Adresse/Krankenhaus/B-Plan"
+        }
+    };
 
     before(function () {
-        model = new Model(config);
+        model = new Model(config.searchBar.osm);
     });
+
     describe("isSearched", function () {
-        var searched = {
+        const searched = {
                 "place_id": "83615484",
                 "licence": "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
                 "osm_type": "way",

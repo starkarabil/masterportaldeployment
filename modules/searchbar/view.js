@@ -8,9 +8,13 @@ import VisibleVectorModel from "./visibleVector/model";
 import BKGModel from "./bkg/model";
 import TreeModel from "./tree/model";
 import OSMModel from "./osm/model";
+import LocationFinderModel from "./locationFinder/model";
 import GdiModel from "./gdi/model";
 import ElasticSearchModel from "./elasticSearch/model";
 import Searchbar from "./model";
+import "./RadioBridge.js";
+import store from "../../src/app-store/index";
+import {getWKTGeom} from "../../src/utils/getWKTGeom";
 
 /**
  * @member SearchbarTemplate
@@ -68,11 +72,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
      * @fires Title#RadioTriggerTitleSetSize
      * @fires Searchbar#RadioTriggerSearchbarSearchAll
      * @fires GFI#RadioTriggerGFISetIsVisible
-     * @fires MapMarker#RadioTriggerMapMarkerZoomTo
      * @fires Searchbar#RadioTriggerSearchbarHit
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
-     * @fires MapMarker#RadioTriggerMapMarkerHidePolygon
-     * @fires MapMarker#RadioTriggerMapMarkerShowMarker
      */
     initialize: function (config) {
         this.model = new Searchbar(config);
@@ -143,6 +143,9 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         }
         if (config.hasOwnProperty("osm")) {
             new OSMModel(config.osm);
+        }
+        if (config.hasOwnProperty("locationFinder")) {
+            new LocationFinderModel(config.locationFinder);
         }
         if (config.hasOwnProperty("gdi")) {
             new GdiModel(config.gdi);
@@ -312,8 +315,8 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
      * @returns {integer} div height
      */
     getDropdownHeight: function () {
-        if (document.getElementsByClassName("masterportal-container").length > 0) {
-            return document.getElementsByClassName("masterportal-container")[0].offsetHeight - 130;
+        if (document.getElementById("masterportal-container")) {
+            return document.getElementById("masterportal-container").offsetHeight - 130;
         }
         return 100;
     },
@@ -369,10 +372,11 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
     },
 
     /**
-     * todo
-     * @returns {*} todo
+     * Trigger searching via all registered services. Update searchString to enable patterns with less then three chars.
+     * @returns {void}
      */
     searchAll: function () {
+        this.model.setSearchString($("#searchInput").val());
         Radio.trigger("Searchbar", "searchAll", this.model.get("searchString"));
     },
 
@@ -392,7 +396,10 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
             // sz, does not want to work in a local environment, so first use the template as variable
             // $("ul.dropdown-menu-search").html(_.template(SearchbarHitListTemplate, attr));
         }
-        this.$("ul.dropdown-menu-search").html(this.templateHitList(attr));
+
+        if (attr.hasOwnProperty("typeList")) {
+            this.$("ul.dropdown-menu-search").html(this.templateHitList(attr));
+        }
     },
 
     /**
@@ -415,14 +422,15 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         const modelHitList = this.model.get("hitList");
 
         // distingiush hit
-        if (evt.hasOwnProperty("cid")) { // in this case, evt = model
+        if (evt?.hasOwnProperty("cid")) { // in this case, evt = model
             pick = Radio.request("Util", "pick", modelHitList, [0]);
 
             hit = Object.values(pick)[0];
         }
-        else if (evt.hasOwnProperty("currentTarget") === true && evt.currentTarget.id) {
+        else if (evt?.hasOwnProperty("currentTarget") === true && evt.currentTarget.id) {
             hitID = evt.currentTarget.id;
-            hit = Radio.request("Util", "findWhereJs", this.model.get("hitList"), hitID);
+            hit = Radio.request("Util", "findWhereJs", this.model.get("hitList"), {"id": hitID});
+
         }
         else if (modelHitList.length > 1) {
             return;
@@ -439,10 +447,41 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         // 4. Zoom if necessary on the result otherwise special handling
         if (hit.hasOwnProperty("triggerEvent")) {
             this.model.setHitIsClick(true);
-            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true, evt.handleObj.type);
+            Radio.trigger(hit.triggerEvent.channel, hit.triggerEvent.event, hit, true, evt?.handleObj?.type);
         }
         else {
-            Radio.trigger("MapMarker", "zoomTo", hit, 5000);
+            const resolutions = Radio.request("MapView", "getResolutions"),
+                index = resolutions.indexOf(0.2645831904584105) === -1 ? resolutions.length : resolutions.indexOf(0.2645831904584105);
+            let extent = [];
+
+            if (hit?.coordinate) {
+                if (hit.coordinate.length === 2) {
+                    store.dispatch("MapMarker/placingPointMarker", hit.coordinate);
+                    Radio.trigger("MapView", "setCenter", hit.coordinate, {maxZoom: index});
+                }
+                else {
+                    store.dispatch("MapMarker/removePolygonMarker");
+                    store.dispatch("MapMarker/placingPolygonMarker", getWKTGeom(hit));
+                    extent = store.getters["MapMarker/markerPolygon"].getSource().getExtent();
+                    Radio.trigger("Map", "zoomToExtent", extent, {maxZoom: index});
+                }
+            }
+            else {
+                const isMobile = Radio.request("Util", "isViewMobile");
+
+                // desktop - topics tree is expanded
+                if (isMobile === false) {
+                    Radio.trigger("ModelList", "showModelInTree", hit.id);
+                }
+                // mobil
+                else {
+                    // adds the model to list, if not contained
+                    Radio.trigger("ModelList", "addModelsByAttributes", {id: hit.id});
+                    Radio.trigger("ModelList", "setModelAttributesById", hit.id, {isSelected: true});
+                }
+                // triggers selection of checkbox in tree
+                Radio.trigger("ModelList", "refreshLightTree");
+            }
         }
         // 5. Triggere hit by the radio
         // is needed for IDA and sgv-online, ...
@@ -843,7 +882,8 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         this.model.setSearchString("");
         this.setSearchbarString("");
         this.hideMarker();
-        Radio.trigger("MapMarker", "hideMarker");
+        store.dispatch("MapMarker/removePointMarker");
+        store.dispatch("MapMarker/removePolygonMarker");
         this.hideMenu();
         this.$("#searchInputUL").html("");
     },
@@ -851,7 +891,6 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
     /**
      * Handler for mouseenter event on hit.
      * @param {$.Event} evt Event
-     * @fires MapMarker#RadioTriggerMapMarkerShowMarker
      * @returns {void}
      */
     showMarker: function (evt) {
@@ -866,7 +905,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
             return;
         }
         else if (hit && hit.hasOwnProperty("coordinate")) {
-            Radio.trigger("MapMarker", "showMarker", hit.coordinate);
+            store.dispatch("MapMarker/placingPointMarker", hit.coordinate);
             return;
         }
         else if (hit && hit.hasOwnProperty("type") && (hit.type === i18next.t("common:modules.searchbar.type.topic") || hit.type === i18next.t("common:modules.searchbar.type.subject"))) {
@@ -879,8 +918,6 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
     /**
      * Hides all map markers.
      * @param {event} evt mouse leave event
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
-     * @fires MapMarker#RadioTriggerMapMarkerHidePolygon
      * @returns {void}
      */
     hideMarker: function (evt) {
@@ -889,7 +926,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
 
         if (evt !== undefined) {
             hitId = evt.currentTarget.id;
-            hit = Radio.request("Util", "findWhereJs", this.model.get("hitList"), hitId);
+            hit = Radio.request("Util", "findWhereJs", this.model.get("hitList"), {"id": hitId});
         }
 
         if (hit && hit.hasOwnProperty("triggerEvent")) {
@@ -898,7 +935,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
             }
         }
         else if (this.$(".dropdown-menu-search").css("display") === "block") {
-            Radio.trigger("MapMarker", "hideMarker");
+            store.dispatch("MapMarker/removePointMarker");
         }
     },
 

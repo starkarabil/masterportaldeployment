@@ -1,3 +1,5 @@
+import {extractEventCoordinates} from "../../../../src/utils/extractEventCoordinates";
+
 const POIModel = Backbone.Model.extend({
     defaults: {
         poiDistances: [],
@@ -36,17 +38,16 @@ const POIModel = Backbone.Model.extend({
         const isNewVectorStyle = Config.hasOwnProperty("useVectorStyleBeta") && Config.useVectorStyleBeta ? Config.useVectorStyleBeta : false,
             poiDistances = Radio.request("geolocation", "getPoiDistances"),
             poiFeatures = [];
-        let featInCircle = [],
-            sortedFeatures = [];
+        let featInCircle = [];
 
         poiDistances.forEach(distance => {
             featInCircle = Radio.request("geolocation", "getFeaturesInCircle", distance);
-            sortedFeatures = _.sortBy(featInCircle, function (feature) {
-                return feature.dist2Pos;
-            });
+
+            featInCircle.sort((featureA, featureB) => featureA.dist2Pos - featureB.dist2Pos);
+
             poiFeatures.push({
                 "category": distance,
-                "features": sortedFeatures
+                "features": featInCircle
             });
         });
 
@@ -68,7 +69,7 @@ const POIModel = Backbone.Model.extend({
         let poi,
             first;
 
-        if (!_.isNumber(this.get("activeCategory"))) {
+        if (typeof this.get("activeCategory") !== "number") {
             poi = this.get("poiFeatures");
             first = poi.find(function (dist) {
                 return dist.features.length > 0;
@@ -147,7 +148,9 @@ const POIModel = Backbone.Model.extend({
                     const type = legendInfo.styleObject.get("type");
 
                     if (type === "icon") {
-                        imagePath = legendInfo.styleObject.get("imagePath") + legendInfo.styleObject.get("imageName");
+                        const featureStyle = style.createStyle(feat, false);
+
+                        imagePath = featureStyle.getImage().getSrc();
                     }
                     else if (type === "circle") {
                         imagePath = this.createCircleSVG(style);
@@ -197,12 +200,12 @@ const POIModel = Backbone.Model.extend({
             feature = selectedPoiFeatures.features.find(function (feat) {
                 return feat.getId() === id;
             }),
-            extent = feature.getGeometry().getExtent();
+            extent = feature.getGeometry().getExtent(),
+            coordinate = extractEventCoordinates(extent),
+            resolutions = Radio.request("MapView", "getResolutions"),
+            index = resolutions.indexOf(0.2645831904584105) === -1 ? resolutions.length : resolutions.indexOf(0.2645831904584105);
 
-        Radio.trigger("MapMarker", "zoomTo", {
-            type: "POI",
-            coordinate: extent
-        });
+        Radio.trigger("Map", "zoomToExtent", coordinate, {maxZoom: index});
     },
 
     /**

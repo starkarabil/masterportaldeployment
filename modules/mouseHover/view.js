@@ -41,17 +41,23 @@ const MouseHoverPopupView = Backbone.View.extend(/** @lends MouseHoverPopupView.
      * Renders the Bootstrap-Tooltip into the mousehoverpopup
      * html: true - So that html br will be integrated
      * trigger: manual - solves bug with hiding tooltip
-     * @param {string} text -
-     * @returns {void}
+     * @param {(String|String[])} text String or Array containing text to show
+     * @returns {MouseHoverPopupView}  returns this view
      */
     render: function (text) {
-        var element = this.model.get("overlay").getElement(),
-            textString = "",
+        const element = this.model.get("overlay").getElement();
+        let textString = "",
             template = "";
 
-        _.each(text, function (textElement) {
-            textString += textElement;
-        });
+        if (Array.isArray(text)) {
+            text.forEach(textElement => {
+                textString += textElement;
+            });
+        }
+        else {
+            textString = text;
+        }
+
         template = "<div style='bottom:5px' class='tooltip top in' role='tooltip'><div class='tooltip-inner mouseHover in'>" + textString + "</div></div>";
 
         $(element).empty();
@@ -64,7 +70,7 @@ const MouseHoverPopupView = Backbone.View.extend(/** @lends MouseHoverPopupView.
      * @returns {void}
      */
     createOverlayElement: function () {
-        var element = document.createElement("DIV");
+        const element = document.createElement("DIV");
 
         document.getElementById("map").appendChild(element);
         this.model.get("overlay").setElement(element);

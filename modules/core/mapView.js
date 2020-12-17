@@ -1,12 +1,13 @@
 import {Projection} from "ol/proj.js";
 import defaults from "masterportalAPI/src/defaults";
 import {transformToMapProjection} from "masterportalAPI/src/crs";
+import store from "../../src/app-store";
 
 const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     defaults: {
         background: "",
         units: "m",
-        DOTS_PER_INCH: $("#dpidiv").outerWidth()
+        DOTS_PER_INCH: store.getters.dpi
     },
 
     /**
@@ -36,9 +37,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @fires Core#RadioRequestParametricURLGetCenter
      * @fires Core#RadioRequestParametricURLGetProjectionFromUrl
      * @fires Core#RadioRequestParametricURLGetZoomLevel
-     * @fires Alerting#RadioTriggerAlertAlert
      * @fires ClickCounter#RadioTriggerClickCounterZoomChanged
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
      * @fires Core#RadioTriggerMapViewChangedCenter
      * @fires Core#RadioTriggerMapViewChangedOptions
      * @fires Core#RadioTriggerMapViewChangedZoomLevel
@@ -49,7 +48,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     initialize: function () {
         const channel = Radio.channel("MapView");
 
-        if (!_.isUndefined(this.get("settings")) && !_.isUndefined(this.get("settings").options)) {
+        if (this.get("settings") !== undefined && this.get("settings").options !== undefined) {
             this.setOptions(this.get("settings").options);
         }
         else {
@@ -61,7 +60,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
                 return this.get("view").getProjection();
             },
             "getOptions": function () {
-                return _.findWhere(this.get("options"), {resolution: this.get("view").constrainResolution(this.get("view").getResolution())});
+                return Radio.request("Util", "findWhereJs", this.get("options"), {resolution: this.get("view").getConstrainedResolution(this.get("view").getResolution())});
             },
             "getCenter": function () {
                 return this.getCenter();
@@ -74,7 +73,9 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
             },
             "getResoByScale": this.getResoByScale,
             "getScales": function () {
-                return _.pluck(this.get("options"), "scale");
+                return this.get("options").map(function (option) {
+                    return option.scale;
+                });
             },
             "getCurrentExtent": this.getCurrentExtent,
             "getBackgroundImage": function () {
@@ -105,6 +106,11 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
             Radio.trigger("MapView", "changedCenter", this.getCenter());
             Radio.trigger("RemoteInterface", "postMessage", {"centerPosition": this.getCenter()});
         }, this);
+        Radio.trigger("MapView", "changedOptions", Radio.request("Util", "findWhereJs", this.get("options"), {resolution: this.get("view").getConstrainedResolution(this.get("view").getResolution())}));
+        // NOTE: used for scaleSwitcher-tutorial
+        store.commit("Map/setScales", {scales: this.get("options").map(function (option) {
+            return option.scale;
+        })});
     },
 
     /**
@@ -119,9 +125,9 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     changedResolutionCallback: function (evt) {
-        var mapView = evt.target,
-            constrainResolution = mapView.constrainResolution(mapView.get(evt.key)),
-            params = _.findWhere(this.get("options"), {resolution: constrainResolution});
+        const mapView = evt.target,
+            constrainResolution = mapView.getConstrainedResolution(mapView.get(evt.key)),
+            params = Radio.request("Util", "findWhereJs", this.get("options"), {resolution: constrainResolution});
 
         Radio.trigger("MapView", "changedOptions", params);
         Radio.trigger("MapView", "changedZoomLevel", this.getZoom());
@@ -135,9 +141,9 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     setResolutionByScale: function (scale) {
-        var params = _.findWhere(this.get("options"), {scale: scale});
+        const params = Radio.request("Util", "findWhereJs", this.get("options"), {scale: scale});
 
-        if (!_.isUndefined(this.get("view"))) {
+        if (this.get("view") !== undefined) {
             this.get("view").setResolution(params.resolution);
         }
     },
@@ -145,17 +151,15 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     /**
      * @description todo
      * @param {number} resolution -
-     * @param {number} direction - 0 set the nearest, 1 set the largest nearest, -1 set the smallest nearest
      * @returns {void}
      */
-    setConstrainedResolution: function (resolution, direction) {
-        this.get("view").setResolution(this.get("view").constrainResolution(resolution, 0, direction));
+    setConstrainedResolution: function (resolution) {
+        this.get("view").setResolution(resolution);
     },
 
     /**
      * Sets center and resolution to initial values
      * @fires Core#RadioRequestParametricURLGetCenter
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
      * @returns {void}
      */
     resetView: function () {
@@ -169,7 +173,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
 
         this.get("view").setCenter(center);
         this.get("view").setResolution(resolution);
-        Radio.trigger("MapMarker", "hideMarker");
+        store.dispatch("MapMarker/removePointMarker");
     },
 
     /**
@@ -197,10 +201,10 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     prepareStartCenter: function (value) {
-        var startCenter = value;
+        let startCenter = value;
 
-        if (!_.isUndefined(startCenter)) {
-            if (!_.isUndefined(this.get("projectionFromParamUrl"))) {
+        if (startCenter !== undefined) {
+            if (this.get("projectionFromParamUrl") !== undefined) {
                 startCenter = transformToMapProjection(Radio.request("Map", "getMap"), this.get("projectionFromParamUrl"), startCenter);
             }
             this.get("view").setCenter(startCenter);
@@ -213,7 +217,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     setStartZoomLevel: function (value) {
-        if (!_.isUndefined(value)) {
+        if (value !== undefined) {
             this.get("view").setResolution(this.get("view").getResolutions()[value]);
         }
     },
@@ -249,7 +253,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {void}
      */
     setCenter: function (coords, zoomLevel) {
-        var first2Coords = [coords[0], coords[1]];
+        let first2Coords = [coords[0], coords[1]];
 
         // Coordinates need to be integers, otherwise open layers will go nuts when you attempt to pan the
         // map. Please fix this at the origin of those stringified numbers. However, this is to adress
@@ -261,7 +265,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
 
         this.get("view").setCenter(first2Coords);
 
-        if (!_.isUndefined(zoomLevel)) {
+        if (zoomLevel !== undefined) {
             this.get("view").setZoom(zoomLevel);
         }
     },
@@ -289,14 +293,18 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {number} resolution
      */
     getResoByScale: function (scale, scaleType) {
-        var scales = _.pluck(this.get("options"), "scale"),
-            unionScales = _.union(scales, [parseInt(scale, 10)]),
-            index;
-
-        unionScales = _.sortBy(unionScales, function (num) {
-            return -num;
+        const scales = this.get("options").map(function (option) {
+            return option.scale;
         });
-        index = _.indexOf(unionScales, parseInt(scale, 10));
+
+        let index = "",
+            unionScales = scales.concat([parseInt(scale, 10)].filter(item => scales.indexOf(item) < 0));
+
+        unionScales = unionScales.sort(function (a, b) {
+            return b - a;
+        });
+
+        index = unionScales.indexOf(parseInt(scale, 10));
         if (unionScales.length === scales.length || scaleType === "max") {
             return this.get("view").getResolutions()[index];
         }
@@ -320,7 +328,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {float} Resolution
      */
     getResolution: function (scale) {
-        var units = this.get("units"),
+        const units = this.get("units"),
             mpu = Projection.METERS_PER_UNIT[units],
             dpi = this.get("DOTS_PER_INCH"),
             resolution = scale / (mpu * 39.37 * dpi);
@@ -342,7 +350,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {ol.extent} extent
      */
     getCurrentExtent: function () {
-        var mapSize = Radio.request("Map", "getSize");
+        const mapSize = Radio.request("Map", "getSize");
 
         return this.get("view").calculateExtent(mapSize);
     },

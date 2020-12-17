@@ -4,7 +4,10 @@ const QueryValuesView = Backbone.View.extend({
     },
     initialize: function () {
         this.listenTo(this.model, {
-            "removeView": this.remove
+            "removeView": this.remove,
+            "change:currentLng": () => {
+                this.render(this.model, this.model.get("isActive"));
+            }
         });
     },
     tagName: "span",
@@ -13,7 +16,7 @@ const QueryValuesView = Backbone.View.extend({
         title: "Auswahl löschen"
     },
     render: function () {
-        var html = "",
+        let html = "",
             val;
 
         if (this.model.get("type") === "boolean") {

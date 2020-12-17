@@ -1,9 +1,14 @@
-var webpack = require("webpack"),
+const webpack = require("webpack"),
     path = require("path"),
     VueLoaderPlugin = require("vue-loader/lib/plugin");
 
+require("regenerator-runtime/runtime");
 require("jsdom-global")();
 global.DOMParser = window.DOMParser;
+
+URL.createObjectURL = function () {
+    return false;
+};
 
 module.exports = {
     target: "node",
@@ -23,10 +28,9 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                loader: "babel-loader",
-                options: {
-                    presets: ["@babel/preset-env"],
-                    plugins: ["@babel/plugin-syntax-dynamic-import"]
+                exclude: /\bcore-js\b|\bvideo.js\b|\bsinon\b|\bturf\b/,
+                use: {
+                    loader: "babel-loader"
                 }
             },
             {
@@ -48,6 +52,18 @@ module.exports = {
             {
                 test: /\.(le|c|sa)ss$/,
                 use: "null-loader"
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: "file-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.xml$/i,
+                use: "raw-loader"
             }
         ]
     },
@@ -65,6 +81,12 @@ module.exports = {
             requestAnimationFrame: "raf"
         }),
         new VueLoaderPlugin(),
-        new webpack.NormalModuleReplacementPlugin(/^mqtt$/, "mqtt/dist/mqtt.js")
+        new webpack.NormalModuleReplacementPlugin(/^mqtt$/, "mqtt/dist/mqtt.js"),
+        // ADDONS wird hier global definiert, da der pre-push den Fehler ADDONS is undefined in ./src/addons.js wirft,
+        // obwohl der linter die Zeile ignorieren soll
+        new webpack.DefinePlugin({
+            ADDONS: {},
+            VUE_ADDONS: {}
+        })
     ]
 };

@@ -2,7 +2,7 @@ import LayerView from "@modules/menu/desktop/layer/viewLight.js";
 import {expect} from "chai";
 
 describe("menu/desktop/layer/viewLight", function () {
-    var fakeModel,
+    let fakeModel,
         CustomLayerView;
 
     before(function () {
@@ -12,6 +12,7 @@ describe("menu/desktop/layer/viewLight", function () {
                 return 42;
             },
 
+            children: [{datasets: false}],
             isSettingVisible: false,
             isStyleable: false,
             showSettings: true,
@@ -26,18 +27,8 @@ describe("menu/desktop/layer/viewLight", function () {
                 this.isStyleable = value;
             },
 
-            get: function (value) {
-                switch (value) {
-                    case "isSettingVisible":
-                        return this.isSettingVisible;
-                    case "isStyleable":
-                        return this.isStyleable;
-                    case "showSettings":
-                        return this.showSettings;
-                    case "supported":
-                        return this.supported;
-                    case "isRemovable":
-                        return this.isRemovable;
+            get: function (key) {
+                switch (key) {
                     case "removeTopicText":
                         return "removeTopicText";
                     case "changeClassDivisionText":
@@ -57,7 +48,7 @@ describe("menu/desktop/layer/viewLight", function () {
                     case "levelDownText":
                         return "levelDownText";
                     default:
-                        return null;
+                        return this[key] || null;
                 }
             },
 
@@ -101,12 +92,11 @@ describe("menu/desktop/layer/viewLight", function () {
 
     describe("The style-icon", function () {
         it("should be visible for stylable layers", function () {
-            var layerView;
 
             fakeModel.setIsStyleable(true);
             fakeModel.setIsSettingVisible(true);
 
-            layerView = new CustomLayerView({model: fakeModel});
+            const layerView = new CustomLayerView({model: fakeModel});
 
             expect(layerView.$el.find(".pull-right").find(".glyphicon-tint").length).to.be.equal(1);
 
@@ -115,11 +105,12 @@ describe("menu/desktop/layer/viewLight", function () {
             expect(layerView.$el.find(".pull-right").find(".glyphicon-tint").length).to.be.equal(1);
         });
         it("should be hidden for other not styleable layers", function () {
-            var layerView;
 
             fakeModel.setIsStyleable(false);
             fakeModel.setIsSettingVisible(true);
-            layerView = new CustomLayerView({model: fakeModel});
+
+            const layerView = new CustomLayerView({model: fakeModel});
+
             expect(layerView.$el.find(".glyphicon-tint").length).to.be.equal(0);
 
             layerView.rerender();

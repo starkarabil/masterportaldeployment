@@ -1,7 +1,7 @@
 import Tool from "../../core/modelList/tool/model";
 
 const ExtendedFilter = Tool.extend({
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         currentContent: {
             step: 1,
             name: "Bitte wählen Sie die Filteroption",
@@ -57,31 +57,31 @@ const ExtendedFilter = Tool.extend({
         return this.set("wfsList", val);
     },
     getLayers: function () {
-        var layers = Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, typ: "WFS"}),
+        const layers = Radio.request("ModelList", "getModelsByAttributes", {isVisibleInMap: true, typ: "WFS"}),
             featureLayers = layers.filter(function (layer) {
                 return layer.get("layer").getSource().getFeatures().length > 0;
             }),
             filterLayers = featureLayers.filter(function (layer) {
                 return layer.get("extendedFilter");
             }),
-            wfsList = [],
+            wfsList = [];
+        let values = [],
             attributes = [],
-            attributes_with_values = [],
-            values = [];
+            attributes_with_values = [];
 
-        _.each(filterLayers, function (layer) {
-            _.each(layer.get("layer").getSource().getFeatures()[0].getKeys(), function (key) {
-                if (!_.contains(this.get("ignoredKeys"), key.toUpperCase())) {
+        filterLayers.forEach(layer => {
+            layer.get("layer").getSource().getFeatures()[0].getKeys().forEach(key => {
+                if (!this.get("ignoredKeys").includes(key.toUpperCase())) {
                     attributes.push(key);
                 }
-            }, this);
-            _.each(attributes, function (attr) {
-                _.each(layer.get("layer").getSource().getFeatures(), function (feature) {
+            });
+            attributes.forEach(attr => {
+                layer.get("layer").getSource().getFeatures().forEach(feature => {
                     values.push(feature.get(attr));
                 });
                 attributes_with_values.push({
                     attr: attr,
-                    values: _.uniq(values)
+                    values: [...new Set(values)]
                 });
                 values = [];
             });
@@ -99,11 +99,12 @@ const ExtendedFilter = Tool.extend({
     },
 
     previousStep: function () {
-        var currentContent = this.get("currentContent"),
-            step = currentContent.step,
+        const currentContent = this.get("currentContent"),
             layername = currentContent.layername,
-            currentFilterType = this.get("currentFilterType"),
-            content;
+            currentFilterType = this.get("currentFilterType");
+
+        let content,
+            step = currentContent.step;
 
         if (step === 2) {
             content = this.getDefaultContent();
@@ -121,18 +122,17 @@ const ExtendedFilter = Tool.extend({
         this.setCurrentContent(content);
     },
     removeAttrFromFilter: function (evt) {
-        var id = evt.currentTarget.id,
+        const id = evt.currentTarget.id,
             filtername = id.split("__")[0],
             attr = id.split("__")[1],
             val = id.split("__")[2],
-            currentFilters = this.get("currentFilters"),
-            filterToUpdate,
-            i,
+            currentFilters = this.get("currentFilters");
+        let filterToUpdate,
             counter,
             content,
-            attributesArray;
+            attributesArray = [];
 
-        for (i = currentFilters.length - 1; i >= 0; i--) {
+        for (let i = currentFilters.length - 1; i >= 0; i--) {
             if (currentFilters[i].layername === filtername) {
                 filterToUpdate = currentFilters.splice(i, 1)[0];
                 break;
@@ -141,7 +141,7 @@ const ExtendedFilter = Tool.extend({
 
         attributesArray = filterToUpdate.attributes;
 
-        for (i = attributesArray.length - 1; i >= 0; i--) {
+        for (let i = attributesArray.length - 1; i >= 0; i--) {
             if (attributesArray[i].attribute === attr && attributesArray[i].value === val) {
                 attributesArray.splice(i, 1);
                 break;
@@ -173,11 +173,11 @@ const ExtendedFilter = Tool.extend({
     },
 
     nextStep: function (evt) {
-        var id = evt.currentTarget.id,
+        const id = evt.currentTarget.id,
             val = $("#" + id).val(),
             currentContent = this.get("currentContent"),
-            step = currentContent.step,
-            newContent;
+            step = currentContent.step;
+        let newContent;
 
         if (step === 1) { // Layer wählen oder Filter wählen
             newContent = this.step2(val, step);
@@ -198,23 +198,23 @@ const ExtendedFilter = Tool.extend({
     },
 
     getDefaultContent: function () {
-        var content;
-
-        content = {step: 1,
+        const content = {
+            step: 1,
             name: "Bitte wählen Sie die Filteroption",
             layername: undefined,
             filtername: undefined,
             attribute: undefined,
             options: ["Neuen Filter erstellen", "Bestehenden Filter verfeinern"]
         };
+
         return content;
     },
 
     step2: function (val, step) {
-        var content,
+        const options = [];
+        let content,
             newStep = step,
             wfsList,
-            options = [],
             currentFilters = [];
 
         newStep++;
@@ -222,7 +222,7 @@ const ExtendedFilter = Tool.extend({
             this.setCurrentFilterType("Neuen Filter erstellen");
             this.getLayers();
             wfsList = this.get("wfsList");
-            _.each(wfsList, function (layer) {
+            wfsList.forEach(layer => {
                 options.push(layer.name);
             });
             content = {step: newStep,
@@ -234,7 +234,7 @@ const ExtendedFilter = Tool.extend({
         else { // Filter erweitern
             this.setCurrentFilterType("Bestehenden Filter verfeinern");
             currentFilters = this.get("currentFilters");
-            _.each(currentFilters, function (filter) {
+            currentFilters.forEach(filter => {
                 options.push(filter.layername);
             });
             content = {step: newStep,
@@ -248,10 +248,11 @@ const ExtendedFilter = Tool.extend({
     },
 
     step3: function (val, step) {
-        var content,
+        const wfsList = this.get("wfsList"),
+            options = [];
+
+        let content = {},
             newStep = step,
-            wfsList = this.get("wfsList"),
-            options = [],
             layer;
 
         newStep++;
@@ -259,60 +260,65 @@ const ExtendedFilter = Tool.extend({
 
         if (val.split(" ")[0] !== "Filter") {
             this.setCurrentFilterType("Neuen Filter erstellen");
-            layer = _.findWhere(wfsList, {name: val});
+            layer = Radio.request("Util", "findWhereJs", wfsList, {name: val});
         }
         else {
             this.setCurrentFilterType("Bestehenden Filter verfeinern");
-            layer = _.findWhere(wfsList, {name: val.split(" ")[2]});
-
+            layer = Radio.request("Util", "findWhereJs", wfsList, {name: val.split(" ")[2]});
         }
 
-        _.each(layer.attributes, function (attribute) {
+        layer.attributes.forEach(attribute => {
             options.push(attribute.attr);
         });
-        content = {step: newStep,
+
+        content = {
+            step: newStep,
             name: "Bitte wählen Sie ein Attribut",
             layername: layer.name,
             filtername: val,
             attribute: undefined,
-            options: options};
+            options: options
+        };
 
         return content;
     },
 
     step4: function (val, step, layername, filtername) {
-        var content,
-            newStep = step,
-            wfsList = this.get("wfsList"),
-            options = [],
-            layer,
-            attribute;
+        const wfsList = this.get("wfsList"),
+            options = [];
+
+        let newStep = step,
+            layer = {},
+            content = {},
+            attribute = {};
 
         newStep++;
         this.getLayers();
-        layer = _.findWhere(wfsList, {name: layername});
-        attribute = _.findWhere(layer.attributes, {attr: val});
+        layer = Radio.request("Util", "findWhereJs", wfsList, {name: layername});
+        attribute = Radio.request("Util", "findWhereJs", layer.attributes, {attr: val});
 
-        _.each(attribute.values, function (value) {
+        attribute.values.forEach(value => {
             options.push(value);
         });
-        content = {step: newStep,
+        content = {
+            step: newStep,
             name: "Bitte wählen Sie einen Wert",
             layername: layer.name,
             filtername: filtername,
             attribute: val,
-            options: options};
+            options: options
+        };
 
         return content;
     },
 
     setFilter: function (val, layername, attribute, filtername) {
-        var currentFilters = this.get("currentFilters"),
-            filterToUpdate,
-            i,
-            currentFilterType = this.get("currentFilterType"),
-            filtercounter = this.get("filterCounter"),
-            attributesArray = [];
+        const currentFilters = this.get("currentFilters"),
+            currentFilterType = this.get("currentFilterType");
+
+        let filterToUpdate,
+            attributesArray = [],
+            filtercounter = this.get("filterCounter");
 
         if (currentFilterType === "Neuen Filter erstellen") {
             attributesArray = [];
@@ -327,7 +333,7 @@ const ExtendedFilter = Tool.extend({
             filtercounter++;
         }
         else {
-            for (i = currentFilters.length - 1; i >= 0; i--) {
+            for (let i = currentFilters.length - 1; i >= 0; i--) {
                 if (currentFilters[i].layername === filtername) {
                     filterToUpdate = currentFilters.splice(i, 1)[0];
                     break;
@@ -348,12 +354,13 @@ const ExtendedFilter = Tool.extend({
     },
 
     filterLayers: function () {
-        var currentFilters = this.get("currentFilters"),
-            layers = this.get("wfsList"),
-            layer,
+        const currentFilters = this.get("currentFilters"),
+            layers = this.get("wfsList");
+
+        let layer,
             features;
 
-        _.each(layers, function (wfslayer) {
+        layers.forEach(wfslayer => {
             layer = wfslayer.layer;
             features = layer.getSource().getFeatures();
 
@@ -362,16 +369,16 @@ const ExtendedFilter = Tool.extend({
                 layer.setStyle(null);
             }
 
-            _.each(features, function (feature) {
-                var featuredarstellen2 = true,
+            features.forEach(feature => {
+                let featuredarstellen2 = true,
                     preVal2 = false;
 
-                _.each(currentFilters, function (filter) {
-                    var featuredarstellen = true,
+                currentFilters.forEach(filter => {
+                    let featuredarstellen = true,
                         preVal = true;
 
                     if (filter.layername.split(" ")[2] === wfslayer.name) {
-                        _.each(filter.attributes, function (attribute) {
+                        filter.attributes.forEach(attribute => {
                             featuredarstellen = this.checkFeatureForFilter(feature, attribute);
                             if (preVal === true && featuredarstellen === true) {
                                 featuredarstellen = true;
@@ -381,7 +388,7 @@ const ExtendedFilter = Tool.extend({
                                 featuredarstellen = false;
                                 preVal = false;
                             }
-                        }, this);
+                        });
 
                         if (preVal2 === true || featuredarstellen === true) {
                             featuredarstellen2 = true;
@@ -413,16 +420,16 @@ const ExtendedFilter = Tool.extend({
     },
 
     checkFeatureForFilter: function (feature, attr) {
-        var featuredarstellen = true,
-            attributname = attr.attribute,
+        const attributname = attr.attribute,
             attributvalue = attr.value,
+            featureattribute = Radio.request("Util", "pick", feature.getProperties(), [attributname]);
+
+        let featuredarstellen = true,
             featurevalue0,
-            featurevalue,
+            featurevalue;
 
-            featureattribute = _.pick(feature.getProperties(), attributname);
-
-        if (featureattribute && !_.isNull(featureattribute)) {
-            featurevalue0 = _.values(featureattribute)[0];
+        if (featureattribute && featureattribute !== null) {
+            featurevalue0 = Object.values(featureattribute)[0];
             if (featurevalue0) {
                 featurevalue = featurevalue0.trim();
                 if (featurevalue !== attributvalue) {
@@ -430,6 +437,7 @@ const ExtendedFilter = Tool.extend({
                 }
             }
         }
+
         return featuredarstellen;
     }
 });

@@ -1,7 +1,7 @@
 import Tool from "../../core/modelList/tool/model";
 
 const SaveSelection = Tool.extend(/** @lends SaveSelection.prototype */{
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         zoomLevel: "",
         centerCoords: [],
         layerIDList: [],
@@ -29,10 +29,7 @@ const SaveSelection = Tool.extend(/** @lends SaveSelection.prototype */{
      * @property {Boolean} glyphicon="glyphicon-share" todo
      * @property {String} saveSelectionText="", filled with "Speichern Sie diese URL als Lesezeichen ab"- translated
      * @constructs
-     * @listens Tools.GetCoord#RadioTriggerChangeIsActive
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
      * @fires Core#RadioTriggerMapRegisterListener
-     * @fires MapMarker#RadioTriggerMapMarkerShowMarker
      */
     initialize: function () {
         const channel = Radio.channel("SaveSelection");
@@ -85,13 +82,14 @@ const SaveSelection = Tool.extend(/** @lends SaveSelection.prototype */{
      * @returns {void}
      */
     filterExternalLayer: function (layerList) {
-        var filteredLayerList = layerList.filter(function (model) {
+        let filteredLayerList = layerList.filter(function (model) {
             return !model.get("isExternal");
         });
 
-        filteredLayerList = _.sortBy(filteredLayerList, function (model) {
+        filteredLayerList = Radio.request("Util", "sortBy", filteredLayerList, function (model) {
             return model.get("selectionIDX");
         });
+
         this.setLayerList(filteredLayerList);
         this.createParamsValues();
     },
@@ -101,21 +99,35 @@ const SaveSelection = Tool.extend(/** @lends SaveSelection.prototype */{
      * @return {void}
      */
     createParamsValues: function () {
-        var layerVisibilities = [],
+        const layerVisibilities = [],
             layerTrancparence = [];
 
-        _.each(this.get("layerList"), function (model) {
+        this.get("layerList").forEach(model => {
             layerVisibilities.push(model.get("isVisibleInMap"));
             layerTrancparence.push(model.get("transparency"));
         });
-        this.setLayerIdList(_.pluck(this.get("layerList"), "id"));
+
+        this.setLayerIdList(this.get("layerList").map(function (elem) {
+            return elem.id;
+        }));
+
         this.setLayerTransparencyList(layerTrancparence);
         this.setLayerVisibilityList(layerVisibilities);
         this.setUrl();
     },
 
     setLayerList: function (value) {
-        this.set("layerList", value);
+        const getIds = [];
+        let withoutUrlFeatures = [];
+
+        if (Config.featureViaURL !== undefined) {
+            Config.featureViaURL.layers.forEach(element => {
+                getIds.push(element.id);
+            });
+        }
+        withoutUrlFeatures = value.filter((v) => !getIds.includes(v.id));
+
+        this.set("layerList", withoutUrlFeatures);
     },
 
     setZoomLevel: function (zoomLevel) {

@@ -2,6 +2,7 @@ import {WFS} from "ol/format.js";
 import {DEVICE_PIXEL_RATIO} from "ol/has.js";
 import {getLayerWhere} from "masterportalAPI/src/rawLayerList";
 import {fetch as fetchPolyfill} from "whatwg-fetch";
+import store from "../../src/app-store/index";
 
 const ZoomToGeometry = Backbone.Model.extend(/** @lends ZoomToGeometry.prototype */{
     defaults: {
@@ -39,17 +40,15 @@ const ZoomToGeometry = Backbone.Model.extend(/** @lends ZoomToGeometry.prototype
         if (name && name.length > 0) {
             this.zoomToGeometry(name, this.get("layerId"), this.get("attribute"));
         }
-
-        Radio.trigger("Map", "registerListener", "postcompose", this.handlePostCompose, this);
     },
 
     /**
-    * Zooms to a geometry loaded from a WFS.
-    * @param {string} name - Name of the feature to zoom to.
-    * @param {string} layerId - Id from WFS-layer.
-    * @param {string} attribute - The attribute from the wfs.
-    * @returns {void}
-    **/
+     * Zooms to a geometry loaded from a WFS.
+     * @param {string} name - Name of the feature to zoom to.
+     * @param {string} layerId - Id from WFS-layer.
+     * @param {string} attribute - The attribute from the wfs.
+     * @returns {void}
+     **/
     zoomToGeometry: function (name, layerId, attribute) {
         const layerInformation = getLayerWhere({id: layerId});
 
@@ -83,45 +82,44 @@ const ZoomToGeometry = Backbone.Model.extend(/** @lends ZoomToGeometry.prototype
             .catch(error => {
                 console.warn("The fetch of the data failed with the following error message: " + error);
                 Radio.trigger("Alert", "alert", {
-                    text: "<strong>Der parametrisierte Aufruf des Portals ist leider schief gelaufen!</strong> <br>"
-                        + "<small>Details: Ein benötigter Dienst antwortet nicht.</small>",
+                    text: "<strong>" + i18next.t("modules.zoomToGeometry.alertParameterizedAccess") + "</strong> <br>"
+                    + "<small>" + i18next.t("modules.zoomToGeometry.alertRequiredService") + "</small>",
                     kategorie: "alert-warning"
                 });
             });
     },
 
     /**
-    * Zooms to the feature loaded by the WFS.
-    * @param {object} data - The GML String.
-    * @param {string} name - Name of the features.
-    * @param {string} attribute - GML attribute that is to be searched for the name.
-    * @fires Core#RadioTriggerMapZoomToExtent
-    * @returns {void}
-    **/
+     * Zooms to the feature loaded by the WFS.
+     * @param {object} data - The GML String.
+     * @param {string} name - Name of the features.
+     * @param {string} attribute - GML attribute that is to be searched for the name.
+     * @fires Core#RadioTriggerMapZoomToExtent
+     * @returns {void}
+     **/
     zoomToFeature: function (data, name, attribute) {
         const foundFeature = this.parseFeatures(data, name, attribute);
         let extent;
 
         if (foundFeature === undefined) {
-            Radio.trigger("Alert", "alert", {
-                text: "<strong>Leider konnten die Objekte zu denen gezommt werden soll nicht geladen werden</strong> <br> <small>Details: Kein Objekt gefunden, dessen Attribut \"" + attribute + "\" den Wert \"" + name + "\" einnimmt.</small>",
-                kategorie: "alert-warning"
-            });
+            store.dispatch("Alerting/addSingleAlert", i18next.t("modules.zoomToGeometry.alertNoFoundFeature"));
         }
         else {
             extent = this.calcExtent(foundFeature);
             Radio.trigger("Map", "zoomToExtent", extent);
         }
+
         this.setFeatureGeometry(foundFeature.getGeometry());
+        this.createLayerWithFeature(foundFeature);
     },
 
     /**
-    * Searches a GML string for a specific feature.
-    * @param {object} data - The GML String.
-    * @param {string} name - Name of the features.
-    * @param {string} attribute - GML attribute that is to be searched for the name.
-    * @returns {boolean | ol/feature} The WFS feature.
-    **/
+     * Searches a GML string for a specific feature.
+     * @param {object} data - The GML String.
+     * @param {string} name - Name of the features.
+     * @param {string} attribute - GML attribute that is to be searched for the name.
+     * @returns {boolean | ol/feature} The WFS feature.
+     **/
     parseFeatures: function (data, name, attribute) {
         const format = new WFS(),
             features = format.readFeatures(data),
@@ -157,13 +155,26 @@ const ZoomToGeometry = Backbone.Model.extend(/** @lends ZoomToGeometry.prototype
     },
 
     /**
+     * Adding a layer for creating the cancvas.
+     * @param {ol/feature} feature - Feature for the canvas.
+     * @returns {Void} -
+     */
+    createLayerWithFeature: function (feature) {
+        const zoomToGeometryLayer = Radio.request("Map", "createLayerIfNotExists", "zoomToGeometryLayer");
+
+        zoomToGeometryLayer.getSource().clear();
+        zoomToGeometryLayer.getSource().addFeature(feature);
+        zoomToGeometryLayer.on("postrender", this.handlePostRender.bind(this), this);
+    },
+
+    /**
      * todo
      * @param {*} evt - todo
      * @returns {void}
      */
-    handlePostCompose: function (evt) {
+    handlePostRender: function (evt) {
         const canvas = evt.context,
-            map = evt.target;
+            map = Radio.request("Map", "getMap");
 
         if (this.get("isRender") === true && this.get("featureGeometry") !== undefined) {
             canvas.beginPath();

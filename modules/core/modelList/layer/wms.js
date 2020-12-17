@@ -7,14 +7,16 @@ import {Image, Tile} from "ol/layer.js";
 const WMSLayer = Layer.extend({
     defaults: function () {
         // extended die Layer defaults by value
-        return _.extend(_.result(Layer.prototype, "defaults"), {
+        return Object.assign(Layer.prototype.defaults, {
             infoFormat: "text/xml",
-            // Eine Veränderung der CACHEID initiiert von openlayers ein reload des Dienstes und umgeht den Browser-Cache
-            cacheId: _.random(9999999),
+            gfiAsNewWindow: null,
+            // A change of the CACHEID initiates a reload of the service by openlayers and bypasses the browser cache.
+            cacheId: parseInt(Math.random() * 10000000, 10),
             supported: ["2D", "3D"],
             showSettings: true,
             extent: null,
-            notSupportedFor3D: ["1747", "1749", "1750", "9822", "12600", "9823", "1752", "9821", "1750", "1751", "12599", "2297"]
+            notSupportedFor3D: ["1747", "1749", "1750", "9822", "12600", "9823", "1752", "9821", "1750", "1751", "12599", "2297"],
+            useProxy: false
         });
     },
 
@@ -30,8 +32,8 @@ const WMSLayer = Layer.extend({
             "change:SLDBody": this.updateSourceSLDBody
         });
 
-        // Hack für Dienste die nicht EPSG:4326 untertützen
-        if (_.contains(this.get("notSupportedFor3D"), this.get("id"))) {
+        // Hack for services that do not support EPSG:4326
+        if (this.get("notSupportedFor3D").includes(this.get("id"))) {
             this.set("supported", ["2D"]);
         }
     },
@@ -41,7 +43,7 @@ const WMSLayer = Layer.extend({
      * @return {void}
      */
     createLayerSource: function () {
-        var params,
+        let params,
             source;
 
         params = {
@@ -53,7 +55,7 @@ const WMSLayer = Layer.extend({
         };
 
         if (this.get("styles") && this.get("styles") !== "" && this.get("styles") !== "nicht vorhanden") {
-            params = _.extend(params, {
+            params = Object.assign(params, {
                 STYLES: this.get("styles")
             });
         }
@@ -100,8 +102,6 @@ const WMSLayer = Layer.extend({
                 params: params
             }));
         }
-        // this.registerErrorListener();
-        // this.registerLoadingListeners();
     },
 
     /**
@@ -109,16 +109,21 @@ const WMSLayer = Layer.extend({
      * @return {void}
      */
     createLayer: function () {
-        var layerobjects = {
-            id: this.get("id"),
-            source: this.get("layerSource"),
-            name: this.get("name"),
-            typ: this.get("typ"),
-            legendURL: this.get("legendURL"),
-            routable: this.get("routable"),
-            gfiTheme: this.get("gfiTheme"),
-            infoFormat: this.get("infoFormat")
-        };
+        const layerobjects =
+            {
+                id: this.get("id"),
+                source: this.get("layerSource"),
+                name: this.get("name"),
+                typ: this.get("typ"),
+                legendURL: this.get("legendURL"),
+                routable: this.get("routable"),
+                gfiTheme: this.get("gfiTheme"),
+                // gfiIconPath: this.get("gfiIconPath"),
+                gfiAttributes: this.get("gfiAttributes"),
+                infoFormat: this.get("infoFormat"),
+                gfiAsNewWindow: this.get("gfiAsNewWindow"),
+                featureCount: this.get("featureCount")
+            };
 
         if (this.get("singleTile") !== true) {
             this.setLayer(new Tile(layerobjects));
@@ -126,29 +131,52 @@ const WMSLayer = Layer.extend({
         else {
             this.setLayer(new Image(layerobjects));
         }
+        this.createLegend();
     },
 
     /**
-     * Wenn der Parameter "legendURL" leer ist, wird er auf GetLegendGraphic gesetzt.
+     * If the parameter "legendURL" is empty, it is set to GetLegendGraphic.
      * @return {void}
      */
-    createLegendURL: function () {
-        const legendURL = [],
-            version = this.get("version");
+    createLegend: function () {
+        const version = this.get("version");
+        let legend = this.get("legend");
 
-        if (this.get("legendURL") === "" || this.get("legendURL") === undefined) {
-            const layerNames = this.get("layers").split(",");
+        /**
+         * @deprecated in 3.0.0
+         */
+        if (this.get("legendURL")) {
+            console.warn("legendURL ist deprecated in 3.0.0. Please use attribute \"legend\" als Boolean or String with path to legend image or pdf");
+            if (this.get("legendURL") === "") {
+                legend = true;
+            }
+            else if (this.get("legendURL") === "ignore") {
+                legend = false;
+            }
+            else {
+                legend = this.get("legendURL");
+            }
+        }
+
+        if (Array.isArray(legend)) {
+            this.setLegend(legend);
+        }
+        else if (legend === true) {
+            const layerNames = this.get("layers").split(","),
+                legends = [];
 
             if (layerNames.length === 1) {
-                legendURL.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + this.get("layers")));
+                legends.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + this.get("layers")));
             }
             else if (layerNames.length > 1) {
                 layerNames.forEach(layerName => {
-                    legendURL.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + layerName));
+                    legends.push(encodeURI(this.get("url") + "?VERSION=" + version + "&SERVICE=WMS&REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=" + layerName));
                 });
             }
-
-            this.set("legendURL", legendURL);
+            this.setLegend(legends);
+        }
+        else if (typeof legend === "string") {
+            this.setLegend([legend]);
         }
     },
 
@@ -171,7 +199,7 @@ const WMSLayer = Layer.extend({
         });
 
         this.get("layerSource").on("imageloadstart", function () {
-            var startval = this.get("loadingParts") ? this.get("loadingParts") : 0;
+            const startval = this.get("loadingParts") ? this.get("loadingParts") : 0;
 
             this.set("loadingParts", startval + 1);
         });
@@ -193,7 +221,7 @@ const WMSLayer = Layer.extend({
         });
 
         this.get("layerSource").on("tileloadstart", function () {
-            var startval = this.get("loadingParts") ? this.get("loadingParts") : 0;
+            const startval = this.get("loadingParts") ? this.get("loadingParts") : 0;
 
             this.set("loadingParts", startval + 1);
         });
@@ -267,11 +295,11 @@ const WMSLayer = Layer.extend({
      * @returns {String} - The created getFeature info url.
      */
     getGfiUrl: function () {
-        var resolution = Radio.request("MapView", "getOptions").resolution,
+        const resolution = Radio.request("MapView", "getOptions").resolution,
             projection = Radio.request("MapView", "getProjection"),
             coordinate = Radio.request("GFI", "getCoordinate");
 
-        return this.get("layerSource").getGetFeatureInfoUrl(coordinate, resolution, projection, {INFO_FORMAT: this.get("infoFormat"), FEATURE_COUNT: this.get("featureCount"), STYLES: "", SLD_BODY: undefined});
+        return this.get("layerSource").getFeatureInfoUrl(coordinate, resolution, projection, {INFO_FORMAT: this.get("infoFormat"), FEATURE_COUNT: this.get("featureCount"), STYLES: "", SLD_BODY: undefined});
     },
 
     /*
@@ -279,8 +307,28 @@ const WMSLayer = Layer.extend({
     * @returns {void}
     */
     newCacheId: function () {
-        this.set("cacheId", _.random(9999999));
+        this.set("cacheId", parseInt(Math.random() * 10000000, 10));
+    },
+
+    /**
+     * setter for gfiAsNewWindow
+     * @param {Object} value see doc/config.json.md for more information
+     * @param {String} [value.name="_blank"] the browsing context or the target attribute to open the window (see https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
+     * @param {String} [value.specs=""] a comma-separated list of items - the setup to open the window with (see https://developer.mozilla.org/en-US/docs/Web/API/Window/open)
+     * @returns {Void}  -
+     */
+    setGfiAsNewWindow: function (value) {
+        this.set("gfiAsNewWindow", value);
+    },
+
+    /**
+     * getter for gfiAsNewWindow
+     * @returns {Object}  see setGfiAsNewWindow above or doc/config.json.md for more information
+     */
+    getGfiAsNewWindow: function () {
+        return this.get("gfiAsNewWindow");
     }
+
 });
 
 export default WMSLayer;

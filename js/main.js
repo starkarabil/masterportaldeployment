@@ -2,14 +2,12 @@
  * @file
  * <h1>Welcome to the Open Source Project "Masterportal" of the [Landesbetrieb Geoinformation und Vermessung]{@link http://www.geoinfo.hamburg.de}</h1>
  */
-import "@babel/polyfill";
-import "polyfill-object.fromentries";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import {fetch} from "./layerList";
 import "../css/bootstrap.less";
 // CSS-Handling: Importieren von Css damit Webpack das verarbeitet.
 import "../css/style.css";
-// polyfill für Promises im IE
-import "es6-promise/auto";
 import HttpApi from "i18next-http-backend";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 
@@ -97,7 +95,7 @@ if (!("Config" in window)) {
 
     // Show error message without Alerting
     loadConfigJs.catch(() => {
-        document.getElementById("loader").style.visibility = "hidden";
+        document.getElementById("loader").style.display = "none";
         document.getElementById("map").appendChild(document.createTextNode("Die Portalkonfiguration konnte nicht vom Pfad '" + configPath + "'' geladen werden. Bitte wenden sie sich an den Administrator."));
     });
 }

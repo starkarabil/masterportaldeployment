@@ -13,7 +13,7 @@ const WPS = Backbone.Model.extend({
         dataInputXmlTemplate: "<wps:Input><ows:Identifier></ows:Identifier><wps:Data><wps:LiteralData></wps:LiteralData></wps:Data></wps:Input>"
     },
     initialize: function () {
-        var channel = Radio.channel("WPS");
+        const channel = Radio.channel("WPS");
 
         this.listenTo(channel, {
             "request": this.request
@@ -30,7 +30,7 @@ const WPS = Backbone.Model.extend({
      * @returns {void}
      */
     request: function (wpsID, identifier, data, responseFunction, timeout) {
-        var xmlString = this.buildXML(identifier, data, this.get("xmlTemplate"), this.get("dataInputXmlTemplate")),
+        const xmlString = this.buildXML(identifier, data, this.get("xmlTemplate"), this.get("dataInputXmlTemplate")),
             url = this.buildUrl(Radio.request("RestReader", "getServiceById", wpsID));
 
         this.sendRequest(url, xmlString, responseFunction, timeout);
@@ -45,7 +45,7 @@ const WPS = Backbone.Model.extend({
      * @returns {void}
      */
     sendRequest: function (url, xmlString, responseFunction, timeout) {
-        var xhr = new XMLHttpRequest(),
+        const xhr = new XMLHttpRequest(),
             that = this;
 
         xhr.open("POST", url);
@@ -71,7 +71,7 @@ const WPS = Backbone.Model.extend({
      * @returns {void}
      */
     handleResponse: function (responseText, status, responseFunction) {
-        var obj;
+        let obj;
 
         if (status === 200) {
             obj = this.parseDataString(responseText);
@@ -87,7 +87,7 @@ const WPS = Backbone.Model.extend({
      * @returns {object} xml parsed as object
      */
     parseDataString: function (dataString) {
-        var xml = $.parseXML(dataString),
+        const xml = $.parseXML(dataString),
             obj = this.parseXmlToObject(xml);
 
         return obj;
@@ -98,56 +98,58 @@ const WPS = Backbone.Model.extend({
      * @returns {object} parsed xml as js object
      */
     parseXmlToObject: function (xml) {
-        var obj = {},
-            children = $(xml).children();
+        const children = $(xml).children();
+        let obj = {};
 
         // if  element does not have any children --> leaf
         if (children.length === 0) {
-            obj = _.isUndefined($(xml)[0]) ? undefined : $(xml)[0].textContent;
+            obj = $(xml)[0] === undefined ? undefined : $(xml)[0].textContent;
         }
         else {
-            _.each(children, function (child) {
-                var localName = $(child)[0].localName,
-                    old;
+            children.toArray().forEach(child => {
+                const localName = $(child)[0].localName;
+                let old;
 
                 // if object does not have key create it
-                if (!_.has(obj, localName)) {
+                if (!obj.hasOwnProperty(localName)) {
                     obj[localName] = this.parseXmlToObject(child);
                 }
                 // key already exists.
                 else {
                     // if value is not an array, create array, push old value and then push new value
-                    if (!_.isArray(obj[localName])) {
+                    if (!Array.isArray(obj[localName])) {
                         old = obj[localName];
                         obj[localName] = [];
                         obj[localName].push(old);
                     }
                     obj[localName].push(this.parseXmlToObject(child));
                 }
-            }, this);
+            });
         }
         return obj;
     },
     /**
      * @desc build xml for WPS request
      * @param {string} identifier String The functionality to be invoked by the wps
-     * @param {obj} data Object Contains the Attributes to be sent
+     * @param {obj} [data={}] Object Contains the Attributes to be sent
      * @param {string} xmlTemplate String  XML frame template that is filled
      * @param {string} dataInputXmlTemplate String Inner XML used to generate attributes
      * @return {string} dataString
      */
-    buildXML: function (identifier, data, xmlTemplate, dataInputXmlTemplate) {
-        var dataString = this.setXMLElement(xmlTemplate, "</ows:Identifier>", identifier);
+    buildXML: function (identifier, data = {}, xmlTemplate, dataInputXmlTemplate) {
+        let dataString = this.setXMLElement(xmlTemplate, "</ows:Identifier>", identifier);
 
-        _.each(data, function (obj, key) {
-            var attributeString = "",
-                dataType = _.has(obj, "dataType") ? obj.dataType : undefined,
-                value = _.has(obj, "value") ? obj.value : obj;
+        Object.entries(data).forEach(dat => {
+            const obj = dat[1],
+                key = dat[0],
+                dataType = obj.hasOwnProperty("dataType") ? obj.dataType : undefined,
+                value = obj.hasOwnProperty("value") ? obj.value : obj;
+            let attributeString = "";
 
             attributeString = this.setXMLElement(dataInputXmlTemplate, "</ows:Identifier>", key);
             attributeString = this.setXMLElement(attributeString, "</wps:LiteralData>", value, dataType);
             dataString = this.setXMLElement(dataString, "</wps:DataInputs>", attributeString);
-        }, this);
+        });
         return dataString;
     },
     /**
@@ -159,13 +161,13 @@ const WPS = Backbone.Model.extend({
      * @returns {string} newdataString with added dada
      */
     setXMLElement: function (dataString, closingTagName, value, dataType) {
-        var newDataString = _.isUndefined(dataString) ? "" : dataString;
+        let newDataString = dataString === undefined ? "" : dataString;
 
-        if (!_.isUndefined(dataType)) {
+        if (dataType !== undefined) {
             newDataString = newDataString.toString().replace("<wps:LiteralData>", "<wps:LiteralData dataType='" + dataType + "'>");
         }
 
-        if (_.isUndefined(dataString) === false && _.isUndefined(closingTagName) === false && _.isUndefined(value) === false) {
+        if (dataString !== undefined && closingTagName !== undefined && value !== undefined) {
             newDataString = newDataString.toString().replace(closingTagName.toString(), value.toString() + closingTagName.toString());
         }
         return newDataString;
@@ -177,7 +179,7 @@ const WPS = Backbone.Model.extend({
      * @returns {string} url to wps request
      */
     buildUrl: function (restModel) {
-        var url = "";
+        let url = "";
 
         if (restModel && restModel.get("url")) {
             url = restModel.get("url");

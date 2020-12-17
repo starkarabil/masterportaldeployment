@@ -19,7 +19,6 @@ const CompareFeaturesView = Backbone.View.extend({
     },
 
     initialize: function () {
-        // this.model = new CompareFeaturesModel();
         this.template = _.template(CompareFeaturesTemplate);
         this.templateNoFeatures = _.template(CompareFeaturesTemplateNoFeatures);
         this.templateFeedback = _.template(CompareFeaturesTemplateFeedback);
@@ -28,7 +27,7 @@ const CompareFeaturesView = Backbone.View.extend({
             "change:isActive": this.render,
             "renderFeedbackModal": this.renderFeedbackModal
         });
-        document.getElementsByClassName("masterportal-container")[0].appendChild(this.el);
+        document.getElementById("masterportal-container").appendChild(this.el);
 
         if (this.model.get("isActive") === true) {
             this.render(this.model, true);

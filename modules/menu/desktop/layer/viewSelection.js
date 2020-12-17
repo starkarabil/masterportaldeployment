@@ -1,5 +1,6 @@
 import Template from "text-loader!./templateSelection.html";
 import TemplateSettings from "text-loader!./templateSettings.html";
+import checkChildrenDatasets from "../../checkChildrenDatasets.js";
 
 const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
     events: {
@@ -21,10 +22,10 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @extends Backbone.View
      * @memberof Menu.Desktop.Layer
      * @constructs
-    * @listens LayerInformation#RadioTriggerLayerInformationUnhighlightLayerInformationIcon
-    * @listens i18next#RadioTriggerLanguageChanged
+     * @listens LayerInformation#RadioTriggerLayerInformationUnhighlightLayerInformationIcon
      */
     initialize: function () {
+        checkChildrenDatasets(this.model);
         this.listenTo(this.model, {
             "change:isVisibleInMap": this.rerender,
             "change:isSettingVisible": this.renderSetting,

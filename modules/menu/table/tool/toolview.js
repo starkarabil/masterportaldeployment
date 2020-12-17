@@ -1,4 +1,5 @@
 import ToolTemplate from "text-loader!./tooltemplate.html";
+import store from "../../../../src/app-store/index";
 
 const ToolView = Backbone.View.extend({
     events: {
@@ -18,7 +19,7 @@ const ToolView = Backbone.View.extend({
     className: "table-tool",
     template: _.template(ToolTemplate),
     render: function () {
-        var attr = this.model.toJSON();
+        const attr = this.model.toJSON();
 
         $("#table-tools-menu").append(this.$el.html(this.template(attr)));
 
@@ -34,7 +35,9 @@ const ToolView = Backbone.View.extend({
                 // In that case 'this.model' of this class has not full content, e.g. collection is undefined --> replace it by the new model in the list
                 this.model = Radio.request("ModelList", "getModelByAttributes", {id: this.model.id});
             }
+            Radio.trigger("ModelList", "setActiveToolsToFalse", this.model);
             this.model.setIsActive(true);
+            store.dispatch("Tools/setToolActive", {id: this.model.id, active: true});
         }
     },
     /**
@@ -43,7 +46,7 @@ const ToolView = Backbone.View.extend({
      * @returns {void}
      */
     toggleSupportedVisibility: function (mode) {
-        var toolsFor3D = this.model.get("supportedIn3d").concat(this.model.get("supportedOnlyIn3d"));
+        const toolsFor3D = this.model.get("supportedIn3d").concat(this.model.get("supportedOnlyIn3d"));
 
         if (mode === "2D" && this.model.get("supportedOnlyIn3d").indexOf(this.model.get("id")) < 0) {
             this.$el.show();

@@ -1,7 +1,7 @@
 import Item from "../item";
 
 const Folder = Item.extend(/** @lends Folder.prototype */{
-    defaults: _.extend({}, Item.prototype.defaults, {
+    defaults: Object.assign({}, Item.prototype.defaults, {
         isVisibleInMenu: true,
         isRoot: false,
         isExpanded: false,
@@ -15,6 +15,7 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
         selectAllGlyphicon: "glyphicon-unchecked",
         glyphicon: "glyphicon-folder-open",
         obliqueModeBlacklist: ["tree", "tools"],
+        isPinned: false,
         // translate
         currentLng: "",
         saveSelectionText: "",
@@ -49,6 +50,7 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
      * @property {String} pinTopicsTreeText="" will be translated
      * @property {String} hideAllTopicsText="" will be translated
      * @property {String} showAllTopicsText="" will be translated
+     * @property {String} categoryText="" will be translated
      * @property {String[]} obliqueModeBlacklist=["tree,"tools"] List of folder ids that are not displayed in oblique mode("Schr�gluftbilder").
      */
     initialize: function () {
@@ -59,9 +61,7 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
         // Wenn alle Layer in einem Folder selektiert sind, wird der Folder auch selektiert
         if (this.get("parentId") === "Overlayer") {
             items = Radio.request("Parser", "getItemsByAttributes", {parentId: this.get("id")});
-            isEveryLayerSelected = items.every(function (item) {
-                return item.isSelected === true;
-            });
+            isEveryLayerSelected = items.every(item => item.isSelected === true);
 
             if (isEveryLayerSelected === true) {
                 this.setIsSelected(true);
@@ -69,9 +69,7 @@ const Folder = Item.extend(/** @lends Folder.prototype */{
         }
         if (this.get("id") === "tools") {
             items = Radio.request("Parser", "getItemsByAttributes", {parentId: this.get("id")});
-            isEveryToolInvisible = items.every(function (item) {
-                return item.isVisibleInMenu === false;
-            });
+            isEveryToolInvisible = items.every(item => item.isVisibleInMenu === false);
 
             if (isEveryToolInvisible === true) {
                 this.setIsVisibleInMenu(false);

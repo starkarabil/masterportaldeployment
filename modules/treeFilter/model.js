@@ -1,7 +1,7 @@
 import Tool from "../core/modelList/tool/model";
 
 const TreeFilter = Tool.extend({
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         filter: "",
         filterHits: "", // Filtertreffer
         isFilter: false,
@@ -23,14 +23,14 @@ const TreeFilter = Tool.extend({
         return this.get("treeConf");
     },
     initialize: function () {
-        var model = Radio.request("ModelList", "getModelByAttributes", {id: "182"});
+        const model = Radio.request("ModelList", "getModelByAttributes", {id: "182"});
 
         this.superInitialize();
         this.listenTo(this, {
             "change:isActive": this.setStatus
         });
 
-        if (!_.isUndefined(model)) {
+        if (model !== undefined) {
             this.setListenerForVisibility(model);
         }
         else {
@@ -47,9 +47,9 @@ const TreeFilter = Tool.extend({
             async: false,
             success: function (treeModel) {
                 // speichert alle Baumgattung in ein Array
-                var catArray = [];
+                const catArray = [];
 
-                _.each(treeModel.get("trees"), function (tree) {
+                treeModel.get("trees").forEach(tree => {
                     catArray.push(tree.displayGattung);
                 });
                 treeModel.set("categoryArray", catArray);
@@ -73,9 +73,9 @@ const TreeFilter = Tool.extend({
     parse: function (response) {
         this.set("trees", response.trees);
         // macht aus "Ailanthus / Götterbaum" = Götterbaum(Ailanthus)
-        _.each(this.get("trees"), function (tree) {
-            var split = tree.Gattung.split("/"),
-                treeArray = [],
+        this.get("trees").forEach(tree => {
+            const treeArray = [];
+            let split = tree.Gattung.split("/"),
                 categorySplit;
 
             if (split[1] !== undefined) {
@@ -86,8 +86,8 @@ const TreeFilter = Tool.extend({
             }
             tree.displayGattung = categorySplit;
 
-            _.each(tree.Arten, function (type) {
-                var typeSplit;
+            tree.Arten.forEach(type => {
+                let typeSplit;
 
                 split = type.split("/");
                 if (split[1] !== undefined) {
@@ -98,13 +98,15 @@ const TreeFilter = Tool.extend({
                 }
                 treeArray.push({species: type, display: typeSplit});
             });
+
             // Arten nach den deutschen Namen sortierien
-            tree.Arten = _.sortBy(treeArray, function (type) {
+            tree.Arten = Radio.request("Util", "sortBy", treeArray, function (type) {
                 return type.display;
             });
-        }, this);
+
+        });
         // Bäume nach Gattung sortieren
-        this.set("trees", _.sortBy(this.get("trees"), function (tree) {
+        this.set("trees", Radio.request("Util", "sortBy", this.get("trees"), function (tree) {
             return tree.displayGattung;
         }));
     },
@@ -135,7 +137,7 @@ const TreeFilter = Tool.extend({
         }
     },
     validate: function (attributes) {
-        var jetzt = new Date(),
+        const jetzt = new Date(),
             year = jetzt.getFullYear(),
             errors = {};
 
@@ -181,7 +183,7 @@ const TreeFilter = Tool.extend({
             }
         }
         this.set("errors", errors);
-        if (_.isEmpty(errors) === false) {
+        if (Radio.request("Util", "isEmpty", errors) === false) {
             return errors;
         }
         return false;
@@ -194,15 +196,15 @@ const TreeFilter = Tool.extend({
         $("#categoryInput").val(this.get("searchCategoryString"));
     },
     setCategoryArray: function () {
-        var catArray = [];
+        const catArray = [];
 
-        _.each(this.get("trees"), function (tree) {
-            var myRegExp = new RegExp(this.get("searchCategoryString"), "i");
+        this.get("trees").forEach(tree => {
+            const myRegExp = new RegExp(this.get("searchCategoryString"), "i");
 
             if (tree.displayGattung.search(myRegExp) !== -1) {
                 catArray.push(tree.displayGattung);
             }
-        }, this);
+        });
         if (catArray.length === 0) {
             catArray.push("Keine Treffer");
         }
@@ -216,12 +218,12 @@ const TreeFilter = Tool.extend({
         $("#typeInput").val(this.get("searchTypeString"));
     },
     setTypeArray: function () {
-        var typeArray = [],
-            tree = _.where(this.get("trees"), {displayGattung: this.get("treeCategory")});
+        const typeArray = [],
+            tree = Radio.request("Util", "whereJs", this.get("trees"), {displayGattung: this.get("treeCategory")});
 
         if (tree[0] !== undefined) {
-            _.each(tree[0].Arten, function (type) {
-                var myRegExp;
+            tree[0].Arten.forEach(type => {
+                let myRegExp;
 
                 if (this.get("searchTypeString").length === 0) {
                     typeArray.push(type.display);
@@ -232,13 +234,14 @@ const TreeFilter = Tool.extend({
                         typeArray.push(type.display);
                     }
                 }
-            }, this);
+            });
         }
         this.set("typeArray", typeArray);
     },
     setFilterParams: function () { // NOTE aufbröseln in einzelMethoden...irgendwann
-        var tree = _.where(this.get("trees"), {displayGattung: $("#categoryInput").val()}),
-            treeType;
+        const tree = Radio.request("Util", "whereJs", this.get("trees"), {displayGattung: $("#categoryInput").val()});
+
+        let treeType;
 
         if (tree[0] === undefined) {
             this.set("treeFilterCategory", "");
@@ -246,7 +249,8 @@ const TreeFilter = Tool.extend({
         }
         else {
             this.set("treeFilterCategory", tree[0].Gattung);
-            treeType = _.where(tree[0].Arten, {display: $("#typeInput").val()});
+            treeType = Radio.request("Util", "whereJs", tree[0].Arten, {display: $("#typeInput").val()});
+
             if (treeType[0] !== undefined) {
                 this.set("treeFilterType", treeType[0].species);
             }
@@ -307,7 +311,7 @@ const TreeFilter = Tool.extend({
         // $("#perimeterMin > input").val("0");
     },
     createFilter: function () {
-        var filter, symbolizer, header, footer, filterwfs, filterCategory, filterType, filterYear, filterDiameter, filterPerimeter;
+        let filterCategory, filterType;
 
         // Filter Gattung und Art
         if (this.get("treeFilterCategory").length !== 0) {
@@ -325,23 +329,24 @@ const TreeFilter = Tool.extend({
         }
 
         // Filter Pflanzjahr
-        filterYear = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:Literal>" + this.get("yearMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("yearMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>";
-        //            filterYear = "<ogc:PropertyIsBetween><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("yearMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("yearMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
-        filterDiameter = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:Literal>" + this.get("diameterMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("diameterMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>";
-        //            filterDiameter = "<ogc:PropertyIsBetween><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("diameterMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("diameterMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
-        filterPerimeter = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:Literal>" + this.get("perimeterMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("perimeterMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>";
-        //            filterPerimeter = "<ogc:PropertyIsBetween><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("perimeterMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("perimeterMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
+        const filterYear = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:Literal>" + this.get("yearMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("yearMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>",
+            // filterYear = "<ogc:PropertyIsBetween><ogc:PropertyName>app:pflanzjahr</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("yearMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("yearMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
+            filterDiameter = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:Literal>" + this.get("diameterMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("diameterMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>",
+            // filterDiameter = "<ogc:PropertyIsBetween><ogc:PropertyName>app:kronendurchmesser</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("diameterMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("diameterMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
+            filterPerimeter = "<ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:Literal>" + this.get("perimeterMin") + "</ogc:Literal></ogc:PropertyIsGreaterThanOrEqualTo><ogc:PropertyIsLessThan><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:Literal>" + (parseInt(this.get("perimeterMax"), 10) + 1) + "</ogc:Literal></ogc:PropertyIsLessThan>",
+            // filterPerimeter = "<ogc:PropertyIsBetween><ogc:PropertyName>app:stammumfang</ogc:PropertyName><ogc:LowerBoundary><ogc:Literal>" + this.get("perimeterMin") + "</ogc:Literal></ogc:LowerBoundary><ogc:UpperBoundary><ogc:Literal>" + this.get("perimeterMax") + "</ogc:Literal></ogc:UpperBoundary></ogc:PropertyIsBetween>";
 
-        header = "<sld:StyledLayerDescriptor xmlns:sld='http://www.opengis.net/sld' xmlns:se='http://www.opengis.net/se' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:app='http://www.deegree.org/app' xmlns:ogc='http://www.opengis.net/ogc' xmlns='http://www.opengis.net/sld' version='1.1.0' xsi:schemaLocation='http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd'><sld:NamedLayer><se:Name>strassenbaum</se:Name><sld:UserStyle><se:FeatureTypeStyle><se:Name>strassenbaum</se:Name>";
-        filter = "<se:Rule><ogc:Filter><ogc:And>" + filterCategory + filterType + filterYear + filterDiameter + filterPerimeter + "</ogc:And></ogc:Filter>";
-        symbolizer = "<se:PointSymbolizer><se:Graphic><se:Mark><se:WellKnownName>circle</se:WellKnownName><se:Fill><se:SvgParameter name='fill'>#55c61d</se:SvgParameter><se:SvgParameter name='fill-opacity'>0.78</se:SvgParameter></se:Fill><se:Stroke><se:SvgParameter name='stroke'>#36a002</se:SvgParameter><se:SvgParameter name='stroke-width'>1</se:SvgParameter></se:Stroke></se:Mark><se:Size>12</se:Size></se:Graphic></se:PointSymbolizer></se:Rule>";
+            header = "<sld:StyledLayerDescriptor xmlns:sld='http://www.opengis.net/sld' xmlns:se='http://www.opengis.net/se' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:app='http://www.deegree.org/app' xmlns:ogc='http://www.opengis.net/ogc' xmlns='http://www.opengis.net/sld' version='1.1.0' xsi:schemaLocation='http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd'><sld:NamedLayer><se:Name>strassenbaum</se:Name><sld:UserStyle><se:FeatureTypeStyle><se:Name>strassenbaum</se:Name>",
+            filter = "<se:Rule><ogc:Filter><ogc:And>" + filterCategory + filterType + filterYear + filterDiameter + filterPerimeter + "</ogc:And></ogc:Filter>",
+            symbolizer = "<se:PointSymbolizer><se:Graphic><se:Mark><se:WellKnownName>circle</se:WellKnownName><se:Fill><se:SvgParameter name='fill'>#55c61d</se:SvgParameter><se:SvgParameter name='fill-opacity'>0.78</se:SvgParameter></se:Fill><se:Stroke><se:SvgParameter name='stroke'>#36a002</se:SvgParameter><se:SvgParameter name='stroke-width'>1</se:SvgParameter></se:Stroke></se:Mark><se:Size>12</se:Size></se:Graphic></se:PointSymbolizer></se:Rule>",
 
-        // filter2 = "<se:Rule><se:PointSymbolizer><se:Graphic><se:Mark><se:WellKnownName>circle</se:WellKnownName><se:Fill><se:SvgParameter name='fill'>#cdcdcd</se:SvgParameter><se:SvgParameter name='fill-opacity'>0.4</se:SvgParameter></se:Fill><se:Stroke><se:SvgParameter name='stroke'>#cdcdcd</se:SvgParameter><se:SvgParameter name='stroke-width'>1</se:SvgParameter></se:Stroke></se:Mark><se:Size>8</se:Size></se:Graphic></se:PointSymbolizer></se:Rule>";
+            // filter2 = "<se:Rule><se:PointSymbolizer><se:Graphic><se:Mark><se:WellKnownName>circle</se:WellKnownName><se:Fill><se:SvgParameter name='fill'>#cdcdcd</se:SvgParameter><se:SvgParameter name='fill-opacity'>0.4</se:SvgParameter></se:Fill><se:Stroke><se:SvgParameter name='stroke'>#cdcdcd</se:SvgParameter><se:SvgParameter name='stroke-width'>1</se:SvgParameter></se:Stroke></se:Mark><se:Size>8</se:Size></se:Graphic></se:PointSymbolizer></se:Rule>";
 
-        footer = "</se:FeatureTypeStyle></sld:UserStyle></sld:NamedLayer></sld:StyledLayerDescriptor>";
+            footer = "</se:FeatureTypeStyle></sld:UserStyle></sld:NamedLayer></sld:StyledLayerDescriptor>",
+            filterwfs = "<ogc:Filter><ogc:And>" + filterCategory + filterType + filterYear + filterDiameter + filterPerimeter + "</ogc:And></ogc:Filter>";
 
-        filterwfs = "<ogc:Filter><ogc:And>" + filterCategory + filterType + filterYear + filterDiameter + filterPerimeter + "</ogc:And></ogc:Filter>";
         this.set("filter", filterwfs);
+
 
         this.set("SLDBody", header + filter + symbolizer + footer);
     },
@@ -354,7 +359,7 @@ const TreeFilter = Tool.extend({
             context: this, // model
             contentType: "text/xml",
             success: function (data) {
-                var hits;
+                let hits;
 
                 // Firefox, IE
                 if (data.getElementsByTagName("wfs:FeatureCollection")[0] !== undefined) {

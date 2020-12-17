@@ -1,4 +1,6 @@
 import "../model";
+import store from "../../../src/app-store/index";
+import {getWKTGeom} from "../../../src/utils/getWKTGeom";
 
 const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype */{
     defaults: {
@@ -35,7 +37,7 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
      * @returns {void}
      */
     initialize: function (config) {
-        var suggestService = Radio.request("RestReader", "getServiceById", config.suggestServiceId),
+        const suggestService = Radio.request("RestReader", "getServiceById", config.suggestServiceId),
             geosearchService = Radio.request("RestReader", "getServiceById", config.geosearchServiceId);
 
         if (suggestService && suggestService.get("url")) {
@@ -79,7 +81,7 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
     * @returns {void}
     */
     directSearch: function (searchString) {
-        var request;
+        let request;
 
         if (searchString.length >= this.get("minChars")) {
             $("#searchInput").val(searchString);
@@ -93,26 +95,24 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
         if (data.length === 1) {
             this.bkgSearch({
                 name: data[0].suggestion
-            });
+            }, true, "click");
         }
-        else {
-            data.forEach(function (hit) {
-                if (hit.score > this.get("score")) {
-                    Radio.trigger("Searchbar", "pushHits", "hitList", {
-                        name: hit.suggestion,
-                        metaName: hit.suggestion,
-                        type: i18next.t("common:modules.searchbar.type.location"),
-                        bkg: true,
-                        glyphicon: "glyphicon-road",
-                        id: this.uniqueId("bkgSuggest"),
-                        triggerEvent: {
-                            channel: "Searchbar",
-                            event: "bkgSearch"
-                        }
-                    });
-                }
-            }, this);
-        }
+        data.forEach(hit => {
+            if (hit.score > this.get("score")) {
+                Radio.trigger("Searchbar", "pushHits", "hitList", {
+                    name: hit.suggestion,
+                    metaName: hit.suggestion,
+                    type: i18next.t("common:modules.searchbar.type.location"),
+                    bkg: true,
+                    glyphicon: "glyphicon-road",
+                    id: this.uniqueId("bkgSuggest"),
+                    triggerEvent: {
+                        channel: "Searchbar",
+                        event: "bkgSearch"
+                    }
+                });
+            }
+        });
         Radio.trigger("Searchbar", "createRecommendedList", "bkg");
     },
     /**
@@ -139,7 +139,7 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
     },
 
     suggestByBKG: function (searchString) {
-        var request = "bbox=" + this.get("extent") + "&outputformat=json&srsName=" + this.get("epsg") + "&query=" + encodeURIComponent(searchString) + "&" + this.get("filter") + "&count=" + this.get("suggestCount");
+        const request = "bbox=" + this.get("extent") + "&outputformat=json&srsName=" + this.get("epsg") + "&query=" + encodeURIComponent(searchString) + "&" + this.get("filter") + "&count=" + this.get("suggestCount");
 
         this.setTypeOfRequest("suggest");
         this.sendRequest(this.get("bkgSuggestURL"), request, this.pushSuggestions, true, this.get("typeOfRequest"));
@@ -174,11 +174,11 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
      * Starts the precise search of a selected BKG proposal.
      * @param  {object} hit - Object of the BKG proposal.
      * @param  {boolean} showOrHideMarker - Indicates whether the marker should be shown or hidden.
-     * @param  {event} eventType - The type of event that triggered this function.
+     * @param  {event} [eventType="click"] - The type of event that triggered this function.
      * @return {void}
      */
-    bkgSearch: function (hit, showOrHideMarker, eventType) {
-        var name = hit.name,
+    bkgSearch: function (hit, showOrHideMarker, eventType = "click") {
+        const name = hit.name,
             request = "bbox=" + this.get("extent") + "&outputformat=json&srsName=" + this.get("epsg") + "&count=1&query=" + encodeURIComponent(name);
 
         this.setTypeOfRequest("search");
@@ -193,15 +193,17 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
      * @returns {void}
      */
     handleBKGSearchResult: function (data, showOrHideMarker, eventType) {
+        const zoomLevel = this.get("zoomLevel");
+
         if (showOrHideMarker === true) {
-            Radio.trigger("MapMarker", "showMarker", data.features[0].geometry.coordinates);
+            store.dispatch("MapMarker/placingPointMarker", data.features[0].geometry.coordinates);
         }
         else {
-            Radio.trigger("MapMarker", "hideMarker");
+            store.dispatch("MapMarker/removePointMarker");
         }
 
         if ((eventType === "mouseover" && this.get("zoomToResultOnHover")) || (eventType === "click" && this.get("zoomToResultOnClick"))) {
-            Radio.trigger("MapMarker", "zoomToBKGSearchResult", data, this.get("zoomLevel"));
+            this.zoomToBKGSearchResult(data, zoomLevel);
         }
         /**
          * zoomToResult
@@ -209,7 +211,29 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
          */
         else if (eventType === "mouseover" && this.get("zoomToResult")) {
             console.warn("Parameter 'zoomToResult' is deprecated. Please use 'zoomToResultOnHover' or 'zoomToResultOnClick' instead.");
-            Radio.trigger("MapMarker", "zoomToBKGSearchResult", data, this.get("zoomLevel"));
+            this.zoomToBKGSearchResult(data, zoomLevel);
+        }
+    },
+
+    /**
+     * Triggered by bkg this method receives the XML of the searched address.
+     * @param {string} data Die Data-Object des request.
+     * @fires Core#RadioTriggerMapZoomToExtent
+     * @fires Core#RadioTriggerMapViewSetCenter
+     * @param {number} zoomLevel The level to zoom.
+     * @returns {void}
+     */
+    zoomToBKGSearchResult: function (data, zoomLevel) {
+        if (data.features.length !== 0 && data.features[0].geometry !== null && data.features[0].geometry.type === "Point") {
+            Radio.trigger("MapView", "setCenter", data.features[0].geometry.coordinates, zoomLevel !== undefined ? zoomLevel : this.get("zoomLevel"));
+            store.dispatch("MapMarker/placingPointMarker", data.features[0].geometry.coordinates);
+        }
+
+        else if (data.features.length !== 0 && data.features[0].properties !== null && data.features[0].properties.bbox !== null &&
+            data.features[0].properties.bbox.type !== null && data.features[0].properties.bbox.type === "Polygon") {
+            const polygon = data.features[0].properties.bbox.coordinates[0].reduce((a, b) => a.concat(b), []);
+
+            store.dispatch("MapMarker/placingPolygonMarker", getWKTGeom(polygon));
         }
     },
 
@@ -225,7 +249,7 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
      * @returns {void}
      */
     sendRequest: function (url, data, successFunction, asyncBool, type, showOrHideMarker, eventType) {
-        var ajax = this.get("ajaxRequests");
+        const ajax = this.get("ajaxRequests");
 
         if (ajax[type] !== null && ajax[type] !== undefined) {
             ajax[type].abort();
@@ -285,8 +309,8 @@ const BKGSearchModel = Backbone.Model.extend(/** @lends BKGSearchModel.prototype
      * @returns {void}
      */
     polishAjax: function (type) {
-        var ajax = this.get("ajaxRequests"),
-            cleanedAjax = _.omit(ajax, type);
+        const ajax = this.get("ajaxRequests"),
+            cleanedAjax = Radio.request("Util", "omit", ajax, Array.isArray(type) ? type : [type]);
 
         this.set("ajaxRequests", cleanedAjax);
     },

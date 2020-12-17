@@ -8,20 +8,6 @@
  */
 
 /**
- * @event StyleWMS#RadioTriggerStyleWmsResetParamsStyleWMS
- * @param {Object} model Layer model to be styled
- * @description Resets the stylewms params for legend
- * @example Radio.trigger("StyleWMS", "resetParamsStyleWMS", model)
- */
-
-/**
- * @event StyleWMS#RadioTriggerStyleWmsUpdateParamsStyleWMS
- * @param {Object[]} attributes -
- * @description Sets the style wms params for legend so that the legend can be updated
- * @example Radio.trigger("StyleWMS", "updateParamsStyleWMS", attributes)
- */
-
-/**
  * @event StyleWMS#changeModel
  * @description Triggered when layer model to style changes
  */
@@ -51,6 +37,34 @@
  * @description Triggered when setSLD changes
  */
 
+/** -------------------- StyleVT -------------------- */
+
+/**
+ * @event StyleVT#RadioTriggerStyleVTOpenStyleVT
+ * @param {Object} model Layer model to be styled
+ * @description Opens the Tool and sets the layer model. Event is triggered by clicking on the glyphicon in the layer tree.
+ * @example Radio.trigger("StyleVT", "open", model)
+ */
+
+/**
+ * @event StyleVT#changeIsActive
+ * @description Triggered when stylevt model gets (de-)activated
+ */
+
+/**
+ * @event StyleVT#changeModel
+ * @description Triggered when selected layer model is changed
+ */
+
+/**
+ * @event StyleVT#changeCurrentLng
+ * @description Triggered when current language is changed
+ */
+
+/**
+ * @event StyleVT#changeVectorTileLayerList
+ * @description Triggered when available layer set is changed
+ */
 
 /** -------------------- SIDEBAR -------------------- */
 
@@ -161,37 +175,11 @@
  */
 
 
-/** -------------------- LEGEND -------------------- */
+/** -------------------- LEGEND COMPONENT-------------------- */
 
 /**
- * @event Legend#RadioRequestLegendGetLegend
- * @param {layer} layer The layer, to which the legend should be returned.
- * @example Radio.request("Legend", "getLegend", layer)
- */
-
-/**
- * @event Legend#RadioRequestLegendGetLegendParams
- * @returns {Object} legendParams legendParams
- */
-
-/**
- * @event Legend#RadioTriggerLegendSetLayerList
- * @description todo
- */
-
-/**
- * @event Legend#hide
- * @description todo
- */
-
-/**
- * @event Legend#changeLegendParams
- * @description todo
- */
-
-/**
- * @event Legend#changeParamsStyleWMSArray
- * @description todo
+ * @event LegendComponent#RadioTriggerLegendComponentUpdateLegend
+ * @example Radio.trigger("LegendComponent", "updateLegend")
  */
 
 
@@ -217,7 +205,7 @@
  */
 /**
  * @event Core.ConfigLoader#RadioRequestParserGetTreeType
- * @returns {*} todo
+ * @returns {string} tree type from config.js file
  * @example Radio.request("Parser", "getTreeType")
  */
 /**
@@ -1187,7 +1175,7 @@
  * @event Searchbar#RadioTriggerSearchbarPushHits
  * @description trigger transfer of search hits as a list
  * @param {String} sListname Name of list
- * @param {Array} aHitListArray Array of search hits
+ * @param {Object[]} aHitListArray an array of object{id, name, type} with optional values: coordinate, glyphicon, geom, adress, locationFinder, metaName, osm, marker, geometryType, interiorGeometry
  * @example Radio.trigger("Searchbar", "pushHits", "hitList", aHitListArray);
  */
 
@@ -1324,25 +1312,10 @@
  */
 
 /**
- * @event Core#RadioRequestUtilPunctuate
- * @description converts value to string and rewrites punctuation rules. The 1000 separator is "." and the decimal separator is a ","
- * @param {String} value contains the string wich will be converted
- * @example Radio.request("Util", "punctuate", "3000.50");
- */
-
-/**
  * @event Core#RadioRequestUtilIsViewMobile
  * @description checks if device is mobile
  * @returns {Boolean} device is mobile
  * @example Radio.request("Util", "isViewMobile");
- */
-
-/**
- * @event Core#RadioRequestUtilGetProxyURL
- * @description returns the proxyURL
- * @param {String} url to be proxied
- * @returns {string} proxyURL
- * @example Radio.request("Util", "getProxyURL", this.get("gfiUrl"));
  */
 
 /**
@@ -1466,17 +1439,37 @@
  */
 
 /**
- * @event Core#RadioRequestUtilGetPathFromLoader
- * @description returns the path to the loader gif
- * @returns {String} - path to loader gif
- * @example Radio.request("Util", "getPathFromLoader");
- */
-
-/**
  * @event Core#RadioRequestUtilGetMasterPortalVersionNumber
  * @description returns the masterportal version number
  * @returns {String} - masterportal version number
  * @example Radio.request("Util", "getMasterPortalVersionNumber");
+ */
+
+/**
+ * @event Core#RadioRequestUtilSortBy
+ * @description This sort function sorts arrays, objects and strings. This is a replacement for underscores sortBy
+ * @param {(Array|Object|String)} [list=undefined] the array, object or string to sort
+ * @param {(String|Number|Function)} [iteratee=undefined] may be a function (value, key, list) returning a number to sort by or the name of the key to sort objects with
+ * @param {Object} [context=undefined] the context to be used for iteratee, if iteratee is a function
+ * @returns {Array}  a new list as array
+ * @example Radio.request("Util", "sortBy", [3, 2, 1], (num) => num, this);
+ */
+
+/**
+ * @event Core#RadioRequestUtilUniqueId
+ * @description Generate a globally-unique id for client-side models or DOM elements that need one.
+ * @param {String} [prefix=""] prefix for the id
+ * @returns {String}  a globally-unique id
+ * @example Radio.request("Util", "uniqueId", prefix);
+ */
+
+/**
+ * @event Core#RadioRequestUtilDifferenceJs
+ * @description Looks through each value in the array a, returning an array of all the values that are not present in the array b
+ * @param {array} a - elements to check
+ * @param {array} b - elements to check
+ * @returns {array} - returns diffrence between array a and b
+ * @example Radio.request("Util", "DifferenceJs", array-a, array-b);
  */
 
 /**
@@ -1490,6 +1483,19 @@
  * @description todo
  * @example Radio.request("Util", "copyToClipboard");
  */
+
+/**
+ * @event Core#RadioTriggerUtilPick
+ * @description Return a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys).
+ * @example Radio.request("Util", "pick");
+ */
+
+/**
+ * @event Core#RadioTriggerUtilOmit
+ * @description Returns a copy of the object, filtered to omit the keys specified (or array of blacklisted keys).
+ * @example Radio.request("Util", "omit");
+ */
+
 
 /**
  * @event Core#changeIsViewMobile
@@ -1583,74 +1589,6 @@
  * @event Title#RadioTriggerTitleSetSize
  * @description is triggered when title has to be resized
  * @example Radio.trigger("Title", "setSize");
- */
-
-
-/** -------------------- GFI -------------------- */
-
-/**
- * @event GFI#RadioTriggerGFISetIsVisible
- * @description sets isVisible
- * @param {boolean} isVisible visibility of gfi
- * @example Radio.trigger("GFI", "setIsVisible", false);
- */
-
-/**
- * @event GFI#RadioRequestGFIGetCurrentView
- * @description returns currentView
- * @returns {Backbone.View} GFI-View
- * @example Radio.request("GFI", "getCurrentView");
- */
-
- /**
- * @event GFI#RadioTriggerGFIChangeFeature
- * @description updates the current gfi Feature if it matches.
- * @param {ol.Feature} feature The feature that has changed.
- * @example Radio.trigger("GFI", "changeFeature", feature);
- */
-
-/** -------------------- GFI.THEME -------------------- */
-
-/**
- * @event Theme#changeIsReady
- * @description Triggered when gfi theme is loaded
- */
-
-/** -------------------- MAPMARKER -------------------- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerZoomTo
- * @description triggers MapMarker to zoom to given hit using given scale
- * @param {object} hit contains the hit
- * @param {number} scale for map
- * @example Radio.trigger("MapMarker", "zoomTo", hit, scale);
- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerHideMarker
- * @description hides the mapMarker
- * @example Radio.trigger("MapMarker", "hideMarker");
- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerHidePolygon
- * @description hides the mapMarkerPolygon
- * @example Radio.trigger("MapMarker", "hidePolygon");
- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerShowMarker
- * @description shows the mapMarker
- * @param {number[]} coordinate mapMarker position
- * @example Radio.trigger("MapMarker", "showMarker", coordinate);
- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerShowPolygon
- */
-
-/**
- * @event MapMarker#RadioTriggerMapMarkerZoomToBKGSearchResult
  */
 
 /** -------------------- GFIVIEW -------------------- */
@@ -1761,6 +1699,17 @@
  * @example Radio.trigger("CswParser", "fetchedMetaData", cswObj);
  */
 
+/** -------------------- SelectFeatures -------------------- */
+
+/**
+ * @event Tools.SelectFeatures#changeIsActive
+ * @description Triggered when isActive changes
+ */
+
+/**
+ * @event Tools.SelectFeatures#updatedSelection
+ * @description Triggered when selection changes
+ */
 
 /** -------------------- FeatureLister -------------------- */
 
@@ -1956,6 +1905,11 @@
  * @description todo
  */
 
+ /**
+  * @event Core#RadioRequestParametricURLGetFeatureViaURL
+  * @returns {Object[]} Returns the features given by the user via the URL.
+  */
+
 /**
  * @event Core#RadioRequestParametricURLGetProjectionFromUrl
  * @description todo
@@ -2028,11 +1982,6 @@
 
 /**
  * @event Core#RadioTriggerParametricURLUpdateQueryStringParam
- * @description todo
- */
-
-/**
- * @event Core#RadioTriggerParametricURLPushToIsInitOpen
  * @description todo
  */
 
@@ -2134,6 +2083,12 @@
   * @example Radio.trigger("GraphicalSelect", "featureToGeoJson", feature);
   */
 
+ /**
+ * @event Snippets#ValuesChanged
+ * @description Triggered when a snippet changed its values
+ * @param {object}
+ */
+
 /** -------------------- TOOLS.ADDGEOJSON -------------------- */
 
 /**
@@ -2145,11 +2100,61 @@
  * @example Radio.trigger("AddGeoJSON", "addGeoJsonToMap", layerName, layerId, geojson)
  */
 
-/** -------------------- TOOLS.KMLIMPORT -------------------- */
+/** -------------------- TOOLS.WFST -------------------- */
 
 /**
- * @event Tools.Kmlimport#ChangeIsActive
- * @description Fired when param isActive changes
+ * @event Tools.Wfst#RadioTrigerWfstTransact
+ * @description performs a wfs transaction
+ * @param {String/Object} layerId The id of the layer on which the transaction is to be performed.
+ * @param {String/Object} featureId The id of the affected feature.
+ * @param {String/Object} mode The transaction mode insert|update|delete.
+ * @param {String/Object} attributes The feature attributes.
+ * @example Radio.trigger("wfst", "transact", layerId, featureId, mode, attributes)
+ */
+
+/**
+ * @event Tools.Wfst#ChangeIsActive
+ * @description Fired when param isActive changes.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeActiveButton
+ * @description Triggered when a button ist clicked.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeCurrentLayerId
+ * @description Triggered when the current active layer has changed.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeShowAttrTable
+ * @description Triggered when the status of the attribute table has changed.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeActiveLayers
+ * @description Triggered when the list of active layers has changed.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeButtonTitleConfig
+ * @description Triggered when the buttons and their captions were updatet.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeButtonConfig
+ * @description Triggered when the configuration for the feature generating buttons has changed.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeSuccessfullTransaction
+ * @description Triggered when a transaction was successfull.
+ */
+
+/**
+ * @event Tools.Wfst#ChangeInteraction
+ * @description Triggered when an interaction was added or has changed.
  */
 
 /** -------------------- CORE.MODELLIST.TOOL -------------------- */
@@ -2324,13 +2329,6 @@
  * @description Event fired when layer slider model changes its attribute "activeLayer".
  */
 
-/** -------------------- TOOLS.GETCOORD -------------------- */
-
-/**
- * @event Tools.GetCoord#RadioTriggerChangeIsActive
- * @description todo
- */
-
 /** -------------------- TOOLS.DRAW -------------------- */
 
 /**
@@ -2426,6 +2424,10 @@
 
 /**
  * @event Tools.ParcelSearch#RadioRequestParcelSearchParcelFound
+ * @description Todo
+ */
+/**
+ * @event Tools.ParcelSearch#RadioRequestParcelSearchCreateReport
  * @description Todo
  */
 

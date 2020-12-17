@@ -1,9 +1,12 @@
 import {WFS} from "ol/format.js";
+import getProxyUrl from "../../src/utils/getProxyUrl";
 
 const WFSTransaction = Backbone.Model.extend({
-    defaults: {},
+    defaults: {
+        useProxy: false
+    },
     initialize: function () {
-        var channel = Radio.channel("wfsTransaction");
+        const channel = Radio.channel("wfsTransaction");
 
         channel.on({
             "transact": this.transact
@@ -19,12 +22,13 @@ const WFSTransaction = Backbone.Model.extend({
      * @returns {void}
      */
     transact: function (layerId, featureId, mode, attributes) {
-        var model = Radio.request("ModelList", "getModelByAttributes", {id: layerId}),
-            feature,
+        const model = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
+
+        let feature,
             xmlString,
             dom;
 
-        if (!_.isUndefined(model)) {
+        if (model !== undefined) {
             feature = model.get("layer").getSource().getFeatureById(featureId);
             feature.setProperties(attributes);
             feature.unset("extent");
@@ -46,8 +50,8 @@ const WFSTransaction = Backbone.Model.extend({
      * @return {DOM} node
      */
     writeTransaction: function (mode, features, writeOptions) {
-        var formatWFS = new WFS(),
-            dom;
+        const formatWFS = new WFS();
+        let dom;
 
         switch (mode) {
             case "insert": {
@@ -90,7 +94,14 @@ const WFSTransaction = Backbone.Model.extend({
      * @returns {void}
      */
     sendRequest: function (url, data) {
-        $.ajax(Radio.request("Util", "getProxyURL", url), {
+        /**
+         * @deprecated in the next major-release!
+         * useProxy
+         * getProxyUrl()
+         */
+        const requestUrl = this.get("useProxy") ? getProxyUrl(url) : url;
+
+        $.ajax(requestUrl, {
             type: "POST",
             dataType: "text", // receive type
             contentType: "text", // send type

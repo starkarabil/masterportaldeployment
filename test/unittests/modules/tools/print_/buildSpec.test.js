@@ -8,27 +8,28 @@ import {expect} from "chai";
 import {EOL} from "os";
 
 describe("tools/print_/buildSpec", function () {
-    var buildSpecModel,
+    let buildSpecModel,
         utilModel,
         pointFeatures,
         multiPointFeatures,
         lineStringFeatures,
         multiLineStringFeatures,
         polygonFeatures,
-        multiPolygonFeatures,
-        attr = {
-            "layout": "A4 Hochformat",
-            "outputFormat": "pdf",
-            "attributes": {
-                "title": "TestTitel",
-                "map": {
-                    "dpi": 96,
-                    "projection": "EPSG:25832",
-                    "center": [561210, 5932600],
-                    "scale": 40000
-                }
+        multiPolygonFeatures;
+
+    const attr = {
+        "layout": "A4 Hochformat",
+        "outputFormat": "pdf",
+        "attributes": {
+            "title": "TestTitel",
+            "map": {
+                "dpi": 96,
+                "projection": "EPSG:25832",
+                "center": [561210, 5932600],
+                "scale": 40000
             }
-        };
+        }
+    };
 
     before(function () {
         buildSpecModel = new BuildSpecModel(attr);
@@ -40,6 +41,7 @@ describe("tools/print_/buildSpec", function () {
         lineStringFeatures = utilModel.createTestFeatures("resources/testFeaturesVerkehrsnetzLineString.xml");
         multiLineStringFeatures = utilModel.createTestFeatures("resources/testFeaturesVeloroutenMultiLineString.xml");
     });
+
     describe("parseAddressToString", function () {
         it("should return empty string if all keys in address object are empty", function () {
             const addressEmpty = {
@@ -124,7 +126,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("updateMetaData", function () {
         it("should not crash if legend doesn't exist yet", function () {
-            var parsedData = {
+            const parsedData = {
                 date: "",
                 orgaOwner: "",
                 address: {},
@@ -137,7 +139,7 @@ describe("tools/print_/buildSpec", function () {
             expect(buildSpecModel.get("attributes").legend).to.be.undefined;
         });
         it("should write parsedData to layer", function () {
-            var parsedData = {
+            const parsedData = {
                     date: "1.1.2019",
                     orgaOwner: "LGV",
                     address: {},
@@ -167,93 +169,135 @@ describe("tools/print_/buildSpec", function () {
             });
         });
     });
+    describe("legendContainsPdf", function () {
+        it("should return false if legend array of strings does not contain PDF", function () {
+            const legend = ["foobar", "barfoo"];
+
+            expect(buildSpecModel.legendContainsPdf(legend)).to.be.false;
+        });
+        it("should return true if legend array of strings contains PDF", function () {
+            const legend = ["foobar", "some.pdf", "barfoo"];
+
+            expect(buildSpecModel.legendContainsPdf(legend)).to.be.true;
+        });
+        it("should return false if legend array of objects does not contain PDF", function () {
+            const legend = [
+                {
+                    graphic: "foobar",
+                    name: "name_foobar"
+                },
+                {
+                    graphic: "barfoo",
+                    name: "name_barfoo"
+                }];
+
+            expect(buildSpecModel.legendContainsPdf(legend)).to.be.false;
+        });
+        it("should return true if legend array of objects contains PDF", function () {
+            const legend = [
+                {
+                    graphic: "foobar",
+                    name: "name_foobar"
+                },
+                {
+                    graphic: "some.pdf",
+                    name: "name_some_pdf"
+                },
+                {
+                    graphic: "barfoo",
+                    name: "name_barfoo"
+                }];
+
+            expect(buildSpecModel.legendContainsPdf(legend)).to.be.true;
+        });
+    });
     describe("prepareLegendAttributes", function () {
-        it("should create legend attributes array for WMS", function () {
-            var layerParam = {
-                layername: "Layer1",
-                legend: [{
-                    img: ["http://GetlegendGraphicRequest1", "http://GetlegendGraphicRequest2"],
-                    typ: "WMS"
-                }]
-            };
+        it("should return prepared legend attributes for legend array of strings", function () {
+            const legend = [
+                "SomeGetLegendGraphicRequest",
+                "<svg some really short svg with fill:rgb(255,0,0);></svg>",
+                "barfoo.png"
+            ];
 
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[0]).to.deep.own.include({
-                legendType: "wmsGetLegendGraphic",
-                geometryType: "",
-                imageUrl: "http://GetlegendGraphicRequest1",
-                color: "",
-                label: ""
-            });
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[1]).to.deep.own.include({
-                legendType: "wmsGetLegendGraphic",
-                geometryType: "",
-                imageUrl: "http://GetlegendGraphicRequest2",
-                color: "",
-                label: ""
-            });
+            expect(buildSpecModel.prepareLegendAttributes(legend)).to.deep.equal([
+                {
+                    legendType: "wmsGetLegendGraphic",
+                    geometryType: "",
+                    imageUrl: "SomeGetLegendGraphicRequest",
+                    color: "",
+                    label: undefined
+                },
+                {
+                    legendType: "geometry",
+                    geometryType: "polygon",
+                    imageUrl: "",
+                    color: "rgb(255,0,0)",
+                    label: undefined
+                },
+                {
+                    legendType: "wfsImage",
+                    geometryType: "",
+                    imageUrl: "barfoo.png",
+                    color: "",
+                    label: undefined
+                }
+            ]);
         });
-        it("should create legend attributes array for WFS", function () {
-            var layerParam = {
-                layername: "Layer1",
-                legend: [{
-                    img: ["/lgv-config/img/imgLink1.png", "/lgv-config/img/imgLink2.png"],
-                    legendname: ["Layer1", "Layer2"],
-                    typ: "WFS"
-                }]
-            };
+        it("should return prepared legend attributes for legend array of object", function () {
+            const legend = [
+                {
+                    graphic: "SomeGetLegendGraphicRequest",
+                    name: "name_WMS"
+                },
+                {
+                    graphic: "<svg some really short svg with fill:rgb(255,0,0);></svg>",
+                    name: "name_SVG"
+                },
+                {
+                    graphic: "barfoo.png",
+                    name: "name_WFS_Image"
+                }];
 
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[0]).to.deep.own.include({
-                legendType: "wfsImage",
-                geometryType: "",
-                imageUrl: "null/lgv-config/img/imgLink1.png",
-                color: "",
-                label: "Layer1"
-            });
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[1]).to.deep.own.include({
-                legendType: "wfsImage",
-                geometryType: "",
-                imageUrl: "null/lgv-config/img/imgLink2.png",
-                color: "",
-                label: "Layer2"
-            });
+            expect(buildSpecModel.prepareLegendAttributes(legend)).to.deep.equal([
+                {
+                    legendType: "wmsGetLegendGraphic",
+                    geometryType: "",
+                    imageUrl: "SomeGetLegendGraphicRequest",
+                    color: "",
+                    label: "name_WMS"
+                },
+                {
+                    legendType: "geometry",
+                    geometryType: "polygon",
+                    imageUrl: "",
+                    color: "rgb(255,0,0)",
+                    label: "name_SVG"
+                },
+                {
+                    legendType: "wfsImage",
+                    geometryType: "",
+                    imageUrl: "barfoo.png",
+                    color: "",
+                    label: "name_WFS_Image"
+                }
+            ]);
         });
-        it("should create legend attributes array for styleWMS", function () {
-            var layerParam = {
-                legend: [{
-                    params: [
-                        {color: "#000000", startRange: "1", stopRange: "2"},
-                        {color: "#ff0000", startRange: "3", stopRange: "4"},
-                        {color: "#00ff00", startRange: "5", stopRange: "6"}],
-                    typ: "styleWMS"
-                }]
-            };
+    });
+    describe("getFillColorFromSVG", function () {
+        it("should return fillcolor from svg string in rgb", function () {
+            const svg_string = "<svg foobar fill:rgb(255,0,0);/>";
 
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[0]).to.deep.own.include({
-                legendType: "geometry",
-                geometryType: "polygon",
-                imageUrl: "",
-                color: "#000000",
-                label: "1 - 2"
-            });
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[1]).to.deep.own.include({
-                legendType: "geometry",
-                geometryType: "polygon",
-                imageUrl: "",
-                color: "#ff0000",
-                label: "3 - 4"
-            });
-            expect(buildSpecModel.prepareLegendAttributes(layerParam)[2]).to.deep.own.include({
-                legendType: "geometry",
-                geometryType: "polygon",
-                imageUrl: "",
-                color: "#00ff00",
-                label: "5 - 6"
-            });
+            expect(buildSpecModel.getFillColorFromSVG(svg_string)).to.equal("rgb(255,0,0)");
+        });
+        it("should return fillcolor from svg string in hex", function () {
+            const svg_string = "<svg foobar fill:#ff0000;/>";
+
+            expect(buildSpecModel.getFillColorFromSVG(svg_string)).to.equal("#ff0000");
         });
     });
     describe("prepareGfiAttributes", function () {
         it("should create gfi attributes array", function () {
-            var gfiAttributes = {
+            const gfiAttributes = {
                 attr1: "value1",
                 attr2: "value2",
                 attr3: "value3"
@@ -337,7 +381,7 @@ describe("tools/print_/buildSpec", function () {
         });
     });
     describe("buildTileWms", function () {
-        var tileWmsLayer = new Tile({
+        const tileWmsLayer = new Tile({
             source: new TileWMS({
                 url: "url",
                 params: {
@@ -363,7 +407,7 @@ describe("tools/print_/buildSpec", function () {
         });
     });
     describe("buildImageWms", function () {
-        var imageWmsLayer = new Tile({
+        const imageWmsLayer = new Tile({
             source: new ImageWMS({
                 url: "url",
                 params: {
@@ -389,14 +433,14 @@ describe("tools/print_/buildSpec", function () {
         });
     });
     describe("getStyleAttribute", function () {
-        var vectorLayer = new Vector();
+        const vectorLayer = new Vector();
 
         it("should return \"styleId\" if styleList is not available", function () {
             expect(buildSpecModel.getStyleAttribute(vectorLayer, pointFeatures[0], false)).to.equal("styleId");
         });
     });
     describe("getFeatureStyle", function () {
-        var vectorLayer = new Vector();
+        const vectorLayer = new Vector();
 
         it("should return array with an ol-style", function () {
             expect(buildSpecModel.getFeatureStyle(pointFeatures[0], vectorLayer)).to.be.an("array");
@@ -404,7 +448,7 @@ describe("tools/print_/buildSpec", function () {
         });
     });
     describe("addFeatureToGeoJsonList", function () {
-        var list = [];
+        let list = [];
 
         it("should return array with point JSON", function () {
             buildSpecModel.addFeatureToGeoJsonList(pointFeatures[0], list);
@@ -820,7 +864,7 @@ describe("tools/print_/buildSpec", function () {
         });
     });
     describe("getStylingRule", function () {
-        var vectorLayer = new Vector();
+        const vectorLayer = new Vector();
 
         it("should return \"*\" if styleAttribute is empty string", function () {
             expect(buildSpecModel.getStylingRule(vectorLayer, pointFeatures[0], "")).to.equal("*");
@@ -834,7 +878,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("buildPointStyleCircle", function () {
         it("should convert circleStyle into style object for print", function () {
-            var circleStyleModel = new Style({
+            const circleStyleModel = new Style({
                     layerId: "1711",
                     class: "POINT",
                     subClass: "CIRCLE",
@@ -864,7 +908,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("buildPointStyleIcon", function () {
         it("should convert iconStyle into style object for print", function () {
-            var iconStyleModel = new Style({
+            const iconStyleModel = new Style({
                     layerId: "1711",
                     class: "POINT",
                     subClass: "SIMPLE",
@@ -889,7 +933,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("buildPolygonStyle", function () {
         it("should convert polygonStyle into style object for print", function () {
-            var polygonStyleModel = new Style({
+            const polygonStyleModel = new Style({
                     class: "POLYGON",
                     subClass: "SIMPLE",
                     polygonFillColor: [189, 189, 0, 1],
@@ -915,7 +959,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("buildLineStringStyle", function () {
         it("should convert lineStringStyle into style object for print", function () {
-            var lineStyleModel = new Style({
+            const lineStyleModel = new Style({
                     class: "Line",
                     subClass: "SIMPLE",
                     lineStrokeColor: [51, 153, 0, 1],
@@ -938,7 +982,7 @@ describe("tools/print_/buildSpec", function () {
     });
     describe("getImageName", function () {
         it("should return everything behind last \"/\" inclusive", function () {
-            var iconStyleModel = new Style({
+            const iconStyleModel = new Style({
                     layerId: "1711",
                     class: "POINT",
                     subClass: "SIMPLE",
@@ -953,7 +997,7 @@ describe("tools/print_/buildSpec", function () {
                 }),
                 style = buildSpecModel.getFeatureStyle(pointFeatures[0], vectorLayer)[0];
 
-            expect(buildSpecModel.getImageName(style.getImage().getSrc())).to.equal("/krankenhaus.png");
+            expect(buildSpecModel.getImageName(style.getImage().getSrc())).to.equal("krankenhaus.png");
         });
     });
     describe("rgbStringToRgbArray", function () {
@@ -969,5 +1013,50 @@ describe("tools/print_/buildSpec", function () {
         it("should turn \"rgba(0,12,345,0.1)\" into [0,12,345,01]", function () {
             expect(buildSpecModel.rgbStringToRgbArray("rgb(0,12,345,0.1)")).to.deep.equal([0, 12, 345, 0.1]);
         });
+    });
+    describe("getFontSize", function () {
+        it("should return \"16\" as size", function () {
+            expect(buildSpecModel.getFontSize("bold 16px Helvetica")).to.equals("16");
+        });
+        it("should return \"16\" as size", function () {
+            expect(buildSpecModel.getFontSize("16px Helvetica")).to.equals("16");
+        });
+        it("should return \"16\" as size", function () {
+            expect(buildSpecModel.getFontSize("bold 16em Helvetica")).to.equals("16");
+        });
+        it("should return null as size if called with undefined", function () {
+            expect(buildSpecModel.getFontSize(undefined)).to.equals(null);
+        });
+        it("should return null as size if called with null", function () {
+            expect(buildSpecModel.getFontSize(null)).to.equals(null);
+        });
+        it("should return null as size if called with empty string", function () {
+            expect(buildSpecModel.getFontSize("")).to.equals(null);
+        });
+
+    });
+    describe("getFontFamily", function () {
+        it("should return the font family", function () {
+            expect(buildSpecModel.getFontFamily("bold 16px Helvetica", "16")).to.equals("Helvetica");
+            expect(buildSpecModel.getFontFamily("bold 20px Sans Serif", "20")).to.equals("Sans Serif");
+            expect(buildSpecModel.getFontFamily("20px Sans Serif", "20")).to.equals("Sans Serif");
+        });
+        it("should return \"\" if called with undefined", function () {
+            expect(buildSpecModel.getFontFamily(undefined, undefined)).to.equals("");
+            expect(buildSpecModel.getFontFamily("", undefined)).to.equals("");
+            expect(buildSpecModel.getFontFamily(undefined, "")).to.equals("");
+        });
+        it("should return \"\" if called with null", function () {
+            expect(buildSpecModel.getFontFamily(null, null)).to.equals("");
+            expect(buildSpecModel.getFontFamily("", null)).to.equals("");
+            expect(buildSpecModel.getFontFamily(null, "")).to.equals("");
+        });
+        it("should return \"\" if called with nonsense", function () {
+            expect(buildSpecModel.getFontFamily("asdfghjklhghggh", "16")).to.equals("");
+            expect(buildSpecModel.getFontFamily("", "pzuouk")).to.equals("");
+            expect(buildSpecModel.getFontFamily("16", "")).to.equals("");
+        });
+
+
     });
 });

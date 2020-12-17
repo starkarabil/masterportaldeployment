@@ -1,13 +1,11 @@
 import PendlerCoreModel from "../core/model";
-import {Stroke, Style, Text} from "ol/style.js";
-import {Point} from "ol/geom.js";
 import VectorSource from "ol/source/Vector.js";
 import VectorLayer from "ol/layer/Vector.js";
-import Feature from "ol/Feature.js";
-
+import thousandsSeparator from "../../../../src/utils/thousandsSeparator";
+import store from "../../../../src/app-store";
 
 const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
-    defaults: _.extend({}, PendlerCoreModel.prototype.defaults, {
+    defaults: Object.assign({}, PendlerCoreModel.prototype.defaults, {
         zoomLevel: 0,
         // Layer zur Darstellung der Linien / Strahlen
         lineLayer: new VectorLayer({
@@ -21,7 +19,19 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
             style: null,
             name: "pendlerLabelLayer"
         }),
-        glyphicon: "glyphicon-play-circle"
+        glyphicon: "glyphicon-play-circle",
+        // translations
+        workplace: "",
+        domicile: "",
+        chooseDistrict: "",
+        chooseBorough: "",
+        relationshipsToDisplay: "",
+        deleteGeometries: "",
+        people: "",
+        csvDownload: "",
+        top5: "",
+        top10: "",
+        top15: ""
     }),
     /**
      * @class Lines
@@ -41,7 +51,6 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
         }) Layer zur Darstellung der Beschriftung an Punkten am Strahlenende
      * @property {String} glyphicon="glyphicon-play-circle" icon to start the animation
      * @fires Core#RadioTriggerMapRender
-     * @listens Alerting#RadioTriggerAlertConfirmed
      */
 
     /**
@@ -52,14 +61,14 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
     preparePendlerLegend: function (features) {
         const pendlerLegend = [];
 
-        _.each(features, function (feature) {
+        features.forEach(feature => {
             // Ein Feature entspricht einer Gemeinde. Extraktion der für die Legende
             // nötigen Attribute (abhängig von der gewünschten Richtung).
             pendlerLegend.push({
-                anzahlPendler: feature.get(this.get("attrAnzahl")),
+                anzahlPendler: thousandsSeparator(feature.get(this.get("attrAnzahl"))),
                 name: feature.get(this.get("attrGemeinde"))
             });
-        }, this);
+        });
 
         this.set("pendlerLegend", pendlerLegend);
     },
@@ -114,55 +123,15 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
      * @returns {void} Keine Rückgabe
      */
     createFeatures: function (features) {
-        let lineLayerFeature,
-            labelCoordinates,
-            labelLayerFeature;
+        const layer = this.get("pendlerLineLayer");
 
-        _.each(features, function (feature) {
-            // Erzeuge die Strahlen
-            lineLayerFeature = new Feature({
-                geometry: feature.getGeometry()
-            });
+        this.addCenterLabelToLayer(feature => feature.get(this.get("attrGemeindeContrary")), features, layer);
+        features.forEach(feature => {
+            this.addBeamFeatureToLayer(feature, layer);
+            this.addLabelFeatureToLayer(feature.get(this.get("attrGemeinde")) + "\n" + thousandsSeparator(feature.get(this.get("attrAnzahl"))), feature, layer);
+        });
 
-            lineLayerFeature.setStyle(new Style({
-                stroke: new Stroke({
-                    color: [192, 9, 9, 1],
-                    width: "3"
-                })
-            }));
-            // "styleId" neccessary for print, that style and feature can be linked
-            lineLayerFeature.set("styleId", _.uniqueId());
-            this.get("pendlerLineLayer").getSource().addFeature(lineLayerFeature);
-
-            // Erzeuge die Beschriftung. Dafür wird ein (unsichtbarere) Punkt am Ende jeder Linie gesetzt.
-            // Wo das Ende ist (erste oder zweite Koordinate) entschreidet sich dabei aus der (Pendel-)Richtung
-            if (this.get("direction") === "wohnort") {
-                labelCoordinates = _.last(feature.getGeometry().getCoordinates());
-            }
-            else {
-                labelCoordinates = _.first(feature.getGeometry().getCoordinates());
-            }
-
-            labelLayerFeature = new Feature({
-                geometry: new Point(labelCoordinates)
-            });
-
-            labelLayerFeature.setStyle(new Style({
-                text: new Text({
-                    text: feature.get(this.get("attrAnzahl")),
-                    font: "10pt sans-serif",
-                    placement: "point",
-                    stroke: new Stroke({
-                        color: [255, 255, 255, 1],
-                        width: 5
-                    })
-                })
-            }));
-            // "styleId" neccessary for print, that style and feature can be linked
-            labelLayerFeature.set("styleId", _.uniqueId());
-            this.get("pendlerLabelLayer").getSource().addFeature(labelLayerFeature);
-
-        }, this);
+        this.zoomToExtentOfFeatureGroup(features);
     },
 
     /**
@@ -174,15 +143,15 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
             labelLayer = null;
 
         lineLayer = this.get("pendlerLineLayer");
-        if (!_.isUndefined(lineLayer)) {
+        if (lineLayer !== undefined) {
             Radio.trigger("Map", "removeLayer", lineLayer);
         }
 
         labelLayer = this.get("pendlerLabelLayer");
-        if (!_.isUndefined(lineLayer)) {
+        if (labelLayer !== undefined) {
             Radio.trigger("Map", "removeLayer", labelLayer);
         }
-        Radio.trigger("MapMarker", "hideMarker");
+        store.dispatch("MapMarker/removePointMarker");
     },
 
     /**
@@ -193,6 +162,18 @@ const Lines = PendlerCoreModel.extend(/** @lends Lines.prototype */{
     changeLang: function (lng) {
         if (this.model.get("isActive") === true) {
             this.model.set({
+                "workplace": i18next.t("common:modules.tools.pendler.lines.workplace"),
+                "domicile": i18next.t("common:modules.tools.pendler.lines.domicile"),
+                "chooseDistrict": i18next.t("common:modules.tools.pendler.lines.chooseDistrict"),
+                "chooseBorough": i18next.t("common:modules.tools.pendler.lines.chooseBorough"),
+                "relationshipsToDisplay": i18next.t("common:modules.tools.pendler.lines.relationshipsToDisplay"),
+                "deleteGeometries": i18next.t("common:modules.tools.pendler.lines.deleteGeometries"),
+                "noCommutersKnown": i18next.t("common:modules.tools.pendler.lines.noCommutersKnown"),
+                "people": i18next.t("common:modules.tools.pendler.lines.people"),
+                "csvDownload": i18next.t("common:modules.tools.pendler.lines.csvDownload"),
+                "top5": i18next.t("common:modules.tools.pendler.lines.top5"),
+                "top10": i18next.t("common:modules.tools.pendler.lines.top10"),
+                "top15": i18next.t("common:modules.tools.pendler.lines.top15"),
                 "currentLng": lng
             });
         }

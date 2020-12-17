@@ -1,7 +1,8 @@
 import Tool from "../../core/modelList/tool/model";
+import store from "../../../src/app-store";
 
 const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
-    defaults: _.extend({}, Tool.prototype.defaults, {
+    defaults: Object.assign({}, Tool.prototype.defaults, {
         deactivateGFI: false,
         renderToWindow: true,
         isCollapsed: undefined,
@@ -24,7 +25,6 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         createReport: false, // soll Berichts-Funktionalität gestartet werden? Aus Config.json
         parcelFound: false, // flag für den Bericht. Bericht wird nur abgefragt wenn Flurstück existiert
         glyphicon: "glyphicon-search",
-        mapMarkerType: "Parcel",
         // translations
         searchText: "",
         generateReportText: "",
@@ -37,7 +37,9 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         districtsLoadFailed: "",
         wrongConfigParcelsearch: "",
         parcelSearchImpossible: "",
-        tryAgainLater: ""
+        tryAgainLater: "",
+        zoomLevel: 7,
+        mapMarkerType: "Point"
 
     }),
     /**
@@ -66,7 +68,6 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
      * @property {Boolean} createReport=false todo
      * @property {Boolean} parcelFound=false todo
      * @property {String} glyphicon="glyphicon-search" todo
-     * @property {String} mapMarkerType="Parcel" todo
      * @property {String} searchText="", filled with "Suchen"- translated
      * @property {String} generateReportText="", filled with "Bericht erzeugen"- translated
      * @property {String} parcelNumberText="", filled with "Flurstücksnummer"- translated
@@ -80,11 +81,8 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
      * @property {String} parcelSearchImpossible="", filled with "Flurstücksabfrage derzeit nicht möglich!"- translated
      * @property {String} tryAgainLater="", filled with "Bitte versuchen Sie es später erneut."- translated
      * @constructs
-     * @listens Tools.GetCoord#RadioTriggerChangeIsActive
      * @listens i18next#RadioTriggerLanguageChanged
-     * @fires MapMarker#RadioTriggerMapMarkerHideMarker
      * @fires Core#RadioTriggerMapRegisterListener
-     * @fires MapMarker#RadioTriggerMapMarkerShowMarker
      */
     initialize: function () {
         this.superInitialize();
@@ -100,8 +98,8 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
     },
 
     setDefaults: function () {
-        var restService,
-            serviceURL;
+        let restService = "",
+            serviceURL = "";
 
         if (this.get("parcelDenominator") === true) {
             this.setParcelDenominatorField(true);
@@ -165,30 +163,31 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
      * Der Wert "flur" ist optional und davon abhängig, ob im nutzenden Bundesland auch Fluren genutzt werden.
      */
     parse: function (obj) {
-        var districts = {},
+        const districts = {},
             cadastralDistricts = {};
 
-        _.each(obj, function (value, key) {
-            _.extend(districts, _.object([key], [value.id]));
-            if (_.has(value, "flur") && _.isArray(value.flur) && value.flur.length > 0) {
-                _.extend(cadastralDistricts, _.object([value.id], [value.flur]));
+        Object.entries(obj).forEach(([key, value]) => {
+            Object.assign(districts, Radio.request("Util", "toObject", [key], [value.id]));
+            if (value && value.hasOwnProperty("flur") && Array.isArray(value.flur) && value.flur.length > 0) {
+                Object.assign(cadastralDistricts, Radio.request("Util", "toObject", [value.id], [value.flur]));
             }
-        }, this);
+        });
         this.setDistricts(districts);
-        if (_.values(cadastralDistricts).length > 0) {
+        if (Object.values(cadastralDistricts).length > 0) {
             this.setCadastralDistricts(cadastralDistricts);
             this.setCadastralDistrictField(true);
         }
         this.setFetched(true);
     },
     createReport: function (flurstueck, gemarkung) {
-        var flurst_kennz,
-            jasperService = Radio.request("RestReader", "getServiceById", this.get("reportServiceId")),
-            params = _.isUndefined(jasperService) === false ? jasperService.get("params") : undefined,
-            url = _.isUndefined(jasperService) === false ? jasperService.get("url") + "?" : undefined;
+        const jasperService = Radio.request("RestReader", "getServiceById", this.get("reportServiceId")),
+            params = jasperService !== undefined ? jasperService.get("params") : undefined;
+
+        let url = jasperService !== undefined ? jasperService.get("url") + "?" : undefined,
+            flurst_kennz = "";
 
         // setze flurst_nummer und gemarkung aus gfi Aufruf
-        if (_.isUndefined(flurstueck) === false) {
+        if (flurstueck !== undefined) {
             this.setParcelNumber(flurstueck);
             this.setDistrictNumber(gemarkung);
             this.setParcelFound(true);
@@ -199,7 +198,7 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         }
         flurst_kennz = this.createFlurstKennz();
         // if (this.get("parcelFound") === true) {
-        if (this.get("parcelFound") && _.isUndefined(url) === false && _.isUndefined(params) === false) {
+        if (this.get("parcelFound") && url !== undefined && params !== undefined) {
             params.flurstueckskennzeichen = flurst_kennz;
             url = this.buildUrl(url, params);
             window.open(url, "_blank");
@@ -209,22 +208,24 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         }
     },
     buildUrl: function (url, params) {
-        var addedUrl = url;
+        const paramKeys = Object.entries(params);
+        let addedUrl = url;
 
-        _.each(params, function (val, key) {
-            var andSymbol = "&";
-
-            addedUrl += key + "=" + String(val) + andSymbol;
+        paramKeys.forEach(([key, val], i) => {
+            addedUrl += key + "=" + String(val);
+            if (i < paramKeys.length - 1) {
+                addedUrl = addedUrl + "&";
+            }
         });
         // if params is empty object
-        if (addedUrl.charAt(addedUrl.length - 1) !== "?") {
+        if (params.length === 0 && addedUrl.charAt(addedUrl.length - 1) !== "?") {
             addedUrl = addedUrl.slice(0, -1);
         }
         return addedUrl;
 
     },
     createFlurstKennz: function () {
-        var land = this.get("countryNumber"),
+        const land = this.get("countryNumber"),
             gemarkung = this.get("districtNumber"),
             flurst_nr = this.padLeft(this.get("parcelNumber"), 5, "0");
 
@@ -241,7 +242,7 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         return Array(length - String(number).length + 1).join(prefix || "0") + number;
     },
     sendRequest: function () {
-        var storedQuery = "&StoredQuery_ID=" + this.get("storedQueryID"),
+        const storedQuery = "&StoredQuery_ID=" + this.get("storedQueryID"),
             gemarkung = "&gemarkung=" + this.get("districtNumber"),
             flur = this.get("cadastralDistrictField") === true ? "&flur=" + this.get("cadastralDistrictNumber") : "",
             parcelNumber = "&flurstuecksnummer=" + this.padLeft(this.get("parcelNumber"), 5, "0"),
@@ -267,8 +268,9 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         });
     },
     getParcel: function (data) {
-        var member = $("wfs\\:member,member", data)[0],
-            parcelNumber,
+        const member = $("wfs\\:member,member", data)[0];
+
+        let parcelNumber,
             parcelDenominatorNumber,
             position,
             coordinate,
@@ -285,19 +287,26 @@ const ParcelSearch = Tool.extend(/** @lends ParcelSearch.prototype */{
         else {
             position = $(member).find("gml\\:pos, pos")[0] ? $(member).find("gml\\:pos, pos")[0].textContent.split(" ") : null;
             coordinate = position ? [parseFloat(position[0]), parseFloat(position[1])] : null;
-            attributes = coordinate ? _.object(["coordinate"], [coordinate]) : {};
+            attributes = coordinate ? Radio.request("Util", "toObject", ["coordinate"], [coordinate]) : {};
             geoExtent = $(member).find("iso19112\\:geographicExtent, geographicExtent")[0] ? $(member).find("iso19112\\:geographicExtent, geographicExtent")[0] : null;
-            attributes = geoExtent ? _.extend(attributes, _.object(["geographicExtent"], [geoExtent])) : attributes;
+            attributes = geoExtent ? Object.assign(attributes, Radio.request("Util", "toObject", ["geographicExtent"], [geoExtent])) : attributes;
 
             $(member).find("*").filter(function () {
                 return this.nodeName.indexOf("dog") !== -1 || this.nodeName.indexOf("gages") !== -1;
             }).each(function () {
-                _.extend(attributes, _.object([this.nodeName.split(":")[1]], [this.textContent]));
+                Object.assign(attributes, Radio.request("Util", "toObject", [this.nodeName.split(":")[1]], [this.textContent]));
             });
             this.setParcelFound(true);
 
-            Radio.trigger("MapMarker", "zoomTo", {type: this.get("mapMarkerType"), coordinate: coordinate});
-            Radio.trigger("ParcelSearch", "parcelFound", attributes);
+            if (this.get("mapMarkerType") === "Point") {
+                store.dispatch("MapMarker/placingPointMarker", coordinate);
+                Radio.trigger("MapView", "setCenter", coordinate, this.get("zoomLevel"));
+            }
+
+            // use a timeout here, else the resolution-change is not ready and in the addon showParcelGfi/RadioBridge the wrong result is returned for parcelsearch
+            setTimeout(() => {
+                Radio.trigger("ParcelSearch", "parcelFound", attributes);
+            }, 500);
         }
     },
 

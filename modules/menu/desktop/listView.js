@@ -3,6 +3,7 @@ import DesktopThemenFolderView from "./folder/viewTree";
 import CatalogFolderView from "./folder/viewCatalog";
 import DesktopLayerView from "./layer/view";
 import SelectionView from "./layer/viewSelection";
+import store from "../../../src/app-store/index";
 
 const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
 
@@ -52,7 +53,7 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
         this.renderMain();
         this.render(firstTime);
         this.renderSelectedList();
-        Radio.trigger("Autostart", "initializedModul", "tree");
+        Radio.trigger("Autostart", "initializedModule", "tree");
     },
 
     /**
@@ -89,21 +90,19 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
      */
     renderSelectedList: function () {
 
-        var selectedLayerModel = this.collection.findWhere({id: "SelectedLayer"}),
-            currentMap = Radio.request("Map", "getMapMode"),
-            selectedModels;
+        const selectedLayerModel = this.collection.findWhere({id: "SelectedLayer"}),
+            currentMap = Radio.request("Map", "getMapMode");
+        let selectedModels;
 
         $("#SelectedLayer").html("");
         if (selectedLayerModel.get("isExpanded")) {
             selectedModels = this.collection.where({isSelected: true, type: "layer"});
             selectedModels = selectedModels.filter(model => model.get("name") !== "Oblique");
 
-            selectedModels = _.filter(selectedModels, function (model) {
+            selectedModels = selectedModels.filter(model => {
                 return model.get("supported").includes(currentMap);
             });
-            selectedModels = _.sortBy(selectedModels, function (model) {
-                return model.get("selectionIDX");
-            });
+            selectedModels = Radio.request("Util", "sortBy", selectedModels, (model) => model.get("selectionIDX"), this);
             this.addSelectionView(selectedModels);
         }
     },
@@ -119,8 +118,8 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
      * @return {void}
      */
     renderSubTree: function (parentId, level, levelLimit, firstTime) {
-        var lightModels,
-            models,
+        let lightModels = "",
+            models = "",
             folders,
             layer;
 
@@ -133,7 +132,7 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
 
         // Ordner öffnen, die initial geöffnet sein sollen
         if (parentId === "tree") {
-            _.each(models, function (model) {
+            models.forEach(model => {
                 if (model.get("type") === "folder" && model.get("isInitiallyExpanded")) {
                     model.setIsExpanded(true);
                 }
@@ -150,9 +149,7 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
 
         // Layer Atlas sortieren
         if (Radio.request("Parser", "getTreeType") === "default") {
-            layer = _.sortBy(layer, function (item) {
-                return item.get("name");
-            });
+            layer = Radio.request("Util", "sortBy", layer, (item) => item.get("name"), this);
         }
         // Notwendig, da jQuery.after() benutzt werden muss wenn die Layer in den Baum gezeichnet werden, um den Layern auf allen Ebenen die volle Breite des Baumes zu geben
         // Mit jQuery.append würden sie ab der 2. ebene immer mit dem Eltern element zusammen eingerückt werden
@@ -165,9 +162,7 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
         });
 
         if (Radio.request("Parser", "getTreeType") === "default" && parentId !== "Overlayer" && parentId !== "tree") {
-            folders = _.sortBy(folders, function (item) {
-                return item.get("name");
-            });
+            folders = Radio.request("Util", "sortBy", folders, (item) => item.get("name"), this);
         }
 
         if (parentId !== "Overlayer" && parentId !== "tree") {
@@ -176,9 +171,9 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
 
         this.addOverlayViews(folders);
 
-        _.each(folders, function (folder) {
+        folders.forEach(folder => {
             this.renderSubTree(folder.get("id"), level + 1, levelLimit, false);
-        }, this);
+        });
     },
 
     /**
@@ -199,14 +194,12 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
      * @return {Array} items
      */
     addViewsToItemsOfType: function (type, items, parentId) {
-        var viewItems = items.filter(function (model) {
+        let viewItems = items.filter(function (model) {
             return model.get("type") === type;
         });
 
         if (Radio.request("Parser", "getTreeType") === "default" && parentId !== "tree") {
-            viewItems = _.sortBy(viewItems, function (item) {
-                return item.get("name");
-            });
+            viewItems = Radio.request("Util", "sortBy", viewItems, (item) => item.get("name"), this);
             if (parentId !== "Overlayer") {
                 viewItems.reverse();
             }
@@ -259,12 +252,13 @@ const ListView = ListViewMain.extend(/** @lends ListView.prototype */{
      * @return {void}
      */
     startModul: function (modulId) {
-        var modul = this.collection.find(function (model) {
+        const modul = this.collection.find(function (model) {
             return model.get("id").toLowerCase() === modulId;
         });
 
         if (modul.get("type") === "tool") {
             modul.setIsActive(true);
+            store.dispatch("Tools/setToolActive", {id: modul.id, active: true});
         }
         else {
             $("#" + modulId).parent().addClass("open");

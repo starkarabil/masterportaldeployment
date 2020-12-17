@@ -1,6 +1,7 @@
 import Template from "text-loader!./template.html";
 import SelectionTemplate from "text-loader!./templateSelection.html";
 import SettingsTemplate from "text-loader!./templateSettings.html";
+import checkChildrenDatasets from "../../checkChildrenDatasets.js";
 
 const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
     events: {
@@ -30,6 +31,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @fires StyleWMS#RadioTriggerStyleWMSOpenStyleWMS
      */
     initialize: function () {
+        checkChildrenDatasets(this.model);
         this.listenTo(this.model, {
             "change:isSelected change:isVisibleInMap": this.render,
             "change:isSettingVisible": this.renderSetting,
@@ -37,6 +39,8 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
             "change:isOutOfRange": this.toggleColor
         });
 
+        // translates the i18n-props into current user-language. is done this way, because model's listener to languageChange reacts too late (after render, which ist riggered by creating new Menu)
+        this.model.changeLang();
         this.toggleByMapMode(Radio.request("Map", "getMapMode"));
         this.toggleColor(this.model, this.model.get("isOutOfRange"));
     },
@@ -76,7 +80,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @returns {Backbone.View} todo
      */
     render: function () {
-        var attr = this.model.toJSON();
+        const attr = this.model.toJSON();
 
         if (Radio.request("BreadCrumb", "getLastItem").get("id") === "SelectedLayer") {
             this.$el.html(this.templateSelected(attr));
@@ -96,7 +100,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @returns {void}
      */
     renderSetting: function () {
-        var attr = this.model.toJSON();
+        const attr = this.model.toJSON();
 
         // Animation Zahnrad
         this.$(".glyphicon-cog").toggleClass("rotate rotate-back");

@@ -1,8 +1,9 @@
 import Model from "@modules/snippets/multiCheckbox/model.js";
+import Style from "@modules/vectorStyle/model.js";
 import {expect} from "chai";
 
 describe("Multicheckbox Model", function () {
-    var model;
+    let model;
 
     before(function () {
         model = new Model({
@@ -12,7 +13,7 @@ describe("Multicheckbox Model", function () {
 
 
     describe("updateSelectedValues", function () {
-        var initialValue, updatedValue;
+        let initialValue, updatedValue;
 
         before(function () {
             initialValue = model.get("valuesCollection").models.filter(function (value) {
@@ -33,10 +34,10 @@ describe("Multicheckbox Model", function () {
     });
 
     describe("resetValues", function () {
-        var initialValue, updatedValue;
+        let initialValue, updatedValue;
 
         before(function () {
-            var valueModel = model.get("valuesCollection").models.filter(function (value) {
+            const valueModel = model.get("valuesCollection").models.filter(function (value) {
                 return value.get("value") === "Freizeit";
             });
 
@@ -56,32 +57,30 @@ describe("Multicheckbox Model", function () {
     });
 
     describe("addValueModels", function () {
-        var initialValue, updatedValue;
+        let initialValue, updatedValue;
 
         before(function () {
-            var countTest1, countTest2;
 
-            countTest1 = model.get("valuesCollection").models.filter(function (value) {
-                return value.get("value") === "Test1";
-            }).length;
-            countTest2 = model.get("valuesCollection").models.filter(function (value) {
-                return value.get("value") === "Test2";
-            }).length;
+            const countTest1 = model.get("valuesCollection").models.filter(function (value) {
+                    return value.get("value") === "Test1";
+                }).length,
+                countTest2 = model.get("valuesCollection").models.filter(function (value) {
+                    return value.get("value") === "Test2";
+                }).length;
 
             initialValue = countTest1 + countTest2;
         });
 
         it("should add Value Models", function () {
-            var countTest1, countTest2;
 
             model.addValueModels(["Test1", "Test2"]);
 
-            countTest1 = model.get("valuesCollection").models.filter(function (value) {
-                return value.get("value") === "Test1";
-            }).length;
-            countTest2 = model.get("valuesCollection").models.filter(function (value) {
-                return value.get("value") === "Test2";
-            }).length;
+            const countTest1 = model.get("valuesCollection").models.filter(function (value) {
+                    return value.get("value") === "Test1";
+                }).length,
+                countTest2 = model.get("valuesCollection").models.filter(function (value) {
+                    return value.get("value") === "Test2";
+                }).length;
 
             updatedValue = countTest1 + countTest2;
 
@@ -91,10 +90,10 @@ describe("Multicheckbox Model", function () {
     });
 
     describe("updateSelectableValues", function () {
-        var initialValue, updatedValue;
+        let initialValue, updatedValue;
 
         before(function () {
-            var valueModel = model.get("valuesCollection").models.filter(function (value) {
+            const valueModel = model.get("valuesCollection").models.filter(function (value) {
                 return value.get("value") === "Freizeit";
             });
 
@@ -104,17 +103,31 @@ describe("Multicheckbox Model", function () {
         });
 
         it("should update Selectable Values", function () {
-            var valueModel;
 
             model.updateSelectableValues("Freizeit");
 
-            valueModel = model.get("valuesCollection").models.filter(function (value) {
+            const valueModel = model.get("valuesCollection").models.filter(function (value) {
                 return value.get("value") === "Freizeit";
             });
+
             updatedValue = valueModel[0].get("isSelectable");
 
             expect(initialValue).to.be.true;
             expect(updatedValue).to.be.false;
+        });
+    });
+
+    describe("SVG Functions", function () {
+        const style = new Style();
+
+        it("createPolygonSVG should return an SVG", function () {
+            expect(model.createPolygonSVG(style)).to.be.an("string").to.equal("<svg height='25' width='25'><polygon points='5,5 20,5 20,20 5,20' style='fill:rgb(255,255,255);fill-opacity:1;stroke:rgb(0,0,0);stroke-opacity:1;stroke-width:2;'/></svg>");
+        });
+        it("createLineSVG should return an SVG", function () {
+            expect(model.createLineSVG(style)).to.be.an("string").to.equal("<svg height='25' width='25'><path d='M 05 20 L 20 05' stroke='rgb(0,0,0)' stroke-opacity='1' stroke-width='2' fill='none'/></svg>");
+        });
+        it("createCircleSVG should return an SVG", function () {
+            expect(model.createCircleSVG(style)).to.be.an("string").to.equal("<svg height='25' width='25'><circle cx='12.5' cy='12.5' r='10' stroke='rgb(0,0,0)' stroke-opacity='1' stroke-width='2' fill='rgb(0,153,255)' fill-opacity='1'/></svg>");
         });
     });
 });
