@@ -3,6 +3,19 @@
 
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
+## Unreleased - in development
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Ein Fehler wurde behoben der verhindert hat, dass das Portal vollständig geladen wurde, wenn eine portalLanguage konfiguriert war.
+
+---
 
 ## v2.6.0 - 2020-12-17
 ### Added
