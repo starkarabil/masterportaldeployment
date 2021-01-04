@@ -25,7 +25,6 @@ Im Abschnitt *Portalconfig* können folgende Eigenschaften konfiguriert werden:
 5. Menüeinträge sowie Vorhandenheit jeweiliger Tools und deren Reihenfolge (*menu*)
 6. Typ und Eigenschaften des genutzten Suchdienstes (*searchBar*)
 7. Löschbarkeit von Themen (*layersRemovable*)
-8. Welche Sprachen genutzt werden sollen (*portalLanguage*)
 
 Es existieren die im Folgenden aufgelisteten Konfigurationen:
 
@@ -40,7 +39,6 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen:
 |menu|nein|**[menu](#markdown-header-portalconfigmenu)**||Hier können die Menüeinträge und deren Anordnung konfiguriert werden. Die Reihenfolge der Werkzeuge ist identisch mit der Reihenfolge in der config.json (siehe **[Tools](#markdown-header-portalconfigmenutools)**).|false|
 |searchBar|nein|**[searchBar](#markdown-header-portalconfigsearchbar)**||Über die Suchleiste können verschiedene Suchen gleichzeitig angefragt werden.|false|
 |layersRemovable|nein|Boolean|false|Gibt an, ob der Layer gelöscht werden darf.|false|
-|portalLanguage|nein|**[portalLanguage](#markdown-header-portalLanguage)**||Mit dieser Konfiguration werden die Sprachen im Portal eingestellt, eine Default-Sprache ausgewählt und die Start-Reihenfolge festgelegt.|false|
 
 ***
 
