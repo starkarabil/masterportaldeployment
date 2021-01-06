@@ -16,6 +16,7 @@
 ### Fixed
 - Ein Fehler wurde behoben der verhindert hat, dass das Portal vollständig geladen wurde, wenn eine portalLanguage konfiguriert war.
 - Die Beschreibung des Attributes portalLanguage wurde aus der doc/config.json.md vollständig enfernt, da die Sprache in der config.js konfiguriert werden muss.
+- Die Scale Werte für die Maßstabsanzeige werden nun wieder aus der config.json bzw. aus den Defaults übernommen und angezeigt.
 
 ---
 
