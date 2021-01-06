@@ -5,6 +5,7 @@
 
 ## Unreleased - in development
 ### Added
+- Eine Sprachdatei für Italienisch wurde hinzugefügt.
 
 ### Changed
 
