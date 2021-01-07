@@ -3,15 +3,9 @@
 
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
-## Unreleased - in development
+## v2.6.1 - 2021-01-07
 ### Added
 - Eine Sprachdatei für Italienisch wurde hinzugefügt.
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - Ein Fehler wurde behoben der verhindert hat, dass das Portal vollständig geladen wurde, wenn eine portalLanguage konfiguriert war.
