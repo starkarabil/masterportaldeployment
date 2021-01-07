@@ -18,6 +18,7 @@
 - Die Beschreibung des Attributes portalLanguage wurde aus der doc/config.json.md vollständig enfernt, da die Sprache in der config.js konfiguriert werden muss.
 - Die Scale Werte für die Maßstabsanzeige werden nun wieder aus der config.json bzw. aus den Defaults übernommen und angezeigt.
 - Ein Fehler wurde beseitigt, der auftrat, wenn zuerst nach einer Kita und danach nach einem Bebauungsplan gesucht wurde.
+- Wenn im Maßstab 1:500 gedruckt werden soll, dann wird eine Warnung angezeigt, die die nicht druckbaren Layer nennt. Die Kartenansicht im Browser ändert sich nicht.
 
 ---
 
