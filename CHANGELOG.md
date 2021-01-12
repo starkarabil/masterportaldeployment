@@ -3,6 +3,21 @@
 
  Es wird die [Semantische Versionierung](https://semver.org/spec/v2.0.0.html) verwendet.
 
+## Unreleased - in development
+### Added
+
+### Changed
+- Der Download im Druckmodul wird nun ohne ein Popup durchgeführt. Somit kann der Ausdruck auch mit einem aktiven Popup Blocker heruntergeladen werden.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Ein Fehler wurde behoben, der beim öffnen des Default-Themenbaumes zu langen Ladezeiten führte.
+
+---
+
 ## v2.6.1 - 2021-01-07
 ### Added
 - Eine Sprachdatei für Italienisch wurde hinzugefügt.
