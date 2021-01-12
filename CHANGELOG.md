@@ -36,6 +36,8 @@
 - Ein Fehler wurde beseitigt, der auftrat, wenn zuerst nach einer Kita und danach nach einem Bebauungsplan gesucht wurde.
 - Wenn im Maßstab 1:500 gedruckt werden soll, dann wird eine Warnung angezeigt, die die nicht druckbaren Layer nennt. Die Kartenansicht im Browser ändert sich nicht.
 
+### Changed
+- Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität den Edge zu nutzen.
 ---
 
 ## v2.6.0 - 2020-12-17
