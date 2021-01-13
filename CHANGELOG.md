@@ -9,6 +9,7 @@
 ### Changed
 - Der Download im Druckmodul wird nun ohne ein Popup durchgeführt. Somit kann der Ausdruck auch mit einem aktiven Popup Blocker heruntergeladen werden.
 - Die Italienische Sprachdatei wurde erweitert und angepasst.
+- Die Angabe der restrictedAlerts im Alerting Modul ist nun nicht mehr Case-Sensitive
 
 ### Deprecated
 
@@ -18,6 +19,7 @@
 - Ein Fehler wurde behoben, der beim öffnen des Default-Themenbaumes zu langen Ladezeiten führte.
 - Im Werkzeug WFST wurden einige Bugs behoben, unter anderem wurden bei Meldungen keine Buttons mehr angezeigt.
 - Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim hereinzoomen nicht aufgelöst wurde.
+- Die Angabe des Parameters restrictedAlerts im ALerting Modul ist nun nicht mehr case-sensitive.
 
 ---
 
@@ -31,7 +33,6 @@
 - Die Scale Werte für die Maßstabsanzeige werden nun wieder aus der config.json bzw. aus den Defaults übernommen und angezeigt.
 - Ein Fehler wurde beseitigt, der auftrat, wenn zuerst nach einer Kita und danach nach einem Bebauungsplan gesucht wurde.
 - Wenn im Maßstab 1:500 gedruckt werden soll, dann wird eine Warnung angezeigt, die die nicht druckbaren Layer nennt. Die Kartenansicht im Browser ändert sich nicht.
-
 
 ---
 
