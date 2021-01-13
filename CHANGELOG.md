@@ -29,6 +29,7 @@
 - Ein Fehler wurde beseitigt, der auftrat, wenn zuerst nach einer Kita und danach nach einem Bebauungsplan gesucht wurde.
 - Wenn im Maßstab 1:500 gedruckt werden soll, dann wird eine Warnung angezeigt, die die nicht druckbaren Layer nennt. Die Kartenansicht im Browser ändert sich nicht.
 - Im Werkzeug WFST wurden einige Bugs behoben, unter anderem wurden bei Meldungen keine Buttons mehr angezeigt.
+- Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim hereinzoomen nicht aufgelöst wurde.
 
 ---
 
