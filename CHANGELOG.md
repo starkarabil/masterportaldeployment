@@ -19,7 +19,6 @@
 - Ein Fehler wurde behoben, der beim öffnen des Default-Themenbaumes zu langen Ladezeiten führte.
 - Im Werkzeug WFST wurden einige Bugs behoben, unter anderem wurden bei Meldungen keine Buttons mehr angezeigt.
 - Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim hereinzoomen nicht aufgelöst wurde.
-- Die Angabe des Parameters restrictedAlerts im ALerting Modul ist nun nicht mehr case-sensitive.
 
 ---
 
