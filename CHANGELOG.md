@@ -26,6 +26,7 @@
 ## v2.6.1 - 2021-01-07
 ### Added
 - Eine Sprachdatei für Italienisch wurde hinzugefügt.
+- Für Layer vom Typ VectorTiles werden nun Kacheln (Tiles) in nicht vorhandenen Zoomstufen extrapoliert, sodass auch in sehr kleinen oder sehr großen Zoomstufen Daten angezeigt werden.
 
 ### Fixed
 - Ein Fehler wurde behoben der verhindert hat, dass das Portal vollständig geladen wurde, wenn eine portalLanguage konfiguriert war.
