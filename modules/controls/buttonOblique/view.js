@@ -161,6 +161,7 @@ const ButtonObliqueView = Backbone.View.extend(/** @lends ButtonObliqueView.prot
                     "content":  i18next.t("common:modules.controls.oblique.doNotUseIE"),
                     "displayClass": "info"
                 });
+                return;
             }
             else{
                 if (Radio.request("Map", "isMap3d")) {
