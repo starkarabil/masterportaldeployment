@@ -22,6 +22,7 @@
 - Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim hereinzoomen nicht aufgelöst wurde.
 - In bestimmten Fällen wurde beim Drucken eine falsche Url zusammengbaut, das ist behoben.
 - Bei D3 Grafiken wurden bei der linken Achsen Beschriftung die tausender Punkte in Anführungszeichen dargestellt.
+- Ein Fehler wurde behoben, der auftrat wenn ein Layer angeschaltet wurde, der verschiedene Sonderzeichen im Namen enthielt.
 
 ---
 
