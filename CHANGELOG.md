@@ -25,6 +25,10 @@
 - Ein Fehler wurde behoben, der auftrat wenn ein Layer angeschaltet wurde, der verschiedene Sonderzeichen im Namen enthielt.
 - Wenn der MapMarker in Kombination mit einer Projektion als URL Parameter angegeben wird, wird der MapMarker nun korrekt projiziert.
 - Ein Fehler wurde behoben der dazu führte, dass die Legende im Menü angezeigt wurde, auch wenn diese nicht konfiguriert war.
+- 3D: das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt
+
+### Known Issues
+- 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt
 
 ---
 
