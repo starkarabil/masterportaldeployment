@@ -94,7 +94,7 @@ export function getGfiFeature (layerAttributes, properties) {
         layer = {
             get: (key) => {
                 if (key === "name") {
-                    return properties.attributes && properties.attributes.Objektart ? properties.attributes.Objektart : layerName;
+                    return properties && properties.attributes && properties.attributes.Objektart ? properties.attributes.Objektart : layerName;
                 }
                 else if (key === "gfiTheme") {
                     return gfiTheme;
