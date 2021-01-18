@@ -12,6 +12,7 @@
 - Die Angabe der restrictedAlerts im Alerting Modul ist nun nicht mehr Case-Sensitive
 - Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität einen aktuellen Browser zu nutzen.
 - Die Beschreibung des Attributes "infoFormat" wurde aus der config.json.md in die services.json.md verschoben.
+- Die Angabe von gfiAttributes ist jetzt case-insensitive.
 
 ### Deprecated
 
