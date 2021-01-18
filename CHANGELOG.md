@@ -10,6 +10,7 @@
 - Der Download im Druckmodul wird nun ohne ein Popup durchgeführt. Somit kann der Ausdruck auch mit einem aktiven Popup Blocker heruntergeladen werden.
 - Die Italienische Sprachdatei wurde erweitert und angepasst.
 - Die Angabe der restrictedAlerts im Alerting Modul ist nun nicht mehr Case-Sensitive
+- Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität einen aktuellen Browser zu nutzen.
 
 ### Deprecated
 
@@ -36,8 +37,6 @@
 - Ein Fehler wurde beseitigt, der auftrat, wenn zuerst nach einer Kita und danach nach einem Bebauungsplan gesucht wurde.
 - Wenn im Maßstab 1:500 gedruckt werden soll, dann wird eine Warnung angezeigt, die die nicht druckbaren Layer nennt. Die Kartenansicht im Browser ändert sich nicht.
 
-### Changed
-- Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität einen aktuellen Browser zu nutzen.
 ---
 
 ## v2.6.0 - 2020-12-17
