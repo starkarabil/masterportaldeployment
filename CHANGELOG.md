@@ -11,6 +11,7 @@
 - Die Italienische Sprachdatei wurde erweitert und angepasst.
 - Die Angabe der restrictedAlerts im Alerting Modul ist nun nicht mehr Case-Sensitive
 - Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität einen aktuellen Browser zu nutzen.
+- Die Beschreibung des Attributes "infoFormat" wurde aus der config.json.md in die services.json.md verschoben.
 
 ### Deprecated
 
@@ -25,7 +26,8 @@
 - Ein Fehler wurde behoben, der auftrat wenn ein Layer angeschaltet wurde, der verschiedene Sonderzeichen im Namen enthielt.
 - Wenn der MapMarker in Kombination mit einer Projektion als URL Parameter angegeben wird, wird der MapMarker nun korrekt projiziert.
 - Ein Fehler wurde behoben der dazu führte, dass die Legende im Menü angezeigt wurde, auch wenn diese nicht konfiguriert war.
-- 3D: das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt
+- 3D: das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt.
+- Ein Fehler wurde behoben der verhindert hat, dass eine Get Feature Info für WMS vom Mapserver mit dem "infoFormat": "application/vnd.ogc.gml" angezeigt wurde.
 
 ### Known Issues
 - 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt
