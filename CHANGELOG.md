@@ -29,6 +29,7 @@
 - 3D: das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt.
 - Ein Fehler wurde behoben der verhindert hat, dass eine Get Feature Info für WMS vom Mapserver mit dem "infoFormat": "application/vnd.ogc.gml" angezeigt wurde.
 - Wenn Layer über die Url als Parameter selektiert wurden und die Transparenz nicht übergeben wurde, war deren Transparenz im Themenbaum nicht einstellbar, das ist behoben.
+- Das Drucken eines Ausschnitts in dem der MapMarker sichtbar ist funktioniert jetzt. Der MapMarker wird im Druck nicht dargestellt.
 
 ### Known Issues
 - 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt

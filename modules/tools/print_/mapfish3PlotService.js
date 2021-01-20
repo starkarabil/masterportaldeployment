@@ -588,7 +588,7 @@ const PrintModel = Tool.extend(/** @lends PrintModel.prototype */{
      */
     getVisibleLayer: function () {
         let visibleLayerList = Radio.request("Map", "getLayers").getArray().filter(layer => {
-            return layer.getVisible() === true;
+            return layer.getVisible() === true && "markerPoint" !== layer.get("name");
         });
 
         visibleLayerList = this.sortVisibleLayerListByZindex(visibleLayerList);
