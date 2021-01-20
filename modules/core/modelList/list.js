@@ -797,7 +797,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
 
                 if (lightModel !== undefined) {
                     this.add(lightModel);
-                    this.setModelAttributesById(paramLayer.id, {isSelected: true, transparency: paramLayer.transparency});
+                    this.setModelAttributesById(paramLayer.id, {isSelected: true, transparency: paramLayer.transparency ? paramLayer.transparency : 0});
                     // selektierte Layer werden automatisch sichtbar geschaltet, daher muss hier nochmal der Layer auf nicht sichtbar gestellt werden
                     if (paramLayer.visibility === false && this.get(paramLayer.id) !== undefined) {
                         this.get(paramLayer.id).setIsVisibleInMap(false);
