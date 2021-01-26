@@ -271,7 +271,7 @@ const SpecialWFSModel = Backbone.Model.extend({
                     }
                 }
                 else {
-                    console.error("Missing properties in specialWFS-Response. Ignoring Feature...");
+                    console.log("Missing properties in specialWFS-Response. Ignoring Feature...");
                 }
             });
         }
