@@ -13,6 +13,8 @@
 - Die Anzeige der Schrägluftbilder wird im Internet Explorer 11 nicht mehr unterstützt, es erscheint eine Meldung mit dem Vorschlag für diese Funktionalität einen aktuellen Browser zu nutzen.
 - Die Beschreibung des Attributes "infoFormat" wurde aus der config.json.md in die services.json.md verschoben.
 - Die Angabe von gfiAttributes ist jetzt case-insensitive.
+- Im SensorLayer lässt sich das Laden der Observations über retained message nun in der config.json aus- bzw. einschalten.
+- Daten aus der SensorThings-API lassen sich nun auch mittles Datastreams als Wurzelelment laden.
 
 ### Deprecated
 
