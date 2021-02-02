@@ -15,6 +15,7 @@
 - Die Angabe von gfiAttributes ist jetzt case-insensitive.
 - Im SensorLayer lässt sich das Laden der Observations über retained message nun in der config.json aus- bzw. einschalten.
 - Daten aus der SensorThings-API lassen sich nun auch mittles Datastreams als Wurzelelment laden.
+- Beim verschieben der Karte werden Features aus der SensorThings-API nun ohne Anzeige des Loaders direkt nachgeladen.
 
 ### Deprecated
 
