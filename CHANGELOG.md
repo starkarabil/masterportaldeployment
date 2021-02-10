@@ -5,7 +5,15 @@
 
 ## Unreleased - in development
 ### Added
+### Deprecated
+### Removed
+### Fixed
 
+### Known Issues
+- 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt
+
+---
+## v2.6.2 - 2021-02-10
 ### Changed
 - Der Download im Druckmodul wird nun ohne ein Popup durchgeführt. Somit kann der Ausdruck auch mit einem aktiven Popup Blocker heruntergeladen werden.
 - Die Italienische Sprachdatei wurde erweitert und angepasst.
@@ -17,29 +25,24 @@
 - Daten aus der SensorThings-API lassen sich nun auch mittles Datastreams als Wurzelelment laden.
 - Beim verschieben der Karte werden Features aus der SensorThings-API nun ohne Anzeige des Loaders direkt nachgeladen.
 
-### Deprecated
-
-### Removed
-
 ### Fixed
-- Ein Fehler wurde behoben, der beim öffnen des Default-Themenbaumes zu langen Ladezeiten führte.
-- Im Werkzeug WFST wurden einige Bugs behoben, unter anderem wurden bei Meldungen keine Buttons mehr angezeigt.
-- Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim hereinzoomen nicht aufgelöst wurde.
-- In bestimmten Fällen wurde beim Drucken eine falsche Url zusammengbaut, das ist behoben.
-- Bei D3 Grafiken wurden bei der linken Achsen Beschriftung die tausender Punkte in Anführungszeichen dargestellt.
+- Ein Fehler wurde behoben, der beim Öffnen des Themenbaumes zu langen Ladezeiten führte.
+- Ein Download-Link wurde hinzugefügt, da manche Browser den automatischen Download blockieren.
+- Das Alerting Modul ignoriert Groß- und Kleinschreibung beim Filtern der URLs.
+- Im Werkzeug WFST wurden einige Bugs behoben. Unter anderem wurden bei Meldungen keine Buttons mehr angezeigt.
+- Ein Fehler wurde behoben, der bei geclusterten Features vom Layertyp Sensor dazu führte, dass die Clusterung in einigen Fällen beim Hereinzoomen nicht aufgelöst wurde.
+- In bestimmten Fällen wurde beim Drucken eine falsche Url erstellt.
+- Bei D3 Grafiken wurden bei der linken Achsen Beschriftung die Tausender Trennzeichen in Anführungszeichen dargestellt.
 - Ein Fehler wurde behoben, der auftrat wenn ein Layer angeschaltet wurde, der verschiedene Sonderzeichen im Namen enthielt.
 - Wenn der MapMarker in Kombination mit einer Projektion als URL Parameter angegeben wird, wird der MapMarker nun korrekt projiziert.
 - Ein Fehler wurde behoben der dazu führte, dass die Legende im Menü angezeigt wurde, auch wenn diese nicht konfiguriert war.
-- 3D: das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt.
+- 3D: Das GFI von Gebäuden zeigt wieder alle verfügbaren Attribute an und das GFI für Brückenflächen wird wieder angezeigt.
 - Ein Fehler wurde behoben der verhindert hat, dass eine Get Feature Info für WMS vom Mapserver mit dem "infoFormat": "application/vnd.ogc.gml" angezeigt wurde.
 - Wenn Layer über die Url als Parameter selektiert wurden und die Transparenz nicht übergeben wurde, war deren Transparenz im Themenbaum nicht einstellbar, das ist behoben.
 - Das Drucken eines Ausschnitts in dem der MapMarker sichtbar ist funktioniert jetzt. Der MapMarker wird im Druck nicht dargestellt.
 - Bei der WFS-Suche wurde der Such-Begriff bei der Anfrage fälschlicherweise kodiert, das wurde beseitigt.
-
-### Known Issues
-- 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt
-
----
+- Eine Meldung wurde im IE11 hinzugefügt, dass die Schrägluftbilder nicht unterstützt werden.
+- Bei der Legende waren einige Bilder verschwommen dargestelt.
 
 ## v2.6.1 - 2021-01-07
 ### Added
