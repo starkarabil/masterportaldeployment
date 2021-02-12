@@ -13,6 +13,12 @@
 - 3D: Klickt man auf ein 3D-Objekt verschwindet der Positions-Anzeiger im Objekt
 
 ---
+## v2.6.3 - 2021-02-12
+### Fixed
+Mehrere Darstellungsfehler bei den Layern "Dauerzählstellen (Rad) Hamburg" und "Verkehrsdaten Rad (Infrarotdetektoren) Hamburg" wurden behoben.
+Ein Fehler wurde behoben, durch den bei Maßstabbeschränkten Layern beim Drucken Warnungen ausgegeben wurden,
+obwohl alles in Ordnung war.
+
 ## v2.6.2 - 2021-02-10
 ### Changed
 - Der Download im Druckmodul wird nun ohne ein Popup durchgeführt. Somit kann der Ausdruck auch mit einem aktiven Popup Blocker heruntergeladen werden.
