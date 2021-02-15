@@ -9,15 +9,15 @@ export default {
     name: "MainNav",
     components: {
         Title,
-        LegendMenu
+        LegendMenu,
+        Searchbar
     },
     computed: {
         ...mapState([
             // listen to configJson changes for mounting the tools
             "configJson"
         ]),
-        ...mapGetters(["legendConfig"]),
-        Searchbar
+        ...mapGetters(["legendConfig"])
     }
 };
 </script>

@@ -51,8 +51,8 @@ import Orientation3DView from "../modules/controls/orientation3d/view";
 import VirtualcityModel from "../modules/tools/virtualCity/model";
 import LoaderOverlay from "../src/utils/loaderOverlay";
 
-let sbconfig,
-    controls,
+// let sbconfig,
+let controls,
     controlsView;
 
 /* eslint-disable no-process-env */
@@ -71,8 +71,8 @@ async function loadApp () {
         style = Radio.request("Util", "getUiStyle"),
         vueI18Next = initiateVueI18Next();
     /* eslint-disable no-undef */
-    let app = {},
-        searchbarAttributes = {};
+    let app = {};
+    // searchbarAttributes = {};
 
     if (Object.prototype.hasOwnProperty.call(Config, "uiStyle")) {
         utilConfig.uiStyle = Config.uiStyle.toUpperCase();
@@ -245,9 +245,9 @@ async function loadApp () {
         });
     }
 
-    searchbarAttributes = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
-    sbconfig = Object.assign({}, Object.prototype.hasOwnProperty.call(Config, "quickHelp") ? {quickHelp: Config.quickHelp} : {});
-    sbconfig = Object.assign(sbconfig, searchbarAttributes);
+    // searchbarAttributes = Radio.request("Parser", "getItemsByAttributes", {type: "searchBar"})[0].attr;
+    // sbconfig = Object.assign({}, Config.hasOwnProperty("quickHelp") ? {quickHelp: Config.quickHelp} : {});
+    // sbconfig = Object.assign(sbconfig, searchbarAttributes);
 
     // if (searchbarAttributes !== undefined && sbconfig) {
     //     new SearchbarView(sbconfig);

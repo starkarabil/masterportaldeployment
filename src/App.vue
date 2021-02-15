@@ -41,7 +41,6 @@ export default {
         class="masterportal-container"
     >
         <MainNav />
-        <Searchbar />
         <MapRegion class="map-region" />
         <Footer />
         <!-- <MapModuleDebug v-if="isDevMode" /> -->
