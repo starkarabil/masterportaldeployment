@@ -63,7 +63,7 @@ export default {
             }
 
             if (pixelWidth <= 1) {
-                pixelWidth = this.width * window.innerWidth;
+                pixelWidth = this.initialWidth * window.innerWidth;
             }
 
             return Math.floor(pixelWidth) + "px";
