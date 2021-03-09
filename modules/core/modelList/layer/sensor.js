@@ -248,6 +248,8 @@ const SensorLayer = Layer.extend(/** @lends SensorLayer.prototype */{
                 this.get("layer").setStyle(this.get("style"));
             }
 
+            features.forEach(feature => Radio.trigger("GFI", "changeFeature", feature));
+
             if (typeof onsuccess === "function") {
                 onsuccess();
             }
