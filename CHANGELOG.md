@@ -8,17 +8,15 @@
 
 ---
 
-## v2.7.1 - 2021-03-05
+## v2.7.2 - 2021-03-09
 ### Fixed
-- Die Darstellung in der Legende wurde korrrigiert.
+- SensorThings: Fix the bug where initially data has not been fetched, resulting display of "no data" on mousehover.
 
 ---
 
-## v2.6.3 - 2021-02-12
+## v2.7.1 - 2021-03-05
 ### Fixed
-- Mehrere Darstellungsfehler bei den Layern "Dauerzählstellen (Rad) Hamburg" und "Verkehrsdaten Rad (Infrarotdetektoren) Hamburg" wurden behoben.
-- Ein Fehler wurde behoben, durch den bei Maßstabbeschränkten Layern beim Drucken Warnungen ausgegeben wurden,
-- obwohl alles in Ordnung war.
+- The representation in the legend has been corrected.
 
 ---
 
@@ -30,6 +28,7 @@
 - On tools Imported Layer in theme tree integrated function under Addons
 - On tools Geometrie/Gebäude Analyse funtion on tools under Addons
 - On tools Taktische Zeichen on tools under Addons
+- Added the parameters 'contactInfo', 'includeSystemInfo', 'locationOfCustomerService', 'maxLines', 'showPrivacyPolicy' and 'subject' to the configuration of the contact tool.
 
 ### Changed
 - The language of the changelog has been changed to English.
@@ -38,11 +37,18 @@
 - Migrated the Download Tool from Backbone.js to Vue.js and integrated it into the Draw Tool.
 - Migrated the SaveSelection Tool from Backbone.js to Vue.js. It also no longer has a Radio channel.
 - copyToClipboard is now a reusable action and can no longer be triggered through the Radio.
+- Migrated the Contact Tool from Backbone.js to Vue.js. In doing so, the functionality of the config parameter 'deleteAfterSend' was split into two parameters; 'closeAfterSend' and 'deleteAfterSend'.
 - Migrated the StyleVT Tool from Backbone.js to Vue.js.
 - WPS migrated to Vue.js.
 
 ### Deprecated
+- Deprecated the parameter 'serviceID' for the contact tool; 'serviceId' should be used instead.
+- Migrated the SaveSelection Tool from Backbone.js to Vue.js. It also no longer has a Radio channel.
+- copyToClipboard is now a reusable action and can no longer be triggered through the Radio.
 - Deprecated the parameter `simpleMap` in the config.js and moved its configuration to the `saveSelection` tool in the config.json.
+
+### Removed
+- The routing-tool was removed.
 
 ### Fixed
 - If the Save selection tool is not configured, the button for it is no longer displayed in the topic tree.
