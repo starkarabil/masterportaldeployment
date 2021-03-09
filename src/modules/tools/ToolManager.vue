@@ -33,8 +33,6 @@ export default {
     },
     created () {
         this.setConfiguredTools(this.menuConfig);
-    },
-    mounted () {
         /** Push the configured attributes to store from all configured tools. */
         this.configuredTools.forEach(configuredTool => this.pushAttributesToStoreElements(configuredTool));
         this.setToolActiveByConfig();
@@ -46,6 +44,7 @@ export default {
             this.addToolNameAndGlyphiconToModelList(toolName);
         });
     },
+
     methods: {
         ...mapActions("Tools", [
             "pushAttributesToStoreElements",
