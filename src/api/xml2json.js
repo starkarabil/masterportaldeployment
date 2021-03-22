@@ -2,7 +2,7 @@ import substrStartFromValue from "../utils/substrStartFromValue.js";
 
 /**
  * Parses Xml to Json recursivly
- * @param {XMLDocument} srcDom - Dom to parse
+ * @param {Document|Element} srcDom - Dom to parse
  * @returns {Object} json
  */
 export default function xml2json (srcDom) {
@@ -22,6 +22,11 @@ export default function xml2json (srcDom) {
             getValue: () => srcDom.textContent,
             getAttributes: () => undefined
         };
+    }
+
+    // in the first iteration it is a (XML-)Document
+    if (srcDom instanceof Element && srcDom.hasAttributes()) {
+        jsonResult.attributes = parseNodeAttributes(srcDom.attributes);
     }
 
     children.forEach(child => {
@@ -60,31 +65,3 @@ function parseNodeAttributes (nodeAttributes) {
     });
     return attributes;
 }
-
-/**
- * Make sure we have Node.children and Element.children available.
- * Internet Explorer 11 Polyfill.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children}
- */
-(function (constructor) {
-    if (constructor &&
-        constructor.prototype &&
-        constructor.prototype.children === undefined) {
-        Object.defineProperty(constructor.prototype, "children", {
-            get: function () {
-                const nodes = this.childNodes,
-                    children = [];
-
-                // iterate all childNodes
-                nodes.forEach(function (node) {
-                    // remenber those, that are Node.ELEMENT_NODE (1)
-                    if (node.nodeType === 1) {
-                        children.push(node);
-                    }
-                });
-                return children;
-            }
-        });
-    }
-    // apply the fix to all HTMLElements (window.Element) and to SVG/XML (window.Node)
-})(window.Node || window.Element);
