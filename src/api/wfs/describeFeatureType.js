@@ -34,9 +34,9 @@ export function getFeatureDescription (json, featureTypeName) {
     }
     const description = [],
         // path to the featureTypes
-        featureType = json?.schema?.element?.find(element => {
-            return element.attributes?.name === featureTypeName;
-        });
+        featureType = Array.isArray(json?.schema?.element)
+            ? json?.schema?.element?.find(element => element.attributes?.name === featureTypeName)
+            : json?.schema?.element;
 
     if (typeof featureType === "undefined") {
         console.error(`getFeatureDescription: FeatureType "${featureType}" was not found`);
