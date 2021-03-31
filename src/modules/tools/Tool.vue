@@ -38,6 +38,11 @@ export default {
             default: -1,
             required: false
         },
+        initialHeight: {
+            type: Number,
+            default: -1,
+            required: false
+        },
         deactivateGFI: {
             type: Boolean,
             default: true,
@@ -67,6 +72,31 @@ export default {
             }
 
             return Math.floor(pixelWidth) + "px";
+        },
+        /**
+         * Calculates initial width of sidebar or window.
+         * @todo: Combine to a single function
+         * @returns {String}    Width style in px
+         */
+        initialToolHeight () {
+            let pixelHeight = parseFloat(this.initialHeight, 10);
+
+            if (pixelHeight < 0 || isNaN(pixelHeight)) {
+                return "auto";
+            }
+
+            if (pixelHeight <= 1) {
+                pixelHeight = this.initialHeight * window.innerHeight;
+            }
+
+            return Math.floor(pixelHeight) + "px";
+        },
+
+        initialToolSize () {
+            return {
+                width: this.initialToolWidth,
+                height: this.renderToWindow ? this.initialToolHeight : "100%"
+            };
         }
     },
     watch: {
@@ -140,7 +170,7 @@ export default {
             'table-tool-win-all-vue': uiStyle === 'TABLE',
             'is-minified': isMinified
         }"
-        :style="{width: initialToolWidth}"
+        :style="initialToolSize"
     >
         <BasicResizeHandle
             v-if="resizableWindow && !renderToWindow"
