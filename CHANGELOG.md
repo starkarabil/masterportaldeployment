@@ -10,19 +10,28 @@
 
 ## Unreleased - in development
 ### Added
-- External WMS Layers with version lower than 1.3.0 can also be imported
+- External WMS Layers with version lower than 1.3.0 can also be imported.
+- Added possibility to prepend prefix to GFI attribute.
+- WMTS Layers can now be printed with MapFish.
 
 ### Changed
-- WMS hinzurügen module switched from backbone to vue module
+- The tool AddWMS switched from backbone to vue module.
+- Consolidate the mqttOptions in the layer sensor with the documentation (services.json.md).
 - In config.json.md, the attribute `isActive` was changed to `active` in Portalconfig.menu.tool.gfi.
+- External WMS Layers with version lower than 1.3.0 can also be imported.
+- Legends are only printed from layers that are switched visible.
+
 ### Deprecated
 
 ### Removed
+- SensorThings address tab in layerInformation removed.
 
 ### Fixed
 - GFI of type text/html now also loads css files of the body.
 - Show metadata if the MD_Identification node is implemented as MD_DataIdentification or SV_ServiceIdentification.
-- Fixed a bug that made single layer info legend appear multiple times when activating additional layers while opened
+- Fixed a bug that made single layer info legend appear multiple times when activating additional layers while opened.
+- Printing of tooltip of measure-tool works: The tooltip of the measure tool is no longer implemented as an overlay, it is created now as vectorlayer.
+- Printing of big amount of features now works.
 
 ---
 
