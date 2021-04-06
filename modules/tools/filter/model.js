@@ -272,7 +272,10 @@ const FilterModel = Tool.extend({
 
                 oneQuery = Object.assign(oneQuery, queryObject);
             }
-            this.createQuery(oneQuery, Radio.request("ModelList", "getModelByAttributes", {id: oneQuery.layerId}));
+
+            if (!this.isModelInQueryCollection(oneQuery.layerId, this.get("queryCollection"))) {
+                this.createQuery(oneQuery, Radio.request("ModelList", "getModelByAttributes", {id: oneQuery.layerId}));
+            }
         });
     },
 
