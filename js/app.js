@@ -40,6 +40,13 @@ import RemoteInterfaceVue from "../src/plugins/remoteInterface/RemoteInterface";
 import {initiateVueI18Next} from "./vueI18Next";
 
 /**
+ * Vuetify
+ * @description Test vuetify as main UI framework in /addons/cosi
+ * @external
+ */
+import vuetify from "../src/plugins/vuetify/Vuetify";
+
+/**
  * WFSFeatureFilterView
  * @deprecated in 3.0.0
  */
@@ -129,7 +136,8 @@ async function loadApp () {
         name: "VueApp",
         render: h => h(App),
         store,
-        i18n: vueI18Next
+        i18n: vueI18Next,
+        vuetify // instantiate Vue w/ Vuetify Plugin
     });
 
 
