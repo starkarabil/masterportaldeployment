@@ -135,7 +135,8 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
             gfiAttributes: this.get("gfiAttributes"),
             blur: this.get("blur"),
             radius: this.get("radius"),
-            gradient: this.get("gradient")
+            gradient: this.get("gradient"),
+            opacity: this.get("opacity")
         }));
     },
 
@@ -154,7 +155,8 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
      * @returns {void}
      */
     initializeHeatmap: function (features) {
-        const attribute = this.get("attribute"),
+        const filter = this.get("filter"),
+            attribute = this.get("attribute"),
             value = this.get("value"),
             weightAttribute = this.get("weightAttribute"),
             weightAttributeMax = this.get("weightAttributeMax"),
@@ -163,6 +165,14 @@ const HeatmapLayer = Layer.extend(/** @lends HeatmapLayer.prototype */{
         let layerSource = this.get("layerSource");
 
         features.forEach(function (feature) {
+            if (filter) {
+                for (const attr in filter) {
+                    if (feature.get(attr) !== filter[attr]) {
+                        return;
+                    }
+                }
+            }
+
             const cloneFeature = feature.clone();
             let count;
 

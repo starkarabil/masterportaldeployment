@@ -266,7 +266,10 @@ export default {
     @background_color_3: #f2f2f2;
     @background_color_4: #646262;
 
-    #vue-tool-content-body { display:block; }
+    #vue-tool-content-body {
+        display:block;
+        min-height: calc(100% - 40px);
+    }
 
     .win-heading{
         border-bottom: 1px solid rgb(229, 229, 229);
