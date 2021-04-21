@@ -1,5 +1,3 @@
-import substrStartFromValue from "../utils/substrStartFromValue.js";
-
 /**
  * Parses Xml to Json recursivly
  * @param {Document|Element} srcDom - Dom to parse
@@ -33,7 +31,7 @@ export default function xml2json (srcDom) {
         // checking if child has siblings of same name
         const childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1,
             // the key is equal to the nodeName property without the xmlns if exists
-            keyName = child.nodeName.search(":") !== -1 ? substrStartFromValue(child.nodeName, ":") : child.nodeName;
+            keyName = child.nodeName.substr(child.nodeName.indexOf(":") + 1);
 
         // if child is array, save the values as an array of objects, else as object
         if (childIsArray) {
@@ -65,3 +63,33 @@ function parseNodeAttributes (nodeAttributes) {
     });
     return attributes;
 }
+
+/**
+ * Make sure we have Node.children and Element.children available.
+ * Internet Explorer 11 Polyfill.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/children}
+ */
+(function (constructor) {
+    if (
+        constructor
+        && constructor.prototype
+        && !constructor.prototype.hasOwnProperty("children")
+    ) {
+        Object.defineProperty(constructor.prototype, "children", {
+            get: function () {
+                const nodes = this.childNodes,
+                    children = [];
+
+                // iterate all childNodes
+                nodes.forEach(function (node) {
+                    // remenber those, that are Node.ELEMENT_NODE (1)
+                    if (node.nodeType === 1) {
+                        children.push(node);
+                    }
+                });
+                return children;
+            }
+        });
+    }
+    // apply the fix to all HTMLElements (window.Element) and to SVG/XML (window.Node)
+})(window.Node || window.Element);
