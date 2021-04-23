@@ -435,7 +435,6 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
         if (rule.hasOwnProperty("conditions") && rule.conditions.hasOwnProperty("properties")) {
             const featureProperties = feature.getProperties(),
                 properties = rule.conditions.properties;
-
             let key;
 
             for (key in properties) {
@@ -479,6 +478,11 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
             (Array.isArray(referenceValue) && referenceValue.every(element => typeof element === "number") &&
                 (referenceValue.length === 2 || referenceValue.length === 4)))) {
             return this.compareValues(featureValue, referenceValue);
+        }
+
+        // check if rule checks for boolean flag
+        if (typeof featureValue === "boolean" && typeof referenceValue === "boolean") {
+            return featureValue === referenceValue;
         }
 
         return false;
