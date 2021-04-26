@@ -11,6 +11,7 @@ import OverviewMap from "./overviewMap/components/OverviewMap.vue";
 import TotalView from "./totalView/components/TotalView.vue";
 import Zoom from "./zoom/components/Zoom.vue";
 import Freeze from "./freeze/components/Freeze.vue";
+import Readability from "./readability/components/Readability.vue";
 
 /**
  * controls-Module is required to be able to nest controls
@@ -36,7 +37,8 @@ export default {
             overviewMap: OverviewMap,
             totalView: TotalView,
             zoom: Zoom,
-            freeze: Freeze
+            freeze: Freeze,
+            readability: Readability
         },
         // config.json.md control keys where the matching element is to be hidden in mobile mode
         mobileHiddenControls: [
