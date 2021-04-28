@@ -36,7 +36,7 @@ export default {
         attributes: {
             type: Array,
             required: false,
-            default: () => ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]
+            default: () => ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius", "imageScale", "clusterImageScale"]
         }
     },
     data: function () {

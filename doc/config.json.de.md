@@ -521,6 +521,7 @@ Konfiguration der Suche über die sichtbaren VectorLayer. Bei der Layerdefinitio
 |freeze|nein|Boolean|false|Legt fest, ob ein "Ansicht sperren" Button angezeigt werden soll. Im Style 'TABLE' erscheint dieser im Werkzeug-Fenster.|false|
 |backforward|nein|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|Deprecated in 3.0.0. Bitte "backForward" verwenden.|false|
 |backForward|nein|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|Zeigt Buttons zur Steuerung der letzten und nächsten Kartenansichten an.|false|
+|easyReadMode|nein|**[easyReadMode](#markdown-header-portalconfigcontrolseasyreadmode)**|false|Zeigt Buttons zum Ein-/Ausschalten des barrierefreien Kartenmodus an und definiert was dieser auslöst.|false|
 
 ***
 
@@ -657,6 +658,33 @@ Das Attribut backForward kann vom Typ Boolean oder Object sein. Wenn es vom Typ 
 ```
 
 ***
+
+#### Portalconfig.controls.easyReadMode
+
+Das Attribute easyReadMode muss vom Typ Object sein. Die folgenden Attribute können gesetzt werden:
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|--------|----|-------|-----------|------|
+|layerIds|ja|String[]||Legt fest, welche Ebenen im barrierefreien Modus neu gestaltet werden sollen. Ebenen können nur hinsichtlich der Größe von Strichen, Kreisen, Symbolen oder Text umgestaltet werden.|false|
+|scaleFactor|nein|Number|2|Legt den Skalierungsfaktor fest.|false|
+|scaleText|nein|Boolean|false|Legt fest, ob auch Texte in der Karte skaliert werden können.|false|
+|scaleFactor|nein|String[]|["polygonStrokeWidth", "circleRadius", "clusterCircleRadius", "imageScale", "clusterImageScale"]|Legt fest welche Style-Attribute skaliert werden sollen.|false|
+
+**Beispiel easyReadMode:**
+
+```json
+{
+    "easyReadMode": {
+        "layerIds": ["6071", "1694", "1692"],
+        "scaleFactor": 2,
+        "scaleText": true,
+        "attributes": ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]
+    }
+}
+```
+
+***
+
 
 ### Portalconfig.portalTitle
 In der Menüleiste kann der Portalname und ein Bild angezeigt werden, sofern die Breite der Leiste ausreicht. Der Portaltitle ist mobil nicht verfügbar.

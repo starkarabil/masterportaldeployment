@@ -549,6 +549,7 @@ Visible vector layer search configuration. For all vector layers supposed to be 
 |freeze|no|Boolean|false|Whether a "lock view" button is shown. Within the `TABLE` style, this element is part of the tool window.|false|
 |backforward|no|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|_Deprecated in 3.0.0. Please use "backForward" instead._|false|
 |backForward|no|**[backForward](#markdown-header-portalconfigcontrolsbackforward)**|false|Shows buttons to jump to previous and next map views.|false|
+|easyReadMode|no|**[easyReadMode](#markdown-header-portalconfigcontrolseasyreadmode)**|false|Shows button to toggle the easy-read-mode on/off. Defines what happens in easy-read-mode.|false|
 
 ***
 
@@ -701,6 +702,31 @@ The attribute backForward may be of type boolean or object. If of type boolean, 
 ```json
 {
     "backForward": true
+}
+```
+
+***
+#### Portalconfig.controls.easyReadMode
+
+The attribute easyReadMode must be of type object, the following attributes may be set:
+
+|Name|Required|Type|Default|Description|Expert|
+|----|--------|----|-------|-----------|------|
+|layerIds|yes|String[]||Defines which layers to restyle when in easy read mode. Layers can only be restyled regarding size of strokes, circles, icons or text.|false|
+|scaleFactor|no|Number|2|Defines the factor to scale sizes by.|false|
+|scaleText|no|Boolean|false|Whether to also scale text sizes within the map.|false|
+|scaleFactor|no|String[]|["polygonStrokeWidth", "circleRadius", "clusterCircleRadius", "imageScale", "clusterImageScale"]|Defines the attributes of the layer-styles to scale.|false|
+
+**Example easyReadMode**
+
+```json
+{
+    "easyReadMode": {
+        "layerIds": ["6071", "1694", "1692"],
+        "scaleFactor": 2,
+        "scaleText": true,
+        "attributes": ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]
+    }
 }
 ```
 
