@@ -682,7 +682,7 @@
                 "showMousePosition": "Einblenden",
                 "hideMousePosition": "Ausblenden"
             },
-            "readability": {
+            "easyReadMode": {
                 "enable": "Barrierefreie Darstellung einschalten",
                 "disable": "Barrierefreie Darstellung ausschalten"
             }

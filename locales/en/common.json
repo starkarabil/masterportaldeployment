@@ -682,7 +682,7 @@
                 "showMousePosition": "Mouse position - fade in",
                 "hideMousePosition": "Fade out"
             },
-            "readability": {
+            "easyREadMode": {
                 "enable": "Toggle easy-access design on",
                 "disable": "Toggle easy-access design off"
             }
