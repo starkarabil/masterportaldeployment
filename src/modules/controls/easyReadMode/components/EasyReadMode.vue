@@ -2,6 +2,7 @@
 import {mapGetters} from "vuex";
 import ControlIcon from "../../ControlIcon.vue";
 import TableStyleControl from "../../TableStyleControl.vue";
+import {scaleLayerStyle} from "./utils";
 
 /**
  * Overview control that shows a mini-map to support a user's
@@ -13,16 +14,16 @@ import TableStyleControl from "../../TableStyleControl.vue";
  * @listens Map#RadioTriggerMapChange
  */
 export default {
-    name: "Readability",
+    name: "EasyReadMode",
     components: {
         ControlIcon
     },
     props: {
         layerIds: {
-            type: Object,
+            type: Array,
             required: true
         },
-        scaleBy: {
+        scaleFactor: {
             type: Number,
             required: false,
             default: 2
@@ -31,6 +32,11 @@ export default {
             type: Boolean,
             required: false,
             default: false
+        },
+        attributes: {
+            type: Array,
+            required: false,
+            default: () => ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]
         }
     },
     data: function () {
@@ -38,43 +44,48 @@ export default {
             open: this.isInitOpen,
             overviewMap: null,
             mapChannel: Radio.channel("Map"),
-            visibleInMapMode: null // set in .created
+            visibleInMapMode: null, // set in .created
+            attrs: null
         };
     },
     computed: {
         ...mapGetters("Map", ["map", "layerById"]),
-        ...mapGetters(["uiStyle"]),
         component () {
             return Radio.request("Util", "getUiStyle") === "TABLE" ? TableStyleControl : ControlIcon;
         },
         localeSuffix () {
             return Radio.request("Util", "getUiStyle") === "TABLE" ? "Table" : "Control";
+        },
+        easyReadMode: {
+            get () {
+                return this.$store.state.easyReadMode;
+            },
+            set (v) {
+                this.$store.commit("setEasyReadMode", v);
+            }
         }
     },
     created () {
         this.checkModeVisibility();
         this.mapChannel.on("change", this.checkModeVisibility);
+        this.attrs = this.scaleText ? [...this.attributes, "textScale", "clusterTextScale"] : this.attributes;
     },
     beforeDestroy () {
         this.mapChannel.off("change", this.checkModeVisibility);
     },
-    mounted () {
-        console.log(this.layerIds, this.scaleBy, this.scaleText);
-    },
     methods: {
-        toggleEasyReadability () {
-            console.log("toggle");
-            this.scaleStrokeWidth();
-        },
-        scaleStrokeWidth () {
-            this.layerIds.forEach(layerId => {
-                const layer = this.layerById(layerId)?.olLayer,
-                    model = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
+        toggleEasyReadMode () {
+            this.easyReadMode = !this.easyReadMode;
 
-                if (layer) {
-                    console.log(layer, model);
-                }
-            });
+            this.scaleLayerStyles();
+        },
+        scaleLayerStyles () {
+            const scaleFactor = this.easyReadMode ? this.scaleFactor : 1 / this.scaleFactor;
+            let layerId;
+
+            for (layerId of this.layerIds) {
+                scaleLayerStyle(layerId, scaleFactor, this.attrs);
+            }
         },
         /**
          * Sets visibility flag depending on map mode; OverviewMap is not available in 3D mode.
@@ -90,19 +101,19 @@ export default {
 <template>
     <div
         v-if="visibleInMapMode"
-        id="readability-wrapper"
+        id="easy-read-mode-wrapper"
     >
         <component
             :is="component"
-            :class="['readability-button']"
-            :title="$t(`common:modules.controls.readability.${open ? 'hide' : 'show'}Overview${localeSuffix}`)"
-            icon-name="eye-open"
-            :on-click="toggleEasyReadability"
+            class="easy-read-mode-button"
+            :title="$t(`common:modules.controls.easy-read-mode.${easyReadMode ? 'disable' : 'enable'}`)"
+            :icon-name="easyReadMode ? 'eye-close' : 'eye-open'"
+            :on-click="toggleEasyReadMode"
         />
     </div>
     <div
         v-else
-        :class="{hideButton: 'readability-button'}"
+        :class="{hideButton: 'easy-read-mode-button'}"
     >
     </div>
 </template>
@@ -124,7 +135,7 @@ export default {
     @import "~variables";
     @box-shadow: 0 6px 12px @shadow;
 
-    #readability-wrapper {
+    #easy-read-mode-wrapper {
         position: relative;
     }
     .hideButton {

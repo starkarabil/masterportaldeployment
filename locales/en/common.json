@@ -681,6 +681,10 @@
                 "hint": "Move the computer mouse over your screen.",
                 "showMousePosition": "Mouse position - fade in",
                 "hideMousePosition": "Fade out"
+            },
+            "readability": {
+                "enable": "Toggle easy-access design on",
+                "disable": "Toggle easy-access design off"
             }
         },
         "searchbar": {

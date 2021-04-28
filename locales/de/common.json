@@ -681,6 +681,10 @@
                 "hint": "Bewegen Sie die Maus über die Karte",
                 "showMousePosition": "Einblenden",
                 "hideMousePosition": "Ausblenden"
+            },
+            "readability": {
+                "enable": "Barrierefreie Darstellung einschalten",
+                "disable": "Barrierefreie Darstellung ausschalten"
             }
         },
         "searchbar": {

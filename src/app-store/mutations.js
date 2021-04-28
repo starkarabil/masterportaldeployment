@@ -70,5 +70,14 @@ export default {
      */
     setI18Nextinitialized (state, isInitialized) {
         state.i18NextInitialized = isInitialized;
+    },
+    /**
+     * Sets easyReadMode on/off flag. Can be used for all modules that offer easy read mode to listen to this state change.
+     * @param {Object} state store state
+     * @param {Boolean} isEasyReadMode whether easyReadMode is enabled
+     * @returns {void}
+     */
+    setEasyReadMode (state, isEasyReadMode) {
+        state.easyReadMode = isEasyReadMode;
     }
 };
