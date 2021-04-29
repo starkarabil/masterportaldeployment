@@ -245,8 +245,10 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
             return this.getMultiGeometryStyle(geometryType, feature, rules, isClustered);
         }
 
-        console.warn("No valid styling rule found.");
-        return new Style();
+        console.warn("No valid styling rule found. Falling back to defaults");
+        return isMultiGeometry
+            ? this.getMultiGeometryStyle(geometryType, feature, undefined, isClustered)
+            : this.getSimpleGeometryStyle(geometryType, feature, undefined, isClustered);
     },
 
     /**
@@ -258,7 +260,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
      * @returns {ol/style/Style}    style is always returned
      */
     getSimpleGeometryStyle: function (geometryType, feature, rule, isClustered) {
-        const style = rule.style;
+        const style = rule?.style;
         let styleObject;
 
         if (geometryType === "Point") {
@@ -365,10 +367,10 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
     getRuleForIndex: function (rules, index) {
         const indexedRule = this.getIndexedRule(rules, index),
             propertiesRule = rules.find(rule => {
-                return rule.hasOwnProperty("conditions") && !rule.conditions.hasOwnProperty("sequence");
+                return rule?.hasOwnProperty("conditions") && !rule?.conditions.hasOwnProperty("sequence");
             }),
             fallbackRule = rules.find(rule => {
-                return !rule.hasOwnProperty("conditions");
+                return !rule?.hasOwnProperty("conditions");
             });
 
         if (indexedRule) {
@@ -631,7 +633,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
      * @returns {string} id
      */
     createLegendId: function (geometryType, rule) {
-        const properties = rule.hasOwnProperty("conditions") ? rule.conditions : null;
+        const properties = rule?.hasOwnProperty("conditions") ? rule?.conditions : null;
 
         return encodeURIComponent(geometryType + JSON.stringify(properties));
     },
@@ -670,7 +672,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
         if (styleObject?.attributes?.hasOwnProperty("legendValue")) {
             return styleObject.attributes.legendValue.toString();
         }
-        else if (rule.hasOwnProperty("conditions")) {
+        else if (rule?.hasOwnProperty("conditions")) {
             let label = "";
 
             if (rule.conditions.hasOwnProperty("properties")) {
