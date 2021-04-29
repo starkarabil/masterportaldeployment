@@ -128,7 +128,7 @@ async function loadApp () {
         render: h => h(App),
         store,
         i18n: vueI18Next,
-        vuetify // instantiate Vue w/ Vuetify Plugin
+        vuetify: Config.useVuetify ? vuetify : undefined // instantiate Vue w/ Vuetify Plugin if the "useVuetify" flag is set in the config.js
     });
 
 

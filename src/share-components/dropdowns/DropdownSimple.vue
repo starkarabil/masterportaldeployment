@@ -50,3 +50,10 @@ export default {
         </option>
     </select>
 </template>
+
+<style lang="less">
+    select {
+        -moz-appearance: auto;
+        -webkit-appearance: auto;
+    }
+</style>
