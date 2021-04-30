@@ -9,8 +9,8 @@ function removeAllHighlightedFeatures (state, commit) {
         state.highlightedFeatures[index].setStyle(style);
     });
 
-    commit("setHighlightedFeature", []);
-    commit("setHighlightedFeatureStyle", []);
+    commit("setHighlightedFeatureStyles", []);
+    commit("setHighlightedFeatures", []);
 }
 
 /**
