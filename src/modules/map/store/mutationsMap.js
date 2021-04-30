@@ -75,6 +75,26 @@ const mutations = {
         if (state.map && layer instanceof BaseLayer) {
             state.map.removeLayer(layer);
         }
+    },
+
+    /**
+     * Adds the given feature to the highlighted features list.
+     * @param {Object} state - The map state.
+     * @param {module:ol/Feature} feature - The given feature.
+     * @returns {void}
+     */
+    addHighlightedFeature (state, feature) {
+        state.highlightedFeatures.push(feature);
+    },
+
+    /**
+     * Adds the given style to the highlighted feature styles list.
+     * @param {Object} state - The map state.
+     * @param {module:ol/Style} style - The given style.
+     * @returns {void}
+     */
+    addHighlightedFeatureStyle (state, style) {
+        state.highlightedFeatureStyles.push(style);
     }
 };
 

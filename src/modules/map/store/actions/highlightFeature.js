@@ -32,8 +32,8 @@ function highlightPolygon (commit, dispatch, highlightObject) {
         if (originalStyle) {
             const clonedStyle = Array.isArray(originalStyle) ? originalStyle[0].clone() : originalStyle.clone();
 
-            commit("setHighlightedFeature", feature);
-            commit("setHighlightedFeatureStyle", feature.getStyle());
+            commit("addHighlightedFeature", feature);
+            commit("addHighlightedFeatureStyle", feature.getStyle());
 
             if (newStyle.fill?.color) {
                 clonedStyle.getFill().setColor(newStyle.fill.color);
@@ -111,8 +111,8 @@ function increaseFeature (commit, getters, highlightObject) {
         clonedImage = clonedStyle ? clonedStyle.getImage() : undefined;
 
     if (clonedImage) {
-        commit("setHighlightedFeature", feature);
-        commit("setHighlightedFeatureStyle", feature.getStyle());
+        commit("addHighlightedFeature", feature);
+        commit("addHighlightedFeatureStyle", feature.getStyle());
 
         if (clonedStyle.getText()) {
             clonedStyle.getText().setScale(scaleFactor);

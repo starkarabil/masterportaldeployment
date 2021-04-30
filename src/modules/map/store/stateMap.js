@@ -61,8 +61,8 @@ const state = {
     overlayIds: null,
     overlays: null,
     mapMode: MapMode.MODE_2D,
-    highlightedFeature: null,
-    highlightedFeatureStyle: null,
+    highlightedFeatures: [],
+    highlightedFeatureStyles: [],
     vectorFeaturesLoaded: false
 };
 
