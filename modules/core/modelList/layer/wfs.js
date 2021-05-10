@@ -137,6 +137,8 @@ const WFSLayer = Layer.extend(/** @lends WFSLayer.prototype */{
      * @returns {object} contains params, url and xhrFields for the request
      */
     getRequestParamsAndOptions: function () {
+        console.log(this);
+        console.log( Radio.request("MapView", "getProjection")?.getCode());
         /**
          * @deprecated in the next major-release!
          * useProxy
@@ -146,14 +148,15 @@ const WFSLayer = Layer.extend(/** @lends WFSLayer.prototype */{
             prefix = this.get("featurePrefix"),
             namespace = this.get("featureNS"),
             typename = this.get("featureType"),
+            srsName = Radio.request("MapView", "getProjection")?.getCode(),
             params = {
                 REQUEST: "GetFeature",
                 SERVICE: "WFS",
-                SRSNAME: Radio.request("MapView", "getProjection")?.getCode(),
+                SRSNAME: srsName,
                 TYPENAME: typename,
                 VERSION: this.get("version"),
                 // loads only the features in the extent of this geometry
-                BBOX: this.get("bboxGeometry") ? this.get("bboxGeometry").getExtent().toString() : undefined
+                BBOX: this.get("bboxGeometry") ? this.get("bboxGeometry").getExtent().toString() + "," + srsName : undefined
             },
             xhrParameters = this.attributes.isSecured ? {withCredentials: true} : null;
 

@@ -43,7 +43,7 @@ import {initiateVueI18Next} from "./vueI18Next";
  * @description Test vuetify as main UI framework in /addons/cosi
  * @external
  */
-import vuetify from "../src/plugins/vuetify/Vuetify";
+import vuetify from "../src/plugins/vuetify/vuetify";
 
 /**
  * WFSFeatureFilterView
