@@ -137,8 +137,6 @@ const WFSLayer = Layer.extend(/** @lends WFSLayer.prototype */{
      * @returns {object} contains params, url and xhrFields for the request
      */
     getRequestParamsAndOptions: function () {
-        console.log(this);
-        console.log( Radio.request("MapView", "getProjection")?.getCode());
         /**
          * @deprecated in the next major-release!
          * useProxy
