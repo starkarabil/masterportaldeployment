@@ -10,8 +10,23 @@
 
 ## Unreleased - in development
 ### Added
+
+### Changed
+- The Id in config.json for every layer could be in an object format, to allow any number of menu entries with the same layer id.
+- New Parameter propertyNames could be added in config.json for WFS layer to receive filtered response.
+### Deprecated
+
+### Removed
+
+### Fixed
+- Now Sensor Layer will show 0 if the dataValue is 0 and not "no data"
+---
+
+## v2.9.0 - 2021-05-05
+### Added
 - New attribute 'nearbyTitle' implemented in config.json for the title in the list of nearby search results.
 - Add @babel/eslint-parser to the package.json
+- Added the new tool "bufferAnalysis"
 
 ### Changed
 - Renamed the folders `library` and `util` -> `utils`, `test` -> `tests` and `ressources` -> `resources`.
@@ -20,7 +35,6 @@
 - Updates the core-js and babel dependencies in the package.json
 - Update the dependency caniuse-lite.
 - The module addGeoJSON switched from backbone to vue and is provided as a util now.
-- Fixed an issue in searchbar, that after finding a result and zooming to it the 3D mode couldn't be activated anymore
 - The loading image is now displayed longer when switching to map mode: Oblique (max. 80000ms).
 
 ### Deprecated
@@ -36,7 +50,8 @@
 - If the transparency of a layer is defined as string, it will be parsed to an integer now.
 - When clicking on layers of type TERRAIN3D, TILESET3D or OBLIQUE in the search, a query is now displayed that can be used to switch to the respective map mode.
 - Fixed a bug that for the gfi in infoFormat "text/html" did not execute the script part when starting the iFrame.
-
+- Fixed an issue in searchbar, that after finding a result and zooming to it the 3D mode couldn't be activated anymore
+- Fixed an issue in fileImport that when the imported KML File is missing the isVisible setting the feature wouldn't be displayed when printing
 ---
 
 ## v2.8.0 - 2021-04-07

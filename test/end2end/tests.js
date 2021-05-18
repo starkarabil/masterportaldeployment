@@ -30,7 +30,7 @@ const {isBasic, is2D} = require("./settings");
  * @returns {void}
  */
 function tests (builder, url, browsername, resolution, config, mode, capability, deploymentTest) {
-    describe(`${browsername} (mode=${mode},resolution=${resolution},config=${config})`, function () {
+    describe(`${browsername} (${mode}, ${resolution}, ${config})`, function () {
         this.timeout(3600000);
 
         if (isBasic(url) && !is2D(mode)) {
