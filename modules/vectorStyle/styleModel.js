@@ -324,13 +324,13 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
 
             geometries.forEach((geometry, index) => {
                 const geometryTypeSimpleGeom = geometry.getType(),
-                    rule = this.getRuleForIndex(rules, index);
+                    rule = rules ? this.getRuleForIndex(rules, index) : undefined;
 
                 // For simplicity reasons we do not support multi encasulated multi geometries but ignore them.
                 if (this.isMultiGeometry(geometryTypeSimpleGeom)) {
                     console.warn("Multi encapsulated multiGeometries are not supported.");
                 }
-                else if (rule) {
+                else {
                     const simpleStyle = this.getSimpleGeometryStyle(geometryTypeSimpleGeom, feature, rule, isClustered);
 
                     simpleStyle.setGeometry(geometry);
