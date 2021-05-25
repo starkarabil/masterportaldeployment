@@ -9,6 +9,8 @@
 ---
 
 ## v2.9.1 - 2021-05-25
+### Fixed
+- Fixed no data in gfi theme of verkehrs layers in geo-online
 
 ## v2.9.0 - 2021-05-05
 ### Added
