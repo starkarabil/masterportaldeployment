@@ -2,16 +2,11 @@
 import {mapGetters} from "vuex";
 import ControlIcon from "../../ControlIcon.vue";
 import TableStyleControl from "../../TableStyleControl.vue";
-import {scaleLayerStyle} from "./utils";
+import scaleLayerStyle from "../utils/scaleLayerStyle";
 
 /**
- * Overview control that shows a mini-map to support a user's
- * sense of orientation within the map.
- *
- * TODO Currently using radio to detect 3D mode. Should eventually
- * listen to the vuex map module as soon as modes are modeled
- * there.
- * @listens Map#RadioTriggerMapChange
+ * Easy Read Mode control that scales line width and texts in the map by a configurable factor
+ * Uses scaleLayerStyle method from utils
  */
 export default {
     name: "EasyReadMode",
@@ -39,23 +34,18 @@ export default {
             default: () => ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius", "imageScale", "clusterImageScale"]
         }
     },
-    data: function () {
-        return {
-            open: this.isInitOpen,
-            overviewMap: null,
-            mapChannel: Radio.channel("Map"),
-            visibleInMapMode: null, // set in .created
-            attrs: null
-        };
-    },
+    data: () => ({
+        // the attributes list to alter on easy read mode
+        attrs: null
+    }),
     computed: {
         ...mapGetters("Map", ["map", "layerById"]),
         component () {
             return Radio.request("Util", "getUiStyle") === "TABLE" ? TableStyleControl : ControlIcon;
         },
-        localeSuffix () {
-            return Radio.request("Util", "getUiStyle") === "TABLE" ? "Table" : "Control";
-        },
+        /**
+         * Gets and Sets the global easyReadMode state
+         */
         easyReadMode: {
             get () {
                 return this.$store.state.easyReadMode;
@@ -65,20 +55,28 @@ export default {
             }
         }
     },
+    /**
+     * Triggers on programm start
+     * @returns {void}
+     */
     created () {
-        this.checkModeVisibility();
-        this.mapChannel.on("change", this.checkModeVisibility);
+        // Check if text should be scaled and sets the attributes list accordingly
         this.attrs = this.scaleText ? [...this.attributes, "textScale", "clusterTextScale"] : this.attributes;
     },
-    beforeDestroy () {
-        this.mapChannel.off("change", this.checkModeVisibility);
-    },
     methods: {
+        /**
+         * Toggles the state boolean and triggers the styling method
+         * @returns {void}
+         */
         toggleEasyReadMode () {
             this.easyReadMode = !this.easyReadMode;
 
             this.scaleLayerStyles();
         },
+        /**
+         * Scales WFS styles according to configured scale factors
+         * @returns {void}
+         */
         scaleLayerStyles () {
             const scaleFactor = this.easyReadMode ? this.scaleFactor : 1 / this.scaleFactor;
             let layerId;
@@ -86,13 +84,6 @@ export default {
             for (layerId of this.layerIds) {
                 scaleLayerStyle(layerId, scaleFactor, this.attrs);
             }
-        },
-        /**
-         * Sets visibility flag depending on map mode; OverviewMap is not available in 3D mode.
-         * @returns {void}
-         */
-        checkModeVisibility () {
-            this.visibleInMapMode = Radio.request("Map", "getMapMode") !== "3D";
         }
     }
 };
@@ -100,31 +91,17 @@ export default {
 
 <template>
     <div
-        v-if="visibleInMapMode"
         id="easy-read-mode-wrapper"
     >
         <component
             :is="component"
             class="easy-read-mode-button"
-            :title="$t(`common:modules.controls.easy-read-mode.${easyReadMode ? 'disable' : 'enable'}`)"
+            :title="$t(`common:modules.controls.easyReadMode.${easyReadMode ? 'disable' : 'enable'}`)"
             :icon-name="easyReadMode ? 'eye-close' : 'eye-open'"
             :on-click="toggleEasyReadMode"
         />
     </div>
-    <div
-        v-else
-        :class="{hideButton: 'easy-read-mode-button'}"
-    >
-    </div>
 </template>
-
-<style lang="less" scoped>
-    /* .ol-overviewmap has fixed height in openlayers css;
-     * measured this value for 12px space between control contents */
-    .space-above {
-        margin-top: 136px;
-    }
-</style>
 
 <style lang="less">
     /* ⚠️ unscoped css, extend with care;
@@ -137,8 +114,5 @@ export default {
 
     #easy-read-mode-wrapper {
         position: relative;
-    }
-    .hideButton {
-        display: none;
     }
 </style>

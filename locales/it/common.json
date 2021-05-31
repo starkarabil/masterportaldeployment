@@ -647,6 +647,10 @@
                 "hint": "Muovi il mouse sulla mappa",
                 "showMousePosition": "Mostra",
                 "hideMousePosition": "Nascondi"
+            },
+            "easyReadMode": {
+                "enable": "Attiva il design di facile accesso",
+                "disable": "Disattiva il design di facile accesso"
             }
         },
         "searchbar": {

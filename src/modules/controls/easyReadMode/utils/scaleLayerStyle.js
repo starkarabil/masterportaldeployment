@@ -3,9 +3,10 @@
  * @param {String} layerId - The ID of the layer to restyle
  * @param {Number} scaleFactor - the factor to scale the style
  * @param {String[]} attributes - the attributes to alter
+ * @todo Update Radio calls to store getters
  * @returns {void}
  */
-export function scaleLayerStyle (layerId, scaleFactor, attributes = ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]) {
+export default function scaleLayerStyle (layerId, scaleFactor, attributes = ["polygonStrokeWidth", "circleRadius", "clusterCircleRadius"]) {
     const model = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
 
     if (model && model.get("typ") === "WFS" || model.get("typ") === "GeoJSON") {
@@ -21,6 +22,8 @@ export function scaleLayerStyle (layerId, scaleFactor, attributes = ["polygonStr
                 }
             });
         }
+
+        // execute the styling function
         model.styling();
     }
 }
