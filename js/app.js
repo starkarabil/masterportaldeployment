@@ -43,7 +43,7 @@ import {initiateVueI18Next} from "./vueI18Next";
  * @description Test vuetify as main UI framework in /addons/cosi
  * @external
  */
-import vuetify from "../src/plugins/vuetify/vuetify";
+import {instantiateVuetify} from "../src/plugins/vuetify/vuetify";
 
 /**
  * WFSFeatureFilterView
@@ -87,7 +87,11 @@ async function loadApp () {
         utilConfig = {},
         layerInformationModelSettings = {},
         style = Radio.request("Util", "getUiStyle"),
-        vueI18Next = initiateVueI18Next();
+        vueI18Next = initiateVueI18Next(),
+        // instantiate Vue w/ Vuetify Plugin if the "vuetify" flag is set in the config.js
+        // returns undefined if not
+        vuetify = await instantiateVuetify();
+
     /* eslint-disable no-undef */
     let app = {},
         searchbarAttributes = {};
@@ -126,7 +130,7 @@ async function loadApp () {
         render: h => h(App),
         store,
         i18n: vueI18Next,
-        vuetify: Config.useVuetify ? vuetify : undefined // instantiate Vue w/ Vuetify Plugin if the "useVuetify" flag is set in the config.js
+        vuetify
     });
 
 
