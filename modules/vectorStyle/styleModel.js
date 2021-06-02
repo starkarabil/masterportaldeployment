@@ -477,7 +477,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
             referenceValue = this.getReferenceValue(featureProperty, value);
 
         if ((typeof featureValue === "string" || typeof featureValue === "number") && (typeof referenceValue === "string" || typeof referenceValue === "number" ||
-            (Array.isArray(referenceValue) && referenceValue.every(element => typeof element === "number") &&
+            (Array.isArray(referenceValue) && referenceValue.every(element => typeof element === "number" || element === null) &&
                 (referenceValue.length === 2 || referenceValue.length === 4)))) {
             return this.compareValues(featureValue, referenceValue);
         }
@@ -583,9 +583,8 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
             }
         }
         // compare value in range
-        else if (Array.isArray(referenceValue) && referenceValue.every(element => typeof element === "number") && (referenceValue.length === 2 || referenceValue.length === 4)) {
+        else if (Array.isArray(referenceValue) && referenceValue.every(element => typeof element === "number" || element === null) && (referenceValue.length === 2 || referenceValue.length === 4)) {
             value = parseFloat(value);
-
             if (!isNaN(featureValue)) {
                 // value in absolute range of numbers [minValue, maxValue]
                 if (referenceValue.length === 2) {
