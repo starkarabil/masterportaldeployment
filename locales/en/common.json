@@ -20,6 +20,7 @@
     },
     "menu": {
         "topics": "Issues & Topics",
+        "name": "Menu",
         "views": {
             "name": "Views",
             "view01": "View 1"
@@ -88,9 +89,11 @@
     "modules": {
         "language": {
             "languageTitle": "Please choose a language",
-            "de": "German",
+            "de": "Deutsch",
             "en": "English",
-            "it": "Italian"
+            "it": "Italiano",
+            "pt": "Português",
+            "es": "Español"
         },
         "core": {
           "modelList": {
@@ -213,8 +216,7 @@
             "info": {
                 "disclaimer": "Legal disclaimer",
                 "home": {
-                    "name": "Hamburg Town",
-                    "url": "https://www.hamburg.com/"
+                    "name": "Hamburg Town"
                 }
             },
             "addWMS": {
@@ -475,7 +477,10 @@
                         "year": "{{count}} year",
                         "year_plural": "{{count}} years",
                         "previousWeekday": "Previous Weekday",
-                        "nextWeekday": "Next weekday"
+                        "nextWeekday": "Next weekday",
+                        "noticeTextAvailable": "(Only data with the value available are considered)",
+                        "noticeTextCharging": "(Only data with the value charging are considered).",
+                        "noticeTextOutoforder": "(Only data with the value outoforder are considered)."
                       },
                       "sensorData": {
                         "firstColumnHeaderName": "Properties"
@@ -582,7 +587,8 @@
                     "iconPoint": "Point",
                     "iconLeaf": "Leaf",
                     "iconCloud": "Cloud",
-                    "iconMeadow": "Meadow"
+                    "iconMeadow": "Meadow",
+                    "gelber Pin": "yellow Pin"
                 }
             },
             "measure": {

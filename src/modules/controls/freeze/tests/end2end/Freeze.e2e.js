@@ -3,7 +3,7 @@ const webdriver = require("selenium-webdriver"),
     {initDriver} = require("../../../../../../test/end2end/library/driver"),
     {getCenter} = require("../../../../../../test/end2end/library/scripts"),
     {isCustom, isMaster, isMobile, isChrome} = require("../../../../../../test/end2end/settings"),
-    {logBrowserstackUrlToTest} = require("../../../../../../test/end2end/library/utils"),
+    {logTestingCloudUrlToTest} = require("../../../../../../test/end2end/library/utils"),
     {By, Button} = webdriver;
 
 /**
@@ -15,7 +15,7 @@ const webdriver = require("selenium-webdriver"),
  * @param {module:selenium-webdriver.Capabilities} param.capability sets the capability when requesting a new session - overwrites all previously set capabilities
  * @returns {void}
  */
-function FreezeTests ({builder, url, resolution, browsername, capability}) {
+async function FreezeTests ({builder, url, resolution, browsername, capability}) {
     const testIsApplicable = !isMobile(resolution) && // function not available mobile
         (isCustom(url) || isMaster(url)); // freeze only active in these
 
@@ -40,13 +40,13 @@ function FreezeTests ({builder, url, resolution, browsername, capability}) {
             async function init () {
                 topicButton = await driver.findElement(By.css("#root .dropdown:first-child"));
                 tree = await driver.findElement(By.id("tree"));
-                topicButton.click(); // close tree for upcoming tests
+                await topicButton.click(); // close tree for upcoming tests
             }
 
             after(async function () {
                 if (capability) {
                     driver.session_.then(function (sessionData) {
-                        logBrowserstackUrlToTest(sessionData.id_);
+                        logTestingCloudUrlToTest(sessionData.id_);
                     });
                 }
                 await driver.quit();
