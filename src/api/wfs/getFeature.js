@@ -1,4 +1,66 @@
 import axios from "axios";
+import {WFS, GeoJSON} from "ol/format.js";
+
+/**
+ * Parses a GML featureCollection
+ * @param {String<XML>} featureCollection - the featureCollection to parse
+ * @returns {module:ol/Feature[]} the features of the collection
+ */
+export function parseWFSFeatures (featureCollection) {
+    return new WFS().readFeatures(featureCollection);
+}
+
+/**
+ * Parses a GeoJSON featureCollection
+ * @param {String<XML>} featureCollection - the featureCollection to parse
+ * @returns {module:ol/Feature[]} the features of the collection
+ */
+export function parseGeoJSONFeatures (featureCollection) {
+    return new GeoJSON().readFeatures(featureCollection);
+}
+
+/**
+ * Handles the WFS GetFeature request (as POST request).
+ * See https://openlayers.org/en/latest/apidoc/module-ol_format_WFS-WFS.html#writeGetFeature
+ * @param {String} url - The url of the WFS.
+ * @param {Object} payload - The request body for the WFS request.
+ * @param {String | String[]} payload.featureTypes - The layer names to fetch from the WFS. Is required.
+ * @param {String} [payload.srsName="EPSG:25832"] - The CRS the data should be returned in, if possible. Defaults to UTM32N.
+ * @param {String} [payload.featureNS] - The namespace of the featureTypes.
+ * @param {String} [payload.propertyNames] - A list of properties to restrict the request.
+ * @param {String} [payload.bbox] - A extent to restrict the request.
+ * @param {String} [payload.geometryName] - geometryName to use for the BBOX filter.
+ * @param {String} [payload.filter] - An XML encoded filter function.
+ * @param {String} [payload.resultType] - The resultType to return from the WFS, defaults to GML3 for Hamburgs UDP.
+ * @param {Boolean} [payload.returnFeatures=true] - If true, returns the result as OL Features
+ * @returns {Promise<Object|String|undefined|module:ol/Feature[]>} Promise object represents the GetFeature request.
+ */
+export async function getFeaturePost (url, payload) {
+    // For now only implemented for version 1.1.0
+    const {featureTypes, srsName, featureNS, propertyNames, bbox, geometryName, filter, resultType} = payload,
+        request = new WFS().writeGetFeature({
+            srsName,
+            featureNS,
+            featureTypes,
+            propertyNames,
+            bbox,
+            geometryName,
+            filter,
+            resultType
+        }),
+        response = await fetch(url, {
+            method: "POST",
+            body: new XMLSerializer().serializeToString(request)
+        });
+
+    // parse JSON if output is GeoJSON
+    if (resultType === "JSON" || resultType === "application/json") {
+        return response.json();
+    }
+
+    // parse String if output is XML
+    return response.text();
+}
 
 /**
  * Handles the WFS GetFeature request.
