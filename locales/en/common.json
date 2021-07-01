@@ -18,6 +18,9 @@
         "black": "Black",
         "white": "White"
     },
+    "mouseHover": {
+        "infoText": "(more objects. Please zoom.)"
+    },
     "menu": {
         "topics": "Issues & Topics",
         "name": "Menu",
@@ -154,7 +157,8 @@
           "noMetadataMessage": "$t(modules.cswParser.noMetadataMessage)",
           "periodicityTitle": "Periodicity",
           "publicationCreation": "Publication / Creation",
-          "buildings":"Buildings"
+          "buildings":"Buildings",
+          "changeLayerInfo": "Switch infotext"
         },
         "mapMarker": {
           "noStyleModel": "No style could be found for the specified StyleId: {{styleId}}. Please check your configuration."

@@ -73,7 +73,7 @@ function parseNodeAttributes (nodeAttributes) {
     if (
         constructor
         && constructor.prototype
-        && !constructor.prototype.hasOwnProperty("children")
+        && !constructor.prototype.hasOwnProperty.call("children")
     ) {
         Object.defineProperty(constructor.prototype, "children", {
             get: function () {
