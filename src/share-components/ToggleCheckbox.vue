@@ -77,7 +77,6 @@ export default {
             type="checkbox"
             :title="title"
             data-toggle="toggle"
-            :checked="isActive"
             @click="toggle"
         >
         <div class="toggle-group">
