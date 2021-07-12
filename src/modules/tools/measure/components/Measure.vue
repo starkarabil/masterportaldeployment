@@ -5,7 +5,6 @@ import Tool from "../../Tool.vue";
 import getters from "../store/gettersMeasure";
 import mutations from "../store/mutationsMeasure";
 import actions from "../store/actionsMeasure";
-import store from "../store/actionsMeasure";
 import api from "masterportalAPI/abstraction/api";
 import MeasureTooltip from "./MeasureTooltip.vue";
 import appstore from "../../../../app-store/index.js";

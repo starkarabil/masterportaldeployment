@@ -2,8 +2,6 @@ import source from "../utils/measureSource";
 import makeDraw2d from "../utils/measureDraw";
 import makeDraw3d from "../utils/measureDraw3d";
 import api from "masterportalAPI/abstraction/api";
-import store from "../../../../app-store/index.js";
-import Map from "ol/Map";
 
 export default {
     /**
@@ -57,8 +55,7 @@ export default {
                 tooltipCoord => commit("setTooltipCoord", tooltipCoord)
             );
         }
-        console.log(api)
-        //store.commit("setMapId", Map.get("id"));
+        // store.commit("setMapId", Map.get("id"));
         api.map.addInteraction(interaction, "map");
 
         commit("setInteraction", interaction);
