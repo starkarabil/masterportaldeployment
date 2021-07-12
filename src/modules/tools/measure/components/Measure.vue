@@ -5,7 +5,10 @@ import Tool from "../../Tool.vue";
 import getters from "../store/gettersMeasure";
 import mutations from "../store/mutationsMeasure";
 import actions from "../store/actionsMeasure";
+import store from "../store/actionsMeasure";
+import api from "masterportalAPI/abstraction/api";
 import MeasureTooltip from "./MeasureTooltip.vue";
+import appstore from "../../../../app-store/index.js";
 
 /**
  * Measurement tool to measure lines and areas in the map.
@@ -16,10 +19,16 @@ export default {
         Tool,
         MeasureTooltip
     },
+    data () {
+        return {
+            map2dId: ""
+        };
+    },
     computed: {
         ...mapGetters("Tools/Measure", Object.keys(getters)),
         ...mapGetters(["isTableStyle", "isDefaultStyle"]),
-        ...mapGetters("Map", ["layerById", "map", "is3d"])
+        ...mapGetters("Map", ["is3d"]),
+        ...mapGetters(["mapId"])
     },
     watch: {
         /**
@@ -47,8 +56,9 @@ export default {
         }
     },
     created () {
+        this.map2dId = appstore.getters.map2dId;
         this.$on("close", this.close);
-        this.addLayerToMap(this.layer);
+        api.map.getMapById(this.map2dId).addLayer(this.layer);
     },
     mounted () {
         if (this.active) {
@@ -58,7 +68,7 @@ export default {
     methods: {
         ...mapMutations("Tools/Measure", Object.keys(mutations)),
         ...mapActions("Tools/Measure", Object.keys(actions)),
-        ...mapMutations("Map", ["addLayerToMap"]),
+
         /**
          * Sets active to false.
          * @returns {void}

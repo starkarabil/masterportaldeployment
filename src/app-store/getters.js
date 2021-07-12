@@ -3,6 +3,7 @@ import getQueryParams from "../utils/getQueryParams";
 export default {
     masterPortalVersionNumber: state => state?.masterPortalVersionNumber,
     mobile: state => state.mobile,
+    mapId: state => state.mapId,
     dpi: state => state.dpi,
     idCounter: state => state?.idCounter,
     // configJS destructuring

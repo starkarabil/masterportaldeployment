@@ -8,12 +8,11 @@ import ObliqueMap from "./obliqueMap";
 import Map3dModel from "./map3d";
 import {register} from "ol/proj/proj4.js";
 import proj4 from "proj4";
-import {createMap} from "masterportalAPI";
-import {getLayerList} from "masterportalAPI/src/rawLayerList";
 import {transformToMapProjection} from "masterportalAPI/src/crs";
 import {transform as transformCoord, transformFromMapProjection, getMapProjection} from "masterportalAPI/src/crs";
 import store from "../../src/app-store";
 import WMTSLayer from "./modelList/layer/wmts";
+import api from "masterportalAPI/abstraction/api";
 
 const map = Backbone.Model.extend(/** @lends map.prototype */{
     defaults: {
@@ -155,14 +154,10 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
             mapViewSettings.startZoomLevel = mapViewSettings.zoomLevel;
         }
 
-        this.setMap(createMap({
-            ...Config,
-            ...mapViewSettings,
-            layerConf: getLayerList()
-        }));
-
+        this.setMap(api.map.createMap({mapViewSettings: Radio.request("Parser", "getPortalConfig").mapView}, "2D"));
         new MapView({view: this.get("map").getView(), settings: mapViewSettings});
         this.set("view", this.get("map").getView());
+        store.commit("setMapId", this.get("map").get("id"));
 
         this.addAliasForWFSFromGoeserver(getMapProjection(this.get("map")));
 
@@ -453,7 +448,7 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
         layersCollection.insertAt(index, layer);
         this.setImportDrawMeasureLayersOnTop(layersCollection);
 
-        // Laden des Layers überwachen
+        // Laden des Layers Ã¼berwachen
         if (layer instanceof LayerGroup) {
             layer.getLayers().forEach(function (singleLayer) {
                 /* NOTE
@@ -668,7 +663,7 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
      * @returns {ol/layer/Layer}  the found layer or a new layer with the given name
      */
     createLayerIfNotExists: function (name) {
-        const layers = this.getLayers();
+        const layers = this.get("map").getLayers();
 
         let found = false,
             layer,

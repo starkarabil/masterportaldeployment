@@ -1,6 +1,6 @@
 import moment from "moment";
-import OLCesium from "masterportalAPI/node_modules/olcs/OLCesium.js";
-import VectorSynchronizer from "masterportalAPI/node_modules/olcs/VectorSynchronizer.js";
+import OLCesium from "olcs/OLCesium.js";
+import VectorSynchronizer from "olcs/VectorSynchronizer.js";
 import FixedOverlaySynchronizer from "./3dUtils/fixedOverlaySynchronizer.js";
 import WMSRasterSynchronizer from "./3dUtils/wmsRasterSynchronizer.js";
 import {transform, get} from "ol/proj.js";

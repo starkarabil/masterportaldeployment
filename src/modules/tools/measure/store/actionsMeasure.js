@@ -1,6 +1,9 @@
 import source from "../utils/measureSource";
 import makeDraw2d from "../utils/measureDraw";
 import makeDraw3d from "../utils/measureDraw3d";
+import api from "masterportalAPI/abstraction/api";
+import store from "../../../../app-store/index.js";
+import Map from "ol/Map";
 
 export default {
     /**
@@ -35,8 +38,6 @@ export default {
         if (rootGetters["Map/is3d"]) {
             dispatch("deleteFeatures");
             interaction = makeDraw3d(
-                rootGetters["Map/map3d"],
-                rootGetters["Map/projectionCode"],
                 unlistener => commit("addUnlistener", unlistener),
                 rootState._store
             );
@@ -46,8 +47,7 @@ export default {
                 // if unlisteners are registered, this indicates 3D mode was active immediately before
                 dispatch("deleteFeatures");
             }
-            const map = rootGetters["Map/map"],
-                {selectedGeometry} = state;
+            const {selectedGeometry} = state;
 
             interaction = makeDraw2d(
                 selectedGeometry,
@@ -56,8 +56,10 @@ export default {
                 featureId => commit("setFeatureId", featureId),
                 tooltipCoord => commit("setTooltipCoord", tooltipCoord)
             );
-            map.addInteraction(interaction);
         }
+        console.log(api)
+        //store.commit("setMapId", Map.get("id"));
+        api.map.addInteraction(interaction, "map");
 
         commit("setInteraction", interaction);
     },
@@ -67,22 +69,12 @@ export default {
      * removing the interaction from the store.
      * @returns {void}
      */
-    removeDrawInteraction ({state, commit, rootGetters}) {
+    removeDrawInteraction ({state, commit}) {
         const {interaction} = state;
 
         if (interaction) {
-            const map = rootGetters["Map/map"];
-
             interaction.abortDrawing();
-
-            if (interaction.interaction3d) {
-                // 3d interaction is not directly added to map, but provides it's own method
-                interaction.stopInteraction();
-            }
-            else {
-                map.removeInteraction(interaction);
-            }
-
+            api.map.removeInteraction(interaction);
             commit("setInteraction", null);
         }
     }

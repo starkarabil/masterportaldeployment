@@ -26,7 +26,7 @@ const deprecatedParamsConfigJson = {
     };
 
 export default {
-    /**
+/**
      * Sets store to store.
      * @param {Object} state store state
      * @param {Object} store vuex store
@@ -63,6 +63,15 @@ export default {
         state.mobile = mobile;
     },
     /**
+     * Sets mapId
+     * @param {Object} state store state
+     * @param {String} mapId The map id.
+     * @returns {void}
+     */
+    setMapId (state, mapId) {
+        state.mapId = mapId;
+    },
+    /**
      * Sets i18NextInitialized flag. Is done after languages for addons are loaded.
      * @param {Object} state store state
      * @param {Boolean} isInitialized whether i18Next is initialized
@@ -72,3 +81,4 @@ export default {
         state.i18NextInitialized = isInitialized;
     }
 };
+

@@ -1,4 +1,4 @@
-import OverlaySynchronizer from "masterportalAPI/node_modules/olcs/OverlaySynchronizer.js";
+import OverlaySynchronizer from "olcs/OverlaySynchronizer.js";
 
 /**
  * Represents a FixedOverlaySynchronizer.

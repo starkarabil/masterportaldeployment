@@ -4,6 +4,7 @@ import * as removeHighlightFeature from "./removeHighlighting";
 import {getWmsFeaturesByMimeType} from "../../../../api/gfi/getWmsFeaturesByMimeType";
 import {MapMode} from "../enums";
 import getProxyUrl from "../../../../utils/getProxyUrl";
+import api from "masterportalAPI/abstraction/api";
 
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
@@ -131,7 +132,7 @@ const actions = {
     updateClick ({getters, commit, dispatch, rootGetters}, evt) {
         const {mapMode} = getters;
 
-        if (mapMode === MapMode.MODE_2D || mapMode === MapMode.MODE_OB) {
+        if (mapMode === MapMode.MODE_2D) {
             commit("setClickCoord", evt.coordinate);
             commit("setClickPixel", evt.pixel);
         }
@@ -255,15 +256,13 @@ const actions = {
     },
     /**
      * Sets center and resolution to initial values.
-     * @param {Object} actionParams first action parameter
      * @returns {void}
      */
     resetView ({state, dispatch}) {
-        const {initialCenter, initialResolution, map} = state,
-            view = map.getView();
+        const {initialCenter, initialResolution} = state;
 
-        view.setCenter(initialCenter);
-        view.setResolution(initialResolution);
+        api.map.get2DMap().getView().setCenter(initialCenter);
+        api.map.get2DMap().getView().setResolution(initialResolution);
 
         dispatch("MapMarker/removePointMarker", null, {root: true});
     },

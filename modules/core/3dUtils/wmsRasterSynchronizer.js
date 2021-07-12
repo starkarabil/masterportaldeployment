@@ -2,10 +2,10 @@
  * @module olcs.WMSRasterSynchronizer
  */
 import olLayerGroup from "ol/layer/Group.js";
-import {getUid} from "masterportalAPI/node_modules/olcs/util.js";
+import {getUid} from "olcs/util.js";
 import TileWMS from "ol/source/TileWMS.js";
-import olcsAbstractSynchronizer from "masterportalAPI/node_modules/olcs/AbstractSynchronizer.js";
-import olcsCore from "masterportalAPI/node_modules/olcs/core.js";
+import olcsAbstractSynchronizer from "olcs/AbstractSynchronizer.js";
+import olcsCore from "olcs/core.js";
 import {Tile, Image as ImageLayer} from "ol/layer.js";
 import {stableSort} from "ol/array.js";
 import {getBottomLeft, getBottomRight, getTopRight, getTopLeft} from "ol/extent.js";
