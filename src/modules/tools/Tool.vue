@@ -95,14 +95,14 @@ export default {
          * @returns {String}    Width style in px
          */
         getWidth (inputWidth) {
-            let pixelWidth = parseFloat(inputWidth, 10);
+            let pixelWidth = parseFloat(inputWidth);
 
             if (pixelWidth < 0 || isNaN(pixelWidth)) {
                 return "auto";
             }
 
             if (pixelWidth <= 1) {
-                pixelWidth = this.width * window.innerWidth;
+                pixelWidth = pixelWidth * window.innerWidth;
             }
 
             return Math.floor(pixelWidth) + "px";

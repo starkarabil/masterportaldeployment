@@ -5,7 +5,7 @@
  * @returns {module:Vuetify | undefined} the vuetify instance to use or undefined
  */
 export async function instantiateVuetify () {
-    if (!Config.hasOwnProperty("vuetify")) {
+    if (!Object.prototype.hasOwnProperty.call(Config, "vuetify")) {
         return undefined;
     }
     if (typeof Config.vuetify !== "string") {

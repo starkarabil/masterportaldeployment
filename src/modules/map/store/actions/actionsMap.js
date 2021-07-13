@@ -7,9 +7,6 @@ import getProxyUrl from "../../../../utils/getProxyUrl";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 
-import VectorLayer from "ol/layer/Vector.js";
-import VectorSource from "ol/source/Vector.js";
-
 let unsubscribes = [],
     loopId = null;
 
