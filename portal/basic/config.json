@@ -28,7 +28,7 @@
 				"name": "Werkzeuge",
 				"children": {
 					"gfi": {
-            "name": "Informationen abfragen",
+            			"name": "Informationen abfragen",
 						"active": true
 					},
 					"searchByCoord": {
@@ -42,13 +42,18 @@
 					},
 					"draw": {
 						"name": "Zeichnen / Schreiben",
-            "renderToWindow": false
+            			"renderToWindow": false
 					},
 					"fileImport": {
-            "name": "Datei Import"
+            			"name": "Datei Import"
 					},
 					"saveSelection": {
 						"name": "Auswahl speichern"
+					},
+					"scaleSwitcher": {
+						"name": "translate#common:menu.tools.scaleSwitcher",
+						"glyphicon": "glyphicon-resize-small",
+						"renderToWindow": true
 					}
 				}
 			},

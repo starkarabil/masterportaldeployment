@@ -16,22 +16,24 @@ export default {
 </script>
 
 <template>
-    <div
-        id="masterportal-container"
-        class="masterportal-container"
-    >
-        <!-- layout at its heart is two elements - navigation bar and map with elements on it -->
-        <MainNav />
-        <MapRegion class="map-region" />
-        <!-- <MapModuleDebug v-if="isDevMode" /> -->
+    <v-app>
+        <div
+            id="masterportal-container"
+            class="masterportal-container"
+        >
+            <!-- layout at its heart is two elements - navigation bar and map with elements on it -->
+            <MainNav />
+            <MapRegion class="map-region" />
+            <!-- <MapModuleDebug v-if="isDevMode" /> -->
 
-        <!-- keep loader last so it's above it all -->
-        <!--
-            NOTE currently doesn't work in all browser since vue renders too late;
-            after everything goes through vue, this should be usable again
-            <Loader />
-        -->
-    </div>
+            <!-- keep loader last so it's above it all -->
+            <!--
+                NOTE currently doesn't work in all browser since vue renders too late;
+                after everything goes through vue, this should be usable again
+                <Loader />
+            -->
+        </div>
+    </v-app>
 </template>
 
 <style lang="less" scoped>

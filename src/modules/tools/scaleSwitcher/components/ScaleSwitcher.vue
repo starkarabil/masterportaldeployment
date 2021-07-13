@@ -75,20 +75,31 @@ export default {
                     class="col-md-5 col-sm-5 control-label"
                 >{{ $t("modules.tools.scaleSwitcher.label") }}</label>
                 <div class="col-md-7 col-sm-7">
-                    <select
+                    <v-select
                         id="scale-switcher-select"
                         v-model="scale"
-                        class="font-arial form-control input-sm pull-left"
-                        @change="setResolutionByIndex($event.target.selectedIndex)"
+                        label="Maßstab"
+                        :items="scales"
+                        return-object
+                        @change="setResolutionByIndex($event)"
                     >
-                        <option
-                            v-for="(scaleValue, i) in scales"
-                            :key="i"
-                            :value="scaleValue"
-                        >
-                            1 : {{ scaleValue }}
-                        </option>
-                    </select>
+                        <div>
+                            <template
+                                slot="selection"
+                                slot-scope="data"
+                            >
+                                {{ "1:" + data.item }}
+                            </template>
+                            <template
+                                slot="item"
+                                slot-scope="data"
+                            >
+                                <p>
+                                    {{ "1:" + data.item }}
+                                </p>
+                            </template>
+                        </div>
+                    </v-select>
                 </div>
             </div>
         </template>

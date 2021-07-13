@@ -1,5 +1,6 @@
 import Vue from "vue";
 import App from "../src/App.vue";
+import vuetify from "../src/plugins/vuetify";
 import store from "../src/app-store";
 import loadAddons from "../src/addons";
 import RestReaderList from "../modules/restReader/collection";
@@ -110,6 +111,7 @@ async function loadApp () {
 
     app = new Vue({
         el: "#masterportal-root",
+        vuetify,
         name: "VueApp",
         render: h => h(App),
         store,
