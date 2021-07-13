@@ -51,6 +51,9 @@ export default {
             if (model) {
                 model.set("isActive", false);
             }
+        },
+        setResolutionWrapper (value) {
+            this.setResolutionByIndex(this.scales.indexOf(value));
         }
     }
 };
@@ -81,24 +84,21 @@ export default {
                         label="Maßstab"
                         :items="scales"
                         return-object
-                        @change="setResolutionByIndex($event)"
+                        @change="setResolutionWrapper($event)"
                     >
-                        <div>
-                            <template
-                                slot="selection"
-                                slot-scope="data"
-                            >
-                                {{ "1:" + data.item }}
-                            </template>
-                            <template
-                                slot="item"
-                                slot-scope="data"
-                            >
-                                <p>
-                                    {{ "1:" + data.item }}
-                                </p>
-                            </template>
-                        </div>
+                        <template
+                            slot="selection"
+                            slot-scope="data"
+                        >
+                            {{ "1:" + data.item }}
+                        </template>
+                        <template
+                            slot="item"
+                            slot-scope="data"
+                        >
+                            <!-- eslint-disable-next-line -->
+                            {{ "1:" + data.item }}
+                        </template>
                     </v-select>
                 </div>
             </div>
