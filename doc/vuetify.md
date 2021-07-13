@@ -7,6 +7,7 @@ Kurze Übersicht:
 - automatisch erzeugte Accessibility
 - Vorgefertige Komponenten
 - einfache Installation
+- "sieht besser aus"
 
 **Nachteile**:
 - Kompalibität zu bisherigen Code nicht so gut
@@ -66,7 +67,7 @@ Generiertes HTML:
 </select>
 ```
 
-Vuetify:
+Vuetify Code:
 ```
 <script>
 ...
@@ -115,7 +116,7 @@ Generiertes HTML:
 ```
 
 
-Meiner Meinung nach ist die erste Implementierung besser nachzuvollziehen und auch praktischer, da man bereits bestehenden Code für doe Vuetify-Komponente überarbeiten muss und nicht nur ein HTML-Tag tauschen kann.
+Meiner Meinung nach ist die erste Implementierung besser nachzuvollziehen und auch praktischer, da man bereits bestehenden Code für die Vuetify-Komponente überarbeiten muss und nicht nur ein "HTML-Tag tauschen kann".
 Der Linter hat außerdem Probleme zuerkennen das die Templates eigentlich Slots sind und wirft einen Fehler im zweiten Template (daher deaktiviert).
 
 
