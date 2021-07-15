@@ -23,6 +23,14 @@ export default {
             set (value) {
                 this.$store.commit("Map/setScale", value);
             }
+        },
+        formattedScales: function () {
+            return this.scales.map(scale => {
+                return {
+                    text: "1:" + scale,
+                    value: scale
+                };
+            });
         }
     },
 
@@ -52,8 +60,8 @@ export default {
                 model.set("isActive", false);
             }
         },
-        setResolutionWrapper (value) {
-            this.setResolutionByIndex(this.scales.indexOf(value));
+        setResolutionWrapper (selected) {
+            this.setResolutionByIndex(this.scales.indexOf(selected.value));
         }
     }
 };
@@ -82,24 +90,10 @@ export default {
                         id="scale-switcher-select"
                         v-model="scale"
                         label="Maßstab"
-                        :items="scales"
+                        :items="formattedScales"
                         return-object
                         @change="setResolutionWrapper($event)"
-                    >
-                        <template
-                            slot="selection"
-                            slot-scope="data"
-                        >
-                            {{ "1:" + data.item }}
-                        </template>
-                        <template
-                            slot="item"
-                            slot-scope="data"
-                        >
-                            <!-- eslint-disable-next-line -->
-                            {{ "1:" + data.item }}
-                        </template>
-                    </v-select>
+                    />
                 </div>
             </div>
         </template>

@@ -4,10 +4,12 @@ import ScaleSwitcherComponent from "../../../components/ScaleSwitcher.vue";
 import ScaleSwitcher from "../../../store/indexScaleSwitcher";
 import {expect} from "chai";
 import sinon from "sinon";
+import Vuetify from "vuetify";
 
 const localVue = createLocalVue();
 
 localVue.use(Vuex);
+localVue.use(Vuetify);
 config.mocks.$t = key => key;
 
 describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
@@ -40,6 +42,8 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
             }
         };
     let store;
+    let vuetify;
+
 
     beforeEach(() => {
         store = new Vuex.Store({
@@ -63,6 +67,7 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
             }
         });
         store.commit("Tools/ScaleSwitcher/setActive", true);
+        vuetify = new Vuetify();
     });
 
     it("renders the scaleSwitcher", () => {
@@ -78,9 +83,9 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
         expect(wrapper.find("#scale-switcher").exists()).to.be.false;
     });
 
-    it("has initially set all scales to select", () => {
-        const wrapper = shallowMount(ScaleSwitcherComponent, {store, localVue}),
-            options = wrapper.findAll("option");
+    it.only("has initially set all scales to select", () => {
+        const wrapper = shallowMount(ScaleSwitcherComponent, {store, localVue, vuetify}),
+            options = wrapper.findAll("[role='option']");
 
         expect(options.length).to.equal(scales.length);
         scales.forEach((scale, index) => {

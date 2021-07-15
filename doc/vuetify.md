@@ -13,9 +13,8 @@ Kurze Übersicht:
 - Kompalibität zu bisherigen Code nicht so gut
     - Selects nicht einfach in v-select konvertierbar, da anderes Verhalten oder Aufbau
     - Tests müssen ebenfalls angepasst werden, da diese teilweise mit ``select`` und ``option`` arbeiten
-- Boilerplate-Code
-- automatisch erzeugte Ids nicht aussagekräftig
-- Konflikt der CSS-Klassen 
+- Boilerplate-Code durch Helperfunctions
+- Konflikte der CSS-Klassen (Bsp.: "input-sm")
 
 
 ## Installation
@@ -26,11 +25,11 @@ Vuetify ließ sich einfach anhand der [Installationsanweisung](https://vuetifyjs
 ## Erste Versuche
 
 Eins der meist genutzen "Input"-Elemente im Masterportal ist das Select-Tag. Vuetify bringt sein eigenes Select-Tag [v-select](https://vuetifyjs.com/en/components/selects/) mit, welches ich versuchsweise im **ScaleSwitcher** implementiert habe.  
-Dies erzeugt automatisch eigene Ids (welche jedoch nicht aussagekräfitg sind) und ein ``aria-selected`` Attribut für jede Option.   
+Dies erzeugt automatisch eigene Ids, ein ``aria-selected`` und eine ``role`` Attribut.   
 
 Im eigentlichen HTML wird jedoch kein ``select`` oder ``option`` Tag verwendet sondern nur divs. Somit entfallen auch teilweise Html-Attribute, wie zum Beispiel der Index der momentan ausgewählten Option, welche über neue Helferfunktion in Vue wiederhergestellt werden müssen.  
 
-Des Weiteren lässt sich die Textdarstellung nicht ohne weiteres bearbeiten. Hier müssen [Slots](https://vuetifyjs.com/en/api/v-select/#api-slots) verwendet werden. Hierbei wird zwischen der Darstellung der Optionen in der Liste und der ausgewählten Option unterschieden. Daher müssen meiste beide Slots genutzt werden, was zu einer größeren Menge an Boilerplate Code führt.
+Des Weiteren lässt sich die Textdarstellung nicht ohne weiteres bearbeiten. Hierzu müssen die darzustellenden Objekte ein Attribut ``text`` besitzten, in dem der Darstellungsstring enthalten ist (siehe Bsp).
 
 Bsp.: 
 
@@ -70,34 +69,37 @@ Generiertes HTML:
 Vuetify Code:
 ```
 <script>
-...
-setResolutionWrapper (value) {
-    this.setResolutionByIndex(this.scales.indexOf(value));
+
+computed: {
+    formattedScales: function () {
+            return this.scales.map(scale => {
+                return {
+                    text: "1:" + scale,
+                    value: scale
+                };
+            });
+    }, ...
+}
+
+methods: {
+    setResolutionWrapper (value) {
+        this.setResolutionByIndex(this.scales.indexOf(value));
+    }, ...
 }
 ...
 </script>
-<v-select
-    id="scale-switcher-select"
-    v-model="scale"
-    label="Maßstab"
-    :items="scales"
-    return-object
-    @change="setResolutionWrapper($event)"
->
-    <template
-        slot="selection"
-        slot-scope="data"
-    >
-        {{ "1:" + data.item }}
-    </template>
-    <template
-        slot="item"
-        slot-scope="data"
-    >
-        <!-- eslint-disable-next-line -->
-        {{ "1:" + data.item }}
-    </template>
-</v-select>
+
+
+<template>
+    <v-select
+        id="scale-switcher-select"
+        v-model="scale"
+        label="Maßstab"
+        :items="scales"
+        return-object
+        @change="setResolutionWrapper($event)"
+    />
+</template>
 ```
 Generiertes HTML:
 ```
@@ -114,10 +116,6 @@ Generiertes HTML:
     </div>
 </div>
 ```
-
-
-Meiner Meinung nach ist die erste Implementierung besser nachzuvollziehen und auch praktischer, da man bereits bestehenden Code für die Vuetify-Komponente überarbeiten muss und nicht nur ein "HTML-Tag tauschen kann".
-Der Linter hat außerdem Probleme zuerkennen das die Templates eigentlich Slots sind und wirft einen Fehler im zweiten Template (daher deaktiviert).
 
 
 
