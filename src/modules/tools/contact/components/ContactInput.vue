@@ -64,6 +64,7 @@ export default {
             :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
             :rows="htmlElement === 'v-textarea' ? rows : ''"
             class="control-label"
+            solo
             @keyup="changeFunction($event.currentTarget.value)"
         />
     </div>
