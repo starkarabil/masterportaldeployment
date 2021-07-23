@@ -55,7 +55,7 @@ export default {
             >
                 {{ contactInfo }}
             </div>
-            <form
+            <v-form
                 class="contents"
                 @submit.prevent="send"
             >
@@ -118,7 +118,7 @@ export default {
                 >
                     {{ $t("common:modules.tools.contact.sendButton") }}
                 </button>
-            </form>
+            </v-form>
         </template>
     </Tool>
 </template>

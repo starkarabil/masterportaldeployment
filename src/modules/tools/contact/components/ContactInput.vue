@@ -10,10 +10,10 @@ export default {
         },
         htmlElement: {
             type: String,
-            default: "v-input",
+            default: "v-text-field",
             validator: function (value) {
                 // only these are explicitly supported
-                return ["v-input", "v-textarea"].indexOf(value) !== -1;
+                return ["v-text-field", "v-textarea"].indexOf(value) !== -1;
             }
         },
         inputName: {
@@ -49,41 +49,23 @@ export default {
 
 <template>
     <div>
-        <div :class="htmlElement === 'v-input' ? 'input-group' : ''">
-            <label
-                :for="`tool-contact-${inputName}-input`"
-            >{{ labelText }}</label>
-            <component
-                :is="htmlElement"
-                :id="`tool-contact-${inputName}-input`"
-                :value="inputValue"
-                :type="htmlElement === 'v-input' ? inputType : ''"
-                :aria-describedby="`tool-contact-${inputName}-help`"
-                :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
-                :rows="htmlElement === 'textarea' ? rows : ''"
-                @keyup="changeFunction($event.currentTarget.value)"
-            />
-        </div>
-        <span
-            v-if="validInput"
-            :class="[
-                'glyphicon',
-                'glyphicon-ok',
-                'form-control-feedback',
-                htmlElement === 'textarea' ? 'lift-tick' : ''
-            ]"
-            aria-hidden="true"
-        />
-        <span
-            v-else
-            :id="`tool-contact-${inputName}-help`"
-            class="help-block"
-        >
-            {{ $t(
-                `common:modules.tools.contact.error.${inputName + (inputName === "message" ? "Input" : "")}`,
+        <component
+            :is="htmlElement"
+            :id="`tool-contact-${inputName}-input`"
+            :label="labelText"
+            :value="inputValue"
+            :rules="[validInput]"
+            :messages="$t(
+                `common:modules.tools.contact.error.${inputName + (inputName === 'message' ? 'Input' : '')}`,
                 {length: minMessageLength}
-            ) }}
-        </span>
+            )"
+            :append-icon="validInput ? 'mdi-check' : ''"
+            :aria-describedby="`tool-contact-${inputName}-help`"
+            :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
+            :rows="htmlElement === 'v-textarea' ? rows : ''"
+            class="control-label"
+            @keyup="changeFunction($event.currentTarget.value)"
+        />
     </div>
 </template>
 
