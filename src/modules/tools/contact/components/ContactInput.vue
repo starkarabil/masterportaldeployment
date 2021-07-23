@@ -48,48 +48,27 @@ export default {
 </script>
 
 <template>
-    <div>
-        <component
-            :is="htmlElement"
-            :id="`tool-contact-${inputName}-input`"
-            :label="labelText"
-            :value="inputValue"
-            :rules="[validInput]"
-            :messages="$t(
-                `common:modules.tools.contact.error.${inputName + (inputName === 'message' ? 'Input' : '')}`,
-                {length: minMessageLength}
-            )"
-            :append-icon="validInput ? 'mdi-check' : ''"
-            :aria-describedby="`tool-contact-${inputName}-help`"
-            :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
-            :rows="htmlElement === 'v-textarea' ? rows : ''"
-            class="control-label"
-            solo
-            @keyup="changeFunction($event.currentTarget.value)"
-        />
-    </div>
+    <component
+        :is="htmlElement"
+        :id="`tool-contact-${inputName}-input`"
+        :label="labelText"
+        :value="inputValue"
+        :rules="[validInput]"
+        :messages="$t(
+            `common:modules.tools.contact.error.${inputName + (inputName === 'message' ? 'Input' : '')}`,
+            {length: minMessageLength}
+        )"
+        :append-icon="validInput ? 'mdi-check-bold' : ''"
+        :aria-describedby="`tool-contact-${inputName}-help`"
+        :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
+        :rows="htmlElement === 'v-textarea' ? rows : ''"
+        class="control-label"
+        outlined
+        @keyup="changeFunction($event.currentTarget.value)"
+    />
 </template>
 
 <style lang="less" scoped>
-.input-group-addon:first-child.force-border {
-    border-right: 1px solid #ccc;
-}
-
-.has-error .input-group-addon:first-child.force-border {
-    border-right: 1px solid #a94442;
-}
-
-.has-success .input-group-addon:first-child.force-border {
-    border-right: 1px solid #3c763d;
-}
-
-.lift-tick {
-    margin-top: -4px;
-}
-
-.form-control {
-    resize: none;
-}
 
 .control-label {
     min-width: 65px;

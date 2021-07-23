@@ -8,6 +8,9 @@ Kurze Übersicht:
 - Vorgefertige Komponenten
 - einfache Installation
 - "sieht besser aus"
+- Forms
+    - Validation einfacher
+    - Einfügen von Hinweisen, Icons, etc... einfacher
 
 **Nachteile**:
 - Kompalibität zu bisherigen Code nicht so gut
@@ -22,7 +25,7 @@ Kurze Übersicht:
 Vuetify ließ sich einfach anhand der [Installationsanweisung](https://vuetifyjs.com/en/getting-started/installation/#webpack-install) der Website ins bestehende Projekt installieren. Damit die bereitgestellten Komponenten funktionieren, musste jedoch noch die Vue-App mit dem "v-app" Tag gewrappt werden.
 
 
-## Erste Versuche
+## Scale Switcher
 
 Eins der meist genutzen "Input"-Elemente im Masterportal ist das Select-Tag. Vuetify bringt sein eigenes Select-Tag [v-select](https://vuetifyjs.com/en/components/selects/) mit, welches ich versuchsweise im **ScaleSwitcher** implementiert habe.  
 Dies erzeugt automatisch eigene Ids, ein ``aria-selected`` und eine ``role`` Attribut.   
@@ -117,7 +120,91 @@ Generiertes HTML:
 </div>
 ```
 
+## Contact
 
+Als zweite Komponente hab ich mir die Forms in dem **Contact** Tool angeguckt. Hier wird eine Validation durchgeführt und je nach Ergebnis Hinweise oder Erfolgsmeldung angezeigt.  
+Die Erfolgsmeldung ist ein Haken. Das Einfügen von Symbolen in Vuetify ist besonders einfach. Sie werden als Props in die Komponente hineingegeben. Man kann sie jeweils inner- oder außerhalb vor oder hinter des Inputs platzieren. Vuetify unterstüzt außerdem verschiedenste Icon Bibliotheken wie Martieral Icons oder FontAwesome.  
 
+Der Template Code schrumpft um einiges zusammen und wird auch lesbarer.
 
+Vue Code:
+```
+<template>
+    <div
+        :class="[
+            'form-group',
+            'has-feedback',
+            validInput ? 'has-success' : '',
+            !validInput && inputValue ? 'has-error' : ''
+        ]"
+    >
+        <div :class="htmlElement === 'input' ? 'input-group' : ''">
+            <label
+                :class="[
+                    'control-label',
+                    'input-group-addon',
+                    htmlElement === 'textarea' ? 'force-border' : ''
+                ]"
+                :for="`tool-contact-${inputName}-input`"
+            >{{ labelText }}</label>
+            <component
+                :is="htmlElement"
+                :id="`tool-contact-${inputName}-input`"
+                :value="inputValue"
+                :type="htmlElement === 'input' ? inputType : ''"
+                class="form-control"
+                :aria-describedby="`tool-contact-${inputName}-help`"
+                :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
+                :rows="htmlElement === 'textarea' ? rows : ''"
+                @keyup="changeFunction($event.currentTarget.value)"
+            />
+        </div>
+        <span
+            v-if="validInput"
+            :class="[
+                'glyphicon',
+                'glyphicon-ok',
+                'form-control-feedback',
+                htmlElement === 'textarea' ? 'lift-tick' : ''
+            ]"
+            aria-hidden="true"
+        />
+        <span
+            v-else
+            :id="`tool-contact-${inputName}-help`"
+            class="help-block"
+        >
+            {{ $t(
+                `common:modules.tools.contact.error.${inputName + (inputName === "message" ? "Input" : "")}`,
+                {length: minMessageLength}
+            ) }}
+        </span>
+    </div>
+</template>
+```
+
+Vuetify Code:
+
+```
+<template>
+    <component
+        :is="htmlElement"
+        :id="`tool-contact-${inputName}-input`"
+        :label="labelText"
+        :value="inputValue"
+        :rules="[validInput]"
+        :messages="$t(
+            `common:modules.tools.contact.error.${inputName + (inputName === 'message' ? 'Input' : '')}`,
+            {length: minMessageLength}
+        )"
+        :append-icon="validInput ? 'mdi-check-bold' : ''"
+        :aria-describedby="`tool-contact-${inputName}-help`"
+        :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
+        :rows="htmlElement === 'v-textarea' ? rows : ''"
+        class="control-label"
+        outlined
+        @keyup="changeFunction($event.currentTarget.value)"
+    />
+</template>
+```
 
