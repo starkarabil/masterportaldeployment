@@ -84,7 +84,7 @@ export default {
                 />
                 <ContactInput
                     :change-function="setMessage"
-                    html-element="textarea"
+                    html-element="v-textarea"
                     input-name="message"
                     :input-value="message"
                     :label-text="$t('common:modules.tools.contact.messageLabel')"

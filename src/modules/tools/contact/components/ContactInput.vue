@@ -10,10 +10,10 @@ export default {
         },
         htmlElement: {
             type: String,
-            default: "input",
+            default: "v-input",
             validator: function (value) {
                 // only these are explicitly supported
-                return ["input", "textarea"].indexOf(value) !== -1;
+                return ["v-input", "v-textarea"].indexOf(value) !== -1;
             }
         },
         inputName: {
@@ -48,29 +48,16 @@ export default {
 </script>
 
 <template>
-    <div
-        :class="[
-            'form-group',
-            'has-feedback',
-            validInput ? 'has-success' : '',
-            !validInput && inputValue ? 'has-error' : ''
-        ]"
-    >
-        <div :class="htmlElement === 'input' ? 'input-group' : ''">
+    <div>
+        <div :class="htmlElement === 'v-input' ? 'input-group' : ''">
             <label
-                :class="[
-                    'control-label',
-                    'input-group-addon',
-                    htmlElement === 'textarea' ? 'force-border' : ''
-                ]"
                 :for="`tool-contact-${inputName}-input`"
             >{{ labelText }}</label>
             <component
                 :is="htmlElement"
                 :id="`tool-contact-${inputName}-input`"
                 :value="inputValue"
-                :type="htmlElement === 'input' ? inputType : ''"
-                class="form-control"
+                :type="htmlElement === 'v-input' ? inputType : ''"
                 :aria-describedby="`tool-contact-${inputName}-help`"
                 :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
                 :rows="htmlElement === 'textarea' ? rows : ''"
