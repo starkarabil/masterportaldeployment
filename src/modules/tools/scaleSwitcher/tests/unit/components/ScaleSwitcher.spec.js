@@ -42,7 +42,6 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
             }
         };
     let store;
-    let vuetify;
 
 
     beforeEach(() => {
@@ -67,7 +66,6 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
             }
         });
         store.commit("Tools/ScaleSwitcher/setActive", true);
-        vuetify = new Vuetify();
     });
 
     it("renders the scaleSwitcher", () => {
@@ -83,8 +81,8 @@ describe("src/modules/tools/scaleSwitcher/components/ScaleSwitcher.vue", () => {
         expect(wrapper.find("#scale-switcher").exists()).to.be.false;
     });
 
-    it.only("has initially set all scales to select", () => {
-        const wrapper = shallowMount(ScaleSwitcherComponent, {store, localVue, vuetify}),
+    it("has initially set all scales to select", () => {
+        const wrapper = shallowMount(ScaleSwitcherComponent, {store, localVue}),
             options = wrapper.findAll("[role='option']");
 
         expect(options.length).to.equal(scales.length);
