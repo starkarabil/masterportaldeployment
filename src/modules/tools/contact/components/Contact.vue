@@ -110,14 +110,14 @@ export default {
                     </label>
                     <p v-html="$t('common:modules.tools.contact.privacyPolicy.info', {privacyPolicyLink})" />
                 </div>
-                <button
+                <v-btn
                     id="tool-contact-send-message"
                     type="submit"
-                    class="btn btn-default pull-right"
                     :disabled="!validForm"
+                    block
                 >
                     {{ $t("common:modules.tools.contact.sendButton") }}
-                </button>
+                </v-btn>
             </v-form>
         </template>
     </Tool>
@@ -125,6 +125,12 @@ export default {
 
 <style lang="less" scoped>
     @import "~variables";
+    @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
+
+    #tool-contact-send-message {
+        font-family: @font_family_1;
+        font-size: 12px;
+    }
 
     input[type="checkbox"] {
         cursor: pointer;

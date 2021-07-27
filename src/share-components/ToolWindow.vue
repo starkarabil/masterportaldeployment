@@ -45,11 +45,11 @@ export default {
 </script>
 
 <template>
-    <div
+    <v-card
         class="tool-window-vue"
         :style="{initialToolWidth}"
     >
-        <div class="tool-window-heading">
+        <v-card-title class="tool-window-heading">
             <slot name="leftOfTitle" />
 
             <BasicDragHandle
@@ -69,7 +69,7 @@ export default {
                     @click="close($event)"
                 />
             </div>
-        </div>
+        </v-card-title>
 
         <div class="vue-tool-content-body">
             <slot name="body" />
@@ -84,7 +84,7 @@ export default {
             :min-w="200"
             :min-h="100"
         />
-    </div>
+    </v-card>
 </template>
 
 <style lang="less" scoped>

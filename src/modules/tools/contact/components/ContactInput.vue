@@ -53,6 +53,7 @@ export default {
         :id="`tool-contact-${inputName}-input`"
         :label="labelText"
         :value="inputValue"
+        :success="validInput"
         :rules="[validInput]"
         :messages="$t(
             `common:modules.tools.contact.error.${inputName + (inputName === 'message' ? 'Input' : '')}`,
@@ -64,6 +65,7 @@ export default {
         :rows="htmlElement === 'v-textarea' ? rows : ''"
         class="control-label"
         outlined
+        dense
         @keyup="changeFunction($event.currentTarget.value)"
     />
 </template>

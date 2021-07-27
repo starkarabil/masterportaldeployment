@@ -11,18 +11,19 @@ Kurze Übersicht:
 - Forms
     - Validation einfacher
     - Einfügen von Hinweisen, Icons, etc... einfacher
+    - Status "success", "error" verfügbar
 
 **Nachteile**:
-- Kompalibität zu bisherigen Code nicht so gut
+- Noch kein weg gefunden vuetify zu testen (muss in einer globalen Setup-Datei initiallisiert werden)
     - Selects nicht einfach in v-select konvertierbar, da anderes Verhalten oder Aufbau
     - Tests müssen ebenfalls angepasst werden, da diese teilweise mit ``select`` und ``option`` arbeiten
 - Boilerplate-Code durch Helperfunctions
-- Konflikte der CSS-Klassen (Bsp.: "input-sm")
+- Konflikte der CSS-Klassen (Bsp.: "input-sm", Hintergrundbild)
 
 
 ## Installation
 
-Vuetify ließ sich einfach anhand der [Installationsanweisung](https://vuetifyjs.com/en/getting-started/installation/#webpack-install) der Website ins bestehende Projekt installieren. Damit die bereitgestellten Komponenten funktionieren, musste jedoch noch die Vue-App mit dem "v-app" Tag gewrappt werden.
+Vuetify ließ sich einfach anhand der [Installationsanweisung](https://vuetifyjs.com/en/getting-started/installation/#webpack-install) der Website ins bestehende Projekt installieren. Damit die bereitgestellten Komponenten funktionieren, musste jedoch noch die Vue-App mit dem **v-app** Tag gewrappt werden.
 
 
 ## Scale Switcher
@@ -122,10 +123,9 @@ Generiertes HTML:
 
 ## Contact
 
-Als zweite Komponente hab ich mir die Forms in dem **Contact** Tool angeguckt. Hier wird eine Validation durchgeführt und je nach Ergebnis Hinweise oder Erfolgsmeldung angezeigt.  
-Die Erfolgsmeldung ist ein Haken. Das Einfügen von Symbolen in Vuetify ist besonders einfach. Sie werden als Props in die Komponente hineingegeben. Man kann sie jeweils inner- oder außerhalb vor oder hinter des Inputs platzieren. Vuetify unterstüzt außerdem verschiedenste Icon Bibliotheken wie Martieral Icons oder FontAwesome.  
+Als zweite Komponente hab ich mir die Forms in dem **Contact** Tool angeguckt. Hier wird eine Validation durchgeführt und je nach Ergebnis Hinweise oder Erfolgsmeldung angezeigt.  Der Erfolg der Validation wird durch das Erscheinen eines Häckchen dargestellt. Das Einfügen von Symbolen in Vuetify ist besonders einfach. Sie werden als Props in die Komponente hineingegeben. Man kann sie jeweils inner- oder außerhalb vor oder hinter des Inputs platzieren. Vuetify unterstüzt außerdem verschiedenste Icon Bibliotheken wie Martieral Icons oder FontAwesome. Des Weiteren lassen sich die Input-Elemente in verschiedene Stati setzten, wie "error" oder "success".
 
-Der Template Code schrumpft um einiges zusammen und wird auch lesbarer.
+Der Template Code schrumpft um einiges zusammen, wird lesbarer und beinhaltet mehr Funktionen.
 
 Vue Code:
 ```
@@ -208,3 +208,7 @@ Vuetify Code:
 </template>
 ```
 
+
+## Cards
+
+Die Tool-Fenster könnten sich eventuell als Cards darstellen lassen. Hierdurch lassen sich meiner Meinung nach nicht große Vorteile erzielen, da das ToolWindow viel eigene Funktionen, wie die Handles, mitbringt. Es gibt leider keine Card-Header-, Card-Body-, oder Card-Footer-Tags.
