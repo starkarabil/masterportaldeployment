@@ -46,19 +46,18 @@ export default {
 
 <template>
     <v-card
-        class="tool-window-vue"
         :width="{initialToolWidth}"
     >
-        <v-card-title class="tool-window-heading">
+        <div class="tool-window-heading">
             <slot name="leftOfTitle" />
 
             <BasicDragHandle
                 target-sel=".tool-window-vue"
                 class="heading-element flex-grow"
             >
-                <p class="tool-window-heading-title">
+                <v-card-title>
                     <slot name="title" />
-                </p>
+                </v-card-title>
             </BasicDragHandle>
 
             <slot name="rightOfTitle" />
@@ -69,7 +68,7 @@ export default {
                     @click="close($event)"
                 />
             </div>
-        </v-card-title>
+        </div>
 
         <div class="vue-tool-content-body">
             <slot name="body" />
