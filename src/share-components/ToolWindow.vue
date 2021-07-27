@@ -33,7 +33,7 @@ export default {
                 pixelWidth = this.width * window.innerWidth;
             }
 
-            return "width: " + Math.floor(pixelWidth) + "px";
+            return Math.floor(pixelWidth);
         }
     },
     methods: {
@@ -47,7 +47,7 @@ export default {
 <template>
     <v-card
         class="tool-window-vue"
-        :style="{initialToolWidth}"
+        :width="{initialToolWidth}"
     >
         <v-card-title class="tool-window-heading">
             <slot name="leftOfTitle" />
