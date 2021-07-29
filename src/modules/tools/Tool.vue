@@ -148,7 +148,7 @@ export default {
 </script>
 
 <template>
-    <div
+    <v-card
         v-if="active"
         :id="renderToWindow ? '' : 'tool-sidebar-vue'"
         :class="{
@@ -171,19 +171,18 @@ export default {
 
         <div class="win-heading">
             <div class="heading-element">
-                <span
-                    class="glyphicon win-icon"
-                    :class="icon"
-                />
+                <v-icon>
+                    {{ icon }}
+                </v-icon>
             </div>
 
             <div
                 v-if="!renderToWindow"
                 class="heading-element flex-grow"
             >
-                <p class="title">
-                    <span>{{ title }}</span>
-                </p>
+                <v-card-title>
+                    {{ title }}
+                </v-card-title>
             </div>
 
             <BasicDragHandle
@@ -192,35 +191,61 @@ export default {
                 :margin-bottom="resizableWindow ? 25 : 0"
                 class="heading-element flex-grow"
             >
-                <p class="title">
-                    <span>{{ title }}</span>
-                </p>
+                <v-card-title class="title">
+                    {{ title }}
+                </v-card-title>
             </BasicDragHandle>
 
             <div
                 v-if="renderToWindow"
                 class="heading-element"
             >
-                <span
+                <v-btn
                     v-if="!isMinified"
-                    class="glyphicon glyphicon-minus"
-                    title="Minimieren"
+                    fab
+                    x-small
+                    dark
+                    color="primary"
                     @click="minifyTool"
-                />
-                <span
+                >
+                    <v-icon
+                        dark
+                    >
+                        mdi-window-minimize
+                    </v-icon>
+                </v-btn>
+                <v-btn
                     v-else
-                    class="glyphicon glyphicon-plus"
-                    title="Maximieren"
+                    fab
+                    x-small
+                    dark
+                    color="primary"
                     @click="maximizeTool"
-                />
+                >
+                    <v-icon
+                        dark
+                    >
+                        mdi-window-maximize
+                    </v-icon>
+                </v-btn>
             </div>
             <div class="heading-element">
-                <span
-                    class="glyphicon glyphicon-remove"
+                <v-btn
+                    fab
+                    x-small
+                    dark
+                    color="primary"
                     @click="close($event)"
-                />
+                >
+                    <v-icon
+                        dark
+                    >
+                        mdi-close
+                    </v-icon>
+                </v-btn>
             </div>
         </div>
+        <v-divider />
 
         <div
             id="vue-tool-content-body"
@@ -239,7 +264,7 @@ export default {
                 :min-h="100"
             />
         </div>
-    </div>
+    </v-card>
 </template>
 
 <style lang="less" scoped>
@@ -255,39 +280,22 @@ export default {
     #vue-tool-content-body { display:block; }
 
     .win-heading{
-        border-bottom: 1px solid rgb(229, 229, 229);
         font-family: @font_family_1;
         display:flex;
         flex-direction:row;
         width:100%;
         padding-left: 10px;
+        align-items: center;
 
         .heading-element {
             white-space: nowrap;
             color: @secondary_contrast;
             font-size: 14px;
+            margin: 2px;
 
             &.flex-grow {
                 flex-grow:99;
                 overflow: hidden;
-            }
-
-            > .title {
-                color: @secondary_contrast;
-                white-space: nowrap;
-                font-size: 14px;
-                padding-top: 10px;
-            }
-
-            > .glyphicon {
-                padding: 10px 8px 10px 0px;
-            }
-
-            > span {
-                &.glyphicon-minus { top: 3px; }
-                &:hover {
-                    &:not(.win-icon) { opacity: 0.7; cursor: pointer;}
-                }
             }
         }
     }

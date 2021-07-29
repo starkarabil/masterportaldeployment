@@ -38,7 +38,7 @@ Des Weiteren lässt sich die Textdarstellung nicht ohne weiteres bearbeiten. Hie
 Bsp.: 
 
 Vue Code:
-```
+```html
 <select
     id="scale-switcher-select"
     v-model="scale"
@@ -55,7 +55,7 @@ Vue Code:
 </select>
 ```
 Generiertes HTML:
-```
+```html
 <select data-v-3a4d10cb="" data-v-2a3dd68d="" id="scale-switcher-select" class="font-arial form-control input-sm pull-left">
     <option data-v-3a4d10cb="" data-v-2a3dd68d="" value="250000">
         1 : 250000
@@ -71,7 +71,7 @@ Generiertes HTML:
 ```
 
 Vuetify Code:
-```
+```html
 <script>
 
 computed: {
@@ -106,7 +106,7 @@ methods: {
 </template>
 ```
 Generiertes HTML:
-```
+```html
 <div role="listbox" tabindex="-1" class="v-list v-select-list v-sheet theme--light theme--light" data-v-3a4d10cb="true" id="list-50">
     <div tabindex="0" aria-selected="false" id="list-item-61-0" role="option" class="v-list-item v-list-item--link theme--light">
         1:250000
@@ -128,7 +128,7 @@ Als zweite Komponente hab ich mir die Forms in dem **Contact** Tool angeguckt. H
 Der Template Code schrumpft um einiges zusammen, wird lesbarer und beinhaltet mehr Funktionen.
 
 Vue Code:
-```
+```html
 <template>
     <div
         :class="[
@@ -185,7 +185,7 @@ Vue Code:
 
 Vuetify Code:
 
-```
+```html
 <template>
     <component
         :is="htmlElement"
