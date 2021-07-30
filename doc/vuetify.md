@@ -211,4 +211,4 @@ Vuetify Code:
 
 ## Cards
 
-Die Tool-Fenster könnten sich eventuell als Cards darstellen lassen. Hierdurch lassen sich meiner Meinung nach nicht große Vorteile erzielen, da das ToolWindow viel eigene Funktionen, wie die Handles, mitbringt. Es gibt leider keine Card-Header-, Card-Body-, oder Card-Footer-Tags.
+Die Tool-Fenster könnten sich eventuell als Cards darstellen lassen. Allerdings ist Gestaltung von Cards sehr offen gehalten. Es gibt leider keine Card-Header-, Card-Body-, oder Card-Footer-Tags. Testweise habe ich die Tool Komponente mit einer Card und anderen Vuetify-Komponenten umgebaut.
