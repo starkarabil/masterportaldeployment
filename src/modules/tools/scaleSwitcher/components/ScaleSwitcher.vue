@@ -81,20 +81,14 @@ export default {
                 v-if="active"
                 id="scale-switcher"
             >
-                <label
-                    for="scale-switcher-select"
-                    class="col-md-5 col-sm-5 control-label"
-                >{{ $t("modules.tools.scaleSwitcher.label") }}</label>
-                <div class="col-md-7 col-sm-7">
-                    <v-select
-                        id="scale-switcher-select"
-                        v-model="scale"
-                        label="Maßstab"
-                        :items="formattedScales"
-                        return-object
-                        @change="setResolutionWrapper($event)"
-                    />
-                </div>
+                <v-select
+                    id="scale-switcher-select"
+                    v-model="scale"
+                    label="Maßstab"
+                    :items="formattedScales"
+                    return-object
+                    @change="setResolutionWrapper($event)"
+                />
             </div>
         </template>
     </Tool>
