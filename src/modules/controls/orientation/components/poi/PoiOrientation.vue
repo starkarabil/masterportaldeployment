@@ -371,12 +371,10 @@ export default {
                 </div>
             </div>
         </div>
-        <!-- eslint-disable -->
         <div
             class="modal-backdrop fade in"
             @click="hidePoi"
         />
-        <!-- eslint-enable -->
     </div>
 </template>
 

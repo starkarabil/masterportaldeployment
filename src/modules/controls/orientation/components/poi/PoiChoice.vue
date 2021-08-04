@@ -72,7 +72,6 @@ export default {
 <template>
     <div
         class="modal fade in poi-choice"
-        @keydown.esc="hidePoiChoice"
     >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -122,7 +121,6 @@ export default {
                 </div>
             </div>
         </div>
-        <!-- eslint-disable -->
         <div
             class="modal-backdrop fade in"
             @click="hidePoiChoice"
