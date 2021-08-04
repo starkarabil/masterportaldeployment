@@ -65,6 +65,14 @@ export default {
                 "--initialToolWidth": this.getWidth(this.initialWidth),
                 "--initialToolWidthMobile": this.getWidth(this.initialWidthMobile)
             };
+        },
+        systemBarButtons () {
+            return [
+                this.isMinified
+                    ? {click: this.maximizeTool, systemIcon: "mdi-window-maximize"}
+                    : {click: this.minifyTool, systemIcon: "mdi-window-minimize"},
+                {click: this.close, systemIcon: "mdi-close"}
+            ];
         }
     },
     watch: {
@@ -169,22 +177,14 @@ export default {
             <div>&#8942;</div>
         </BasicResizeHandle>
 
-        <div class="win-heading">
-            <div class="heading-element">
-                <v-icon>
-                    {{ icon }}
-                </v-icon>
-            </div>
-
-            <div
-                v-if="!renderToWindow"
-                class="heading-element flex-grow"
-            >
-                <v-card-title>
-                    {{ title }}
-                </v-card-title>
-            </div>
-
+        <v-system-bar
+            class="flex"
+            color="primary"
+            dark
+        >
+            <v-icon class="topical-icon">
+                {{ icon }}
+            </v-icon>
             <BasicDragHandle
                 v-if="renderToWindow"
                 target-sel=".tool-window-vue"
@@ -195,57 +195,18 @@ export default {
                     {{ title }}
                 </v-card-title>
             </BasicDragHandle>
-
-            <div
-                v-if="renderToWindow"
-                class="heading-element"
+            <v-btn
+                v-for="({click, systemIcon}, index) of systemBarButtons"
+                :key="index"
+                x-small
+                icon
+                @click="click"
             >
-                <v-btn
-                    v-if="!isMinified"
-                    fab
-                    x-small
-                    dark
-                    color="primary"
-                    @click="minifyTool"
-                >
-                    <v-icon
-                        dark
-                    >
-                        mdi-window-minimize
-                    </v-icon>
-                </v-btn>
-                <v-btn
-                    v-else
-                    fab
-                    x-small
-                    dark
-                    color="primary"
-                    @click="maximizeTool"
-                >
-                    <v-icon
-                        dark
-                    >
-                        mdi-window-maximize
-                    </v-icon>
-                </v-btn>
-            </div>
-            <div class="heading-element">
-                <v-btn
-                    fab
-                    x-small
-                    dark
-                    color="primary"
-                    @click="close($event)"
-                >
-                    <v-icon
-                        dark
-                    >
-                        mdi-close
-                    </v-icon>
-                </v-btn>
-            </div>
-        </div>
-        <v-divider />
+                <v-icon>
+                    {{ systemIcon }}
+                </v-icon>
+            </v-btn>
+        </v-system-bar>
 
         <div
             id="vue-tool-content-body"
@@ -277,28 +238,19 @@ export default {
     @background_color_3: #f2f2f2;
     @background_color_4: #646262;
 
-    #vue-tool-content-body { display:block; }
-
-    .win-heading{
-        font-family: @font_family_1;
-        display:flex;
-        flex-direction:row;
-        width:100%;
-        padding-left: 10px;
-        align-items: center;
-
-        .heading-element {
-            white-space: nowrap;
-            color: @secondary_contrast;
-            font-size: 14px;
-            margin: 2px;
-
-            &.flex-grow {
-                flex-grow:99;
-                overflow: hidden;
-            }
-        }
+    .topical-icon {
+        font-size: 2rem;
     }
+
+    .flex-grow {
+        flex-grow: 1;
+    }
+
+    .v-system-bar .v-icon {
+        margin-right: 0px;
+    }
+
+    #vue-tool-content-body { display:block; }
 
     .tool-window-vue {
         background-color: @background_color_1;
@@ -339,11 +291,6 @@ export default {
             height:auto !important;
 
             #vue-tool-content-body { display:none; }
-            .win-heading{
-                background-color:@background_color_2;
-                border-bottom:none;
-                overflow: hidden;
-            }
         }
     }
 
@@ -360,19 +307,6 @@ export default {
         font-family: @font_family_2;
         border-radius: 12px;
         margin-bottom: 30px;
-        .win-heading {
-            font-family: @font_family_2;
-            font-size: 14px;
-            background-color: @background_color_4;
-            .heading-element {
-                > .title {
-                    color: @color_2;
-                    font-size: 14px;
-                }
-                > .buttons { color: @color_2; }
-                > .glyphicon { color: @color_2; }
-            }
-        }
         .win-body-vue {
             border-bottom-left-radius: 12px;
             border-bottom-right-radius: 12px;

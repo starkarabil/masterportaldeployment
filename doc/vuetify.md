@@ -1,6 +1,6 @@
 # Vuetify im Masterportal
 
-Erfahrung mit der Installation und ersten Nutzung von Vuetify im Masterportal.   
+Erfahrung mit der Installation und ersten Nutzung von Vuetify im Masterportal.
 Kurze Übersicht:
 
 **Vorteile**:
@@ -28,14 +28,14 @@ Vuetify ließ sich einfach anhand der [Installationsanweisung](https://vuetifyjs
 
 ## Scale Switcher
 
-Eins der meist genutzen "Input"-Elemente im Masterportal ist das Select-Tag. Vuetify bringt sein eigenes Select-Tag [v-select](https://vuetifyjs.com/en/components/selects/) mit, welches ich versuchsweise im **ScaleSwitcher** implementiert habe.  
-Dies erzeugt automatisch eigene Ids, ein ``aria-selected`` und eine ``role`` Attribut.   
+Eins der meist genutzen "Input"-Elemente im Masterportal ist das Select-Tag. Vuetify bringt sein eigenes Select-Tag [v-select](https://vuetifyjs.com/en/components/selects/) mit, welches ich versuchsweise im **ScaleSwitcher** implementiert habe.
+Dies erzeugt automatisch eigene Ids, ein ``aria-selected`` und eine ``role`` Attribut.
 
-Im eigentlichen HTML wird jedoch kein ``select`` oder ``option`` Tag verwendet sondern nur divs. Somit entfallen auch teilweise Html-Attribute, wie zum Beispiel der Index der momentan ausgewählten Option, welche über neue Helferfunktion in Vue wiederhergestellt werden müssen.  
+Im eigentlichen HTML wird jedoch kein ``select`` oder ``option`` Tag verwendet sondern nur divs. Somit entfallen auch teilweise Html-Attribute, wie zum Beispiel der Index der momentan ausgewählten Option, welche über neue Helferfunktion in Vue wiederhergestellt werden müssen.
 
 Des Weiteren lässt sich die Textdarstellung nicht ohne weiteres bearbeiten. Hierzu müssen die darzustellenden Objekte ein Attribut ``text`` besitzten, in dem der Darstellungsstring enthalten ist (siehe Bsp).
 
-Bsp.: 
+Bsp.:
 
 Vue Code:
 ```html
@@ -211,4 +211,6 @@ Vuetify Code:
 
 ## Cards
 
-Die Tool-Fenster könnten sich eventuell als Cards darstellen lassen. Allerdings ist Gestaltung von Cards sehr offen gehalten. Es gibt leider keine Card-Header-, Card-Body-, oder Card-Footer-Tags. Testweise habe ich die Tool Komponente mit einer Card und anderen Vuetify-Komponenten umgebaut.
+Die Tool-Fenster könnten sich als Cards darstellen lassen. Allerdings ist Gestaltung von Cards sehr offen gehalten. Es gibt keine Card-Header-, Card-Body-, oder Card-Footer-Tags. Testweise habe ich die Tool Komponente mit einer Card und anderen Vuetify-Komponenten umgebaut.
+
+![Vuetify Contact](contact.png)
