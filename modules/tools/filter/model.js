@@ -3,6 +3,7 @@ import GeoJsonQueryModel from "./query/source/geojson";
 import Tool from "../../core/modelList/tool/model";
 import "./RadioBridge.js";
 import store from "../../../src/app-store";
+import moment from "moment";
 
 const FilterModel = Tool.extend({
     defaults: Object.assign({}, Tool.prototype.defaults, {
@@ -24,6 +25,7 @@ const FilterModel = Tool.extend({
         saveToUrl: true
     }),
     initialize: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "initialize");
         const channel = Radio.channel("Filter");
 
         this.superInitialize();
@@ -37,9 +39,11 @@ const FilterModel = Tool.extend({
 
         channel.reply({
             "getIsInitialLoad": function () {
+                console.log(moment().format("mm:ss.SSS"), "filter", "channel reply called", "getIsInitialLoad");
                 return this.get("isInitialLoad");
             },
             "getFilterName": function (layerId) {
+                console.log(moment().format("mm:ss.SSS"), "filter", "channel reply called", "getFilterName");
                 const predefinedQuery = this.get("predefinedQueries").filter(function (query) {
                     return query.layerId === layerId;
                 });
@@ -52,10 +56,15 @@ const FilterModel = Tool.extend({
         this.set("queryCollection", new Backbone.Collection());
         this.listenTo(this.get("queryCollection"), {
             "deactivateAllModels": function (model) {
+                console.log(moment().format("mm:ss.SSS"), "filter", "listenTo triggered", "deactivateAllModels");
                 this.deactivateOtherModels(model);
             },
-            "deselectAllModels": this.deselectAllModels,
+            "deselectAllModels": function () {
+                console.log(moment().format("mm:ss.SSS"), "filter", "listenTo triggered", "deselectAllModels");
+                this.deselectAllModels();
+            },
             "featureIdsChanged": function (featureIds, layerId) {
+                console.log(moment().format("mm:ss.SSS"), "filter", "listenTo triggered", "featureIdsChanged");
                 this.updateMap();
                 if (!this.get("queryCollection").models[0].get("isAutoRefreshing")) {
                     this.updateGFI(featureIds, layerId);
@@ -63,12 +72,14 @@ const FilterModel = Tool.extend({
                 this.updateFilterObject();
             },
             "closeFilter": function () {
+                console.log(moment().format("mm:ss.SSS"), "filter", "listenTo triggered", "closeFilter");
                 this.setIsActive(false);
             }
         }, this);
 
         this.listenTo(Radio.channel("VectorLayer"), {
             "featuresLoaded": function (layerId) {
+                console.log(moment().format("mm:ss.SSS"), "filter", "listenTo triggered", "featuresLoaded", layerId);
                 const predefinedQueries = this.get("predefinedQueries"),
                     queryCollection = this.get("queryCollection");
                 let filterModels;
@@ -98,6 +109,7 @@ const FilterModel = Tool.extend({
         });
     },
     resetFilter: function (feature) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "resetFilter");
         if (feature && feature.getStyleFunction() === null) {
             this.deselectAllModels();
             this.deactivateAllModels();
@@ -106,6 +118,7 @@ const FilterModel = Tool.extend({
         }
     },
     activateDefaultQuery: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "activateDefaultQuery");
         const defaultQuery = this.get("queryCollection").findWhere({isDefault: true});
 
         if (defaultQuery !== undefined) {
@@ -115,22 +128,26 @@ const FilterModel = Tool.extend({
         defaultQuery.runFilter();
     },
     resetAllQueries: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "resetAllQueries");
         this.get("queryCollection").models.forEach(model => {
             model.deselectAllValueModels();
         });
     },
     deselectAllModels: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "deselectAllModels");
         this.get("queryCollection").models.forEach(model => {
             model.setIsSelected(false);
         });
     },
     deactivateAllModels: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "deactivateAllModels");
         this.get("queryCollection").models.forEach(model => {
             model.setIsActive(false);
         });
     },
 
     deactivateOtherModels: function (selectedModel) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "deactivateOtherModels");
         if (!this.get("allowMultipleQueriesPerLayer")) {
             this.get("queryCollection").models.forEach(model => {
                 if (model !== undefined &&
@@ -147,14 +164,17 @@ const FilterModel = Tool.extend({
      * @return {void}
      */
     updateMap: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "updateMap");
         let allFeatureIds;
 
         if (this.get("queryCollection").pluck("isSelected").includes(true)) {
             allFeatureIds = this.groupFeatureIdsByLayer(this.get("queryCollection"));
 
+            console.log("before Radio", allFeatureIds);
             allFeatureIds.forEach(layerFeatures => {
                 Radio.trigger("ModelList", "showFeaturesById", layerFeatures.layer, layerFeatures.ids);
             });
+            console.log("after Radio");
         }
         else {
             Object.entries(this.get("queryCollection").groupBy("layerId")).forEach((group) => {
@@ -164,6 +184,7 @@ const FilterModel = Tool.extend({
     },
 
     updateGFI: function (featureIds, layerId) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "updateGFI", layerId);
         const getVisibleTheme = Radio.request("GFI", "getVisibleTheme");
         let featureId;
 
@@ -181,6 +202,7 @@ const FilterModel = Tool.extend({
      * @return {void}
      */
     updateFilterObject: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "updateFilterObject");
         const filterObjects = [];
         let snippetValuesWithoutType;
 
@@ -210,6 +232,7 @@ const FilterModel = Tool.extend({
      * @return {Object} Map object mapping layers to featuresids
      */
     groupFeatureIdsByLayer: function (queries) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "groupFeatureIdsByLayer");
         const allFeatureIds = [];
         let featureIds;
 
@@ -242,8 +265,10 @@ const FilterModel = Tool.extend({
      * @return {String[]} unique list of all feature ids
      */
     collectFilteredIds: function (queryGroup = []) {
-        const featureIdList = [];
+        console.log(moment().format("mm:ss.SSS"), "filter", "collectFilteredIds");
+        let featureIdList = [];
 
+        console.log("length of queryGroup", queryGroup.length);
         queryGroup.forEach(query => {
             if (query.get("isActive") === true) {
                 query.get("featureIds").forEach(featureId => {
@@ -251,8 +276,10 @@ const FilterModel = Tool.extend({
                 });
             }
         });
-
-        return [...new Set(featureIdList)];
+        console.log(moment().format("mm:ss.SSS"), "filter...", "featureIdList.length", featureIdList.length);
+        const a = [...new Set(featureIdList)];
+        console.log("return");
+        return a;
     },
 
     /**
@@ -261,6 +288,7 @@ const FilterModel = Tool.extend({
      * @returns {void}
      */
     createQueries: function (queries) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "createQueries");
         const queryObjects = Radio.request("ParametricURL", "getFilter");
         let queryObject,
             oneQuery;
@@ -285,6 +313,7 @@ const FilterModel = Tool.extend({
      * @returns {void}
      */
     createQuery: function (model, layer) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "createQuery");
         let query;
 
         if (typeof layer !== "undefined" && layer.has("layer") && layer.get("layerSource")) {
@@ -316,6 +345,7 @@ const FilterModel = Tool.extend({
     },
 
     getQueryByTyp: function (layerTyp, model) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "getQueryByTyp");
         let query = null;
 
         if (layerTyp === "WFS" || layerTyp === "GROUP") {
@@ -327,13 +357,16 @@ const FilterModel = Tool.extend({
         return query;
     },
     setIsActive: function (value) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "setIsActive");
         this.set("isActive", value);
     },
     closeGFI: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "closeGFI");
         Radio.trigger("GFI", "setIsVisible", false);
         store.dispatch("MapMarker/removePointMarker");
     },
     collapseOpenSnippet: function () {
+        console.log(moment().format("mm:ss.SSS"), "filter", "collapseOpenSnippet");
         const selectedQuery = this.get("queryCollection").findWhere({isSelected: true});
         let snippetCollection,
             openSnippet;
@@ -349,6 +382,7 @@ const FilterModel = Tool.extend({
     },
 
     isModelInQueryCollection: function (layerId, queryCollection) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "isModelInQueryCollection");
         const searchQuery = queryCollection.findWhere({layerId: layerId.toString()});
 
         return searchQuery !== undefined;
@@ -361,6 +395,7 @@ const FilterModel = Tool.extend({
      * @returns {Object} queryCollectionModel with default values
      */
     regulateInitialActivating: function (queryCollectionModel, predefinedQueriesModels) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "regulateInitialActivating");
         const predefinedQueriesModel = predefinedQueriesModels.find(function (element) {
             return element.layerId === queryCollectionModel.attributes.layerId && element.name === queryCollectionModel.attributes.name;
         });
@@ -377,6 +412,7 @@ const FilterModel = Tool.extend({
      * @returns {void}
      */
     activateLayer: function (queryCollectionModels) {
+        console.log(moment().format("mm:ss.SSS"), "filter", "activateLayer");
         if (queryCollectionModels.length) {
             queryCollectionModels[0].attributes.isActive = true;
             queryCollectionModels[0].attributes.isSelected = true;

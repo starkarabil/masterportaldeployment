@@ -3,6 +3,7 @@ import SnippetSliderModel from "../../../snippets/slider/model";
 import SnippetCheckboxModel from "../../../snippets/checkbox/model";
 import SnippetMultiCheckboxModel from "../../../snippets/multiCheckbox/model";
 import {getDisplayNamesOfFeatureAttributes} from "masterportalAPI/src/rawLayerList";
+import moment from "moment";
 
 const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
 
@@ -42,10 +43,12 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @returns {void}
      */
     superInitialize: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "superInitialize");
         this.setSnippetCollection(new Backbone.Collection());
         this.addIsActiveCheckbox();
         this.listenTo(this.get("snippetCollection"), {
             "valuesChanged": function () {
+                console.log(moment().format("mm:ss.SSS"), "QueryModel", "listenTo triggered", "valuesChanged");
                 this.setIsActive(true);
                 this.get("btnIsActive").setIsSelected(true);
                 this.runFilter();
@@ -57,6 +60,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
         this.checkLayerVisibility();
         this.listenTo(Radio.channel("Layer"), {
             "layerVisibleChanged": function (layerId, visible) {
+                console.log(moment().format("mm:ss.SSS"), "QueryModel", "listenTo triggered", "layerVisibleChanged");
                 const layer = Radio.request("ModelList", "getModelByAttributes", {id: layerId});
 
                 if (
@@ -102,12 +106,14 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @returns {void}
      */
     liveZoom: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "liveZoom");
         const minResolution = Radio.request("MapView", "getResoByScale", this.get("minScale"));
 
         Radio.trigger("Map", "zoomToFilteredFeatures", this.get("featureIds"), this.get("layerId"), {minResolution});
     },
 
     isSearchInMapExtentActive: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "isSearchInMapExtentActive");
         const model = this.get("snippetCollection").findWhere({type: "searchInMapExtent"});
 
         if (model !== undefined && model.getIsSelected() === true) {
@@ -116,6 +122,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
     },
 
     checkLayerVisibility: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "checkLayerVisibility");
         const model = Radio.request("ModelList", "getModelByAttributes", {id: this.get("layerId")});
 
         if (model !== undefined) {
@@ -124,6 +131,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
     },
 
     addIsActiveCheckbox: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "addIsActiveCheckbox");
         if (!this.get("activateOnSelection")) {
             this.setBtnIsActive(new SnippetCheckboxModel({
                 isSelected: this.get("isActive")
@@ -147,12 +155,14 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {void}
      */
     addSnippets: function (featureAttributesMap) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "addSnippets");
         featureAttributesMap.forEach(featureAttribute => {
             this.addSnippet(featureAttribute);
         });
     },
 
     addSnippet: function (featureAttribute) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "addSnippet");
         let snippetAttribute = featureAttribute,
             isSelected = false;
 
@@ -185,6 +195,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {void}
      */
     addSearchInMapExtentSnippet: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "addSearchInMapExtentSnippet");
         this.get("snippetCollection").add(new SnippetCheckboxModel({
             type: "searchInMapExtent",
             isSelected: false,
@@ -198,6 +209,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {void}
      */
     createSnippets: function (featureAttributes) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "createSnippets");
         let featureAttributesMap = this.trimAttributes(featureAttributes);
 
         featureAttributesMap = this.mapDisplayNames(featureAttributesMap);
@@ -221,6 +233,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {object} featureAttributesMap - gefiltertes Mapobject
      */
     trimAttributes: function (featureAttributesMap) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "trimAttributes");
         const trimmedFeatureAttributesMap = [],
             whiteList = this.get("attributeWhiteList"),
             whiteListAttributes = Array.isArray(whiteList) ? whiteList : Object.keys(whiteList);
@@ -240,6 +253,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
     },
 
     createAttrObject: function (attr) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "createAttrObject");
         let attrObj = {};
 
         if (typeof attr === "string") {
@@ -257,6 +271,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {object} featureAttributesMap - gefiltertes Mapobject
      */
     mapDisplayNames: function (featureAttributesMap) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "mapDisplayNames");
         const attributeNames = getDisplayNamesOfFeatureAttributes(this.get("layerId")),
             whiteList = this.get("attributeWhiteList"),
             displayNames = Array.isArray(whiteList) ? attributeNames : whiteList;
@@ -280,6 +295,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {object} featureAttributesMap
      */
     mapRules: function (featureAttributesMap = [], rules = []) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "mapRules");
         let attrMap;
 
         rules.forEach(rule => {
@@ -299,6 +315,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
      * @return {void}
      */
     deselectAllValueModels: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "deselectAllValueModels");
         const snippetCollection = this.get("snippetCollection");
 
         snippetCollection.forEach(snippet => {
@@ -307,6 +324,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
     },
 
     setFeatureAttributesMap: function (value) {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "setFeatureAttributesMap");
         this.set("featureAttributesMap", value);
     },
 
@@ -315,6 +333,7 @@ const QueryModel = Backbone.Model.extend(/** @lends QueryModel.prototype */{
         this.set("isDefault", value);
     },
     selectThis: function () {
+        console.log(moment().format("mm:ss.SSS"), "QueryModel", "selectThis");
         if (!this.get("isSelected")) {
             // the query collection listens to this trigger in the filter model
             this.collection.trigger("deselectAllModels", this);
