@@ -12,6 +12,9 @@ Kurze Übersicht:
     - Validation einfacher
     - Einfügen von Hinweisen, Icons, etc... einfacher
     - Status "success", "error" verfügbar
+- [Theming](https://vuetifyjs.com/en/features/theme/)
+  - Unterstützt von sich aus Light/Dark Mode
+  - Es gibt eine zentrale Stelle zum Überschreiben des Themes - man könnte es so IP-Partnern ermöglichen ihr Masterportal farblich umzugestalten, wenn man die Vuetify-Farben konsequent nutzt
 
 **Nachteile**:
 - Noch kein weg gefunden vuetify zu testen (muss in einer globalen Setup-Datei initiallisiert werden)
