@@ -1,4 +1,10 @@
 {
+    "general": {
+        "opened": "Geöffnet",
+        "cancelled": "Abgebrochen",
+        "error": "Fehler",
+        "success": "Erfolgreich"
+    },
     "masterPortalVersion": "Masterportal V. {{masterPortalVersionNumber}}",
     "button": {
         "back": "Zurück",
@@ -6,7 +12,13 @@
         "search": "Suchen",
         "close": "Schließen",
         "minimize": "Minimieren",
-        "confirm": "Bestätigen"
+        "confirm": "Bestätigen",
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "save": "Speichern",
+        "cancel": "Abbrechen",
+        "open": "Öffnen",
+        "load": "Laden"
     },
     "colors": {
         "blue": "Blau",
