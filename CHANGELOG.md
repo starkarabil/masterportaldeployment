@@ -8,6 +8,38 @@
 
 ---
 
+## Unreleased - in development
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Draw tool: fixed an issue (Bitbucket: #638) with resaving draw files
+- Downgrade the follow npm packages to fix the compass in 3D mode:
+ - css-loader from 4.3.0 to 1.0.0
+ - file-loader from 6.2.0 to 2.0.0
+
+---
+##  v2.13.1 - 2021-09-03
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Downgrade the follow npm packages to fix the compass in 3D mode:
+ - css-loader from 4.3.0 to 1.0.0
+ - file-loader from 6.2.0 to 2.0.0
+
+---
+
 ##  v2.13.0 - 2021-09-01
 ### Added
 - Autocomplete functionality for the contact tool.
