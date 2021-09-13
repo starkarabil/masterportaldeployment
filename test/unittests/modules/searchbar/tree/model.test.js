@@ -5,7 +5,8 @@ describe("modules/searchbar/tree", function () {
     const config = {
         "searchBar": {
             "tree": {
-                "minChars": 3
+                "minChars": 3,
+                "searchTheme": true
             },
             "zoomLevel": 9,
             "placeholder": "Suche nach Adresse/Krankenhaus/B-Plan"

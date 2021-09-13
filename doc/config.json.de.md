@@ -492,12 +492,14 @@ Alle Layer, die im Themenbaum des Portals sind, werden durchsucht.
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
 |minChars|nein|Integer|3|Minimale Anzahl an Buchstaben, ab der die Suche losläuft.|false|
+|searchTheme|nein|Boolean|true|Aktivieren oder deaktivieren Layer aus Thema|false|
 
 **Beispiel**
 ```
 #!json
 "tree": {
-    "minChars": 5
+    "minChars": 5,
+    "searchTheme": true   
 }
 ```
 

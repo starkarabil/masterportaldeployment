@@ -5,7 +5,8 @@ const TreeModel = Backbone.Model.extend(/** @lends TreeModel.prototype */{
         inUse: false,
         minChars: 3,
         layers: [],
-        nodes: []
+        nodes: [],
+        searchTheme: true
     },
     /**
      * @class TreeModel
@@ -27,6 +28,13 @@ const TreeModel = Backbone.Model.extend(/** @lends TreeModel.prototype */{
     initialize: function (config) {
         if (config.minChars) {
             this.set("minChars", config.minChars);
+        }
+        if (Object.prototype.hasOwnProperty.call(config, "searchTheme") && typeof config.searchTheme === "boolean") {
+            this.set("searchTheme", config.searchTheme);
+        }
+
+        if (!this.get("searchTheme")) {
+            return;
         }
 
         this.listenTo(Radio.channel("Searchbar"), {

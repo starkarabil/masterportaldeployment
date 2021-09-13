@@ -511,13 +511,15 @@ Searching all topic selection tree layers.
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |minChars|no|Integer|3|Minimum amount of characters required to start a search.|false|
+|searchTheme|no|Boolean|true|ativate oder deactivate the layers from theme|false|
 
 **Example**
 
 ```json
 {
     "tree": {
-        "minChars": 5
+        "minChars": 5,
+        "searchTheme": true   
     }
 }
 ```
