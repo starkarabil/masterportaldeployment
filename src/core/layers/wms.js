@@ -36,7 +36,7 @@ export default function WMSLayer (attrs) {
             this.set("tileloaderror", true);
             source.on("tileloaderror", function () {
                 if (!navigator.cookieEnabled) {
-                    Radio.trigger("Alert", "alert", {text: "<strong>Bitte erlauben sie Cookies, damit diese Hintergrundkarte geladen werden kann.</strong>", kategorie: "alert-warning"});
+                    store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.core.modelList.wms.allowCookies"));
                 }
             });
         }
