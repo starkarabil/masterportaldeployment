@@ -49,6 +49,10 @@ module.exports = {
             {
                 test: /\.(le|c|sa)ss$/,
                 use: "null-loader"
+            },
+            {
+                test: /\.worker\.js$/,
+                use: {loader: "worker-loader"}
             }
         ]
     },

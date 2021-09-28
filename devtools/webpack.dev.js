@@ -62,6 +62,10 @@ module.exports = function () {
                         name: "[name].[ext]",
                         publicPath: "../../css/fonts"
                     }
+                },
+                {
+                    test: /\.worker\.js$/,
+                    use: {loader: "worker-loader"}
                 }
             ]
         }
