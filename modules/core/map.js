@@ -441,10 +441,12 @@ const map = Backbone.Model.extend(/** @lends map.prototype */{
 
         // if the layer is already at the correct position, do nothing
         if (layersCollection.item(index) === layer) {
+            console.log("NOT   ---   addLayerToIndex layer:", layer.get("name"), "  index:", index);
             return;
         }
         layersCollection.remove(layer);
         layersCollection.insertAt(index, layer);
+        console.log("addLayerToIndex layer:", layer.get("name"), "  index:", index);
         this.setImportDrawMeasureLayersOnTop(layersCollection);
 
         // Laden des Layers überwachen

@@ -70,6 +70,13 @@ const LayerView = LayerBaseView.extend(/** @lends LayerView.prototype */{
      * @constructs
      */
     initialize: function () {
+        const channel = Radio.channel("MenuSelection");
+
+        channel.on({
+            "rerender": this.rerender,
+            "renderSetting": this.renderSetting,
+            "change:isOutOfRange": this.toggleColor
+        }, this);
         checkChildrenDatasets(this.model);
         this.initializeDomId();
         this.listenTo(this.model, {

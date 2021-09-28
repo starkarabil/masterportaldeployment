@@ -80,6 +80,13 @@ const LayerView = LayerBaseView.extend(/** @lends LayerView.prototype */{
      * @fires Alerting#RadioTriggerAlertAlert
      */
     initialize: function () {
+        const channel = Radio.channel("Menu");
+
+        channel.on({
+            "renderSetting": this.renderSetting,
+            "rerender": this.rerender,
+            "change:isOutOfRange": this.toggleColor
+        }, this);
         checkChildrenDatasets(this.model);
         this.initializeDomId();
         this.listenTo(this.model, {

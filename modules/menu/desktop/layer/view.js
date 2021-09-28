@@ -41,6 +41,14 @@ const LayerView = LayerBaseView.extend(/** @lends LayerView.prototype */{
      * @fires Alerting#RadioTriggerAlertAlert
      */
     initialize: function () {
+        const channel = Radio.channel("Menu");
+
+        channel.on({
+            "rerender": this.rerender,
+            "change:isOutOfRange": this.toggleColor,
+            "change:isVisibleInTree": this.removeIfNotVisible
+        }, this);
+
         checkChildrenDatasets(this.model);
         this.initializeDomId();
         this.listenTo(this.model, {

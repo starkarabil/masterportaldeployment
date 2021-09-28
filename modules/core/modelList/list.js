@@ -1,4 +1,3 @@
-import WMSLayer from "./layer/wms";
 import WmsTimeLayer from "./layer/wmsTime";
 import WMTSLayer from "./layer/wmts";
 import WFSLayer from "./layer/wfs";
@@ -19,6 +18,7 @@ import StaticLink from "./staticlink/model";
 import Filter from "../../tools/filter/model";
 import Print from "../../tools/print/mapfish3PlotService";
 import HighResolutionPrint from "../../tools/print/highResolutionPlotService";
+import WMSLayer from "../../../src/core/layers/wms";
 
 /**
  * WfsFeatureFilter
@@ -120,7 +120,13 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
             "toggleDefaultTool": this.toggleDefaultTool,
             "refreshLightTree": this.refreshLightTree,
             "addAlwaysActiveTool": this.addAlwaysActiveTool,
-            "setActiveToolsToFalse": this.setActiveToolsToFalse
+            "setActiveToolsToFalse": this.setActiveToolsToFalse,
+            "updateLayerView": this.updateLayerView,
+            "removeLayerById": this.removeLayerById,
+            "moveModelInTree": this.moveModelInTree,
+            "updateSelection": function (model) {
+                this.trigger("updateSelection", model);
+            }
         }, this);
 
         this.listenTo(this, {
@@ -147,6 +153,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
                     }
 
                     model.setIsVisibleInMap(value);
+                    console.log("list.js change:isSelected will do updateLayerView");
                     this.updateLayerView();
                 }
                 this.trigger("updateSelection");
@@ -180,7 +187,11 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
                 if (attrs.time) {
                     return new WmsTimeLayer(attrs, options);
                 }
-                return new WMSLayer(attrs, options);
+                // return new WMSLayer(attrs, options);
+                const layer = new WMSLayer(attrs);
+
+                console.log(attrs.name, "  new wms-layer:", layer);
+                return layer;
             }
             else if (attrs.typ === "WMTS") {
                 return new WMTSLayer(attrs, options);
@@ -686,10 +697,18 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
      * @return {array} Sorted selected Layers
      */
     updateLayerView: function () {
+        console.log("updateLayerView");
         const sortedLayers = this.getSortedTreeLayers();
 
         sortedLayers.forEach(layer => {
             Radio.trigger("Map", "addLayerToIndex", [layer.get("layer"), layer.get("selectionIDX")]);
+        });
+
+        let c = 0;
+
+        Radio.request("Map", "getMap").getLayers().forEach(lay => {
+            console.log(c, " - ", lay.get("name"));
+            c++;
         });
 
         return sortedLayers;
@@ -740,7 +759,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
                 else {
                     this.add(model);
                 }
-            });
+            }, this);
         }
         else if (paramLayers.length > 0) {
             itemIsVisibleInMap = Radio.request("Parser", "getItemsByAttributes", {isVisibleInMap: true});

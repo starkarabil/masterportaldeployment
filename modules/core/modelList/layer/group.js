@@ -1,12 +1,12 @@
 import {Group as LayerGroup} from "ol/layer.js";
 import Layer from "./model";
-import WMSLayer from "./wms";
 import WMTSLayer from "./wmts";
 import WFSLayer from "./wfs";
 import GeoJSONLayer from "./geojson";
 import SensorLayer from "./sensor";
 import HeatmapLayer from "./heatmap";
 import store from "../../../../src/app-store";
+import WMSLayer from "../../../../src/core/layers/wms";
 
 const GroupLayer = Layer.extend(/** @lends GroupLayer.prototype */{
     defaults: Object.assign({}, Layer.prototype.defaults, {
@@ -47,7 +47,10 @@ const GroupLayer = Layer.extend(/** @lends GroupLayer.prototype */{
 
         this.get("children").forEach(childLayerDefinition => {
             if (childLayerDefinition.typ === "WMS") {
-                layerSource.push(new WMSLayer(childLayerDefinition));
+                const layer = new WMSLayer(childLayerDefinition);
+
+                console.log("new group wms-layer:", layer);
+                layerSource.push(layer);
             }
             else if (childLayerDefinition.typ === "WMTS") {
                 layerSource.push(new WMTSLayer(childLayerDefinition));
@@ -79,7 +82,7 @@ const GroupLayer = Layer.extend(/** @lends GroupLayer.prototype */{
      */
     createLayer: function () {
         const layers = this.get("layerSource").map(layer => {
-                return layer.get("layer");
+                return layer.get("layer") ? layer.get("layer") : layer;
             }),
             groupLayer = new LayerGroup({
                 layers: layers,
