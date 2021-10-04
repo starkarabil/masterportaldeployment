@@ -122,7 +122,6 @@ module.exports = function () {
                 {
                     test: /\.js$/,
                     exclude: /\bcore-js\b|\.test\.js$/,
-                    // exclude: [/\bcore-js\b|\.test\.js$/, /node_modules/, /\.node_modules\./],
                     use: {
                         loader: "babel-loader"
                     }
