@@ -756,8 +756,8 @@ const Layer = Item.extend(/** @lends Layer.prototype */{
      * @returns {void}
      */
     setIsVisibleInMap: function (value) {
-        this.set("isVisibleInMap", value);
         this.setVisible(value);
+        this.set("isVisibleInMap", value);
     },
 
     /**

@@ -30,6 +30,7 @@
 -	Fixed missing highlighting in years 2010-2014 and remove of highlighting when selecting another year in addon boris.
 - The compare features window now has a scollbar, if necessary.
 - For long lists the compare-feature-window provides now a scrollbar.
+- Issue #653: the current or changed topic selection is taken into account when printing.
 
 
 
