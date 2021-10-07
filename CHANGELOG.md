@@ -31,6 +31,7 @@
 - The compare features window now has a scollbar, if necessary.
 - For long lists the compare-feature-window provides now a scrollbar.
 - Issue #653: the current or changed topic selection is taken into account when printing.
+- Issue #651: a rounding error in scale display was fixed.
 
 
 
