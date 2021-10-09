@@ -3,6 +3,7 @@ import GeoJsonQueryModel from "./query/source/geojson";
 import Tool from "../../core/modelList/tool/model";
 import "./RadioBridge.js";
 import store from "../../../src/app-store";
+import { Radio } from "backbone";
 
 const FilterModel = Tool.extend({
     defaults: Object.assign({}, Tool.prototype.defaults, {
@@ -45,6 +46,16 @@ const FilterModel = Tool.extend({
                 });
 
                 return predefinedQuery[0].name;
+            },
+            "getFilters": function () {
+                const predefinedQueries = this.get("predefinedQueries");
+
+                return predefinedQueries;
+            },
+            "getFilteredData": function () {
+                const filterCollection = this.get("queryCollection");
+
+                return filterCollection;
             }
         }, this);
 
@@ -56,6 +67,9 @@ const FilterModel = Tool.extend({
             },
             "deselectAllModels": this.deselectAllModels,
             "featureIdsChanged": function (featureIds, layerId) {
+                const allFeatureIds = this.groupFeatureIdsByLayer(this.get("queryCollection"));
+
+                channel.trigger("filteredIdsChanged", layerId, allFeatureIds);
                 this.updateMap();
                 if (!this.get("queryCollection").models[0].get("isAutoRefreshing")) {
                     this.updateGFI(featureIds, layerId);
