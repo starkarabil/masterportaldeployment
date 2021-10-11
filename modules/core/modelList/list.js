@@ -1012,6 +1012,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
     showFeaturesById: function (id, featureIds) {
         const model = this.getModelById(id);
 
+        console.log(model);
         model.showFeaturesByIds(featureIds);
     },
 

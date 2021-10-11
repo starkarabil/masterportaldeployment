@@ -62,6 +62,67 @@ const VectorBaseLayer = Layer.extend(/** @lends GeoJSONLayer.prototype */{
         this.get("layerSource").clear(true);
         this.get("layerSource").addFeatures(this.get("features"));
     },
+    /**
+     * Only shows features that match the given ids.
+     * @param {String[]} featureIdList List of feature ids.
+     * @fires Layer#RadioTriggerVectorLayerResetFeatures
+     * @returns {void}
+     */
+    showFeaturesByIds: function (featureIdList) {
+        const layerSource = this.get("layerSource"),
+            // featuresToShow is a subset of allLayerFeatures
+            allLayerFeatures = this.get("features"),
+            featuresToShow = featureIdList.map(id => layerSource.getFeatureById(id));
+
+        // this.hideAllFeatures();
+
+        // optimization - clear and re-add to prevent cluster updates on each change
+        layerSource.clear();
+
+        /* featuresToShow.forEach(feature => {
+            //const style = this.getStyleAsFunction(this.get("style"));
+            const style = this.get("layer").getStyleFunction();
+
+            feature.set("hideInClustering", false);
+            feature.setStyle(style(feature));
+            //feature.setStyle(feature.get("originalStyle") || null);
+        }, this);*/
+
+        layerSource.addFeatures(featuresToShow);
+        Radio.trigger("VectorLayer", "resetFeatures", this.get("id"), allLayerFeatures);
+    },
+    /**
+     * Hides all features by setting style= null for all features.
+     * @returns {void}
+     */
+    hideAllFeatures: function () {
+        const layerSource = this.get("layerSource"),
+            features = this.get("layerSource").getFeatures();
+
+        // optimization - clear and re-add to prevent cluster updates on each change
+        layerSource.clear();
+
+        features.forEach(function (feature) {
+            feature.set("hideInClustering", true);
+            feature.setStyle(function () {
+                return null;
+            });
+        }, this);
+
+        layerSource.addFeatures(features);
+    },
+
+    /**
+     * Shows all features by setting their style.
+     * @returns {void}
+     */
+    showAllFeatures: function () {
+        const layerSource = this.get("layerSource"),
+            allFeatures = this.get("features");
+
+        layerSource.clear();
+        layerSource.addFeatures(allFeatures);
+    },
 
     /**
      * Creates the legend
