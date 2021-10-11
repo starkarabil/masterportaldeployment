@@ -3,7 +3,6 @@ import GeoJsonQueryModel from "./query/source/geojson";
 import Tool from "../../core/modelList/tool/model";
 import "./RadioBridge.js";
 import store from "../../../src/app-store";
-import { Radio } from "backbone";
 
 const FilterModel = Tool.extend({
     defaults: Object.assign({}, Tool.prototype.defaults, {
