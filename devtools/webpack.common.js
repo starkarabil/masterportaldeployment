@@ -121,7 +121,7 @@ module.exports = function () {
                 // take all files ending with ".js" but not with ".test.js".
                 {
                     test: /\.js$/,
-                    exclude: [/\bcore-js\b|\.test\.js$/, /node_modules/, /\.node_modules\./],
+                    exclude: /\bcore-js\b|\.test\.js$/,
                     use: {
                         loader: "babel-loader"
                     }
@@ -178,6 +178,10 @@ module.exports = function () {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.worker\.js$/,
+                    use: {loader: "worker-loader"}
                 }
             ]
         },
