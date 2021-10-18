@@ -128,9 +128,9 @@ export default {
     newProjectionSelected ({dispatch, commit, state, getters}, value) {
         const targetProjection = getters.getProjectionById(value);
 
+        dispatch("formatInput", [state.coordinatesEasting, state.coordinatesNorthing]);
         dispatch("transformCoordinatesFromTo", targetProjection);
         commit("setCurrentProjection", targetProjection);
-        dispatch("formatInput", [state.coordinatesEasting, state.coordinatesNorthing]);
         dispatch("changedPosition");
         commit("setExample");
     },
@@ -148,6 +148,23 @@ export default {
             }
         }
     },
+    /**
+     * Sets the position to map's center, if coordinates are  not set.
+     * @returns {void}
+     */
+    setFirstSearchPosition ({dispatch, commit, state, rootState, getters}) {
+        if (state.mode === "search") {
+            const targetProjectionName = state.currentProjection?.name,
+                position = getters.getTransformedPosition(rootState.Map.map, targetProjectionName);
+
+            if (position && position[0] === 0 && position[1] === 0 && rootState.Map.center) {
+                commit("setCoordinatesEasting", {id: "easting", value: String(rootState.Map.center[0])});
+                commit("setCoordinatesNorthing", {id: "northing", value: String(rootState.Map.center[1])});
+                dispatch("moveToCoordinates", rootState.Map.center);
+            }
+        }
+    },
+
     /**
      * Calculates the clicked position and writes the coordinate-values into the textfields.
      * @param {Number[]} position transformed coordinates
@@ -315,7 +332,7 @@ export default {
     transformCoordinatesFromTo ({state, commit}, targetProjection) {
         let transformedCoordinates, coordinates;
 
-        if (state.selectedCoordinates.length === 2) {
+        if (state.selectedCoordinates.length === 2 && state.selectedCoordinates[0] !== "") {
             if (state.currentProjection.id.indexOf("EPSG:4326") > -1) {
                 coordinates = convertSexagesimalToDecimal(state.selectedCoordinates);
             }

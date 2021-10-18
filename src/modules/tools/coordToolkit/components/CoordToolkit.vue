@@ -94,6 +94,7 @@ export default {
         ...mapActions("Tools/CoordToolkit", [
             "checkPosition",
             "changedPosition",
+            "setFirstSearchPosition",
             "copyToClipboard",
             "positionClicked",
             "setCoordinates",
@@ -129,6 +130,10 @@ export default {
             const pr = getProjections(),
                 wgs84Proj = [];
 
+            if (this.projections.length) {
+                return;
+            }
+
             // id is set to the name and in case of decimal "-DG" is appended to name later on
             // for use in select-box
             pr.forEach(proj => {
@@ -136,6 +141,7 @@ export default {
                 if (proj.name === "EPSG:4326") {
                     wgs84Proj.push(proj);
                 }
+
                 if (proj.name.indexOf("#") > -1) { // e.g. "http://www.opengis.net/gml/srs/epsg.xml#25832"
                     const code = proj.name.substring(proj.name.indexOf("#") + 1, proj.name.length);
 
@@ -151,6 +157,7 @@ export default {
             if (wgs84Proj.length > 0) {
                 this.addWGS84Decimal(pr, wgs84Proj);
             }
+
             this.setProjections(pr);
         },
         /**
@@ -261,10 +268,11 @@ export default {
          * @returns {void}
          */
         changeMode (newMode) {
+            this.removeMarker();
             if (newMode === "search") {
                 this.setMode(newMode);
-                this.removeMarker();
                 this.setSupplyCoordInactive();
+                this.setFirstSearchPosition();
             }
             else if (this.mapMode !== MapMode.MODE_3D) {
                 this.setMode(newMode);
