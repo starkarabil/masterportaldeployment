@@ -76,30 +76,13 @@ const VectorBaseLayer = Layer.extend(/** @lends GeoJSONLayer.prototype */{
         let featuresToShow;
 
         if (featureIdList.length < allLayerFeatures.length) {
-            featuresToShow = featureIdList.map(id => layerSource.getFeatureById(id));
+            featuresToShow = featureIdList.map(id => allLayerFeatures.find(feature => feature.getId() === id));
         }
         else {
             featuresToShow = allLayerFeatures;
         }
 
-        console.log("i wonder", allLayerFeatures);
-
-        // this.hideAllFeatures();
-
-        // optimization - clear and re-add to prevent cluster updates on each change
         layerSource.clear();
-
-        /* featuresToShow.forEach(feature => {
-            //const style = this.getStyleAsFunction(this.get("style"));
-            const style = this.get("layer").getStyleFunction();
-
-            feature.set("hideInClustering", false);
-            feature.setStyle(style(feature));
-            //feature.setStyle(feature.get("originalStyle") || null);
-        }, this);*/
-
-        console.log("heyha", layerSource);
-        console.log("hoha", featuresToShow);
         layerSource.addFeatures(featuresToShow);
         Radio.trigger("VectorLayer", "resetFeatures", this.get("id"), allLayerFeatures);
     },
