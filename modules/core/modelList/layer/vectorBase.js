@@ -71,8 +71,18 @@ const VectorBaseLayer = Layer.extend(/** @lends GeoJSONLayer.prototype */{
     showFeaturesByIds: function (featureIdList) {
         const layerSource = this.get("layerSource"),
             // featuresToShow is a subset of allLayerFeatures
-            allLayerFeatures = this.get("features"),
+            allLayerFeatures = this.get("features");
+
+        let featuresToShow;
+
+        if (featureIdList.length < allLayerFeatures.length) {
             featuresToShow = featureIdList.map(id => layerSource.getFeatureById(id));
+        }
+        else {
+            featuresToShow = allLayerFeatures;
+        }
+
+        console.log("i wonder", allLayerFeatures);
 
         // this.hideAllFeatures();
 
@@ -88,6 +98,8 @@ const VectorBaseLayer = Layer.extend(/** @lends GeoJSONLayer.prototype */{
             //feature.setStyle(feature.get("originalStyle") || null);
         }, this);*/
 
+        console.log("heyha", layerSource);
+        console.log("hoha", featuresToShow);
         layerSource.addFeatures(featuresToShow);
         Radio.trigger("VectorLayer", "resetFeatures", this.get("id"), allLayerFeatures);
     },

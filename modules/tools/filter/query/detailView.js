@@ -115,6 +115,7 @@ const QueryDetailView = Backbone.View.extend(/** @lends QueryDetailView.prototyp
 
         if (this.model.get("isLayerVisible")) {
             this.model.get("snippetCollection").models.forEach(snippet => {
+                console.log(snippet);
                 if (snippet.get("snippetType") === "checkbox-classic") {
                     view = new SnippetMultiCheckboxView({model: snippet});
                 }
