@@ -70,7 +70,6 @@ const VectorBaseLayer = Layer.extend(/** @lends GeoJSONLayer.prototype */{
      */
     showFeaturesByIds: function (featureIdList) {
         const layerSource = this.get("layerSource"),
-            // featuresToShow is a subset of allLayerFeatures
             allLayerFeatures = this.get("features");
 
         let featuresToShow;
