@@ -62,7 +62,7 @@
     "i18next-http-backend": "^1.1.1",
     "imports-loader": "^0.8.0",
     "jquery": "^3.5.1",
-    "jquery-ui": "1.x",
+    "jquery-ui": "^1.13.0",
     "jsts": "^2.6.1",
     "moment": "2.x",
     "moment-timezone": "^0.5.28",
