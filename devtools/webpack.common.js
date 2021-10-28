@@ -178,6 +178,10 @@ module.exports = function () {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.worker\.js$/,
+                    use: {loader: "worker-loader"}
                 }
             ]
         },

@@ -37,7 +37,8 @@ const MouseHoverPopupModel = Backbone.Model.extend(/** @lends MouseHoverPopupMod
         if (document.getElementById("map")) {
             this.listenTo(channel, {
                 "hide": this.destroyPopup,
-                "toggle": this.toggle
+                "toggle": this.toggle,
+                "add": this.add
             });
             Radio.trigger("Map", "addOverlay", this.get("overlay"));
             this.setPoinertMoveListener(Radio.request("Map", "registerListener", "pointermove", this.checkDragging.bind(this)));
@@ -137,6 +138,26 @@ const MouseHoverPopupModel = Backbone.Model.extend(/** @lends MouseHoverPopupMod
         });
 
         this.setMouseHoverInfos(mouseHoverInfos);
+    },
+
+    /**
+    * Adds MouseHoverInfos for a vectorlayer.
+    * @param {Object} attrs - the layer's attrs
+    * @returns {Void}  -
+    */
+    add (attrs) {
+        const layer = Radio.request("ModelList", "getModelByAttributes", attrs),
+            mouseHoverInfos = {
+                id: layer.get("id"),
+                mouseHoverField: layer.get("mouseHoverField")
+            };
+
+        if (mouseHoverInfos.mouseHoverField) {
+            this.setMouseHoverInfos([
+                ...this.get("mouseHoverInfos"),
+                mouseHoverInfos
+            ]);
+        }
     },
 
     /**
