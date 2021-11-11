@@ -1,7 +1,6 @@
 <script>
 export default {
     name: "Modal",
-
     props: {
         showModal: {
             type: Boolean,
@@ -20,19 +19,16 @@ export default {
             default: ""
         }
     },
-
     data: function () {
         return {
             showing: false
         };
     },
-
     computed: {
         showingClass () {
             return this.showing ? "showing" : "";
         }
     },
-
     watch: {
         // Mapping prop to data
         showModal: function (newShowing) {
@@ -40,7 +36,6 @@ export default {
                 this.showing = newShowing;
             }
         },
-
         // Trigger modalHid to parent component
         showing: function (newShowing) {
             if (!newShowing) {
@@ -55,11 +50,9 @@ export default {
             }
         }
     },
-
     mounted () {
         document.getElementsByTagName("body")[0].appendChild(this.$el);
     },
-
     methods: {
         discardByClickX: function () {
             this.$emit("clickedOnX");
@@ -69,7 +62,6 @@ export default {
             if (this.forceClickToClose) {
                 return;
             }
-
             // Ignore bubbled events
             if (event.target !== this.$el.querySelector("#modal-1-outer-wrapper")) {
                 return;
