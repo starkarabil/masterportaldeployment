@@ -242,6 +242,7 @@ export default {
                     :geometry-name="geometryName"
                     :table-heads="headers"
                     :table-data="results"
+                    rendered-in-modal="true"
                 />
             </template>
             <template v-else>

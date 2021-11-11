@@ -1,5 +1,5 @@
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import {getCenter as getCenterExtent} from "ol/extent";
 import {isWebLink} from "../../utils/urlHelper.js";
 import {isPhoneNumber, getPhoneNumberAsWebLink} from "../../utils/isPhoneNumber.js";
@@ -23,6 +23,10 @@ export default {
         geometryName: {
             type: String,
             default: ""
+        },
+        renderedInModal: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -31,6 +35,7 @@ export default {
     methods: {
         ...mapActions("Map", ["zoomTo"]),
         ...mapActions("MapMarker", ["placingPointMarker"]),
+        ...mapMutations("Modal", ["setShowing"]),
         /**
          * Takes the selected coordinates and centers the map to the new position.
          * @param {String[]} feature clicked feature to zoom to
@@ -41,6 +46,9 @@ export default {
 
             this.placingPointMarker(getCenterExtent(geometry.getExtent()));
             this.zoomTo({geometryOrExtent: geometry, options: {maxZoom: 5}});
+            if (this.renderedInModal) {
+                this.setShowing(false);
+            }
         },
         isWebLink,
         isPhoneNumber,
