@@ -1,4 +1,6 @@
 <script>
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
     name: "Modal",
     props: {
@@ -25,15 +27,13 @@ export default {
         };
     },
     computed: {
-        showingClass () {
-            return this.showing ? "showing" : "";
-        }
+        ...mapGetters("Modal", ["showing"])
     },
     watch: {
         // Mapping prop to data
         showModal: function (newShowing) {
             if (newShowing !== this.showing) {
-                this.showing = newShowing;
+                this.setShowing(newShowing);
             }
         },
         // Trigger modalHid to parent component
@@ -54,11 +54,12 @@ export default {
         document.getElementsByTagName("body")[0].appendChild(this.$el);
     },
     methods: {
-        discardByClickX: function () {
+        ...mapMutations("Modal", ["setShowing"]),
+        discardByClickX () {
             this.$emit("clickedOnX");
-            this.showing = false;
+            this.setShowing(false);
         },
-        discardByClickOutside: function (event) {
+        discardByClickOutside (event) {
             if (this.forceClickToClose) {
                 return;
             }
@@ -68,7 +69,7 @@ export default {
             }
 
             this.$emit("clickedOutside");
-            this.showing = false;
+            this.setShowing(false);
         }
     }
 };
@@ -77,7 +78,7 @@ export default {
 <template lang="html">
     <div
         id="modal-1-container"
-        :class="[showingClass]"
+        :class="{'showing': showing}"
         role="alert"
     >
         <div id="modal-1-overlay" />
