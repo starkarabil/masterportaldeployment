@@ -21,11 +21,6 @@ export default {
             default: ""
         }
     },
-    data: function () {
-        return {
-            showing: false
-        };
-    },
     computed: {
         ...mapGetters("Modal", ["showing"])
     },
