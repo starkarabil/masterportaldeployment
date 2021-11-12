@@ -50,7 +50,7 @@ const Config = {
     portalConf: "./",
     layerConf: "https://geodienste.hamburg.de/services-internet.json",
     restConf: "https://geodienste.hamburg.de/lgv-config/rest-services-internet.json",
-    styleConf: "https://geodienste.hamburg.de/lgv-config/style_v3.json",
+    styleConf: "./style_v3.json",
     scaleLine: true,
     mouseHover: {
         numFeaturesToShow: 2,

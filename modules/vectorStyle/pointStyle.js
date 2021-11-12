@@ -67,7 +67,8 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
         "circleBarCircleStrokeColor": [0, 0, 0, 1],
         "circleBarCircleStrokeWidth": 1,
         "circleBarLineStrokeColor": [0, 0, 0, 1],
-        "scalingAttribute": ""
+        "scalingAttribute": "",
+        "rotation": 0
     },
 
     initialize: function (feature, styles, isClustered) {
@@ -179,7 +180,16 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
             scale = parseFloat(this.get("imageScale")),
             offset = [parseFloat(this.get("imageOffsetX")), parseFloat(this.get("imageOffsetY"))],
             offsetXUnit = this.get("imageOffsetXUnit"),
-            offsetYUnit = this.get("imageOffsetYUnit");
+            offsetYUnit = this.get("imageOffsetYUnit"),
+            rotation = this.get("rotation");
+        let rotationRad = rotation;
+
+        if (String(rotation).startsWith("@")) {
+            console.log(this.attributes.values_[rotation.substring(1)]);
+            console.log(parseInt(this.attributes.values_[rotation.substring(1)], 10));
+            rotationRad = parseInt(this.attributes.values_[rotation.substring(1)], 10) * Math.PI / 180;
+            console.log(rotationRad);
+        }
 
         return new Style({
             image: new Icon({
@@ -190,7 +200,8 @@ const PointStyleModel = StyleModel.extend(/** @lends PointStyleModel.prototype *
                 anchor: offset,
                 anchorXUnits: offsetXUnit,
                 anchorYUnits: offsetYUnit,
-                imgSize: isSVG ? [width, height] : ""
+                imgSize: isSVG ? [width, height] : "",
+                rotation: rotationRad
             })
         });
     },
