@@ -23,7 +23,7 @@
     eslint-plugin-vuejs-accessibility: 0.7.1 to 1.1.0
     mocha: 9.0.2 to 9.1.3
     selenium-webdriver: 4.0.0-beta.4 to version 4.0.0
-- The MasterportalAPI version is updated to v1.6.0. This also raised ol to version 6.9.0.
+- The masterportalAPI version is updated to v1.6.0. This also raised ol to version 6.9.0.
 - WMSLayer and GroupLayer are refactored. They are no longer Backbone-models. WMSLayer uses the masterportalAPI's wms layer on creation.
 - 2D-map is removed from vuex store. Maps are now stored in a collection. Creation of 2D-map and 3D-map use masterportalAPI's abstraction layer.
 - Print formats only contain working formats now.
@@ -36,7 +36,7 @@
 
 ### Fixed
 - Print tool: fixed wrong order of features in created print-map.
-- adding a File with other coordinate system may work now if the coordinate system in the JSON is EPSG 25832/4326 or can successfully be mapped to EPSG
+- Adding a File with other coordinate system may work now if the coordinate system in the JSON is EPSG 25832/4326 or can successfully be mapped to EPSG
 - Issue #654: WFS Layers didn't get displayed as group layers
 - Light-tree: Layers that are only selectable in certain zoom levels are now also grayed out directly after startup.
 - Print tool: if tool was activated by url parameter, print-mask is now visible and scales are selectable
@@ -50,7 +50,7 @@
 - layerInformation: Adding a parameter to globally toggle the display of the service url for all layers at the same time.
 - measure: Adding a parameter to define with which decimal accuracy the measurement result is displayed.
 - Tools: Adding a new tool `resetTree` in addons.
-- Tools: Adding a new tool `layerClusterToggler` to enable the cluster layers to be active and deactive together.
+- Tools: Adding a new tool `layerClusterToggler` to enable the cluster layers to be active and deactivate together.
 - Menu: Adding transparency bar for all the layes in menu tree.
 - A locale file for the Turkish language was added.
 
@@ -67,7 +67,7 @@
 
 ### Fixed
 - The portalTitle in the config.json without a logo is rendered correctly.
-- Loading layerIds in combination with a config via the url now also works with the treetype 'custom' in the config.
+- Loading layerIds in combination with a config via the url now also works with the treeType 'custom' in the config.
 - When changing the coordinate system in the Coordinates tool, the incorrect recalculation of the coordinates was corrected: Default values of the coordinate search are now the values of the map center. An error in the display of the coordinate systems (EPSG-code was shown twice) was also fixed.
 - The search in the coordinates tool now also works with different map projections of the masterportal view.
 - Fixed missing highlighting in years 2010-2014 and remove of highlighting when selecting another year in addon boris.
@@ -133,7 +133,7 @@
 ### Added
 - Migrated the Parametric Url from Backbone.js to Vue.js. Previous parameters are supported up to version 3.0.0, see also doc/urlParameter.md.
 - Autocomplete functionality for the contact tool.
-- A library for standard colors and barrier free colors "src/utils/colors.js" to use within javascript, with initial colors/colorsets: MP standard blue; MP standard red; Color Universal Design by "J*Fly data depository for Drosophila reserchers" (https://jfly.uni-koeln.de/color/ - 7 colors); three additional color sets "Hamburg blue scheme" (10 colors), "blue scheme plus" (10 colors) and "traffic light scheme" (7 colors) contributed by the IfBQ of Hamburg Town.
+- A library for standard colors and barrier free colors "src/utils/colors.js" to use within javascript, with initial colors/colorsets: MP standard blue; MP standard red; Color Universal Design by "J*Fly data depository for Drosophila researchers" (https://jfly.uni-koeln.de/color/ - 7 colors); three additional color sets "Hamburg blue scheme" (10 colors), "blue scheme plus" (10 colors) and "traffic light scheme" (7 colors) contributed by the IfBQ of Hamburg Town.
 - Issue #631: Adds a tutorial to use the remote interface in an iFrame.
 - Added the possibility to configure the size of the iframe in GFI when using the gfiTheme `default` on a layer in config.json. Works only in conjunction with the `infoFormat: "text/html"`.
 - Added possibility in GFI theme Default to configure `max-width` in config.json.
@@ -147,18 +147,18 @@
 - Modal dialogues are now marked as alerts so that screenreaders pick them up on appearing.
 - LayerInformation now shows message in case the MetaData couldn't be loaded
 - Footer allows additionally to open vue tools besides backbone tools.
-- changed contrasts of elements in footer, filter and the mouse position widget for better accessability
+- changed contrasts of elements in footer, filter and the mouse position widget for better accessibility
 - Accessibility: Keyboard navigation for tools
   - You can reach every opened tool via keyboard (TAB-key) direct after the top menu row
   - After opening a tool the focus is set to the first control (if any available)
   - LayerInfo and Quickhelp are toggleable (on/off)
     - LayerInfo via the info menu icon (theme menu)
     - Quickhelp via the question icon in the searchbar (top menu)
-- GFI: order of Gfis is reversed now, so that the top layer ones come first
+- GFI: order of GFIs is reversed now, so that the top layer ones come first
 - NPM packages https-proxy-agent, vue-loader, vue-template-compiler are moved from dependencies to devDependencies in package.json.
 - In the default GFI theme, images that are in the tag `"Bild"` or `"bild"` of a WMS GetFeatureInfo are now rendered as images by default.
 - Images from google-maps or -earth (gstatic.com) from KML files are now requested via a reverse proxy, since no CORS is set up there.
-- The MasterportalAPI version is updated to v1.5.0. This also raised ol to version 6.6.1
+- The masterportalAPI version is updated to v1.5.0. This also raised ol to version 6.6.1
 - The following NPM packages are updated:
   - dependencies:
     axios: 0.19.0 to version 0.21.1
@@ -228,7 +228,7 @@
 - Coordinates tool: WGS 84(long/lat) coordinate system: there is no "E" at the end of the Latitude field.
 - When starting the 3D map, all tools that do not support 3D mode are closed.
 - 3D map: Tools that do not support 3D mode are no longer displayed in the footer.
-- Issue #637: Background maps in folder structure no longer overlay subject topics when background map is activated later. Occurred only with treetype custom.
+- Issue #637: Background maps in folder structure no longer overlay subject topics when background map is activated later. Occurred only with treeType custom.
 - Coordinates tool: Validation was corrected
 - Coordinates tool: EPSG code for coordinate system ETRS89/UTM 32N is shown correct in selectbox
 - Opening a tool by footer-link will close a visible tool in sidebar.
@@ -270,11 +270,11 @@
 - Support of End2End tests for `Browserstack` has been removed.Instead `saucelabs` is used.
 
 ### Fixed
-- BG-1541 further metadata link is set on MetaDataCatalogueID from rootgetters now, default is 2
+- BG-1541 further metadata link is set on MetaDataCatalogueID from rootGetters now, default is 2
 - Labels of VTC-Layer-Objects aren't cut off anymore.
 - Issue #626: The Legend menu item is placed according to the order of the menu items in config.json.
 - Issue #628: The Legend menu item is now translated correctly again and works as usual after a translation.
-- In the layerslider tool, the attribute title can now be overwritten again in config.json.
+- In the layerSlider tool, the attribute title can now be overwritten again in config.json.
 - Issue #629: In the GFI theme default, the tag name for URLs to images can now be overridden again. In addition, "image" has been added to the defaults.
 
 ---
@@ -287,7 +287,7 @@
 ### Changed
 - The version of the package selenium-webdriver was updated to version 4.0.0-beta.4.
 - Changed LayerInformation from backbone to Vue.
-- MasterportalAPI is updated to v1.4.0. The new version brings OpenLayers v6.5.0 with WFS 2.0.0 support to the Masterportal.
+- masterportalAPI is updated to v1.4.0. The new version brings OpenLayers v6.5.0 with WFS 2.0.0 support to the Masterportal.
 - The package eslint was updated to version 7.28.0.
 - The package eslint-plugin-chai-friendly was updated to version 0.7.1.
 - The package eslint-plugin-vue was updated to version 7.11.1.
@@ -386,7 +386,7 @@
 ### Removed
 - SensorThings address tab in layerInformation removed.
 - The print module for using mapfishprint v2 has been removed. In this case the attribute `proxyurl` has been removed too
-- The vector style module for using the style_v2.json has been removed. In this case the atteibute `useVectorStyleBeta` has been removed too.
+- The vector style module for using the style_v2.json has been removed. In this case the attribute `useVectorStyleBeta` has been removed too.
 
 ### Fixed
 - GFI of type text/html now also loads css files of the body.
@@ -416,7 +416,7 @@
 - On draw tool Double Circle configuration available in config.json
 - On draw tool Tooltip and Tooltip style configuration available in config.json
 - On tools Imported Layer in theme tree integrated function under Addons
-- On tools Geometrie/Gebäude Analyse funtion on tools under Addons
+- On tools Geometrie/Gebäude Analyse function on tools under Addons
 - On tools Taktische Zeichen on tools under Addons
 - Added the parameters 'contactInfo', 'includeSystemInfo', 'locationOfCustomerService', 'maxLines', 'showPrivacyPolicy' and 'subject' to the configuration of the contact tool.
 
