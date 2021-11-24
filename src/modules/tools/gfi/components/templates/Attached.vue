@@ -4,8 +4,8 @@ import Sensor from "../themes/sensor/components/Sensor.vue";
 import {mapGetters} from "vuex";
 import getTheme from "../../utils/getTheme";
 import Overlay from "ol/Overlay.js";
-import "bootstrap/js/tooltip";
-import "bootstrap/js/popover";
+import "bootstrap/js/dist/tooltip";
+import "bootstrap/js/dist/popover";
 
 export default {
     name: "Attached",
