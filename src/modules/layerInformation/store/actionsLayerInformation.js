@@ -56,7 +56,7 @@ const actions = {
         if (typeof state.layerInfo.metaID === "string") {
             metaId = state.layerInfo.metaID;
         }
-        else {
+        else if (state.layerInfo.metaID) {
             metaId = state.layerInfo.metaID[0];
         }
         const cswUrl = state.layerInfo.cswUrl,
@@ -91,14 +91,13 @@ const actions = {
 
     /**
      * set all the abstract Infos for the layer
-     * @param {Object} param.dispatch the dispatch
-     * @param {Object} param.state the state
      * @param {Object} param.commit the commit
+     * @param {Object} param.state the state
      * @param {Object} param.rootGetters the rootGetters
      * @param {Object} metaInfo the metaInformation that is necessary
      * @returns {void}
      */
-    getAbstractInfo: async function ({commit, dispatch, state, rootGetters}, metaInfo) {
+    getAbstractInfo: async function ({commit, state, rootGetters}, metaInfo) {
         let metadata;
 
         /**
@@ -106,19 +105,36 @@ const actions = {
          * useProxy
          * getProxyUrl()
          */
-        if (rootGetters.metadata.useProxy.includes(metaInfo.cswUrl)) {
+        if (rootGetters.metadata?.useProxy?.includes(metaInfo.cswUrl)) {
             metadata = await getRecordById(getProxyUrl(metaInfo.cswUrl), metaInfo.metaId);
         }
-        else {
+        else if (metaInfo.cswUrl !== null && typeof metaInfo.metaId !== "undefined") {
             metadata = await getRecordById(metaInfo.cswUrl, metaInfo.metaId);
         }
+        // use default csw_url from rest-services.json if csw_url not stated in the specific service
+        else if (Config.cswId !== null && typeof Config.cswId !== "undefined") {
+            const service = Radio.request("RestReader", "getServiceById", Config.cswId);
+            let metaURL = "";
 
+            if (service === undefined) {
+                console.warn("Rest Service with the ID " + Config.cswId + " is not configured in rest-services.json!");
+            }
+            else {
+                metaURL = service.get("url");
+            }
+
+            if (metaURL !== "" && typeof metaInfo.metaId !== "undefined") {
+                metadata = await getRecordById(metaURL, metaInfo.metaId);
+            }
+        }
 
         if (typeof metadata === "undefined") {
-            dispatch("Alerting/addSingleAlert", i18next.t("common:modules.layerInformation.errorMessage", {cswObjCswUrl: state.layerInfo.cswUrl}));
-            commit("setLayerInfo.title", "");
+            commit("setTitle", "");
+            commit("setPeriodicityKey", "");
+            commit("setDateRevision", "");
+            commit("setDatePublication", "");
             commit("setAbstractText", i18next.t("common:modules.layerInformation.noMetadataLoaded"));
-            commit("noMetadataLoaded", i18next.t("common:modules.layerInformation.noMetadataLoaded"));
+            commit("setNoMetadataLoaded", i18next.t("common:modules.layerInformation.noMetadataLoaded"));
         }
         else {
             commit("setTitle", metadata?.getTitle());
@@ -167,6 +183,21 @@ const actions = {
             metaURLs.push(metaURL);
         }
         commit("setMetaURLs", metaURLs);
+    },
+
+    /**
+     * set Parameters from configuration
+     * @param {Object} param.commit - the commit
+     * @param {Object} config - Configuration
+     * @returns {void}
+     */
+    setConfigParams: function ({commit}, config) {
+        if (config.layerInformation !== undefined && config.layerInformation.showUrlGlobal !== null) {
+            commit("setShowUrlGlobal", config.layerInformation.showUrlGlobal);
+        }
+        else if (config.layerInformation === undefined) {
+            commit("setShowUrlGlobal", undefined);
+        }
     }
 
 };

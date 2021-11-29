@@ -2,7 +2,6 @@ import Vuex from "vuex";
 import {config, shallowMount, createLocalVue} from "@vue/test-utils";
 import {expect} from "chai";
 import sinon from "sinon";
-
 import MeasureComponent from "../../../components/Measure.vue";
 import MeasureModule from "../../../store/indexMeasure";
 
@@ -12,7 +11,7 @@ localVue.use(Vuex);
 config.mocks.$t = key => key;
 
 describe("src/modules/tools/measure/components/Measure.vue", () => {
-    let store;
+    let store, wrapper, map;
 
     beforeEach(() => {
         MeasureModule.actions.createDrawInteraction = sinon.spy(MeasureModule.actions.createDrawInteraction);
@@ -26,13 +25,18 @@ describe("src/modules/tools/measure/components/Measure.vue", () => {
             modules: {
                 Map: {
                     namespaced: true,
+                    state: {
+                        mapId: "ol",
+                        mapMode: "2D"
+                    },
                     getters: {
                         layerById: () => id => ({})[id],
                         is3d: () => false,
-                        map: () => ({
-                            addInteraction: sinon.spy(),
-                            removeInteraction: sinon.spy()
-                        })
+                        mapId: () => "ol",
+                        mapMode: () => "2D",
+                        ol2DMap: () => {
+                            return map;
+                        }
                     },
                     mutations: {
                         addLayerToMap: sinon.spy(),
@@ -47,16 +51,29 @@ describe("src/modules/tools/measure/components/Measure.vue", () => {
                 }
             },
             getters: {
-                isTableStyle: () => false,
-                isDefaultStyle: () => true
+                uiStyle: () => ""
             }
         });
+
+        map = {
+            id: "ol",
+            mode: "2D",
+            addInteraction: sinon.spy(),
+            removeInteraction: sinon.spy(),
+            addLayer: sinon.spy()
+        };
 
         store.commit("Tools/Measure/setActive", true);
     });
 
+    afterEach(() => {
+        if (wrapper) {
+            wrapper.destroy();
+        }
+    });
+
     it("renders the measure tool with the expected form fields", () => {
-        const wrapper = shallowMount(MeasureComponent, {store, localVue});
+        wrapper = shallowMount(MeasureComponent, {store, localVue});
 
         expect(wrapper.find("#measure").exists()).to.be.true;
         expect(wrapper.find("#measure-tool-geometry-select").exists()).to.be.true;
@@ -73,8 +90,8 @@ describe("src/modules/tools/measure/components/Measure.vue", () => {
     });
 
     it("select element interaction produces expected mutations, actions, and updates", async () => {
-        const wrapper = shallowMount(MeasureComponent, {store, localVue}),
-            geometrySelect = wrapper.find("#measure-tool-geometry-select"),
+        wrapper = shallowMount(MeasureComponent, {store, localVue});
+        const geometrySelect = wrapper.find("#measure-tool-geometry-select"),
             unitSelect = wrapper.find("#measure-tool-unit-select");
 
         // form initially "LineString" with m/km
@@ -114,21 +131,35 @@ describe("src/modules/tools/measure/components/Measure.vue", () => {
     });
 
     it("clicking delete will call the appropriate action", async () => {
-        const wrapper = shallowMount(MeasureComponent, {store, localVue}),
-            deleteButton = wrapper.find("#measure-delete");
+        wrapper = shallowMount(MeasureComponent, {store, localVue});
+        const deleteButton = wrapper.find("#measure-delete");
 
         deleteButton.trigger("click");
         expect(MeasureModule.actions.deleteFeatures.calledOnce).to.be.true;
     });
 
+    it("sets focus to first input control", async () => {
+        const elem = document.createElement("div");
+
+        if (document.body) {
+            document.body.appendChild(elem);
+        }
+        wrapper = shallowMount(MeasureComponent, {store, localVue, attachTo: elem});
+
+        wrapper.vm.setFocusToFirstControl();
+        await wrapper.vm.$nextTick();
+        expect(wrapper.find("#measure-tool-geometry-select").element).to.equal(document.activeElement);
+    });
+
     it("createDrawInteraction should not called if active is false and setSelectedGeometry is changend", async () => {
         store.commit("Tools/Measure/setActive", false);
 
-        const wrapper = shallowMount(MeasureComponent, {store, localVue});
+        wrapper = shallowMount(MeasureComponent, {store, localVue});
 
         store.commit("Tools/Measure/setSelectedGeometry", "123");
         await wrapper.vm.$nextTick;
 
         expect(MeasureModule.actions.createDrawInteraction.called).to.be.false;
     });
+
 });

@@ -54,6 +54,18 @@ export default {
             return i18next.t("common:modules.tools.addWMS.completeMessage");
         }
     },
+    watch: {
+        /**
+         * Listens to the active property change.
+         * @param {Boolean} isActive Value deciding whether the tool gets activated or deactivated.
+         * @returns {void}
+         */
+        active (isActive) {
+            if (isActive) {
+                this.setFocusToFirstControl();
+            }
+        }
+    },
     created () {
         this.$on("close", this.close);
 
@@ -65,6 +77,17 @@ export default {
     methods: {
         ...mapMutations("Tools/AddWMS", Object.keys(mutations)),
 
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs.wmsUrl) {
+                    this.$refs.wmsUrl.focus();
+                }
+            });
+        },
         /**
          * Closes this tool window by setting active to false
          * @returns {void}
@@ -209,7 +232,7 @@ export default {
                 Radio.trigger("Parser", "addFolder", object.Title, this.getParsedTitle(object.Title), parentId, level, false, false, object.invertLayerOrder);
             }
             else {
-                Radio.trigger("Parser", "addLayer", object.Title, this.getParsedTitle(object.Title), parentId, level, object.Name, this.wmsUrl, this.version);
+                Radio.trigger("Parser", "addLayer", object.Title, this.getParsedTitle(object.Title), parentId, level, object.Name, this.wmsUrl, this.version, {});
             }
         },
 
@@ -309,9 +332,7 @@ export default {
          * @returns {String} parsedTitle - The parsed title
          */
         getParsedTitle: function (title) {
-            const finalTitle = String(title).replace(/\s+/g, "-").replace(/\//g, "-");
-
-            return finalTitle;
+            return String(title).replace(/\s+/g, "-").replace(/\//g, "-");
         }
     }
 };
@@ -340,10 +361,12 @@ export default {
                 </div>
                 <input
                     id="wmsUrl"
+                    ref="wmsUrl"
+                    aria-label="WMS-Url"
                     type="text"
                     class="form-control wmsUrlsChanged"
                     :placeholder="placeholder"
-                    @keydown="inputUrl"
+                    @keydown.enter="inputUrl"
                 >
                 <div class="WMS_example_text">
                     {{ textExample }}

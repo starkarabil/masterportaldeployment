@@ -7,13 +7,15 @@
 .env
 .idea
 .vscode
+.history
 /img/*.db
 /jsdoc
 /nbproject/private/
 styleguide
+.history
 
 addons/*
-!portal/analysetool/readme.txt
+!addons/readme.txt
 
 bowerupdate.log
 build

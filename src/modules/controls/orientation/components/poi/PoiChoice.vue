@@ -2,6 +2,7 @@
 import {mapGetters, mapMutations} from "vuex";
 import getters from "../../store/gettersOrientation";
 import mutations from "../../store/mutationsOrientation";
+
 export default {
     name: "PoiChoice",
     computed: {
@@ -15,10 +16,25 @@ export default {
     },
     mounted () {
         this.show();
+        this.$nextTick(() => {
+            if (this.$refs["close-icon"]) {
+                this.$refs["close-icon"].focus();
+            }
+        });
     },
     methods: {
         ...mapMutations("controls/orientation", Object.keys(mutations)),
 
+        /**
+         * Callback when close icon has been clicked.
+         * @param {Event} event the dom event
+         * @returns {void}
+         */
+        closeIconTriggered (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.hidePoiChoice();
+            }
+        },
         /**
          * Hides the modal.
          * @returns {void}
@@ -76,11 +92,14 @@ export default {
             <div class="modal-content">
                 <div class="modal-header">
                     <span
+                        ref="close-icon"
                         class="glyphicon glyphicon-remove"
+                        tabindex="0"
                         aria-hidden="true"
                         data-dismiss="modal"
                         :title="$t('button.close')"
-                        @click="hidePoiChoice"
+                        @click="closeIconTriggered($event)"
+                        @keydown="closeIconTriggered($event)"
                     />
                     <h4 class="modal-title">
                         <span class="control-icon glyphicon glyphicon-record standalone" />
@@ -105,14 +124,16 @@ export default {
                         >
                         {{ val }}
                     </label>
+                    <hr>
                     <button
-                        class="confirm"
+                        class="confirm btn btn-primary"
+                        tabindex="0"
                         @click="triggerTrack"
                     >
                         {{ $t("common:modules.controls.orientation.poiChoiceConfirmation") }}
                     </button>
                     <button
-                        class="stop"
+                        class="stop btn btn-default"
                         @click="stopPoi"
                     >
                         {{ $t("common:modules.controls.orientation.poiChoiceStop") }}
@@ -120,14 +141,22 @@ export default {
                 </div>
             </div>
         </div>
+        <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
         <div
             class="modal-backdrop fade in"
             @click="hidePoiChoice"
         />
+        <!--
+            The previous element does not require a key interaction. It is not focusable,
+            has no semantic meaning, and other methods exist for keyboard users to leave
+            the backdropped modal dialog.
+        -->
     </div>
 </template>
 
 <style lang="less" scoped>
+    @import "~/css/mixins.less";
+
     .poi-choice {
         color: rgb(85, 85, 85);
         font-size: 14px;
@@ -149,6 +178,12 @@ export default {
             float: right;
             padding: 12px;
             cursor: pointer;
+            &:focus {
+                .primary_action_focus();
+            }
+            &:hover {
+                .primary_action_hover();
+            }
         }
         .modal-dialog {
             z-index: 1041;

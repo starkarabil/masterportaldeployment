@@ -1,7 +1,7 @@
 <script>
 import Tool from "../../Tool.vue";
 import getComponent from "../../../../utils/getComponent";
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getters from "../store/gettersFileImport";
 import mutations from "../store/mutationsFileImport";
 
@@ -33,6 +33,18 @@ export default {
 
         console: () => console
     },
+    watch: {
+        /**
+         * Listens to the active property change.
+         * @param {Boolean} isActive Value deciding whether the tool gets activated or deactivated.
+         * @returns {void}
+         */
+        active (isActive) {
+            if (isActive) {
+                this.setFocusToFirstControl();
+            }
+        }
+    },
     created () {
         this.$on("close", this.close);
     },
@@ -42,6 +54,18 @@ export default {
             "setSelectedFiletype"
         ]),
         ...mapMutations("Tools/FileImport", Object.keys(mutations)),
+
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs["upload-label"]) {
+                    this.$refs["upload-label"].focus();
+                }
+            });
+        },
         onDZDragenter () {
             this.dzIsDropHovering = true;
         },
@@ -77,6 +101,11 @@ export default {
 
                 reader.readAsText(file);
             });
+        },
+        triggerClickOnFileInput (event) {
+            if (event.which === 32 || event.which === 13) {
+                this.$refs["upload-input-file"].click();
+            }
         },
         close () {
             this.setActive(false);
@@ -146,6 +175,7 @@ export default {
                         </p>
                     </div>
 
+                    <!-- eslint-disable-next-line vuejs-accessibility/mouse-events-have-key-events -->
                     <div
                         class="drop-area"
                         @drop.prevent="onDrop"
@@ -155,11 +185,23 @@ export default {
                         @mouseenter="onDZMouseenter"
                         @mouseleave="onDZMouseleave"
                     />
+                    <!--
+                        The previous element does not provide a @focusin or @focus reaction as would
+                        be considered correct by the linting rule set. Since it's a drop-area for file
+                        dropping by mouse, the concept does not apply. Keyboard users may use the
+                        matching input fields.
+                    -->
                 </div>
 
                 <div>
-                    <label class="upload-button-wrapper">
+                    <label
+                        ref="upload-label"
+                        class="upload-button-wrapper"
+                        tabindex="0"
+                        @keydown="triggerClickOnFileInput"
+                    >
                         <input
+                            ref="upload-input-file"
                             type="file"
                             @change="onInputChange"
                         >
@@ -170,10 +212,13 @@ export default {
                 <div v-if="importedFileNames.length > 0">
                     <div class="h-seperator" />
                     <p class="cta">
-                        <label class="successfullyImportedLabel">
+                        <label
+                            class="successfullyImportedLabel"
+                            for="succesfully-imported-files"
+                        >
                             {{ $t("modules.tools.fileImport.successfullyImportedLabel") }}
                         </label>
-                        <ul>
+                        <ul id="succesfully-imported-files">
                             <li
                                 v-for="(filename, index) in importedFileNames"
                                 :key="index"
@@ -203,7 +248,7 @@ export default {
 </template>
 
 <style lang="less" scoped>
-    @import "~variables";
+    @import "~/css/mixins.less";
 
     .h-seperator {
         margin:12px 0 12px 0;
@@ -218,18 +263,19 @@ export default {
     }
 
     .upload-button-wrapper {
-        border: 2px solid #DDDDDD;
-        background-color:#FFFFFF;
+        color: #FFFFFF;
+        background-color: @secondary_focus;
         display: block;
         text-align:center;
         padding: 8px 12px;
         cursor: pointer;
         margin:12px 0 0 0;
         font-size: @font_size_big;
-        transition: background 0.25s;
-
+        &:focus {
+            .primary_action_focus();
+        }
         &:hover {
-            background-color:#EEEEEE;
+            .primary_action_hover();
         }
     }
 
@@ -239,7 +285,7 @@ export default {
     .drop-area-fake {
         background-color: #FFFFFF;
         border-radius: 12px;
-        border: 2px dashed @accent_disabled;
+        border: 2px dashed @accent;
         padding:24px;
         transition: background 0.25s, border-color 0.25s;
 
@@ -258,7 +304,7 @@ export default {
             transition: color 0.35s;
             font-family: @font_family_accent;
             font-size: @font_size_huge;
-            color: @accent_disabled;
+            color: @accent;
         }
     }
     .drop-area {

@@ -1,7 +1,7 @@
 <script>
 import Tool from "../../Tool.vue";
 import getComponent from "../../../../utils/getComponent";
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getters from "../store/gettersBufferAnalysis";
 import mutations from "../store/mutationsBufferAnalysis";
 import actions from "../store/actionsBufferAnalysis";
@@ -115,6 +115,16 @@ export default {
             this.setTimerId(setTimeout(() => {
                 this.applyBufferRadius(newBufferRadius);
             }, 500));
+        },
+        /**
+         * Sets focus if view becomes active.
+         * @param {Boolean} isActive - if active or not
+         * @returns {void}
+         */
+        active (isActive) {
+            if (isActive) {
+                this.setFocusToFirstControl();
+            }
         }
     },
     /**
@@ -133,6 +143,18 @@ export default {
         ...mapMutations("Tools/BufferAnalysis", Object.keys(mutations)),
         ...mapActions("Tools/BufferAnalysis", Object.keys(actions)),
         ...mapActions("Map", ["toggleLayerVisibility"]),
+
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs["tool-bufferAnalysis-selectSourceInput"]) {
+                    this.$refs["tool-bufferAnalysis-selectSourceInput"].focus();
+                }
+            });
+        },
         /**
          * Sets active to false.
          * @returns {void}
@@ -175,6 +197,7 @@ export default {
                 <div class="col-md-7 col-sm-7 form-group form-group-sm">
                     <select
                         id="tool-bufferAnalysis-selectSourceInput"
+                        ref="tool-bufferAnalysis-selectSourceInput"
                         v-model="selectedSourceLayer"
                         class="font-arial form-control input-sm pull-left"
                     >
@@ -265,8 +288,7 @@ export default {
                 <div class="col-md-12 col-sm-12 form-group form-group-sm">
                     <button
                         id="tool-bufferAnalysis-resetButton"
-                        class="pull-right btn btn-block"
-                        :class="!selectedSourceLayer ? 'btn-lgv-grey' : 'btn-primary'"
+                        class="pull-right btn btn-block btn-lgv-grey"
                         :disabled="!selectedSourceLayer"
                         @click="resetModule"
                     >
@@ -277,8 +299,7 @@ export default {
                 <div class="col-md-12 col-sm-12 form-group form-group-sm">
                     <button
                         id="tool-bufferAnalysis-saveButton"
-                        class="pull-right btn btn-block"
-                        :class="!selectedSourceLayer || !selectedTargetLayer || !bufferRadius ? 'btn-lgv-grey' : 'btn-primary'"
+                        class="pull-right btn btn-block btn-primary"
                         :disabled="!selectedSourceLayer || !selectedTargetLayer || !bufferRadius"
                         @click="buildUrlFromToolState"
                     >

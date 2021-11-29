@@ -1,5 +1,6 @@
 import Parser from "./parser";
 import {getLayerWhere, getLayerList} from "masterportalAPI/src/rawLayerList";
+import store from "../../../src/app-store/index";
 
 const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
     /**
@@ -10,7 +11,6 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
      * @fires Core#RadioRequestRawLayerListGetLayerAttributesWhere
      * @fires Core#RadioRequestRawLayerListGetLayerAttributesList
      * @fires Core.ConfigLoader#RadioRequestParserGetTreeType
-     * @fires QuickHelp#RadioRequestQuickHelpIsSet
      */
     defaults: Object.assign({}, Parser.prototype.defaults, {}),
 
@@ -25,7 +25,6 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
      * @fires Core#RadioRequestRawLayerListGetLayerAttributesWhere
      * @fires Core#RadioRequestRawLayerListGetLayerAttributesList
      * @fires Core.ConfigLoader#RadioRequestParserGetTreeType
-     * @fires QuickHelp#RadioRequestQuickHelpIsSet
      * @returns {void}
      */
     parseTree: function (object = {}, parentId, level) {
@@ -90,7 +89,7 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                 // For Single-Layer (ol.layer.Layer) with more layers (FNP, LAPRO, Geobasisdaten (farbig), etc.)
                 // For Example: {id: ["550","551","552",...,"559"], visible: false}
                 else if (Array.isArray(layerExtended.id) && typeof layerExtended.id[0] === "string") {
-                    objsFromRawList = getLayerList();
+                    objsFromRawList = this.getRawLayerList();
                     mergedObjsFromRawList = this.mergeObjectsByIds(layerExtended.id, objsFromRawList);
 
                     if (mergedObjsFromRawList === null) { // Wenn Layer nicht definiert, dann Abbruch
@@ -189,13 +188,17 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                     glyphicon: "glyphicon-plus-sign",
                     isVisibleInTree: this.getIsVisibleInTree(level, "folder", true, treeType),
                     isInThemen: true,
-                    quickHelp: Radio.request("QuickHelp", "isSet"),
+                    quickHelp: store.getters["QuickHelp/isSet"],
                     invertLayerOrder: folder.invertLayerOrder
                 });
                 // rekursiver Aufruf
-                this.parseTree(folder, folder.id, level + 1);
+                this.parseTree(folder, isBaseLayer ? parentId : folder.id, level + 1);
             });
         }
+    },
+
+    getRawLayerList: function () {
+        return getLayerList();
     },
 
     /**

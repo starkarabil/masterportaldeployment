@@ -7,7 +7,6 @@ const {
     setToolActive,
     languageChanged,
     addTool,
-    activateByUrlParam,
     setToolActiveByConfig
 } = actions;
 
@@ -16,6 +15,7 @@ describe("src/modules/tools/actionsTools.js", () => {
         const state = {
             ScaleSwitcher: {
                 id: "scaleSwitcher",
+                name: "ScaleSwitcher",
                 deactivateGFI: false
             },
             Gfi: {
@@ -26,10 +26,12 @@ describe("src/modules/tools/actionsTools.js", () => {
         it("setToolActive set one tool and gfi to active", done => {
             const payload = {
                 id: "scaleSwitcher",
+                name: "ScaleSwitcher",
                 active: true
             };
 
             testAction(setToolActive, payload, state, {}, [
+                {type: "controlActivationOfTools", payload: payload.name, dispatch: true},
                 {type: Object.keys(state)[0] + "/setActive", payload: payload.active, dispatch: true},
                 {type: "Gfi/setActive", payload: payload.active, commit: true}
             ], {}, done);
@@ -37,10 +39,12 @@ describe("src/modules/tools/actionsTools.js", () => {
         it("setToolActive deactivate a tool and activate gfi", done => {
             const payload = {
                 id: "scaleSwitcher",
+                name: "ScaleSwitcher",
                 active: false
             };
 
             testAction(setToolActive, payload, state, {}, [
+                {type: "controlActivationOfTools", payload: payload.name, dispatch: true},
                 {type: Object.keys(state)[0] + "/setActive", payload: payload.active, commit: true},
                 {type: "Gfi/setActive", payload: true, commit: true}
             ], {}, done);
@@ -129,30 +133,6 @@ describe("src/modules/tools/actionsTools.js", () => {
                 getConfiguredToolNames: ["Draw", "ScaleSwitcher", "SupplyCoord"],
                 getActiveToolNames: ["Draw", "ScaleSwitcher"]
             }, done);
-        });
-    });
-
-    describe("activateByUrlParam", () => {
-        it("activateByUrlParam  isinitopen=scaleSwitcher", done => {
-            const rootState = {
-                    queryParams: {
-                        "isinitopen": "scaleSwitcher"
-                    }
-                },
-                toolName = "ScaleSwitcher";
-
-            testAction(activateByUrlParam, toolName, {}, rootState, [
-                {type: "controlActivationOfTools", payload: toolName, dispatch: true}
-            ], {}, done);
-        });
-        it("activateByUrlParam no isinitopen", done => {
-            const rootState = {
-                    queryParams: {
-                    }
-                },
-                toolName = "ScaleSwitcher";
-
-            testAction(activateByUrlParam, toolName, {}, rootState, [], {}, done);
         });
     });
 

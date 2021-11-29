@@ -2,24 +2,26 @@
 import Alerting from "./modules/alerting/components/Alerting.vue";
 import ConfirmAction from "./modules/confirmAction/components/ConfirmAction.vue";
 import ControlBar from "./modules/controls/ControlBar.vue";
-import Footer from "./modules/footer/components/Footer.vue";
+import LayerInformation from "./modules/layerInformation/components/LayerInformation.vue";
 import LegendWindow from "./modules/legend/components/LegendWindow.vue";
 import MapMarker from "./modules/mapMarker/components/MapMarker.vue";
+import QuickHelp from "./modules/quickHelp/components/QuickHelp.vue";
 import ToolManager from "./modules/tools/ToolManager.vue";
-import LayerInformation from "./modules/layerInformation/components/LayerInformation.vue";
+import WmsTime from "./modules/wmsTime/components/WmsTime.vue";
 import {mapState} from "vuex";
 
 export default {
     name: "MapRegion",
     components: {
+        Alerting,
         ConfirmAction,
         ControlBar,
-        ToolManager,
-        Alerting,
+        LayerInformation,
         LegendWindow,
         MapMarker,
-        Footer,
-        LayerInformation
+        QuickHelp,
+        ToolManager,
+        WmsTime
     },
     computed: {
         ...mapState([
@@ -27,31 +29,25 @@ export default {
             "configJson",
             "i18NextInitialized"
         ])
+    },
+    methods: {
+        /**
+         * returns the config from config.js
+         * @returns {Object|Boolean} the config object or false on error
+         */
+        getConfigObject () {
+            if (typeof Config === "object" && Config !== null) {
+                return Config;
+            }
+            return false;
+        }
     }
 };
 </script>
 
 <template>
-    <div class="anchor">
+    <main class="anchor">
         <!-- OpenLayers node; control map itself via vuex map module -->
-        <div class="menu">
-            <LegendWindow />
-        </div>
-        <div id="map-wrapper">
-            <div
-                id="map"
-            />
-            <div class="elements-positioned-over-map">
-                <ControlBar class="controls" />
-                <Footer />
-                <MapMarker />
-                <LayerInformation />
-            </div>
-            <ToolManager
-                v-if="configJson"
-                :show-in-sidebar="false"
-            />
-        </div>
 
         <div id="sidebar">
             <!-- Alternatively to adding the configJson lifecycle hook to every component, the Main component can wait mounting its children until the config is parsed -->
@@ -60,6 +56,30 @@ export default {
                 :show-in-sidebar="true"
             />
         </div>
+
+        <div id="map-wrapper">
+            <div
+                id="map"
+            />
+            <ToolManager
+                v-if="configJson"
+                :show-in-sidebar="false"
+            />
+            <div class="menu">
+                <LegendWindow />
+            </div>
+            <div class="elements-positioned-over-map">
+                <LayerInformation />
+                <ControlBar class="controls" />
+                <QuickHelp
+                    v-if="getConfigObject()"
+                    :quick-help-config-js-object="typeof getConfigObject().quickHelp === 'object' || typeof getConfigObject().quickHelp === 'boolean' ? getConfigObject().quickHelp : false"
+                />
+                <WmsTime />
+                <MapMarker />
+            </div>
+        </div>
+
 
         <!-- elements that are somewhere above the map, but don't have a fixed position or are not always present -->
         <ConfirmAction />
@@ -72,7 +92,7 @@ export default {
                 :key="addonKey"
             />
         </template>
-    </div>
+    </main>
 </template>
 
 <style lang="less" scoped>
@@ -85,9 +105,11 @@ export default {
 
     .anchor {
         position: relative;
+        overflow: hidden;
 
         #map-wrapper {
             position:relative;
+            overflow: hidden;
             flex-grow:1;
             order:1;
         }
@@ -109,7 +131,6 @@ export default {
             flex-direction: column;
             align-items: flex-end;
 
-            height:100%;
             width: 100%;
 
             .controls {

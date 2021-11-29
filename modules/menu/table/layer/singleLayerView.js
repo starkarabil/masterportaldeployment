@@ -4,7 +4,7 @@ import Template from "text-loader!./templates/templateSingleLayer.html";
 const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
     events: {
         "click .icon-checkbox, .icon-checkbox2, .title": "toggleIsSelected",
-        "click .icon-info": "showLayerInformation",
+        "click .glyphicon-info-sign": "showLayerInformation",
         "click .glyphicon-cog": "toggleIsSettingVisible",
         "click .arrows > .glyphicon-arrow-up": "moveModelUp",
         "click .arrows > .glyphicon-arrow-down": "moveModelDown",
@@ -24,6 +24,8 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
      * @listens Layer#changeTransparency
      */
     initialize: function () {
+        const channel = Radio.channel("Menu");
+
         this.listenTo(this.model, {
             "change:isSettingVisible": this.renderSetting,
             "change:transparency": this.render
@@ -33,6 +35,10 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
                 e.stopPropagation();
             }
         });
+        channel.on({
+            "renderSetting": this.renderSetting,
+            "rerender": this.render
+        }, this);
     },
     tagName: "li",
     className: "burgermenu-layer-list list-group-item",

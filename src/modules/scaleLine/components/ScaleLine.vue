@@ -7,9 +7,10 @@ export default {
         ...mapGetters("Map", ["scaleToOne", "scaleWithUnit", "mapMode"]),
         ...mapGetters(["mobile", "scaleLineConfig"]),
         showScale () {
-            return this.scaleLineConfig && !this.mobile && this.mapMode === 0;
+            return this.scaleLineConfig && !this.mobile && this.mapMode === "2D";
         }
     }
+
 };
 </script>
 
@@ -17,6 +18,7 @@ export default {
     <div
         v-if="showScale"
         id="scales"
+        :title="$t('modules.footer.scale')"
     >
         <span class="scale-as-a-ratio">
             {{ scaleToOne }}
@@ -29,17 +31,16 @@ export default {
 
 <style lang="less">
     @import "~variables";
-    @color_1: #777;
 
     #scales {
-        background: fade(@secondary, 70%);
+        background: fade(@secondary, 90%);
         display: inline-block;
         color: @secondary_contrast;
         text-align: center;
         font-size: 10px;
 
         .scale-line {
-            color: @color_1;
+            color: lighten(@secondary_contrast, 10%);
             border-bottom: 1px solid;
             border-left: 1px solid;
             border-right: 1px solid;
@@ -49,6 +50,7 @@ export default {
 
         .scale-as-a-ratio {
             padding: 0 16px;
+            color: #333333;
         }
     }
 </style>

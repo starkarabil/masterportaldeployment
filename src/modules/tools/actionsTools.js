@@ -1,25 +1,21 @@
 import {fetchFirstModuleConfig} from "../../utils/fetchFirstModuleConfig";
 import getComponent from "../../utils/getComponent";
-import ValidationError from "../../utils/customErrors/validationError";
 
 
 const actions = {
     /**
      * Sets the parameter "active" to the given parameter for the tool with the given id.
      * Note: The toolId specified in the global state is not the same as tool.id.
-     *
-     * @param {Object} context context object
-     * @param {Object} state state object; in this case rootState = state
-     * @param {Function} commit store commit function
      * @param {Object} payload The given parameters
      * @param {String} payload.id The id of the Tool to be (de-)activated
      * @param {String} payload.active Value for (de-)activation
      * @returns {void}
      */
-    setToolActive ({state, commit}, {id, active}) {
+    setToolActive ({state, commit, dispatch}, {id, active}) {
         const toolId = Object.keys(state).find(tool => state[tool]?.id?.toLowerCase() === id?.toLowerCase());
 
         if (toolId !== undefined) {
+            dispatch("controlActivationOfTools", state[toolId].name);
             commit(toolId + "/setActive", active);
             if (toolId !== "Gfi") {
                 commit("Gfi/setActive", !state[toolId].deactivateGFI);
@@ -29,9 +25,6 @@ const actions = {
 
     /**
      * Sets the translated name of the tool to the given parameter for the tool with the given id.
-     *
-     * @param {Object} state state object; in this case rootState = state
-     * @param {Function} commit store commit function
      * @param {Object} payload The given parameters
      * @param {String} payload.id The id of the Tool
      * @param {String} payload.name The translated name of the Tool
@@ -57,7 +50,6 @@ const actions = {
 
     /**
      * Adds a tool dynamically to componentMap.
-     * @param {Object} state state object; in this case rootState = state
      * @param {Object} tool tool to be added dynamically
      * @returns {void}
      */
@@ -79,52 +71,6 @@ const actions = {
         if (getters.getConfiguredToolNames.includes(activeToolName)) {
             commit(activeToolName + "/setActive", true);
             dispatch("activateToolInModelList", activeToolName);
-        }
-    },
-
-    /**
-     * Checks if a tool should be open initially controlled by the url param "isinitopen".
-     * @param {String} toolName - Name from the toolComponent
-     * @returns {void}
-     */
-    activateByUrlParam: ({rootState, dispatch}, toolName) => {
-        if (rootState.queryParams instanceof Object && toolName?.toLowerCase() === rootState?.queryParams?.isinitopen?.toLowerCase()) {
-            dispatch("controlActivationOfTools", toolName);
-            dispatch("setToolInitValues", toolName);
-        }
-    },
-
-    /**
-     * Checks if a tool should initialized with certain values controlled by the url param "initvalues".
-     * @param {Object} context - context object for actions
-     * @param {String} toolName - Name from the toolComponent
-     * @returns {void}
-     */
-    setToolInitValues: ({rootState, commit, dispatch}, toolName) => {
-        if (rootState?.queryParams?.initvalues) {
-            const toolState = JSON.parse(rootState?.queryParams?.initvalues);
-            let index = 1;
-
-            for (const state in toolState) {
-                setTimeout(() => {
-                    try {
-                        if (rootState._store._actions["Tools/" + toolName + "/" + state]) {
-                            dispatch(toolName + "/" + state, toolState[state]);
-                        }
-                        else if (rootState._store._mutations[toolName + "/" + state]) {
-                            commit(toolName + "/" + state, toolState[state]);
-                        }
-                    }
-                    catch (e) {
-                        const alertingMessage = {
-                            category: i18next.t("common:modules.alerting.categories.error"),
-                            content: e instanceof ValidationError ? e.message : i18next.t("common:modules.core.parametricURL.alertWrongInitValues")};
-
-                        dispatch("Alerting/addSingleAlert", alertingMessage, {root: true});
-                    }
-                }, index * 500);
-                index++;
-            }
         }
     },
 
@@ -172,7 +118,6 @@ const actions = {
 
     /**
      * Activates a tool in the ModelList.
-     * @param {Object} state state object; in this case rootState = state
      * @param {String} activeTool The tool to activate.
      * @returns {void}
      */
@@ -186,7 +131,6 @@ const actions = {
 
     /**
      * Adds the name and glyphicon of a tool to the ModelList, because they are used by the menu.
-     * @param {Object} state state object; in this case rootState = state
      * @param {String} activeTool The tool to set name.
      * @returns {void}
      */

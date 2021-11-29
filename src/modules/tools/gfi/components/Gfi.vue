@@ -5,8 +5,8 @@ import Mobile from "./templates/Mobile.vue";
 import Detached from "./templates/Detached.vue";
 import Table from "./templates/Table.vue";
 import Attached from "./templates/Attached.vue";
-import {omit} from "../../../../utils/objectHelpers";
-import moment from "moment";
+import omit from "../../../../utils/omit";
+import {mapAttributes} from "../../../../utils/attributeMapper.js";
 
 export default {
     name: "Gfi",
@@ -29,12 +29,12 @@ export default {
         ...mapGetters({
             isMobile: "mobile",
             gfiWindow: "gfiWindow",
-            isTable: "isTableStyle",
+            uiStyle: "uiStyle",
             ignoredKeys: "ignoredKeys"
         }),
         ...mapGetters("Tools/Gfi", Object.keys(getters)),
         ...mapGetters("Map", {
-            gfiFeatures: "gfiFeatures",
+            gfiFeatures: "gfiFeaturesReverse",
             mapSize: "size"
         }),
         /**
@@ -55,7 +55,7 @@ export default {
             else if ((this.desktopType || this.gfiWindow)?.toLowerCase() === "attached") {
                 return "Attached";
             }
-            else if (this.isTable) {
+            else if (this.uiStyle === "TABLE") {
                 return "Table";
             }
             return "Detached";
@@ -171,165 +171,7 @@ export default {
             if (mappingObject === "showAll" && Array.isArray(ignoredKeys)) {
                 return omit(properties, ignoredKeys, true);
             }
-            return this.mapProperties(properties, mappingObject);
-        },
-        /**
-         * Maps the feature properties by the given object.
-         * @param {Object} properties The feature properties.
-         * @param {Object} [mappingObject={}] "gfiAttributes" from the layer.
-         * @returns {Object} The mapped properties.
-         */
-        mapProperties: function (properties, mappingObject = {}) {
-            const mappedProperties = {};
-
-            Object.keys(mappingObject).forEach(key => {
-                let newKey = mappingObject[key],
-                    value = this.prepareGfiValue(properties, key);
-
-                if (typeof newKey === "object") {
-                    value = this.prepareGfiValueFromObject(key, newKey, properties);
-                    newKey = newKey.name;
-                }
-                if (value && value !== "undefined") {
-                    mappedProperties[newKey] = value;
-                }
-            });
-
-            return mappedProperties;
-        },
-        /**
-         * Derives the gfi value if the value is an object.
-         * @param {*} key Key of gfi Attribute.
-         * @param {Object} obj Value of gfi attribute.
-         * @param {Object} gfi Gfi object.
-         * @returns {*} - Prepared Value from gfi.
-         */
-        prepareGfiValueFromObject: function (key, obj, gfi) {
-            const type = obj?.type ? obj.type : "string",
-                format = obj?.format ? obj.format : "DD.MM.YYYY HH:mm:ss",
-                condition = obj?.condition ? obj.condition : null;
-            let preparedValue = this.prepareGfiValue(gfi, key),
-                date;
-
-            if (condition) {
-                preparedValue = this.getValueFromCondition(key, condition, gfi);
-            }
-            switch (type) {
-                case "date": {
-                    date = moment(String(preparedValue));
-                    if (date.isValid()) {
-                        preparedValue = moment(String(preparedValue)).format(format);
-                    }
-                    break;
-                }
-                // default equals to obj.type === "string"
-                default: {
-                    preparedValue = String(preparedValue);
-                }
-            }
-            if (preparedValue && obj.suffix && preparedValue !== "undefined") {
-                preparedValue = this.appendSuffix(preparedValue, obj.suffix);
-            }
-            if (preparedValue && obj.prefix && preparedValue !== "undefined") {
-                preparedValue = this.prependPrefix(preparedValue, obj.prefix);
-            }
-            return preparedValue;
-        },
-        /**
-         * Derives the value from the given condition.
-         * @param {String} key Key.
-         * @param {String} condition Condition to filter gfi.
-         * @param {Object} gfi Gfi object.
-         * @returns {*} - Value that matches the given condition.
-         */
-        getValueFromCondition: function (key, condition, gfi) {
-            let valueFromCondition,
-                match;
-
-            if (condition === "contains") {
-                match = Object.keys(gfi).filter(key2 => {
-                    return key2.includes(key);
-                })[0];
-                valueFromCondition = gfi[match];
-            }
-            else if (condition === "startsWith") {
-                match = Object.keys(gfi).filter(key2 => {
-                    return key2.startsWith(key);
-                })[0];
-                valueFromCondition = gfi[match];
-            }
-            else if (condition === "endsWith") {
-                match = Object.keys(gfi).filter(key2 => {
-                    return key2.endsWith(key);
-                })[0];
-                valueFromCondition = gfi[match];
-            }
-            else {
-                valueFromCondition = gfi[key];
-            }
-
-            return valueFromCondition;
-
-        },
-        /**
-         * Appends a suffix if available.
-         * @param {*} value Value to append suffix.
-         * @param {String} suffix Suffix
-         * @returns {String} - Value with suffix.
-         */
-        appendSuffix: function (value, suffix) {
-            let valueWithSuffix = value;
-
-            if (suffix) {
-                valueWithSuffix = String(valueWithSuffix) + " " + suffix;
-            }
-            return valueWithSuffix;
-        },
-
-        /**
-         * Prepend a prefix if available.
-         * @param {*} value Value to prepend prefix.
-         * @param {String} prefix Prefix
-         * @returns {String} - Value with prefix.
-         */
-        prependPrefix: function (value, prefix) {
-            let valueWithPrefix = value;
-
-            if (prefix) {
-                valueWithPrefix = prefix + String(valueWithPrefix);
-            }
-            return valueWithPrefix;
-        },
-
-        /**
-         * Returns the value of the given key. Also considers, that the key may be an object path.
-         * @param {Object} gfi Gfi object.
-         * @param {String} key Key to derive value from.
-         * @returns {*} - Value from key.
-         */
-        prepareGfiValue: function (gfi, key) {
-            const isPath = key.startsWith("@");
-            let value = gfi[Object.keys(gfi).find(gfiKey => gfiKey.toLowerCase() === key.toLowerCase())];
-
-            if (isPath) {
-                value = this.getValueFromPath(gfi, key);
-            }
-            return value;
-        },
-        /**
-         * Parses the path and returns the value at the position of the path.
-         * @param {Object} properties - the feature properties
-         * @param {String} key - key that is an object path.
-         * @returns {Object|String} value of the path.
-         */
-        getValueFromPath: function (properties, key) {
-            const pathParts = key.substring(1).split(".");
-            let value = properties;
-
-            pathParts.forEach(part => {
-                value = value ? value[part] : undefined;
-            });
-            return value;
+            return mapAttributes(properties, mappingObject);
         }
     }
 };
@@ -354,13 +196,17 @@ export default {
                 <div class="gfi-footer">
                     <div
                         :class="[pagerIndex < 1 ? 'disabled' : '', 'pager-left', 'pager']"
+                        tabindex="0"
                         @click="decreasePagerIndex"
+                        @keydown.enter="decreasePagerIndex"
                     >
                         <span class="glyphicon glyphicon-chevron-left" />
                     </div>
                     <div
+                        tabindex="0"
                         :class="[pagerIndex === gfiFeatures.length - 1 ? 'disabled' : '', 'pager-right', 'pager']"
                         @click="increasePagerIndex"
+                        @keydown.enter="increasePagerIndex"
                     >
                         <span class="glyphicon glyphicon-chevron-right" />
                     </div>
@@ -376,9 +222,6 @@ export default {
 
 .gfi {
     color: @secondary_contrast;
-    .tool-window-vue {
-        max-width: 600px;
-    }
 }
 .bold{
     font-weight: bold;

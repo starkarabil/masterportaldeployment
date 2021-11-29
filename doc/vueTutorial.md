@@ -98,8 +98,8 @@ const state = {
     active: false,
     id: "scaleSwitcher",
     // mandatory defaults for config.json parameters
-    name: "common:menu.tools.coord",
-    glyphicon: "glyphicon-resize-small",
+    name: "common:menu.tools.scaleSwitcher",
+    glyphicon: "glyphicon-resize-full",
     renderToWindow: true,
     resizableWindow: true,
     isVisibleInMenu: true,
@@ -160,9 +160,8 @@ export default mutations;
 
 ## Defining actions
 
-[Vuex actions](https://vuex.vuejs.org/guide/actions.html#actions) can be added to the `modules/tools/scaleSwitcher/store/actionsScaleSwitcher.js`. The *ScaleSwitcher* does not need any actions. `activateByUrlParam` and `setToolActiveByConfig` are controlled globally by the *ToolManager*.
+[Vuex actions](https://vuex.vuejs.org/guide/actions.html#actions) can be added to the `modules/tools/scaleSwitcher/store/actionsScaleSwitcher.js`. The *ScaleSwitcher* does not need any actions.`setToolActiveByConfig` is controlled globally by the *ToolManager*.
 
-- `activateByUrlParam` checks whether the url query holds a parameter `isinitopen` and activates the tool named there if applicable. See the [url parameter documentation](urlParameter.md).
 - The action `setToolActiveByConfig` sets a tool's value "active" to `true`, which results in rendering the tool. See property `active` in the *Tool.vue*.
 
 ```js

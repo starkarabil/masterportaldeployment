@@ -44,13 +44,30 @@ export default {
             };
         }
     },
+    mounted () {
+        this.$nextTick(() => {
+            if (this.$refs.unfreeze) {
+                this.$refs.unfreeze.focus();
+            }
+        });
+    },
     methods: {
         /**
          * emitting the function in parent Freeze Component to hide the freezed window
+         * @param {Event} event the dom event
          * @returns {void}
          */
-        hideFreezeWin () {
-            this.$emit("hideFreezeWin");
+        hideFreezeWin (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.$emit("hideFreezeWin");
+            }
+        },
+        /**
+         * Does nothing to avoid that user tabs through the menu.
+         * @returns {void}
+         */
+        suppressKeyEvent () {
+            // do nothing, event has already been prevented/stopped.
         }
     }
 };
@@ -60,12 +77,17 @@ export default {
     <div
         id="freeze-view"
         class="freeze-view freeze-activated"
+        @keydown.prevent.stop="suppressKeyEvent()"
     >
         <p
+            ref="unfreeze"
             :class="isTable ? 'table freeze-view-close' : 'freeze-view-close'"
             :title="$t(`common:modules.controls.freeze.unfreeze`)"
             :style="isTable ? cssVars : ''"
-            @click="hideFreezeWin"
+            tabindex="0"
+            role="button"
+            @click="hideFreezeWin($event)"
+            @keydown="hideFreezeWin($event)"
         >
             {{ $t(`common:modules.controls.freeze.unfreeze`) }}
         </p>
@@ -73,13 +95,13 @@ export default {
 </template>
 
 <style lang="less" scoped>
-    @import "~variables";
+    @import "~/css/mixins.less";
 
     .freeze-view.freeze-activated {
         z-index: 10000;
         position: fixed;
-        top: 0px;
-        left: 0px;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
     }
@@ -110,8 +132,13 @@ export default {
             -ms-transform-origin: var(--xOrigin) var(--yOrigin);
             -moz-transform-origin: var(--xOrigin) var(--yOrigin);
         }
+        &:focus {
+            .primary_action_focus();
+        }
+        &:hover {
+            .primary_action_hover();
+        }
     }
-
  #table-navigation {
         &.table-nav-0deg, &.table-nav-0deg.ui-draggable {
             .freeze-view-close {

@@ -1,6 +1,6 @@
 import testAction from "../../../../../../test/unittests/VueTestUtils";
 import actions from "../../../store/actionsMapMarker";
-
+import sinon from "sinon";
 import Feature from "ol/Feature";
 import Polygon from "ol/geom/Polygon";
 import VectorLayer from "ol/layer/Vector.js";
@@ -11,8 +11,7 @@ const {
     placingPointMarker,
     removePointMarker,
     placingPolygonMarker,
-    removePolygonMarker,
-    activateByUrlParam
+    removePolygonMarker
 } = actions;
 
 describe("src/modules/mapMarker/store/actionsMapMarker.js", () => {
@@ -79,42 +78,26 @@ describe("src/modules/mapMarker/store/actionsMapMarker.js", () => {
     describe("removePolygonMarker", () => {
         it("removePolygonMarker", done => {
             const state = {
-                markerPolygon: new VectorLayer({
-                    name: "markerPolygon",
-                    source: new VectorSource(),
-                    alwaysOnTop: true,
-                    visible: false,
-                    style: new Style()
-                })
-            };
+                    markerPolygon: new VectorLayer({
+                        name: "markerPolygon",
+                        source: new VectorSource(),
+                        alwaysOnTop: true,
+                        visible: false,
+                        style: new Style()
+                    })
+                },
+                rootGetters = {
+                    "Map/ol2DMap": {
+                        removeLayer: sinon.spy(),
+                        addLayer: sinon.spy()
+                    }
+                };
 
             testAction(removePolygonMarker, null, state, {}, [
-                {type: "Map/removeLayerFromMap", payload: state.markerPolygon},
                 {type: "clearMarker", payload: "markerPolygon"},
                 {type: "setVisibilityMarker", payload: {visbility: false, marker: "markerPolygon"}}
-            ], {}, done);
+            ], {}, done, rootGetters);
         });
     });
 
-    describe("activateByUrlParam", () => {
-        it("activateByUrlParam marker=565874,5934140", done => {
-            const rootState = {
-                queryParams: {
-                    "marker": "565874,5934140"
-                }
-            };
-
-            testAction(activateByUrlParam, null, {}, rootState, [
-                {type: "placingPointMarker", payload: [565874, 5934140], dispatch: true}
-            ], {}, done);
-        });
-        it("activateByUrlParam no marker", done => {
-            const rootState = {
-                queryParams: {
-                }
-            };
-
-            testAction(activateByUrlParam, null, {}, rootState, [], {}, done);
-        });
-    });
 });

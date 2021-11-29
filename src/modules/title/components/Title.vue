@@ -44,10 +44,7 @@ export default {
          * @returns {boolean} true, if the title should be shown
          */
         showTitle () {
-            if (this.uiStyle === "TABLE" || this.mobile) {
-                return false;
-            }
-            return true;
+            return !(this.uiStyle === "TABLE" || this.mobile);
         },
         /**
         * Depending on the available space, the titletext and titlelogo is rendered.
@@ -72,7 +69,9 @@ export default {
                 searchbarWidth = document.getElementById("searchbar").offsetWidth;
                 navBarWidth = document.getElementById("main-nav").offsetWidth;
                 titleTextWidth = document.getElementById("title-text").offsetWidth;
-                logo = document.getElementById("logo").offsetWidth;
+                if (document.getElementById("logo")) {
+                    logo = document.getElementById("logo").offsetWidth;
+                }
                 titleWidth = titleEl ? titleEl[0].offsetWidth : 0;
 
                 if (!this.$store.state.Title.titleWidth) {
@@ -113,9 +112,11 @@ export default {
             :data-toggle="title"
             data-placement="bottom"
             :title="toolTip"
+            class="tabable"
         >
 
             <img
+                v-if="logo !== ''"
                 id="logo"
                 :src="logo"
                 :alt="title"

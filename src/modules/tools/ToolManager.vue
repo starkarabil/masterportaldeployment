@@ -40,7 +40,6 @@ export default {
         this.configuredTools.forEach(configuredTool => {
             const toolName = configuredTool?.component?.name;
 
-            this.activateByUrlParam(toolName);
             this.addToolNameAndGlyphiconToModelList(toolName);
         });
     },
@@ -48,7 +47,6 @@ export default {
     methods: {
         ...mapActions("Tools", [
             "pushAttributesToStoreElements",
-            "activateByUrlParam",
             "setToolActiveByConfig",
             "addToolNameAndGlyphiconToModelList"
         ]),

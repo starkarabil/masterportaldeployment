@@ -47,6 +47,11 @@ export default {
             type: Boolean,
             default: true,
             required: false
+        },
+        focusToCloseIcon: {
+            type: Boolean,
+            default: false,
+            required: false
         }
     },
     data () {
@@ -86,6 +91,14 @@ export default {
             }
 
             this.updateMap();
+
+            if (newValue && this.focusToCloseIcon) {
+                this.$nextTick(() => {
+                    if (this.$refs["close-icon"]) {
+                        this.$refs["close-icon"].focus();
+                    }
+                });
+            }
         }
     },
     methods: {
@@ -109,19 +122,25 @@ export default {
         },
         /**
          * Minifies tool and emits evnt.
-         *  @return {void}
+         * @param {Event} event - the dom event
+         * @return {void}
          */
-        minifyTool: function () {
-            this.isMinified = true;
-            this.$emit("toolMinified");
+        minifyTool: function (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.isMinified = true;
+                this.$emit("toolMinified");
+            }
         },
         /**
          * Maximizes tool and emits evnt.
-         *  @return {void}
+         * @param {Event} event - the dom event
+         * @return {void}
          */
-        maximizeTool: function () {
-            this.isMinified = false;
-            this.$emit("toolMaximized");
+        maximizeTool: function (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.isMinified = false;
+                this.$emit("toolMaximized");
+            }
         },
         /**
          * Updates the size of the map depending on sidebars visibility
@@ -135,13 +154,15 @@ export default {
         },
         /**
          * Updates size of map and emits event to parent.
-         * @param {Event} event the click event
+         * @param {Event} event the dom event
          * @return {void}
          */
         close (event) {
-            this.updateMap();
-            // emit event to parent e.g. SupplyCoord (which uses the tool as component and is therefor the parent)
-            this.$parent.$emit("close", event);
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.updateMap();
+                // emit event to parent e.g. SupplyCoord (which uses the tool as component and is therefor the parent)
+                this.$parent.$emit("close", event);
+            }
         }
     }
 };
@@ -204,20 +225,27 @@ export default {
                 <span
                     v-if="!isMinified"
                     class="glyphicon glyphicon-minus"
+                    tabindex="0"
                     title="Minimieren"
-                    @click="minifyTool"
+                    @click="minifyTool($event)"
+                    @keydown="minifyTool($event)"
                 />
                 <span
                     v-else
                     class="glyphicon glyphicon-plus"
+                    tabindex="0"
                     title="Maximieren"
-                    @click="maximizeTool"
+                    @click="maximizeTool($event)"
+                    @keydown="maximizeTool($event)"
                 />
             </div>
             <div class="heading-element">
                 <span
+                    ref="close-icon"
                     class="glyphicon glyphicon-remove"
+                    tabindex="0"
                     @click="close($event)"
+                    @keydown="close($event)"
                 />
             </div>
         </div>
@@ -243,26 +271,29 @@ export default {
 </template>
 
 <style lang="less" scoped>
-    @import "~variables";
-    @color_2: rgb(255, 255, 255);
-    @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
-    @font_family_2: "MasterPortalFont", sans-serif;
+    @import "~/css/mixins.less";
+    @color: rgb(255, 255, 255);
+    @font_family: "MasterPortalFont", sans-serif;
     @background_color_1: rgb(255, 255, 255);
     @background_color_2: #e10019;
-    @background_color_3: #f2f2f2;
     @background_color_4: #646262;
 
     #vue-tool-content-body {
         display:block;
-        min-height: calc(100% - 40px);
+        // min-height: calc(100% - 40px);
+
+        &:focus {
+            .primary_action_focus();
+        }
     }
 
     .win-heading{
         border-bottom: 1px solid rgb(229, 229, 229);
-        font-family: @font_family_1;
+        font-family: @font_family_accent;
         display:flex;
         flex-direction:row;
         width:100%;
+        height: 35px;
         padding-left: 10px;
 
         .heading-element {
@@ -283,13 +314,18 @@ export default {
             }
 
             > .glyphicon {
-                padding: 10px 8px 10px 0px;
+                padding: 8px 8px 8px 8px;
+                &:focus {
+                    .primary_action_focus();
+                }
             }
 
             > span {
                 &.glyphicon-minus { top: 3px; }
                 &:hover {
-                    &:not(.win-icon) { opacity: 0.7; cursor: pointer;}
+                    &:not(.win-icon) {
+                        .primary_action_hover();
+                    }
                 }
             }
         }
@@ -302,7 +338,7 @@ export default {
         padding:0;
         top: 20px;
         left: 20px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+        box-shadow: @tool_box_shadow;
         z-index: 999;
         min-width: 280px;
         width: var(--initialToolWidth);
@@ -324,10 +360,10 @@ export default {
             width:6px;
             height:6px;
         }
-        #basic-resize-handle-tl { top:0px; left:0px; }
-        #basic-resize-handle-tr { top:0px; right:0px;}
-        #basic-resize-handle-br { bottom:0px; right:0px;}
-        #basic-resize-handle-bl { bottom:0px; left:0px;}
+        #basic-resize-handle-tl { top: 0; left: 0; }
+        #basic-resize-handle-tr { top: 0; right: 0;}
+        #basic-resize-handle-br { bottom: 0; right: 0;}
+        #basic-resize-handle-bl { bottom: 0; left: 0;}
 
         &.is-minified {
             width:auto !important;
@@ -336,6 +372,9 @@ export default {
             #vue-tool-content-body { display:none; }
             .win-heading{
                 background-color:@background_color_2;
+                .glyphicon, .title {
+                    color: @color;
+                }
                 border-bottom:none;
                 overflow: hidden;
             }
@@ -352,26 +391,26 @@ export default {
     }
 
     .table-tool-win-all-vue {
-        font-family: @font_family_2;
+        font-family: @font_family;
         border-radius: 12px;
         margin-bottom: 30px;
         .win-heading {
-            font-family: @font_family_2;
+            font-family: @font_family;
             font-size: 14px;
             background-color: @background_color_4;
             .heading-element {
                 > .title {
-                    color: @color_2;
+                    color: @color;
                     font-size: 14px;
                 }
-                > .buttons { color: @color_2; }
-                > .glyphicon { color: @color_2; }
+                > .buttons { color: @color; }
+                > .glyphicon { color: @color; }
             }
         }
         .win-body-vue {
             border-bottom-left-radius: 12px;
             border-bottom-right-radius: 12px;
-            background-color: @background_color_3;
+            background-color: @secondary_table_style;
             * { border-radius: 12px; }
         }
     }
@@ -419,7 +458,7 @@ export default {
             z-index: 1050;
             overflow-x: hidden;
             overflow-y: auto;
-            margin: 0%;
+            margin: 0;
         }
     }
 </style>

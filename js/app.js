@@ -7,12 +7,10 @@ import Autostarter from "../modules/core/autostarter";
 import Util from "../modules/core/util";
 import StyleList from "../modules/vectorStyle/list";
 import Preparser from "../modules/core/configLoader/preparser";
-import ParametricURL from "../modules/core/parametricURL";
 import Map from "../modules/core/map";
 import RemoteInterface from "../modules/remoteInterface/model";
 import RadioMasterportalAPI from "../modules/remoteInterface/radioMasterportalAPI";
 import WFSTransactionModel from "../modules/wfsTransaction/model";
-import GraphModel from "../modules/tools/graph/model";
 import MenuLoader from "../modules/menu/menuLoader";
 import ZoomToGeometry from "../modules/zoomToGeometry/model";
 import ZoomToFeature from "../modules/zoomToFeature/model";
@@ -20,9 +18,7 @@ import FeatureViaURL from "../modules/featureViaURL/model";
 import SliderView from "../modules/snippets/slider/view";
 import SliderRangeView from "../modules/snippets/slider/range/view";
 import DropdownView from "../modules/snippets/dropdown/view";
-import ClickCounterModel from "../modules/clickCounter/model";
 import MouseHoverPopupView from "../modules/mouseHover/view";
-import QuickHelpView from "../modules/quickHelp/view";
 import WindowView from "../modules/window/view";
 import SidebarView from "../modules/sidebar/view";
 import ShadowView from "../modules/tools/shadow/view";
@@ -30,9 +26,9 @@ import ParcelSearchView from "../modules/tools/parcelSearch/view";
 import FilterView from "../modules/tools/filter/view";
 import StyleWMSView from "../modules/tools/styleWMS/view";
 import LayerSliderView from "../modules/tools/layerSlider/view";
-import CompareFeaturesView from "../modules/tools/compareFeatures/view";
 import RemoteInterfaceVue from "../src/plugins/remoteInterface/RemoteInterface";
 import {initiateVueI18Next} from "./vueI18Next";
+import {handleUrlParamsBeforeVueMount, readUrlParamEarly} from "../src/utils/parametricUrl/ParametricUrlBridge";
 
 /**
  * Vuetify
@@ -53,7 +49,6 @@ import WFSFeatureFilterView from "../modules/wfsFeatureFilter/view";
 import ExtendedFilterView from "../modules/tools/extendedFilter/view";
 import TreeFilterView from "../modules/treeFilter/view";
 import FeatureLister from "../modules/tools/featureLister/view";
-import PrintView from "../modules/tools/print/view";
 import WfstView from "../modules/tools/wfst/view";
 // controls
 import ControlsView from "../modules/controls/view";
@@ -108,16 +103,15 @@ async function loadApp () {
         Vue.use(RemoteInterfaceVue, Config.remoteInterface);
     }
 
-    if (Object.prototype.hasOwnProperty.call(Config, "quickHelp")) {
-        new QuickHelpView(Config.quickHelp);
-    }
-
     // import and register Vue addons according the config.js
     await loadAddons(Config.addons);
 
     Vue.config.productionTip = false;
 
     store.commit("setConfigJs", Config);
+
+    // must be done here, else it is done too late
+    readUrlParamEarly();
 
     app = new Vue({
         el: "#masterportal-root",
@@ -132,21 +126,21 @@ async function loadApp () {
     // Core laden
     new Autostarter();
     new Util(utilConfig);
+    if (store.state.urlParams?.uiStyle) {
+        Radio.trigger("Util", "setUiStyle", store.state.urlParams?.uiStyle);
+    }
+
     // Pass null to create an empty Collection with options
     new RestReaderList(null, {url: Config.restConf});
     new Preparser(null, {url: Config.portalConf});
-
+    handleUrlParamsBeforeVueMount(window.location.search);
 
     new StyleList();
-    if (!Object.prototype.hasOwnProperty.call(Config, "allowParametricURL") || Config.allowParametricURL === true) {
-        new ParametricURL();
-    }
     new Map(Radio.request("Parser", "getPortalConfig").mapView);
     new WindowView();
 
     app.$mount();
 
-    new GraphModel();
     new WFSTransactionModel();
     new MenuLoader();
 
@@ -164,10 +158,6 @@ async function loadApp () {
     new SliderRangeView();
     new DropdownView();
 
-    if (Object.prototype.hasOwnProperty.call(Config, "clickCounter") && Object.prototype.hasOwnProperty.call(Config, "desktop") && Config.clickCounter.desktop !== "" && Object.prototype.hasOwnProperty.call(Config, "mobile") && Config.clickCounter.mobile !== "") {
-        new ClickCounterModel(Config.clickCounter.desktop, Config.clickCounter.mobile, Config.clickCounter.staticLink);
-    }
-
     if (Object.prototype.hasOwnProperty.call(Config, "mouseHover")) {
         new MouseHoverPopupView(Config.mouseHover);
     }
@@ -178,20 +168,12 @@ async function loadApp () {
 
     Radio.request("ModelList", "getModelsByAttributes", {type: "tool"}).forEach(tool => {
         switch (tool.id) {
-            case "compareFeatures": {
-                new CompareFeaturesView({model: tool});
-                break;
-            }
             case "filter": {
                 new FilterView({model: tool});
                 break;
             }
             case "shadow": {
                 new ShadowView({model: tool});
-                break;
-            }
-            case "print": {
-                new PrintView({model: tool});
                 break;
             }
             case "parcelSearch": {

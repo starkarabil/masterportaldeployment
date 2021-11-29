@@ -1,11 +1,10 @@
 <script>
-import {Select, DragBox} from "ol/interaction";
-import {platformModifierKeyOnly} from "ol/events/condition";
+import {DragBox, Select} from "ol/interaction";
+import {never, platformModifierKeyOnly} from "ol/events/condition";
 import VectorSource from "ol/source/Vector.js";
-import {never} from "ol/events/condition";
 
 import Tool from "../../../../modules/tools/Tool.vue";
-import {mapGetters, mapMutations, mapActions} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getters from "../store/gettersSelectFeatures";
 import mutations from "../store/mutationsSelectFeatures";
 
@@ -320,6 +319,7 @@ export default {
         :render-to-window="renderToWindow"
         :resizable-window="resizableWindow"
         :deactivate-gfi="deactivateGFI"
+        :focus-to-close-icon="true"
         class="selectFeatures"
     >
         <template #toolBody>
@@ -335,6 +335,7 @@ export default {
                 </div>
                 <div
                     v-else
+                    ref="select-features-tables"
                     class="select-features-tables"
                 >
                     <template

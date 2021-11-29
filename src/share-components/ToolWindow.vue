@@ -14,6 +14,11 @@ export default {
             type: Number,
             default: -1,
             required: false
+        },
+        focusToCloseIcon: {
+            type: Boolean,
+            default: false,
+            required: false
         }
     },
     computed: {
@@ -36,9 +41,20 @@ export default {
             return "width: " + Math.floor(pixelWidth) + "px";
         }
     },
+    created () {
+        if (this.focusToCloseIcon) {
+            this.$nextTick(() => {
+                if (this.$refs["close-icon"]) {
+                    this.$refs["close-icon"].focus();
+                }
+            });
+        }
+    },
     methods: {
-        close () {
-            this.$emit("close");
+        close (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.$emit("close");
+            }
         }
     }
 };
@@ -65,8 +81,11 @@ export default {
 
             <div class="heading-element">
                 <span
+                    ref="close-icon"
+                    tabindex="0"
                     class="glyphicon glyphicon-remove"
                     @click="close($event)"
+                    @keydown="close($event)"
                 />
             </div>
         </div>
@@ -88,6 +107,7 @@ export default {
 </template>
 
 <style lang="less" scoped>
+    @import "~/css/mixins.less";
 
     @color_1: rgb(85, 85, 85);
     @font_family_1: "MasterPortalFont Bold","Arial Narrow",Arial,sans-serif;
@@ -109,20 +129,19 @@ export default {
             width:6px;
             height:6px;
         }
-        #basic-resize-handle-tl { top:0px; left:0px; }
-        #basic-resize-handle-tr { top:0px; right:0px;}
-        #basic-resize-handle-br { bottom:0px; right:0px;}
-        #basic-resize-handle-bl { bottom:0px; left:0px;}
+        #basic-resize-handle-tl { top: 0; left: 0; }
+        #basic-resize-handle-tr { top: 0; right: 0;}
+        #basic-resize-handle-br { bottom: 0; right: 0;}
+        #basic-resize-handle-bl { bottom: 0; left: 0;}
     }
 
     .tool-window-heading{
-        padding: 12px 10px 12px 10px;
+        padding: 5px 5px 5px 5px;
         border-bottom: 1px solid rgb(229, 229, 229);
         font-family: @font_family_1;
         display:flex;
         flex-direction:row;
         width:100%;
-
         .heading-element {
             white-space: nowrap;
             color: @color_1;
@@ -133,17 +152,29 @@ export default {
                 flex-grow:99;
                 overflow: hidden;
             }
+            .glyphicon {
+                padding: 5px;
+                &:focus {
+                    .primary_action_focus();
+                }
+                &:hover {
+                    .primary_action_hover();
+                }
+            }
 
             > span {
                 &.glyphicon-minus { top: 3px; }
                 &:hover {
-                    &:not(.win-icon) { opacity: 0.7; cursor: pointer;}
+                    &:not(.win-icon) {
+                        .primary_action_hover();
+                    }
                 }
             }
         }
     }
 
     .tool-window-heading-title {
+        padding-top: 7px;
         margin:0;
         overflow:hidden;
         white-space: nowrap;

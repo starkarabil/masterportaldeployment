@@ -2,7 +2,7 @@
 import Default from "../themes/default/components/Default.vue";
 import Sensor from "../themes/sensor/components/Sensor.vue";
 import getTheme from "../../utils/getTheme";
-import {mapGetters, mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import ToolWindow from "../../../../../share-components/ToolWindow.vue";
 
 export default {
@@ -98,13 +98,16 @@ export default {
 <template>
     <ToolWindow
         class="gfi-detached-table rotate0"
+        :focus-to-close-icon="true"
         :initial-width="360"
         @close="close"
     >
         <template #rightOfTitle>
             <span
+                tabindex="0"
                 class="icon-turnarticle glyphicon"
                 @click="rotate"
+                @keydown.enter="rotate"
             />
         </template>
         <template #title>
@@ -125,6 +128,8 @@ export default {
 </template>
 
 <style lang="less">
+@import "~/css/mixins.less";
+
 @color_1: #808080;
 @font_family_1: "MasterPortalFont";
 @background_color_1: #F2F2F2;
@@ -178,9 +183,15 @@ export default {
         display: inline-block;
         bottom: 20px;
         right: 25px;
-          margin: 0 0 0 10px;
-            cursor: pointer;
-            font-size: 16px;
+        margin: 6px 0 0 10px;
+        cursor: pointer;
+        font-size: 16px;
+        &:focus {
+            .primary_action_focus();
+        }
+        &:hover {
+            .primary_action_hover();
+        }
     }
     .icon-turnarticle::before {
         color: @background_color_1;

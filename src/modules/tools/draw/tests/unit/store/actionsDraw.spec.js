@@ -2,29 +2,48 @@ import sinon from "sinon";
 import {expect} from "chai";
 import actions from "../../../store/actionsDraw";
 import stateDraw from "../../../store/stateDraw";
-import {Draw} from "ol/interaction.js";
+import Draw from "ol/interaction/Draw";
 import Feature from "ol/Feature";
 import Polygon from "ol/geom/Polygon";
 import LineString from "ol/geom/LineString";
+import mapCollection from "../../../../../../core/dataStorage/mapCollection.js";
 
 
 describe("src/modules/tools/draw/store/actionsDraw.js", () => {
-    let commit, dispatch, state;
+    let commit, dispatch, state, addInteraction;
 
     beforeEach(() => {
         commit = sinon.spy();
         dispatch = sinon.spy();
-    });
+        mapCollection.clear();
+        addInteraction = sinon.spy();
+        const map = {
+            id: "ol",
+            mode: "2D",
+            addInteraction: addInteraction,
+            getView: () => ({
+                getProjection: () => ({
+                    getCode: () => "EPSG:25832"
+                })
+            })
+        };
 
+        mapCollection.addMap(map, "ol", "2D");
+    });
     afterEach(sinon.restore);
 
     describe("addInteraction", () => {
         it("calls map's addInteraction function with a given interaction", () => {
-            const addInteraction = sinon.spy(),
+            const rootState = {
+                    Map: {
+                        mapId: "ol",
+                        mapMode: "2D"
+                    }
+                },
                 interactionSymbol = Symbol();
 
             actions.addInteraction({
-                rootState: {Map: {map: {addInteraction}}}
+                rootState: rootState
             }, interactionSymbol);
 
             expect(addInteraction.calledOnce).to.be.true;
@@ -56,13 +75,8 @@ describe("src/modules/tools/draw/store/actionsDraw.js", () => {
         beforeEach(() => {
             rootState = {
                 Map: {
-                    map: {
-                        getView: () => ({
-                            getProjection: () => ({
-                                getCode: () => "EPSG:25832"
-                            })
-                        })
-                    }
+                    mapId: "ol",
+                    mapMode: "2D"
                 }
             };
         });
@@ -100,9 +114,10 @@ describe("src/modules/tools/draw/store/actionsDraw.js", () => {
                 },
                 drawType: {
                     id,
-                    geometry: ""
+                    geometry: "Point"
                 },
-                symbol: {}
+                symbol: {},
+                freehand: false
             };
 
             result[id + "Options"] = {};
@@ -112,11 +127,20 @@ describe("src/modules/tools/draw/store/actionsDraw.js", () => {
         const activeSymbol = Symbol(),
             maxFeaturesSymbol = Symbol(),
             getters = {
-                styleSettings: Symbol()
+                styleSettings: sinon.stub()
             };
 
         it("commits and dispatches as expected", () => {
-            actions.createDrawInteractionAndAddToMap({state: getState("drawCircle"), commit, dispatch, getters}, {active: activeSymbol, maxFeatures: maxFeaturesSymbol});
+            actions.createDrawInteractionAndAddToMap({
+                state: getState("drawCircle"),
+                commit,
+                dispatch,
+                getters
+            },
+            {
+                active: activeSymbol,
+                maxFeatures: maxFeaturesSymbol
+            });
 
             // commits setDrawInteraction
             expect(commit.calledOnce).to.be.true;
@@ -443,19 +467,31 @@ describe("src/modules/tools/draw/store/actionsDraw.js", () => {
         });
     });
     describe("deactivateDrawInteractions", () => {
-        const drawOne = new Draw({}),
-            drawTwo = new Draw({}),
+        const settings = {
+                source: () => ({}),
+                type: "Point",
+                freehand: false
+            },
+            drawOne = new Draw(settings),
+            drawTwo = new Draw(settings),
             noDraw = Symbol();
         let rootState;
 
         beforeEach(() => {
+            mapCollection.clear();
+            addInteraction = sinon.spy();
+            const map = {
+                id: "ol",
+                mode: "2D",
+                getInteractions: () => [drawOne, drawTwo, noDraw]
+            };
+
+            mapCollection.addMap(map, "ol", "2D");
             rootState = {
                 Map: {
-                    map: {
-                        getInteractions: () => [drawOne, drawTwo, noDraw]
-                    }
-                }
-            };
+                    mapId: "ol",
+                    mapMode: "2D"
+                }};
             state = {deactivatedDrawInteractions: []};
         });
 
@@ -576,15 +612,25 @@ describe("src/modules/tools/draw/store/actionsDraw.js", () => {
         });
     });
     describe("removeInteraction", () => {
-        const interactionSymbol = Symbol(),
-            removeInteraction = sinon.spy(),
+        let interactionSymbol, removeInteraction, rootState;
+
+        beforeEach(() => {
+            interactionSymbol = Symbol();
+            removeInteraction = sinon.spy();
             rootState = {
                 Map: {
-                    map: {
-                        removeInteraction
-                    }
-                }
+                    mapId: "ol",
+                    mapMode: "2D"
+                }};
+            mapCollection.clear();
+            const map = {
+                id: "ol",
+                mode: "2D",
+                removeInteraction: removeInteraction
             };
+
+            mapCollection.addMap(map, "ol", "2D");
+        });
 
         it("should call the 'removeInteration' method of the map of the rootState", () => {
             actions.removeInteraction({rootState}, interactionSymbol);

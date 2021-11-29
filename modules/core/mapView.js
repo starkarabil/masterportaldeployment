@@ -1,7 +1,7 @@
 import {Projection} from "ol/proj.js";
 import defaults from "masterportalAPI/src/defaults";
-import {transformToMapProjection} from "masterportalAPI/src/crs";
 import store from "../../src/app-store";
+import mapCollection from "../../src/core/dataStorage/mapCollection.js";
 
 const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     defaults: {
@@ -37,7 +37,6 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @fires Core#RadioRequestParametricURLGetCenter
      * @fires Core#RadioRequestParametricURLGetProjectionFromUrl
      * @fires Core#RadioRequestParametricURLGetZoomLevel
-     * @fires ClickCounter#RadioTriggerClickCounterZoomChanged
      * @fires Core#RadioTriggerMapViewChangedCenter
      * @fires Core#RadioTriggerMapViewChangedOptions
      * @fires Core#RadioTriggerMapViewChangedZoomLevel
@@ -58,10 +57,10 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
 
         channel.reply({
             "getProjection": function () {
-                return this.get("view").getProjection();
+                return mapCollection.getMap("ol", "2D").getView().getProjection();
             },
             "getOptions": function () {
-                return Radio.request("Util", "findWhereJs", this.get("options"), {resolution: this.get("view").getConstrainedResolution(this.get("view").getResolution())});
+                return Radio.request("Util", "findWhereJs", this.get("options"), {resolution: mapCollection.getMap("ol", "2D").getView().getConstrainedResolution(mapCollection.getMap("ol", "2D").getView().getResolution())});
             },
             "getCenter": function () {
                 return this.getCenter();
@@ -70,7 +69,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
                 return this.getZoom();
             },
             "getResolutions": function () {
-                return this.get("view").getResolutions();
+                return mapCollection.getMap("ol", "2D").getView().getResolutions();
             },
             "getResoByScale": this.getResoByScale,
             "getScales": function () {
@@ -97,18 +96,15 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
         if (document.getElementById("map") !== null) {
             this.setBackgroundImage(document.getElementById("map").style.backgroundImage);
         }
-        this.setProjectionFromParamUrl(Radio.request("ParametricURL", "getProjectionFromUrl"));
-        this.prepareStartCenter(Radio.request("ParametricURL", "getCenter"));
-        this.setStartZoomLevel(Radio.request("ParametricURL", "getZoomLevel"));
 
         // Listener für ol.View
-        this.get("view").on("change:resolution", this.changedResolutionCallback.bind(this), this);
-        this.get("view").on("change:center", function () {
+        mapCollection.getMap("ol", "2D").getView().on("change:resolution", this.changedResolutionCallback.bind(this), this);
+        mapCollection.getMap("ol", "2D").getView().on("change:center", function () {
             Radio.trigger("MapView", "changedCenter", this.getCenter());
             Radio.trigger("RemoteInterface", "postMessage", {"centerPosition": this.getCenter()});
         }, this);
 
-        params = Radio.request("Util", "findWhereJs", this.get("options"), {resolution: this.get("view").getConstrainedResolution(this.get("view").getResolution())});
+        params = Radio.request("Util", "findWhereJs", this.get("options"), {resolution: mapCollection.getMap("ol", "2D").getView().getConstrainedResolution(mapCollection.getMap("ol", "2D").getView().getResolution())});
 
         Radio.trigger("MapView", "changedOptions", params);
         store.commit("Map/setScale", params?.scale);
@@ -125,7 +121,6 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @param {ol.View} evt.target - this.get("view")
      * @fires Core#RadioTriggerMapViewChangedOptions
      * @fires Core#RadioTriggerMapViewChangedZoomLevel
-     * @fires ClickCounter#RadioTriggerClickCounterZoomChanged
      * @fires RemoteInterface#RadioTriggerRemoteInterfacePostMessage
      * @returns {void}
      */
@@ -137,7 +132,6 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
         Radio.trigger("MapView", "changedOptions", params);
         store.commit("Map/setScale", params?.scale);
         Radio.trigger("MapView", "changedZoomLevel", this.getZoom());
-        Radio.trigger("ClickCounter", "zoomChanged");
         Radio.trigger("RemoteInterface", "postMessage", {"zoomLevel": this.getZoom()});
     },
 
@@ -149,8 +143,8 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     setResolutionByScale: function (scale) {
         const params = Radio.request("Util", "findWhereJs", this.get("options"), {scale: scale});
 
-        if (this.get("view") !== undefined) {
-            this.get("view").setResolution(params.resolution);
+        if (mapCollection.getMap("ol", "2D").getView() !== undefined) {
+            mapCollection.getMap("ol", "2D").getView().setResolution(params.resolution);
         }
     },
 
@@ -160,7 +154,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     setConstrainedResolution: function (resolution) {
-        this.get("view").setResolution(resolution);
+        mapCollection.getMap("ol", "2D").getView().setResolution(resolution);
     },
 
     /**
@@ -169,7 +163,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @returns {void}
      */
     resetView: function () {
-        const paramUrlCenter = Radio.request("ParametricURL", "getCenter"),
+        const paramUrlCenter = store.state.urlParams["Map/center"] ? store.state.urlParams["Map/center"] : null,
             settingsCenter = this.get("settings") !== undefined && this.get("settings")?.startCenter ? this.get("settings").startCenter : undefined,
             defaultCenter = defaults.startCenter,
             center = paramUrlCenter || settingsCenter || defaultCenter,
@@ -177,8 +171,8 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
             defaultResolution = defaults.startResolution,
             resolution = settingsResolution || defaultResolution;
 
-        this.get("view").setCenter(center);
-        this.get("view").setResolution(resolution);
+        mapCollection.getMap("ol", "2D").getView().setCenter(center);
+        mapCollection.getMap("ol", "2D").getView().setResolution(resolution);
         store.dispatch("MapMarker/removePointMarker");
     },
 
@@ -200,22 +194,6 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
         this.set("backgroundImage", value);
     },
 
-    /**
-     * @description todo
-     * @param {int} value todo
-     * @fires Core#RadioRequestMapGetMap
-     * @returns {void}
-     */
-    prepareStartCenter: function (value) {
-        let startCenter = value;
-
-        if (startCenter !== undefined) {
-            if (this.get("projectionFromParamUrl") !== undefined) {
-                startCenter = transformToMapProjection(Radio.request("Map", "getMap"), this.get("projectionFromParamUrl"), startCenter);
-            }
-            this.get("view").setCenter(startCenter);
-        }
-    },
 
     /**
      * @description todo
@@ -224,7 +202,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      */
     setStartZoomLevel: function (value) {
         if (value !== undefined) {
-            this.get("view").setResolution(this.get("view").getResolutions()[value]);
+            mapCollection.getMap("ol", "2D").getView().setResolution(mapCollection.getMap("ol", "2D").getView().getResolutions()[value]);
         }
     },
 
@@ -269,10 +247,10 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
             first2Coords = first2Coords.map(singleCoord => parseInt(singleCoord, 10));
         }
 
-        this.get("view").setCenter(first2Coords);
+        mapCollection.getMap("ol", "2D").getView().setCenter(first2Coords);
 
         if (zoomLevel !== undefined) {
-            this.get("view").setZoom(zoomLevel);
+            mapCollection.getMap("ol", "2D").getView().setZoom(zoomLevel);
         }
     },
 
@@ -281,7 +259,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {void}
      */
     setZoomLevelUp: function () {
-        this.get("view").setZoom(this.getZoom() + 1);
+        mapCollection.getMap("ol", "2D").getView().setZoom(this.getZoom() + 1);
     },
 
     /**
@@ -289,7 +267,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {void}
      */
     setZoomLevelDown: function () {
-        this.get("view").setZoom(this.getZoom() - 1);
+        mapCollection.getMap("ol", "2D").getView().setZoom(this.getZoom() - 1);
     },
 
     /**
@@ -312,10 +290,10 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
 
         index = unionScales.indexOf(parseInt(scale, 10));
         if (unionScales.length === scales.length || scaleType === "max") {
-            return this.get("view").getResolutions()[index];
+            return mapCollection.getMap("ol", "2D").getView().getResolutions()[index];
         }
         else if (scaleType === "min") {
-            return this.get("view").getResolutions()[index - 1];
+            return mapCollection.getMap("ol", "2D").getView().getResolutions()[index - 1];
         }
         return null;
     },
@@ -325,7 +303,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {array} Center Coords
      */
     getCenter: function () {
-        return this.get("view").getCenter();
+        return mapCollection.getMap("ol", "2D").getView().getCenter();
     },
 
     /**
@@ -347,7 +325,7 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
      * @return {number} current Zoom of MapView
      */
     getZoom: function () {
-        return this.get("view").getZoom();
+        return mapCollection.getMap("ol", "2D").getView().getZoom();
     },
 
     /**
@@ -358,17 +336,9 @@ const MapView = Backbone.Model.extend(/** @lends MapView.prototype */{
     getCurrentExtent: function () {
         const mapSize = Radio.request("Map", "getSize");
 
-        return this.get("view").calculateExtent(mapSize);
+        return mapCollection.getMap("ol", "2D").getView().calculateExtent(mapSize);
     },
 
-    /**
-     * @description Sets projection from param url
-     * @param {string} projection todo
-     * @returns {void}
-     */
-    setProjectionFromParamUrl: function (projection) {
-        this.set("projectionFromParamUrl", projection);
-    },
 
     /**
      * @description Sets projection from param url

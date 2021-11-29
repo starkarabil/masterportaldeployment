@@ -147,34 +147,6 @@
  */
 
 
-/** -------------------- CLICK COUNTER -------------------- */
-
-/**
- * @event ClickCounter#RadioTriggerClickCounterToolChanged
- * @example Radio.trigger("ClickCounter", "toolChanged")
- */
-
-/**
- * @event ClickCounter#RadioTriggerClickCounterCalcRoute
- * @example Radio.trigger("ClickCounter", "calcRoute")
- */
-
-/**
- * @event ClickCounter#RadioTriggerClickCounterZoomChanged
- * @example Radio.trigger("ClickCounter", "zoomChanged")
- */
-
-/**
- * @event ClickCounter#RadioTriggerClickCounterLayerVisibleChanged
- * @example Radio.trigger("ClickCounter", "layerVisibleChanged")
- */
-
-/**
- * @event ClickCounter#RadioTriggerClickCounterGfi
- * @example Radio.trigger("ClickCounter", "gfi")
- */
-
-
 /** -------------------- LEGEND COMPONENT-------------------- */
 
 /**
@@ -293,8 +265,12 @@
  * @param {*} layers - todo
  * @param {*} url - todo
  * @param {*} version - todo
+ * @param {object} [optionalParameters] Object of optional parameters to be set for the Layer. Empty object required if no opional parameters set.
+ * @param {boolean} [optionalParameters.transparent = true] Whether the given layer is transparent.
+ * @param {boolean} [optionalParameters.isSelected = false] Whether the given layer is selected .
+ * @param {(boolean/object)} [optionalParameters.time = false] If set to `true` or and Object, the configured Layer is expected to be a WMS-T.
  * @returns {void}
- * @example Radio.trigger("Parser", "addLayer", name, id, parentId, level, layers, url, version)
+ * @example Radio.trigger("Parser", "addLayer", name, id, parentId, level, layers, url, version, transparent, isSelected, time)
  */
 
 /**
@@ -1313,12 +1289,6 @@
  */
 
 /**
- * @event Core#RadioRequestGetConfig
- * @example Radio.request("Util", "getConfig")
- * @description Request config path
- */
-
-/**
  * @event Core#RadioRequestUtilGetUiStyle
  * @description returns the ignoredKeys
  * @returns {string} - Style of the ui. Possible values are "DEFAULT" or "TABLE"
@@ -1399,19 +1369,6 @@
  * @example Radio.request("Util", "sort", type, values, first, second);
  */
 
-/**
- * @event Core#RadioRequestUtilGetConfig
- * @description Retrives the config data
- * @returns {Object} - config data
- * @example Radio.request("Util", "getConfig");
- */
-
-/**
- * @event Core#RadioRequestUtilConvertArrayOfObjectsToCsv
- * @description todo
- * @returns {*} - todod
- * @example Radio.request("Util", "convertArrayOfObjectsToCsv");
- */
 
 /**
  * @event Core#RadioRequestUtilGetMasterPortalVersionNumber
@@ -1448,42 +1405,32 @@
  */
 
 /**
- * @event Core#RadioTriggerUtilSetUiStyle
+ * @event Core#RadioRequestUtilSetUiStyle
  * @description sets the ui style
  * @example Radio.request("Util", "setUiStyle");
  */
 
 /**
- * @event Core#RadioTriggerUtilPick
+ * @event Core#RadioRequestUtilPick
  * @description Return a copy of the object, filtered to only have values for the whitelisted keys (or array of valid keys).
  * @example Radio.request("Util", "pick");
  */
 
 /**
- * @event Core#RadioTriggerUtilOmit
+ * @event Core#RadioRequestUtilOmit
  * @description Returns a copy of the object, filtered to omit the keys specified (or array of blacklisted keys).
  * @example Radio.request("Util", "omit");
  */
 
+/**
+ * @event Core#RadioTriggerUtilRefreshTree
+ * @description Calls the treeType specific function to rerender the tree.
+ * @example Radio.trigger("Util", "refreshTree")
+ */
 
 /**
  * @event Core#changeIsViewMobile
  * @description todo
- */
-
-/** -------------------- GRAPH -------------------- */
-
-/**
- * @event Tools.Graph#RadioTriggerGraphCreateGraph
- * @description starts the generating of a graphic
- * @param {Object} graphConfig contains the options for the graphic
- * @example Radio.trigger("Graph", "createGraph", graphconfig);
- */
-
-/**
- * @event Tools.Graph#RadioRequestGraphGetGraphParams
- * @description Returns the current graph params.
- * @example Radio.request("Graph", "getGraphParams");
  */
 
 /** -------------------- GFILIST -------------------- */
@@ -1494,26 +1441,6 @@
  * @example Radio.trigger("gfiList", "redraw", );
  */
 
-/** -------------------- QUICKHELP -------------------- */
-
-/**
- * @event QuickHelp#RadioTriggerQuickHelpShowWindowHelp
- * @description is triggered by QuickHelp
- * @param {String} topic topic for quickHelp to show
- * @example Radio.trigger("QuickHelp", "showWindowHelp", topic);
- */
-
-/**
- * @event QuickHelp#RadioRequestQuickHelpIsSet
- * @description Returns isSet value
- * @example Radio.request("QuickHelp", "isSet");
- */
-
-/**
- * @event QuickHelp#render
- * @description Triggered when the QuickHelp View has to render.
- * @example this.trigger("render")
- */
 /** -------------------- WINDOW -------------------- */
 
 /**
@@ -1861,98 +1788,6 @@
  * @description Hightlights a specific polygon
  */
 
-
-/** -------------------- ParametricURL -------------------- */
-
-/**
- * @event Core#RadioRequestParametricURLGetHighlightFeature
- * @returns {Object} featureToHighlight Feature to highlight
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetCenter
- * @description todo
- */
-
- /**
-  * @event Core#RadioRequestParametricURLGetFeatureViaURL
-  * @returns {Object[]} Returns the features given by the user via the URL.
-  */
-
-/**
- * @event Core#RadioRequestParametricURLGetProjectionFromUrl
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetZoomLevel
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetZoomToExtent
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetResult
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetLayerParams
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetIsInitOpen
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetInitString
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetZoomToGeometry
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetStyle
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetFilter
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetZoomToFeatureIds
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetBrwId
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetBrwLayerName
- * @description todo
- */
-
-/**
- * @event Core#RadioRequestParametricURLGetMarkerFromUrl
- * @description todo
- */
-
-/**
- * @event Core#RadioTriggerParametricURLUpdateQueryStringParam
- * @description todo
- */
 
 /**
  * @event Core#RadioTriggerParametricURLReady
@@ -2404,3 +2239,12 @@
  * @description Trigger hide POI modal.
  * @example Radio.trigger("POI", "hidePOIModal");
  */
+
+/** -------------------- WmsTime -------------------- */
+
+/**
+ * @event WmsTime#RadioTriggerWmsTimeUpdateTime
+ * @description Updates the 'TIME' parameter of the layer with the given Id.
+ * @example Radio.trigger("WmsTime", "updateTime", "myTimeLayer", 4020);
+ */
+

@@ -2,7 +2,7 @@
 import getters from "../store/gettersLayerInformation";
 import mutations from "../store/mutationsLayerInformation";
 import ToolWindow from "../../../share-components/ToolWindow.vue";
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 /**
  * The Layer Information that gives the user information, links and the legend for a layer
@@ -25,10 +25,10 @@ export default {
             return this.layerInfo.metaURL !== null && typeof this.abstractText !== "undefined" && this.abstractText !== this.noMetaDataMessage && this.abstractText !== this.noMetadataLoaded;
         },
         showPublication () {
-            return typeof this.datePublication !== "undefined" && this.datePublication !== null;
+            return typeof this.datePublication !== "undefined" && this.datePublication !== null && this.datePublication !== "";
         },
         showRevision () {
-            return typeof this.dateRevision !== "undefined" && this.dateRevision !== null;
+            return typeof this.dateRevision !== "undefined" && this.dateRevision !== null && this.dateRevision !== "";
         },
         showPeriodicity () {
             return this.periodicityKey !== "" && this.periodicityKey !== null && this.periodicityKey !== undefined;
@@ -37,7 +37,7 @@ export default {
             return this.downloadLinks !== null;
         },
         showUrl () {
-            return this.layerInfo.url !== null && this.layerInfo.urlIsVisible !== false && this.layerInfo.typ !== "SensorThings";
+            return (this.layerInfo.url !== null && this.layerInfo.typ !== "SensorThings" && this.showUrlGlobal === true) || (this.layerInfo.url !== null && this.layerInfo.typ !== "SensorThings" && this.showUrlGlobal === undefined && this.layerInfo.urlIsVisible !== false);
         },
         showAttachFile () {
             return this.downloadLinks && this.downloadLinks.length > 1;
@@ -47,7 +47,7 @@ export default {
         },
         showMoreLayers () {
             if (this.layerInfo.metaIdArray) {
-                return this.layerInfo.metaIdArray.length > 1;
+                return this.layerInfo.metaIdArray.length > 1 && !this.layerInfo.metaIdArray.every(item => item === null);
             }
             return false;
         },
@@ -57,16 +57,29 @@ export default {
 
     },
 
+    created () {
+        this.setConfigs();
+    },
+
     mounted () {
         if (this.metaDataCatalogueId) {
             this.setMetaDataCatalogueId(this.metaDataCatalogueId);
         }
+        // might be caught from self when triggerClose() is called
+        Backbone.Events.listenTo(Radio.channel("Layer"), {
+            "setLayerInfoChecked": (value) => {
+                if (!value) {
+                    this.close();
+                }
+            }
+        });
     },
 
     methods: {
         ...mapActions("LayerInformation", [
             "changeLayerInfo",
-            "activate"
+            "activate",
+            "setConfigParams"
         ]),
         ...mapMutations("LayerInformation", Object.keys(mutations)),
         /**
@@ -76,6 +89,12 @@ export default {
         close () {
             this.setActive(false);
             this.$emit("close");
+        },
+        /**
+         * Trigger (Radio) close related events
+         * @returns {void}
+         */
+        triggerClose () {
             Radio.trigger("Layer", "setLayerInfoChecked", false);
             Radio.trigger("LayerInformation", "unhighlightLayerInformationIcon");
         },
@@ -132,6 +151,9 @@ export default {
         onClickDropdown (evt) {
             evt.stopPropagation();
             this.openDropdown = true;
+        },
+        setConfigs () {
+            this.setConfigParams(Config);
         }
     }
 };
@@ -142,7 +164,7 @@ export default {
         v-if="showInformation"
         id="layerInformation"
         class="layerInformation"
-        @close="close"
+        @close="triggerClose"
     >
         <template #title>
             <span>{{ $t("common:modules.layerInformation.informationAndLegend") }}</span>
@@ -153,7 +175,7 @@ export default {
                     class="subtitle"
                     :title="title"
                 >
-                    {{ $t(title) }}
+                    {{ title }}
                 </h4>
 
                 <div
@@ -220,6 +242,7 @@ export default {
                         value="layerinfo-legend"
                         :class="{active: isActiveTab('layerinfo-legend') }"
                         @click="onClick"
+                        @keydown.enter="onClick"
                     >
                         <a
                             href="#layerinfo-legend"
@@ -232,6 +255,7 @@ export default {
                         value="LayerInfoDataDownload"
                         :class="{active: isActiveTab('LayerInfoDataDownload') }"
                         @click="onClick"
+                        @keydown.enter="onClick"
                     >
                         <a
                             href="#LayerInfoDataDownload"
@@ -244,6 +268,7 @@ export default {
                         value="url"
                         :class="{active: isActiveTab('url') }"
                         @click="onClick"
+                        @keydown.enter="onClick"
                     >
                         <a
                             href="#url"
@@ -335,7 +360,7 @@ export default {
         margin-bottom: 9px;
     }
     hr {
-        margin: 15px 0px 10px 0px;
+        margin: 15px 0 10px 0;
     }
 
     #layerInformation .abstract /deep/ p {
@@ -364,8 +389,9 @@ export default {
         background-color: @background_color_2;
         box-shadow: 8px 8px 12px rgba(0, 0, 0, 0.176);
         border: 1px solid rgb(229, 229, 229);
+
         @media (max-width: 768px) {
-            inset: 12px auto auto 0px;
+            inset: 12px auto auto 0;
             max-width:750px;
             width: 95vw;
             max-height: 80vh;

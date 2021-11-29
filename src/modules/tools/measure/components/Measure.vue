@@ -1,5 +1,5 @@
 <script>
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getComponent from "../../../../utils/getComponent";
 import Tool from "../../Tool.vue";
 import getters from "../store/gettersMeasure";
@@ -18,8 +18,8 @@ export default {
     },
     computed: {
         ...mapGetters("Tools/Measure", Object.keys(getters)),
-        ...mapGetters(["isTableStyle", "isDefaultStyle"]),
-        ...mapGetters("Map", ["layerById", "map", "is3d"])
+        ...mapGetters(["uiStyle"]),
+        ...mapGetters("Map", ["layerById", "is3d", "ol2DMap"])
     },
     watch: {
         /**
@@ -34,6 +34,7 @@ export default {
             }
             else {
                 this.createDrawInteraction();
+                this.setFocusToFirstControl();
             }
         },
         /**
@@ -48,7 +49,7 @@ export default {
     },
     created () {
         this.$on("close", this.close);
-        this.addLayerToMap(this.layer);
+        this.ol2DMap.addLayer(this.layer);
     },
     mounted () {
         if (this.active) {
@@ -58,7 +59,21 @@ export default {
     methods: {
         ...mapMutations("Tools/Measure", Object.keys(mutations)),
         ...mapActions("Tools/Measure", Object.keys(actions)),
-        ...mapMutations("Map", ["addLayerToMap"]),
+
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs["measure-tool-geometry-select"] && !this.$refs["measure-tool-geometry-select"].disabled) {
+                    this.$refs["measure-tool-geometry-select"].focus();
+                }
+                else if (this.$refs["measure-tool-unit-select"]) {
+                    this.$refs["measure-tool-unit-select"].focus();
+                }
+            });
+        },
         /**
          * Sets active to false.
          * @returns {void}
@@ -87,6 +102,9 @@ export default {
                     layerSource.removeFeature(actualFeature);
                 }
             }
+        },
+        isDefaultStyle () {
+            return this.uiStyle !== "SIMPLE" && this.uiStyle !== "TABLE";
         }
     }
 };
@@ -121,6 +139,7 @@ export default {
                         <div class="col-md-7 col-sm-7">
                             <select
                                 id="measure-tool-geometry-select"
+                                ref="measure-tool-geometry-select"
                                 class="font-arial form-control input-sm pull-left"
                                 :disabled="is3d"
                                 :value="selectedGeometry"
@@ -150,6 +169,7 @@ export default {
                         <div class="col-md-7 col-sm-7">
                             <select
                                 id="measure-tool-unit-select"
+                                ref="measure-tool-unit-select"
                                 class="font-arial form-control input-sm pull-left"
                                 :value="selectedUnit"
                                 @change="setSelectedUnit($event.target.value)"
@@ -165,7 +185,7 @@ export default {
                         </div>
                     </div>
                     <div
-                        v-if="isDefaultStyle"
+                        v-if="isDefaultStyle()"
                         class="form-group form-group-sm"
                     >
                         <div class="col-md-12 col-sm-12 inaccuracy-list">

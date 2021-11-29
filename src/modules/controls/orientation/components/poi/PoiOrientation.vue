@@ -40,9 +40,25 @@ export default {
         this.show();
         this.getFeatures();
         this.initActiveCategory();
+        this.$nextTick(() => {
+            if (this.$refs["close-icon"]) {
+                this.$refs["close-icon"].focus();
+            }
+        });
     },
     methods: {
         ...mapMutations("controls/orientation", Object.keys(mutations)),
+
+        /**
+         * Callback when close icon has been clicked.
+         * @param {Event} event the dom event
+         * @returns {void}
+         */
+        closeIconTriggered (event) {
+            if (event.type === "click" || event.which === 32 || event.which === 13) {
+                this.hidePoi();
+            }
+        },
 
         /**
          * Show the modal.
@@ -291,16 +307,20 @@ export default {
     <div
         id="surrounding_vectorfeatures"
         class="modal fade in poi"
+        @keydown.esc="hidePoi"
     >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span
+                        ref="close-icon"
                         class="glyphicon glyphicon-remove"
+                        tabindex="0"
                         aria-hidden="true"
                         data-dismiss="modal"
                         :title="$t('button.close')"
-                        @click="hidePoi"
+                        @click="closeIconTriggered($event)"
+                        @keydown="closeIconTriggered($event)"
                     />
                     <h4 class="modal-title">
                         {{ $t("common:modules.controls.orientation.titleGeolocatePOI") }}
@@ -316,11 +336,12 @@ export default {
                             :key="index"
                             :class="feature.category === activeCategory ? 'active' : ''"
                             @click="changedCategory"
+                            @keydown.enter="changedCategory"
                         >
                             <a
                                 :href="'#' + feature.category"
                                 :aria-controls="feature.category"
-                                role="pill"
+                                role="button"
                                 data-toggle="pill"
                             >{{ feature.category + 'm' }}
                                 <span
@@ -351,7 +372,10 @@ export default {
                                                 <span v-html="feat.imgPath" />
                                             </td>
                                             <td v-else-if="feat.imgPath.length > 0">
-                                                <img :src="feat.imgPath">
+                                                <img
+                                                    :src="feat.imgPath"
+                                                    :alt="$t('common:modules.controls.orientation.imgAlt')"
+                                                >
                                             </td>
                                             <td>
                                                 <p
@@ -371,14 +395,22 @@ export default {
                 </div>
             </div>
         </div>
+        <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
         <div
             class="modal-backdrop fade in"
             @click="hidePoi"
         />
+        <!--
+            The previous element does not require a key interaction. It is not focusable,
+            has no semantic meaning, and other methods exist for keyboard users to leave
+            the backdropped modal dialog.
+        -->
     </div>
 </template>
 
 <style lang="less" scoped>
+    @import "~/css/mixins.less";
+
     .poi {
         color: rgb(85, 85, 85);
         font-size: 14px;
@@ -397,6 +429,9 @@ export default {
             float: right;
             padding: 12px;
             cursor: pointer;
+            &:focus {
+                .primary_action_focus();
+            }
         }
         .modal-dialog {
             z-index: 1041;
@@ -404,6 +439,9 @@ export default {
         .tab-content{
             max-height: 78vH;
             overflow: auto;
+            &:focus {
+                .primary_action_focus();
+            }
             tbody {
                 >tr {
                     >td {

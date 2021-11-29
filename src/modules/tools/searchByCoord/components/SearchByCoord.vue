@@ -1,6 +1,6 @@
 <script>
 import Tool from "../../Tool.vue";
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getters from "../store/gettersSearchByCoord";
 import actions from "../store/actionsSearchByCoord";
 import mutations from "../store/mutationsSearchByCoord";
@@ -50,9 +50,13 @@ export default {
                 this.resetErrorMessages();
                 this.resetValues();
             }
+            else {
+                this.setFocusToFirstControl();
+            }
         }
     },
     created () {
+        console.warn("The tool 'searchByCoord' is deprecated in 3.0.0. Please use 'coordToolkit' instead.");
         this.$on("close", this.close);
         this.setExample();
     },
@@ -71,6 +75,17 @@ export default {
             if (model) {
                 model.set("isActive", false);
             }
+        },
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs.coordSystemField) {
+                    this.$refs.coordSystemField.focus();
+                }
+            });
         }
     }
 };
@@ -97,10 +112,12 @@ export default {
                     <div class="form-group form-group-sm">
                         <label
                             class="col-md-5 col-sm-5 control-label"
+                            for="coordSystemField"
                         >{{ $t("modules.tools.searchByCoord.coordinateSystem") }}</label>
                         <div class="col-md-7 col-sm-7">
                             <select
                                 id="coordSystemField"
+                                ref="coordSystemField"
                                 class="font-arial form-control input-sm pull-left"
                                 :value="currentSelection"
                                 @change="selectionChanged"
@@ -176,7 +193,7 @@ export default {
                     <div class="form-group form-group-sm">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <button
-                                class="btn btn-block"
+                                class="btn btn-primary btn-block"
                                 :disabled="getEastingError || getNorthingError || !coordinatesEasting.value || !coordinatesNorthing.value"
                                 type="button"
                                 @click="searchCoordinate(coordinatesEasting, coordinatesNorthing)"
@@ -199,7 +216,7 @@ export default {
     }
 }
 .error-text {
-    font-size: 85%;
+    font-size: 100%;
     color: #a94442;
 }
 .inputError {

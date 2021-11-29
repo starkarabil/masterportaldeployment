@@ -3,7 +3,7 @@ import Tool from "../../Tool.vue";
 import getComponent from "../../../../utils/getComponent";
 import {Pointer} from "ol/interaction.js";
 import {getProjections} from "masterportalAPI/src/crs";
-import {mapGetters, mapActions, mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import getters from "../store/gettersSupplyCoord";
 import mutations from "../store/mutationsSupplyCoord";
 
@@ -41,6 +41,7 @@ export default {
                 this.createInteraction();
                 this.setPositionMapProjection(this.mouseCoord);
                 this.changedPosition();
+                this.setFocusToFirstControl();
             }
             else {
                 this.removePointerMoveHandlerFromMap(this.setCoordinates);
@@ -50,6 +51,7 @@ export default {
         }
     },
     created () {
+        console.warn("The tool 'supplyCoord' is deprecated in 3.0.0. Please use 'coordToolkit' instead.");
         this.$on("close", this.close);
     },
     methods: {
@@ -70,6 +72,18 @@ export default {
             addInteractionToMap: "addInteraction",
             removeInteractionFromMap: "removeInteraction"
         }),
+
+        /**
+         * Sets the focus to the first control
+         * @returns {void}
+         */
+        setFocusToFirstControl () {
+            this.$nextTick(() => {
+                if (this.$refs.coordSystemField) {
+                    this.$refs.coordSystemField.focus();
+                }
+            });
+        },
         /**
          * Called if selection of projection changed. Sets the current scprojectionale to state and changes the position.
          * @param {Event} event changed selection event
@@ -169,6 +183,7 @@ export default {
                         <div class="col-md-7 col-sm-7">
                             <select
                                 id="coordSystemField"
+                                ref="coordSystemField"
                                 v-model="currentSelection"
                                 class="font-arial form-control input-sm pull-left"
                                 @change="selectionChanged($event)"

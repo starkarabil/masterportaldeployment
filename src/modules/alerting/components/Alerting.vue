@@ -1,8 +1,8 @@
 <script>
 
-import Modal from "../../../share-components/modals/Modal.vue";
+import Modal from "../../../share-components/modals/components/Modal.vue";
 import axios from "axios";
-import {mapGetters, mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "Alerting",
@@ -30,7 +30,7 @@ export default {
 
         /**
          * Console mapping to be able to debug in template.
-         * @returns {Void} With capital V
+         * @returns {void}
          */
         console: () => console
     },
@@ -205,6 +205,7 @@ export default {
                         >
                             <a
                                 @click="markAsRead(singleAlert.hash)"
+                                @keydown.enter="markAsRead(singleAlert.hash)"
                             >
                                 {{ $t(singleAlert.confirmText) }}
                             </a>
@@ -255,7 +256,7 @@ export default {
 
         div.singleAlertContainer {
             border-bottom:1px dotted #CCCCCC;
-            color:#777777;
+            color:@secondary_contrast;
             font-size:12px;
             margin-bottom:12px;
             padding-bottom:12px;
@@ -264,7 +265,7 @@ export default {
                 color:#EE7777;
 
                 &.confirm a {
-                    color:#777777;
+                    color:@secondary_contrast;
                     cursor:pointer;
                     text-decoration:underline;
 
@@ -276,7 +277,7 @@ export default {
 
             &.last {
                 border-bottom:none;
-                padding-bottom:0px;
+                padding-bottom:0;
             }
         }
     }
