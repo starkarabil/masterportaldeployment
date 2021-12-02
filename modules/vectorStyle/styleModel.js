@@ -306,7 +306,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
         const style = rule?.style;
         let styleObject;
 
-        if (Object.prototype.hasOwnProperty.call(style, "labelField")) {
+        if (style && Object.prototype.hasOwnProperty.call(style, "labelField")) {
             this.set("labelField", style.labelField);
         }
         if (geometryType === "Point") {
@@ -533,7 +533,7 @@ const VectorStyleModel = Backbone.Model.extend(/** @lends VectorStyleModel.proto
             }
         }
 
-        const featureValue = mapAttributes(featureProperties, key, false),
+        const featureValue = mapAttributes(featureProperty, key, false),
             referenceValue = this.getReferenceValue(featureProperty, value);
 
         if ((typeof featureValue === "boolean" || typeof featureValue === "string" || typeof featureValue === "number") && (typeof referenceValue === "boolean" || typeof referenceValue === "string" || typeof referenceValue === "number" ||
