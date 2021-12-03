@@ -10,6 +10,18 @@
 
 ## Unreleased - in development
 ### Added
+
+### Changed
+- Migrated the map from Backbone.js to Vue.js environment.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## v2.16.0 - 2021-12-01
+### Added
 - The library "svg-url-loader" was added to package.json devDependencies.
 - Added the new Tool `Routing`.
 - The following NPM packages are added:
