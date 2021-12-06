@@ -250,7 +250,7 @@ export default {
 <template lang="html">
     <Tool
         :title="$t(name)"
-        :icon="glyphicon"
+        :icon="icon"
         :active="active"
         :render-to-window="renderToWindow"
         :resizable-window="resizableWindow"
@@ -324,11 +324,11 @@ const Config = {
 ...
     "tools": {
         "name": "Tools",
-        "glyphicon": "glyphicon-wrench",
+        "icon": "bi-wrench",
         "children": {
            "vueAddon": {
                 "name": "translate#additional:modules.tools.vueAddon.title",
-                "glyphicon": "glyphicon-th-list"
+                "icon": "bi-list-ul"
           },
 ```
 
