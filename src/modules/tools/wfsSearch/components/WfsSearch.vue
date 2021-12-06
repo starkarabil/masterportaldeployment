@@ -121,7 +121,7 @@ export default {
     <div>
         <Tool
             :title="$t(name)"
-            :icon="glyphicon"
+            :icon="icon"
             :active="active"
             :render-to-window="renderToWindow"
             :resizable-window="resizableWindow"
@@ -169,7 +169,7 @@ export default {
                     >
                         <i
                             id="tool-wfsSearch-userHelp-icon"
-                            class="col-md-1 col-sm-1 glyphicon glyphicon-info-sign"
+                            class="col-md-1 col-sm-1 bi-info-circle-fill"
                         />
                         <span
                             id="tool-wfsSearch-userHelp-text"
@@ -225,7 +225,7 @@ export default {
         </Tool>
         <Modal
             :title="$t(name)"
-            :icon="glyphicon"
+            :icon="icon"
             :show-modal="showResults"
             modal-inner-wrapper-style="padding: 10px;min-width: 70vw;"
             modal-content-container-style="padding: 0;overflow: auto;max-height: 70vh;"

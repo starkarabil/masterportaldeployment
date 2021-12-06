@@ -94,13 +94,13 @@ export default {
 >
     <Modal
         :title="$t('common:modules.tools.compareFeatures.title')"
-        :icon="glyphicon"
+        :icon="icon"
         :show-modal="active"
         @modalHid="close"
     >
         <Modal
             :title="$t('common:modules.tools.compareFeatures.title')"
-            :icon="glyphicon"
+            :icon="icon"
             :show-modal="showAlert && !active"
             @modalHid="setShowAlert(false)"
         >

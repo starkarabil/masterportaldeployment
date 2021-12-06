@@ -314,7 +314,7 @@ export default {
 <template lang="html">
     <Tool
         :title="translate('common:menu.tools.selectFeatures')"
-        :icon="glyphicon"
+        :icon="icon"
         :active="active"
         :render-to-window="renderToWindow"
         :resizable-window="resizableWindow"

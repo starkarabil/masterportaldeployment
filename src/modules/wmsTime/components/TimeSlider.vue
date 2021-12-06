@@ -97,7 +97,7 @@ export default {
                     :disabled="nextIndex(false) === -1"
                     @click="moveOne(false)"
                 >
-                    <i class="glyphicon glyphicon-backward" />
+                    <i class="bi-skip-end-fill" />
                 </button>
                 <button
                     :id="'timeSlider-button-play-' + layerId"
@@ -106,7 +106,7 @@ export default {
                     @click="play"
                 >
                     <i
-                        :class="['glyphicon', playing ? 'glyphicon-pause' : 'glyphicon-play']"
+                        :class="[playing ? 'bi-pause-fill' : 'bi-play-fill']"
                     />
                 </button>
                 <button
@@ -116,7 +116,7 @@ export default {
                     :disabled="nextIndex() === timeRange.length"
                     @click="moveOne(true)"
                 >
-                    <i class="glyphicon glyphicon-forward" />
+                    <i class="bi-skip-start-fill" />
                 </button>
             </fieldset>
             <fieldset>

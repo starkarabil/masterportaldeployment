@@ -100,12 +100,14 @@ export default {
             >
                 <span
                     ref="discard"
-                    class="glyphicon glyphicon-remove"
+                    class="bootstrap-icon"
                     title="Discard"
                     tabindex="0"
                     @click="discardByClickX"
                     @keydown.enter="discardByClickX"
-                />
+                >
+                    <i class="bi-x-lg" />
+                </span>
                 <div
                     id="modal-1-header-container"
                 >
@@ -136,7 +138,7 @@ export default {
         &.showing{
             display:block;
         }
-        .glyphicon {
+        .bootstrap-icon {
             font-size: 14px;
             padding: 5px;
             color:#555555;
@@ -183,7 +185,7 @@ export default {
         position:relative;
         padding: 5px;
 
-        .glyphicon.glyphicon-remove {
+        .bootstrap-icon {
             position:absolute;
             right:2px;
             top:4px;

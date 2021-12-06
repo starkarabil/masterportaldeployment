@@ -73,7 +73,7 @@ describe("LayerInformation.vue", () => {
             localVue
         });
 
-        expect(wrapper.find(".glyphicon-remove")).to.exist;
+        expect(wrapper.find(".bi-x-lg")).to.exist;
     });
 
     it("should emitted close event if button is clicked", async () => {
@@ -81,7 +81,7 @@ describe("LayerInformation.vue", () => {
                 store,
                 localVue
             }),
-            button = wrapper.find(".glyphicon-remove");
+            button = wrapper.find(".bi-x-lg");
 
         expect(button).to.exist;
 

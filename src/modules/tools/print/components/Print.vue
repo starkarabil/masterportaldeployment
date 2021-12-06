@@ -236,7 +236,7 @@ export default {
 <template lang="html">
     <Tool
         :title="$t(name)"
-        :icon="glyphicon"
+        :icon="icon"
         :active="active"
         :show-in-sidebar="true"
         :initial-width="350"
@@ -343,7 +343,9 @@ export default {
                         @mouseleave="showHintInfoScale = false"
                         @focusout="showHintInfoScale = false"
                     >
-                        <span class="glyphicon glyphicon-info-sign" />
+                        <span class="bootstrap-icon">
+                            <i class="bi-info-circle-fill" />
+                        </span>
                     </div>
                     <div
                         v-if="currentScale !== currentMapScale"
@@ -427,9 +429,11 @@ export default {
                         />
                         <div
                             v-else
-                            id="tool-print-download-glyphicon"
-                            class="glyphicon glyphicon-ok"
-                        />
+                            id="tool-print-download-icon"
+                            class="bootstrap-icon"
+                        >
+                            <i class="bi-check-lg" />
+                        </div>
                     </div>
                     <div class="col-sm-6 tool-print-download-button-container">
                         <button
@@ -506,7 +510,7 @@ export default {
                 margin: 5px 0 0 0;
             }
 
-            #tool-print-download-glyphicon {
+            #tool-print-download-icon {
                 font-size: 18px;
                 color:#286090;
             }

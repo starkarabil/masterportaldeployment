@@ -27,7 +27,7 @@ describe("src/module/tools/generalFilter/utils/converToNewConfig.js", () => {
             const deprecated = {
                     filter: {
                         name: "Filter",
-                        glyphicon: "glyphicon-filter",
+                        icon: "bi-funnel-fill",
                         deactivateGFI: false,
                         isGeneric: false,
                         isInitOpen: false,
@@ -52,7 +52,7 @@ describe("src/module/tools/generalFilter/utils/converToNewConfig.js", () => {
                 expected = {
                     generalFilter: {
                         name: "Filter",
-                        glyphicon: "glyphicon-filter",
+                        icon: "bi-funnel-fill",
                         deactivateGFI: false,
                         isInitOpen: false,
                         layers: [{

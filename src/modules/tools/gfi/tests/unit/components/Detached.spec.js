@@ -166,7 +166,7 @@ describe("src/modules/tools/gfi/components/templates/Detached.vue", () => {
             localVue
         });
 
-        expect(wrapper.find("span.glyphicon.glyphicon-remove").exists()).to.be.true;
+        expect(wrapper.find("span.bootstrap-icon > .bi-x-lg").exists()).to.be.true;
     });
 
 
@@ -191,7 +191,7 @@ describe("src/modules/tools/gfi/components/templates/Detached.vue", () => {
                 store: store,
                 localVue
             }),
-            button = wrapper.find("span.glyphicon.glyphicon-remove");
+            button = wrapper.find("span.bootstrap-icon > .bi-x-lg");
 
         await button.trigger("click");
         expect(wrapper.emitted()).to.have.property("close");

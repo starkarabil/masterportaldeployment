@@ -51,7 +51,7 @@ export default {
 <template lang="html">
     <Tool
         :title="$t(name)"
-        :icon="glyphicon"
+        :icon="icon"
         :active="active"
         :render-to-window="renderToWindow"
         :resizable-window="resizableWindow"

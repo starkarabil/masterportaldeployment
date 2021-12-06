@@ -41,14 +41,14 @@ export default {
         this.configuredTools.forEach(configuredTool => {
             const toolName = configuredTool?.component?.name;
 
-            this.addToolNameAndGlyphiconToModelList(toolName);
+            this.addToolNameAndIconToModelList(toolName);
         });
     },
     methods: {
         ...mapActions("Tools", [
             "pushAttributesToStoreElements",
             "setToolActiveByConfig",
-            "addToolNameAndGlyphiconToModelList"
+            "addToolNameAndIconToModelList"
         ]),
         ...mapMutations("Tools", [
             "setConfiguredTools"
