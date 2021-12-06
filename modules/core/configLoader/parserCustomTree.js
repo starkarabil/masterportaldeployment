@@ -185,7 +185,7 @@ const CustomTreeParser = Parser.extend(/** @lends CustomTreeParser.prototype */{
                     isLeafFolder: isLeafFolder,
                     isFolderSelectable: isFolderSelectable,
                     level: level,
-                    glyphicon: "glyphicon-plus-sign",
+                    icon: "bi-plus-circle-fill",
                     isVisibleInTree: this.getIsVisibleInTree(level, "folder", true, treeType),
                     isInThemen: true,
                     quickHelp: store.getters["QuickHelp/isSet"],

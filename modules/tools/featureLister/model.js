@@ -14,7 +14,7 @@ const FeatureListerModel = Tool.extend(/** @lends FeatureListerModel.prototype *
         featureProps: {}, // Properties des Features mit gesuchter featureid
         highlightedFeature: null,
         highlightedFeatureStyle: null,
-        glyphicon: "glyphicon-menu-hamburger",
+        icon: "bi-list",
         // translations
         visibleVectorLayers: "",
         chooseTheme: "",
@@ -38,7 +38,7 @@ const FeatureListerModel = Tool.extend(/** @lends FeatureListerModel.prototype *
      * @property {Object} featureProps={} Properties of the feature with requested featureid
      * @property {Object} highlightedFeature=null Feature that is currently highlighted
      * @property {Object} highlightedFeatureStyle=null Feature style of the currently highlighted feature
-     * @property {String} glyphicon="glyphicon-menu-hamburger" id of the glyphicon to use in the template
+     * @property {String} icon="bi-list" id of the icon to use in the template
      * @fires FeatureLister#changeLayerId
      * @fires FeatureLister#changeFeatureId
      * @fires FeatureLister#changeIsActive

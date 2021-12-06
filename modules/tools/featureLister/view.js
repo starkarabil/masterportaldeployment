@@ -8,7 +8,7 @@ import {isUrl} from "../../../src/utils/urlHelper";
  */
 const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prototype */{
     events: {
-        "click .glyphicon-remove": "toggle",
+        "click .x-icon": "toggle",
         "click #featurelistFeaturelist": "switchTabToListe", // wechselt den sichtbaren Tab
         "click #featurelistThemeChooser": "switchTabToTheme", // wechselt den sichtbaren Tab
         "click #featurelistFeaturedetails": "switchTabToDetails", // wechselt den sichtbaren Tab
@@ -82,7 +82,7 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
             this.model.set("layerid", {});
             this.undelegateEvents();
         }
-        $("#window .win-heading span.glyphicon-remove").trigger("focus");
+        $("#window .win-heading span.bootstrap-icon.x-icon").trigger("focus");
         return this;
     },
 
@@ -138,7 +138,7 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
      */
     orderList: function (evt) {
         const spanTarget = this.$(evt.target).find("span")[0] ? this.$(evt.target).find("span")[0] : evt.target,
-            sortOrder = this.$(spanTarget).hasClass("glyphicon-sort-by-alphabet-alt") ? "ascending" : "descending",
+            sortOrder = this.$(spanTarget).find("i").hasClass("bi-sort-alpha-down-alt") ? "ascending" : "descending",
             sortColumn = spanTarget.parentElement.textContent,
             tableLength = this.$("#featurelist-list-table tr").length - 1,
             features = this.model.get("layer").features.filter(feature => {
@@ -155,14 +155,14 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
 
         this.$(".featurelist-list-table-th-sorted").removeClass("featurelist-list-table-th-sorted");
         if (sortOrder === "ascending") {
-            this.$(spanTarget).removeClass("glyphicon-sort-by-alphabet-alt");
-            this.$(spanTarget).addClass("glyphicon-sort-by-alphabet");
+            this.$(spanTarget).find("i").removeClass("bi-sort-alpha-down-alt");
+            this.$(spanTarget).find("i").addClass("bi-sort-alpha-down");
             this.$(spanTarget).addClass("featurelist-list-table-th-sorted");
         }
         else {
             featuresSorted = featuresSorted.reverse();
-            this.$(spanTarget).removeClass("glyphicon-sort-by-alphabet");
-            this.$(spanTarget).addClass("glyphicon-sort-by-alphabet-alt");
+            this.$(spanTarget).find("i").removeClass("bi-sort-alpha-down");
+            this.$(spanTarget).find("i").addClass("bi-sort-alpha-down-alt");
             this.$(spanTarget).addClass("featurelist-list-table-th-sorted");
         }
 
@@ -342,7 +342,7 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
             this.model.set("headers", keyslist);
             this.$("#featurelist-list-table thead").remove(); // leere Tabelle
             this.$("#featurelist-list-table tbody").remove(); // leere Tabelle
-            this.$("#featurelist-list-table").prepend("<thead><tr><th class='featurelist-list-table-th'>" + keyslist.toString().replace(/,/g, "<span class='glyphicon glyphicon-sort-by-alphabet'></span></th><th class='featurelist-list-table-th'>") + "<span class='glyphicon glyphicon-sort-by-alphabet'></span></th></tr></thead>");
+            this.$("#featurelist-list-table").prepend("<thead><tr><th class='featurelist-list-table-th'>" + keyslist.toString().replace(/,/g, "<span class='bootstrap-icon'><i class='bi-sort-alpha-down'></i></span></th><th class='featurelist-list-table-th'>") + "<span class='bootstrap-icon'><i class='bi-sort-alpha-down'></i></span></th></tr></thead>");
             this.$("#featurelist-list-table").append("<tbody>");
             this.readFeatures(0, maxFeatures, true);
             this.$("#featurelist-list-table").append("</tbody>");

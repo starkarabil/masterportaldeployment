@@ -297,7 +297,7 @@ const GazetteerModel = Backbone.Model.extend({
                 name: hitName,
                 type: i18next.t("common:modules.searchbar.type.street"),
                 coordinate: position,
-                glyphicon: "glyphicon-road",
+                icon: "bi-signpost-2",
                 id: hitName.replace(/ /g, "") + "Straße"
             });
         }, this);
@@ -341,7 +341,7 @@ const GazetteerModel = Backbone.Model.extend({
                 name: hitName,
                 type: i18next.t("common:modules.searchbar.type.district"),
                 coordinate: pos,
-                glyphicon: "glyphicon-map-marker",
+                icon: "bi-geo-alt-fill",
                 id: hitName.replace(/ /g, "") + "Stadtteil"
             });
         }, this);
@@ -405,7 +405,7 @@ const GazetteerModel = Backbone.Model.extend({
                 name: "Flurstück " + gemarkung + "/" + flurstueck,
                 type: i18next.t("common:modules.searchbar.type.parcel"),
                 coordinate: coordinate,
-                glyphicon: "glyphicon-map-marker",
+                icon: "bi-geo-alt-fill",
                 geom: geom,
                 id: "Parcel"
             });
@@ -427,7 +427,7 @@ const GazetteerModel = Backbone.Model.extend({
                     name: hitName,
                     type: i18next.t("common:modules.searchbar.type.street"),
                     coordinate: coordinates,
-                    glyphicon: "glyphicon-road",
+                    icon: "bi-signpost-2",
                     id: hitName.replace(/ /g, "") + "Straße"
                 });
             }
@@ -557,7 +557,7 @@ const GazetteerModel = Backbone.Model.extend({
                 name: name,
                 type: i18next.t("common:modules.searchbar.type.address"),
                 coordinate: coordinate,
-                glyphicon: "glyphicon-map-marker",
+                icon: "bi-geo-alt-fill",
                 adress: adress,
                 id: that.uniqueId("Adresse")
             };
