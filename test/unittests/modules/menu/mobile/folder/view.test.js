@@ -66,7 +66,7 @@ describe("menu/mobile/folder/view", function () {
                     "isSecured": false,
                     "name": "testFolder",
                     "isExpanded": true,
-                    "glyphicon": "test"
+                    "icon": "test"
                 };
             },
 
