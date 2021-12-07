@@ -64,6 +64,14 @@ module.exports = {
                 use: {loader: "worker-loader"}
             },
             {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                    {
+                        loader: "file-loader"
+                    }
+                ]
+            },
+            {
                 test: /\.(svg)$/,
                 exclude: /fonts/, /* dont want svg fonts from fonts folder to be included */
                 use: [
