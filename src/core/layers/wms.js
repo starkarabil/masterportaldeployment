@@ -57,7 +57,6 @@ WMSLayer.prototype.createLayer = function (attrs) {
     const options = {resolutions: mapCollection.getMap("ol", "2D").getView().getResolutions(), origin: [442800, 5809000]},
         rawLayerAttributes = {
             id: attrs.id,
-            cacheId: attrs.cacheId,
             gutter: attrs.gutter,
             format: attrs.format,
             url: attrs.url,
