@@ -28,6 +28,7 @@ export function describeFeatureType (url, version = "1.1.0") {
  * @returns {Object[]|undefined} A list of feature attributes with name and type.
  */
 export function getFeatureDescription (json, featureTypeName) {
+    console.info(json);
     if (typeof json !== "object" || json === null || typeof featureTypeName !== "string") {
         console.error(`getFeatureDescription: ${json} has to be defined and an object (not null). ${featureTypeName} has to be defined and a string`);
         return undefined;

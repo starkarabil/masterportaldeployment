@@ -58,9 +58,9 @@ export default function xml2json (srcDom) {
 function parseNodeAttributes (nodeAttributes) {
     const attributes = {};
 
-    nodeAttributes.forEach(node => {
-        attributes[node.name] = node.value;
-    });
+    for (let i = 0; i <= nodeAttributes.length - 1; i++) {
+        attributes[nodeAttributes[i].name] = nodeAttributes[i].value;
+    }
     return attributes;
 }
 
