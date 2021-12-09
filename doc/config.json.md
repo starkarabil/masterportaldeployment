@@ -101,21 +101,21 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
 ```
 
 
-|Name|Required|Type|Default|Description|Expert|
-|----|--------|----|-------|-----------|------|
-|epsg|no|String|"EPSG:25832"|EPSG code of the coordinate reference system to use.|false|
-|extent|no|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]|Coordinate extent in which search algorithms should return.|false|
-|filter|no|String|"filter=(typ:*)"|Filter string sent to the BKG interface.|false|
-|geosearchServiceId|yes|String||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|minChars|no|Integer|3|_Deprecated in 3.0.0. Please use "minCharacters"._|false|
-|minCharacters|no|Integer|3|Minimum amount of characters required to start a search.|false|
-|score|no|Number|0.6|Score defining the minimum quality of search results.|false|
-|suggestCount|no|Integer|20|Suggestion amount.|false|
-|suggestServiceId|yes|String||Suggestion service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|zoomToResult|no|Boolean|false|_Deprecated in 3.0.0. Please use "zoomToResultOnHover" or "zoomToResultOnClick"._ Defines whether a feature is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnHover|no|Boolean|false|Defines whether an address is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnClick|no|Boolean|true|Defines whether an address is zoomed to when clicking a result list entry.|false|
-|zoomLevel|no|Number|7|Defines the zoom level to use on zooming to a result.|false|
+|Name|Required|Type|Default|DefaultSource|Description|Expert|
+|----|--------|----|-------|-------------|-----------|------|
+|epsg|no|String|"EPSG:25832"||EPSG code of the coordinate reference system to use.|false|
+|extent|no|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]||Coordinate extent in which search algorithms should return.|false|
+|filter|no|String|"filter=(typ:*)"||Filter string sent to the BKG interface.|false|
+|geosearchServiceId|yes|String|||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|minChars|no|Integer|3||_Deprecated in 3.0.0. Please use "minCharacters"._|false|
+|minCharacters|no|Integer|3||Minimum amount of characters required to start a search.|false|
+|score|no|Number|0.6||Score defining the minimum quality of search results.|false|
+|suggestCount|no|Integer|20||Suggestion amount.|false|
+|suggestServiceId|yes|String|||Suggestion service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|zoomToResult|no|Boolean|false||_Deprecated in 3.0.0. Please use "zoomToResultOnHover" or "zoomToResultOnClick"._ Defines whether a feature is zoomed to when hovering a result list entry.|false|
+|zoomToResultOnHover|no|Boolean|false||Defines whether an address is zoomed to when hovering a result list entry.|false|
+|zoomToResultOnClick|no|Boolean|true||Defines whether an address is zoomed to when clicking a result list entry.|false|
+|zoomLevel|no|Number|7||Defines the zoom level to use on zooming to a result.|false|
 
 **Example**
 ```json
@@ -169,16 +169,16 @@ OpenStreetMap search for city, street, and house number. Only executed on clicki
 #### Portalconfig.searchBar.komoot
 Search with **[Komoot Photon](https://photon.komoot.io/)**.
 
-|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
-|----|-------------|---|-------|------------|------|
-|minChars|no|Number|3|Minimum amount of characters required to start a search.|false|
-|serviceId|yes|String||Komoot search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|limit|no|Number|10|Maximum amount of requested unfiltered results.|false|
-|lang|no|string|"de"|Language of the Komoot Search. Effects language specific locationnames (e.g. Countrynames) aus.|false|
-|searchCenter|no|**[Coordinate](#markdown-header-datatypescoordinate)**||Coordinates that specify the Search-Center.|false|
-|bbox|no|string||Boundingbox of the search.|false|
-|osm_tag|no|string||Filtering of OSM Tags (see https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
-|searchOnEnter|no|Boolean|false|If `searchOnEnter` is set to `true`, searches will only start on clicking the search icon or pressing enter.|false|
+|Name|Verpflichtend|Typ|Default|DefaultSource|Beschreibung|Expert|
+|----|-------------|---|-------|-------------|------------|------|
+|minChars|no|Number|3||Minimum amount of characters required to start a search.|false|
+|serviceId|yes|String|||Komoot search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|limit|no|Number|10||Maximum amount of requested unfiltered results.|false|
+|lang|no|string|"de"||Language of the Komoot Search. Effects language specific locationnames (e.g. Countrynames) aus.|false|
+|searchCenter|no|**[Coordinate](#markdown-header-datatypescoordinate)**|||Coordinates that specify the Search-Center.|false|
+|bbox|no|string|||Boundingbox of the search.|false|
+|osm_tag|no|string|||Filtering of OSM Tags (see https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
+|searchOnEnter|no|Boolean|false||If `searchOnEnter` is set to `true`, searches will only start on clicking the search icon or pressing enter.|false|
 
 **Example**
 

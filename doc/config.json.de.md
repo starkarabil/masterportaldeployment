@@ -93,22 +93,21 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
 </Location>
 ```
 
-
-|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
-|----|-------------|---|-------|------------|------|
-|epsg|nein|String|"EPSG:25832"|EPSG-Code des zu verwendenden Koordinatensystems.|false|
-|extent|nein|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]|Koordinaten-Ausdehnung innerhalb dieser der Suchalgorithmus suchen soll.|false|
-|filter|nein|String|"filter=(typ:*)"|Filter string der an die BKG-Schnittstelle geschickt wird.|false|
-|geosearchServiceId|ja|String||Id des Suchdienstes. Wird aufgelöst in der **[rest-services.json](rest-services.json.de.md)**.|false|
-|minChars|nein|Integer|3|Deprecated in 3.0.0. Bitte "minCharacters" verwenden.|false|
-|minCharacters|nein|Integer|3|Minimale Anzahl an Buchstaben, ab der die Suche losläuft.|false|
-|score|nein|Number|0.6|Score der die Qualität der Suchergebnisse definiert.|false|
-|suggestCount|nein|Integer|20|Anzahl der Vorschläge.|false|
-|suggestServiceId|ja|String||Id des Vorschlagsdienstes. Wird aufgelöst in der **[rest-services.json](rest-services.json.de.md)**.|false|
-|zoomToResult|nein|Boolean|false|Deprecated in 3.0.0. Bitte "zoomToResultOnHover" oder "zoomToResultOnClick" verwenden. Gibt an, ob auf das Feature beim Mousehover auf die Adresse gezoomt werden soll.|false|
-|zoomToResultOnHover|nein|Boolean|false|Gibt an, ob auf das Feature beim Mousehover auf die Adresse gezoomt werden soll.|false|
-|zoomToResultOnClick|nein|Boolean|true|Gibt an, ob auf das Feature beim Klick auf die Adresse gezoomt werden soll.|false|
-|zoomLevel|nein|Number|7|Gibt an, auf welches ZoomLevel gezoomt werden soll.|false|
+|Name|Verpflichtend|Typ|Default|DefaultSource|Beschreibung|Expert|
+|----|-------------|---|-------|-------------|------------|------|
+|epsg|nein|String|"EPSG:25832"||EPSG-Code des zu verwendenden Koordinatensystems.|false|
+|extent|nein|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]||Koordinaten-Ausdehnung innerhalb dieser der Suchalgorithmus suchen soll.|false|
+|filter|nein|String|"filter=(typ:*)"||Filter string der an die BKG-Schnittstelle geschickt wird.|false|
+|geosearchServiceId|ja|String|||Id des Suchdienstes. Wird aufgelöst in der **[rest-services.json](rest-services.json.de.md)**.|false|
+|minChars|nein|Integer|3||Deprecated in 3.0.0. Bitte "minCharacters" verwenden.|false|
+|minCharacters|nein|Integer|3||Minimale Anzahl an Buchstaben, ab der die Suche losläuft.|false|
+|score|nein|Number|0.6||Score der die Qualität der Suchergebnisse definiert.|false|
+|suggestCount|nein|Integer|20||Anzahl der Vorschläge.|false|
+|suggestServiceId|ja|String|||Id des Vorschlagsdienstes. Wird aufgelöst in der **[rest-services.json](rest-services.json.de.md)**.|false|
+|zoomToResult|nein|Boolean|false||Deprecated in 3.0.0. Bitte "zoomToResultOnHover" oder "zoomToResultOnClick" verwenden. Gibt an, ob auf das Feature beim Mousehover auf die Adresse gezoomt werden soll.|false|
+|zoomToResultOnHover|nein|Boolean|false||Gibt an, ob auf das Feature beim Mousehover auf die Adresse gezoomt werden soll.|false|
+|zoomToResultOnClick|nein|Boolean|true||Gibt an, ob auf das Feature beim Klick auf die Adresse gezoomt werden soll.|false|
+|zoomLevel|nein|Number|7||Gibt an, auf welches ZoomLevel gezoomt werden soll.|false|
 
 **Beispiel**
 ```
@@ -160,16 +159,16 @@ Suche bei OpenStreetMap über Stadt, Strasse und Hausnummer. Wird nur durch Klic
 #### Portalconfig.searchBar.komoot ####
 Suche bei **[Komoot Photon](https://photon.komoot.io/)**.
 
-|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
-|----|-------------|---|-------|------------|------|
-|minChars|nein|Number|3|Mindestanzahl an Zeichen im Suchstring, bevor die Suche initiiert wird.|false|
-|serviceId|ja|String||Gibt die ID für die URL in der **[rest-services.json](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/0d136a44a59dd3b64ec986c258763ac08603bf15/doc/rest-services.json.md)** vor.|false|
-|limit|nein|Number|10|Gibt die maximale Zahl der gewünschten, ungefilterten Ergebnisse an.|false|
-|lang|nein|string|"de"|Sprache für die Komoot Suche. Wirkt sich auf Sprachspezifische Ortsangaben (Zum Beispiel Ländernamen) aus.|false|
-|searchCenter|nein|**[Coordinate](#markdown-header-datatypescoordinate)**||Koordinaten für den Suchmittelpunkt.|false|
-|bbox|nein|string||Begrenzungsrechteck für die Suche.|false|
-|osm_tag|nein|string||Filterung für OSM Tags (siehe https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
-|searchOnEnter|nein|Boolean|false|Wenn `searchOnEnter` auf `true` gesetzt wird, so wird eine Surche nur durch einen Klick auf die Lupe bzw. durch Enter gestartet.|false|
+|Name|Verpflichtend|Typ|Default|DefaultSource|Beschreibung|Expert|
+|----|-------------|---|-------|-------------|------------|------|
+|minChars|nein|Number|3||Mindestanzahl an Zeichen im Suchstring, bevor die Suche initiiert wird.|false|
+|serviceId|ja|String|||Gibt die ID für die URL in der **[rest-services.json](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/0d136a44a59dd3b64ec986c258763ac08603bf15/doc/rest-services.json.md)** vor.|false|
+|limit|nein|Number|10||Gibt die maximale Zahl der gewünschten, ungefilterten Ergebnisse an.|false|
+|lang|nein|string|"de"||Sprache für die Komoot Suche. Wirkt sich auf Sprachspezifische Ortsangaben (Zum Beispiel Ländernamen) aus.|false|
+|searchCenter|nein|**[Coordinate](#markdown-header-datatypescoordinate)**|||Koordinaten für den Suchmittelpunkt.|false|
+|bbox|nein|string|||Begrenzungsrechteck für die Suche.|false|
+|osm_tag|nein|string|||Filterung für OSM Tags (siehe https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
+|searchOnEnter|nein|Boolean|false||Wenn `searchOnEnter` auf `true` gesetzt wird, so wird eine Surche nur durch einen Klick auf die Lupe bzw. durch Enter gestartet.|false|
 
 **Beispiel**
 
