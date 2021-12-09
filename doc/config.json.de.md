@@ -166,8 +166,7 @@ Suche bei **[Komoot Photon](https://photon.komoot.io/)**.
 |serviceId|ja|String||Gibt die ID für die URL in der **[rest-services.json](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/0d136a44a59dd3b64ec986c258763ac08603bf15/doc/rest-services.json.md)** vor.|false|
 |limit|nein|Number|10|Gibt die maximale Zahl der gewünschten, ungefilterten Ergebnisse an.|false|
 |lang|nein|string|"de"|Sprache für die Komoot Suche. Wirkt sich auf Sprachspezifische Ortsangaben (Zum Beispiel Ländernamen) aus.|false|
-|lat|nein|Number||Breitengrad für den Suchmittelpunkt.|false|
-|lon|nein|Number||Längengrad für den Suchmittelpunkt.|false|
+|searchCenter|nein|**[Coordinate](#markdown-header-datatypescoordinate)**||Koordinaten für den Suchmittelpunkt.|false|
 |bbox|nein|string||Begrenzungsrechteck für die Suche.|false|
 |osm_tag|nein|string||Filterung für OSM Tags (siehe https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
 |searchOnEnter|nein|Boolean|false|Wenn `searchOnEnter` auf `true` gesetzt wird, so wird eine Surche nur durch einen Klick auf die Lupe bzw. durch Enter gestartet.|false|

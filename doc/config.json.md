@@ -175,8 +175,7 @@ Search with **[Komoot Photon](https://photon.komoot.io/)**.
 |serviceId|yes|String||Komoot search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
 |limit|no|Number|10|Maximum amount of requested unfiltered results.|false|
 |lang|no|string|"de"|Language of the Komoot Search. Effects language specific locationnames (e.g. Countrynames) aus.|false|
-|lat|no|Number||Latitude of the center for the search.|false|
-|lon|no|Number||Longtitude of the center for the search.|false|
+|searchCenter|no|**[Coordinate](#markdown-header-datatypescoordinate)**||Coordinates that specify the Search-Center.|false|
 |bbox|no|string||Boundingbox of the search.|false|
 |osm_tag|no|string||Filtering of OSM Tags (see https://github.com/komoot/photon#filter-results-by-tags-and-values).|false|
 |searchOnEnter|no|Boolean|false|If `searchOnEnter` is set to `true`, searches will only start on clicking the search icon or pressing enter.|false|

@@ -1,5 +1,5 @@
 import "../model";
-import {transformToMapProjection} from "masterportalAPI/src/crs";
+import {getProjections, transform, transformToMapProjection } from "masterportalAPI/src/crs";
 import store from "../../../src/app-store";
 
 const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
@@ -10,8 +10,7 @@ const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
         lang: "de",
         osm_tag: undefined,
         bbox: undefined,
-        lon: undefined,
-        lat: undefined,
+        searchCenter: undefined,
         searchOnEnter: false,
         ajaxRequest: null,
         serviceId: 11
@@ -29,8 +28,7 @@ const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
      * @property {string} lang="de" - Requested Language
      * @property {string} osm_tag=undefined - Filter for OSM Tags
      * @property {string} bbox=undefined - Extent to limit the search area.
-     * @property {number} lon=undefined - longitude of the search center.
-     * @property {number} lat=undefined - latitude of the search center.
+     * @property {coordinate} searchCenter=undefined - coordinates of the search center.
      * @listens Searchbar#RadioTriggerSearchbarSearchAll
      * @fires RestReader#RadioRequestRestReaderGetServiceById
      * @fires Core#RadioRequestParametricURLGetInitString
@@ -98,9 +96,17 @@ const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
                 searchStrings.push(elem);
             }
         });
+        // eslint-disable-next-line one-var
+        const projection = store.getters["Map/projection"];
+        // eslint-disable-next-line one-var
+        const coordinates = transform(projection, 'EPSG:4326', this.get("searchCenter"));
+        // eslint-disable-next-line one-var
+        const lat = coordinates[0];
+        // eslint-disable-next-line one-var
+        const lon = coordinates[1];
 
         request = "lang=" + this.get("lang");
-        request = request + "&lon=" + this.get("lon") + "&lat=" + this.get("lat");
+        request = request + "&lon=" + lon + "&lat=" + lat; // request = request + "&lon=" + coordinates[1] + "&lat=" + coordinates[0];
         if (this.get("bbox") !== undefined) {
             request += "&bbox=" + this.get("bbox");
         }
