@@ -20,6 +20,19 @@
 ### Fixed
 
 ---
+## v2.16.2 - 2021-12-09
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Clustered features are displayed correctly.
+
+---
 
 ## v2.16.1 - 2021-12-08
 ### Removed
