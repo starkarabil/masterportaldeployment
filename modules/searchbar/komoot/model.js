@@ -1,5 +1,5 @@
 import "../model";
-import {getProjections, transform, transformToMapProjection } from "masterportalAPI/src/crs";
+import {transform, transformToMapProjection} from "masterportalAPI/src/crs";
 import store from "../../../src/app-store";
 
 const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
@@ -99,7 +99,7 @@ const KomootModel = Backbone.Model.extend(/** @lends KomootModel.prototype */{
         // eslint-disable-next-line one-var
         const projection = store.getters["Map/projection"];
         // eslint-disable-next-line one-var
-        const coordinates = transform(projection, 'EPSG:4326', this.get("searchCenter"));
+        const coordinates = transform(projection, "EPSG:4326", this.get("searchCenter"));
         // eslint-disable-next-line one-var
         const lat = coordinates[0];
         // eslint-disable-next-line one-var
