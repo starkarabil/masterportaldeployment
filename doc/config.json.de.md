@@ -37,7 +37,7 @@ Es existieren die im Folgenden aufgelisteten Konfigurationen:
 |singleBaselayer|nein|Boolean|false||Legt fest, ob nur ein Baselayer gleichzeitig ausgewählt werden kann, nur bei dem treeType „custom“ verfügbar.|false|
 |Baumtyp|nein|enum["light","default","custom"]|"light"||Deprecated in 3.0.0 Bitte Attribut "treeType" verwenden.|false|
 |mapView|nein|**[mapView](#markdown-header-portalconfigmapview)**|||Mit verschiedenen Parametern wird die Startansicht konfiguriert und der Hintergrund festgelegt, der erscheint wenn keine Karte geladen ist.|false|
-|controls|nein|**[controls](#markdown-header-portalconfigcontrols)**|||Mit den Controls kann festgelegt werden, welche Interaktionen in der Karte möglich sein sollen.||false|
+|controls|nein|**[controls](#markdown-header-portalconfigcontrols)**|||Mit den Controls kann festgelegt werden, welche Interaktionen in der Karte möglich sein sollen.|false|
 |menu|nein|**[menu](#markdown-header-portalconfigmenu)**|||Hier können die Menüeinträge und deren Anordnung konfiguriert werden. Die Reihenfolge der Werkzeuge ist identisch mit der Reihenfolge in der config.json (siehe **[Tools](#markdown-header-portalconfigmenutools)**).|false|
 |searchBar|nein|**[searchBar](#markdown-header-portalconfigsearchbar)**|||Über die Suchleiste können verschiedene Suchen gleichzeitig angefragt werden.|false|
 |layersRemovable|nein|Boolean|false||Gibt an, ob der Layer gelöscht werden darf.|false|
@@ -205,10 +205,10 @@ Definition von Klassen, welche als Ergebnis berücksichtigt werden sollen.
 
 |Name|Verpflichtend|Typ|Default|DefaultSource|Beschreibung|Expert|
 |----|-------------|---|-------|-------------|------------|------|
-|name|ja|String||||Name der Klasse|false|
-|icon|nein|String|"glyphicon-road"|||Visualisierung der Klasse durch ein Glyphicon|false|
-|zoom|nein|String|"center"|||Legt fest wie auf einen ausgewählten Treffer gezoomt werden soll. Wenn `center` ausgewählt ist, so wird auf die Zentrumskoordinate (`cx` und `cy`) gezoomt und ein Marker angezeigt. Im Falle von `bbox` wird auf die durch den LocationFinder angegebene BoundingBox (`xmin`, `ymin`, `xmax` und `ymax`) gezoomt. Ein Marker wird in dem Fall nicht angezeigt.|false|
-|zoomLevel|nein|Integer||||Beider Ausgabe der Suchergebnisse (dieses Typs) zu verwendende Zoomstufe|false|
+|name|ja|String|||Name der Klasse|false|
+|icon|nein|String|"glyphicon-road"||Visualisierung der Klasse durch ein Glyphicon|false|
+|zoom|nein|String|"center"||Legt fest wie auf einen ausgewählten Treffer gezoomt werden soll. Wenn `center` ausgewählt ist, so wird auf die Zentrumskoordinate (`cx` und `cy`) gezoomt und ein Marker angezeigt. Im Falle von `bbox` wird auf die durch den LocationFinder angegebene BoundingBox (`xmin`, `ymin`, `xmax` und `ymax`) gezoomt. Ein Marker wird in dem Fall nicht angezeigt.|false|
+|zoomLevel|nein|Integer|||Beider Ausgabe der Suchergebnisse (dieses Typs) zu verwendende Zoomstufe|false|
 
 **Beispiel**
 
@@ -1019,8 +1019,8 @@ Configure als Objekt zur Angabe externer Bilder mit imgPath als URL und imgName 
 Ein Abschnitt ist ein Objekt mit einem Titel und einer Liste von Absätzen.
 Ein Abschnitt kann mit den Schlüsselwörtern "vorher", "nachher" und "ausblenden" manipuliert werden.
 
-|Name|Required|Type|Default|DefaultSource|Description|Expert|
-|----|--------|----|-------|-------------|-----------|------|
+|Name|Required|Type|Default|DefaultSource|Beschreibung|Expert|
+|----|--------|----|-------|-------------|------------|------|
 |title|no|String|""||Der Titel/die Überschrift des Abschnitts.|false|
 |list|no|**[paragraph](#markdown-header-portalconfigquickhelpconfigstreesectionparagraph)**[]|[]||Eine Reihe von Absätzen oder Bildern des QuickHelp-Abschnitts.|false|
 |before|no|String|||Ein Abschnittsschlüssel, vor dem dieser neue Abschnitt angehängt werden soll.|false|
@@ -1065,8 +1065,8 @@ Kann auch als einfacher Bildname (String) angegeben werden; in diesem Fall wird 
 Configure als Objekt zur Angabe externer Bilder mit imgPath als URL und imgName als Name des Bildes.
 
 
-|Name|Required|Type|Default|DefaultSource|Description|Expert|
-|----|--------|----|-------|-------------|-----------|------|
+|Name|Required|Type|Default|DefaultSource|Beschreibung|Expert|
+|----|--------|----|-------|-------------|------------|------|
 |text|no|String|""||Der Text als Übersetzungsschlüssel oder reiner Text.|false|
 |type|no|String|"text/plain"||Der Texttyp. Wenn "text/html" angegeben wird, wird der angegebene Text als HTML-Code wiedergegeben.|false|
 |imgName|no|String|""||Der Name des anzuzeigenden Bildes.|false|
@@ -3069,7 +3069,7 @@ Routing-Werkzeug. Ermöglicht Nutzern das Planen von Routen zwischen mehreren Pu
 |download|nein|**[download](#markdown-header-portalconfigmenutoolroutingdownload)**|||Downloadoptionen|false|
 |geosearch|nein|**[geosearch](#markdown-header-portalconfigmenutoolroutinggeosearch)**|||Geosucheoptionen|false|
 |geosearchReverse|nein|**[geosearchReverse](#markdown-header-portalconfigmenutoolroutinggeosearchreverse)**|||Geosuchereverseoptionen|false|
-|directionsSettings|nein|**[directionsSettings]|||Routenplanungoptionen|false|
+|directionsSettings|nein|**[directionsSettings](#markdown-header-portalconfigmenutoolroutingdirectionssettings)**|||Routenplanungoptionen|false|
 |isochronesSettings|nein|**[isochronesSettings](#markdown-header-portalconfigmenutoolroutingisochronessettings)**|||Erreichbarkeitsanalysenoptionen|false|
 
 
@@ -4251,7 +4251,7 @@ Hier werden Entities3D typische Attribute aufgelistet.
 |height|nein|Number|0||Höhe des Modell-Origins. Beispiel: `10`|false|
 |heading|nein|Number|0||Rotation des Modells in Grad. Beispiel: `0`|false|
 |pitch|nein|Number|0||Neigung des Modells in Grad. Beispiel: `0`|false|
-||Roll|nein|Number|0|Roll des Modells in Grad. Beispiel: `0`|false|
+|roll|nein|Number|0||Roll des Modells in Grad. Beispiel: `0`|false|
 |scale|nein|Number|1||Skalierung des Modells. Beispiel: `1`|false|
 |allowPicking|nein|Boolean|true||Ob das Modell angeklickt werden darf (GFI). Beispiel: `true`|false|
 |show|nein|Boolean|true||Ob das Modell angezeigt werden soll (sollte true sein). Beispiel: `true`|false|

@@ -103,19 +103,19 @@ ProxyPass /bkg_suggest http://sg.geodatenzentrum.de/gdz_geokodierung__[UUID]/sug
 
 |Name|Required|Type|Default|DefaultSource|Description|Expert|
 |----|--------|----|-------|-------------|-----------|------|
-|epsg|no|String|"EPSG:25832"|||EPSG code of the coordinate reference system to use.|false|
-|extent|no|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]|||Coordinate extent in which search algorithms should return.|false|
-|filter|no|String|"filter=(typ:*)"|||Filter string sent to the BKG interface.|false|
-|geosearchServiceId|yes|String||||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|minChars|no|Integer|3|||_Deprecated in 3.0.0. Please use "minCharacters"._|false|
-|minCharacters|no|Integer|3|||Minimum amount of characters required to start a search.|false|
-|score|no|Number|0.6|||Score defining the minimum quality of search results.|false|
-|suggestCount|no|Integer|20|||Suggestion amount.|false|
-|suggestServiceId|yes|String||||Suggestion service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
-|zoomToResult|no|Boolean|false|||_Deprecated in 3.0.0. Please use "zoomToResultOnHover" or "zoomToResultOnClick"._ Defines whether a feature is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnHover|no|Boolean|false|||Defines whether an address is zoomed to when hovering a result list entry.|false|
-|zoomToResultOnClick|no|Boolean|true|||Defines whether an address is zoomed to when clicking a result list entry.|false|
-|zoomLevel|no|Number|7|||Defines the zoom level to use on zooming to a result.|false|
+|epsg|no|String|"EPSG:25832"||EPSG code of the coordinate reference system to use.|false|
+|extent|no|**[Extent](#markdown-header-datatypesextent)**|[454591, 5809000, 700000, 6075769]||Coordinate extent in which search algorithms should return.|false|
+|filter|no|String|"filter=(typ:*)"||Filter string sent to the BKG interface.|false|
+|geosearchServiceId|yes|String|||Search service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|minChars|no|Integer|3||_Deprecated in 3.0.0. Please use "minCharacters"._|false|
+|minCharacters|no|Integer|3||Minimum amount of characters required to start a search.|false|
+|score|no|Number|0.6||Score defining the minimum quality of search results.|false|
+|suggestCount|no|Integer|20||Suggestion amount.|false|
+|suggestServiceId|yes|String|||Suggestion service id. Resolved using the **[rest-services.json](rest-services.json.md)** file.|false|
+|zoomToResult|no|Boolean|false||_Deprecated in 3.0.0. Please use "zoomToResultOnHover" or "zoomToResultOnClick"._ Defines whether a feature is zoomed to when hovering a result list entry.|false|
+|zoomToResultOnHover|no|Boolean|false||Defines whether an address is zoomed to when hovering a result list entry.|false|
+|zoomToResultOnClick|no|Boolean|true||Defines whether an address is zoomed to when clicking a result list entry.|false|
+|zoomLevel|no|Number|7||Defines the zoom level to use on zooming to a result.|false|
 
 **Example**
 ```json
@@ -1305,7 +1305,7 @@ List of all configurable tools. Each tool inherits the properties of **[tool](#m
 
 |Name|Required|Type|Default|DefaultSource|Description|Expert|
 |----|--------|----|-------|-------------|-----------|------|
-|addWMS|no|**[tool](#markdown-header-portalconfigmenutool)**||||This tool allows loading specific WMS layers. This is done by providing a URL. All the service's layers are retrieved and offered in the layer tree in section "External technical data". Using this tool is only compatible with the `treeType` "custom" or "default".|true|
+|addWMS|no|**[tool](#markdown-header-portalconfigmenutool)**|||This tool allows loading specific WMS layers. This is done by providing a URL. All the service's layers are retrieved and offered in the layer tree in section "External technical data". Using this tool is only compatible with the `treeType` "custom" or "default".|true|
 |bufferAnalysis|no|**[tool](#markdown-header-portalconfigmenutool)**|||This buffer analysis allows the selection of a source layer, a buffer radius and a target layer. The chosen buffer radius will then be shown around features of the selected source layer. At the moment a target layer is selected, only the features of this layer will be shown, if they are outside the buffer radii. It is also possible to invert the result. In this case the resulting features will only be show if they are inside the radii.|false|
 |compareFeatures|no|**[compareFeatures](#markdown-header-portalconfigmenutoolcomparefeatures)**|||Offers a comparison option for vector features. The getFeatureInfo (GFI) window will offer a clickable star symbol to put elements on the comparison list. Works when used together with the GFI theme **Default**.|false|
 |contact|no|**[contact](#markdown-header-portalconfigmenutoolcontact)**|||The contact form allows users to send messages to a configured mail address. For example, this may be used to allow users to submit errors and suggestions.|false|
