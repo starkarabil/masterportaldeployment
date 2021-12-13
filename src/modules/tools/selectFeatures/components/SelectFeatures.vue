@@ -162,9 +162,14 @@ export default {
 
             // makes links in result list clickable and adds <br/>s
             Object.entries(properties).forEach(([key, propValue]) => {
-                if (this.isValidKey(key) && this.isValidValue(propValue) && propValue.indexOf("|") > -1) {
+                let propertyValue = propValue;
+
+                if (Array.isArray(propValue)) {
+                    propertyValue = propValue.join("|");
+                }
+                if (this.isValidKey(key) && this.isValidValue(propertyValue) && propertyValue.indexOf("|") > -1) {
                     resultProperties[key] = "";
-                    propValue.split("|").forEach(function (arrayItemValue) {
+                    propertyValue.split("|").forEach(function (arrayItemValue) {
                         if (isUrl(arrayItemValue)) {
                             resultProperties[key] += "<a href=" + arrayItemValue + " target=\"_blank\">" + arrayItemValue + "</a><br/>";
                         }
@@ -173,8 +178,8 @@ export default {
                         }
                     });
                 }
-                else if (this.isValidKey(key) && this.isValidValue(propValue) && isUrl(propValue)) {
-                    resultProperties[key] = "<a href=" + propValue + " target=\"_blank\">" + propValue + "</a>";
+                else if (this.isValidKey(key) && this.isValidValue(propertyValue) && isUrl(propertyValue)) {
+                    resultProperties[key] = "<a href=" + propertyValue + " target=\"_blank\">" + propertyValue + "</a>";
                 }
             });
 
@@ -369,7 +374,7 @@ export default {
                                         <a :href="getPhoneNumberAsWebLink(property[1])">{{ property[1] }}</a>
                                     </td>
                                     <td
-                                        v-else-if="property[1].includes('<br') || property[1].includes('<a')"
+                                        v-else-if="property[1] && (property[1].includes('<br') || property[1].includes('<a'))"
                                         class="featureValue"
                                         v-html="property[1]"
                                     />

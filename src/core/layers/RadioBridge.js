@@ -118,6 +118,7 @@ export function getLayerModelsByAttributes (attributes) {
  */
 export function moveModelInTree (layerModel, value) {
     Radio.trigger("ModelList", "moveModelInTree", layerModel, value);
+    Radio.trigger("Layer", "layerVisibleChanged", layerModel.get("id"), layerModel.get("isVisibleInMap"), layerModel);
 }
 /**
  * Listens to changes of attribute SLDBody.
@@ -130,4 +131,58 @@ export function listenToChangeSLDBody (layerModel) {
         "change:SLDBody": layerModel.updateSourceSLDBody
     });
 }
+/**
+ * Triggers resetFeatures on VectorLayer.
+ * @param {String} layerId id of the layer
+ * @param {Array.<module:ol/Feature~Feature.<Geometry>>} allLayerFeatures all features of the layer
+ * @returns {void}
+ */
+export function resetVectorLayerFeatures (layerId, allLayerFeatures) {
+    Radio.trigger("VectorLayer", "resetFeatures", layerId, allLayerFeatures);
+}
+/**
+ * Triggers featuresLoaded on VectorLayer.
+ * @param {String} layerId id of the layer
+ * @param {Array.<module:ol/Feature~Feature.<Geometry>>} features all features of the layer
+ * @returns {void}
+ */
+export function featuresLoaded (layerId, features) {
+    Radio.trigger("VectorLayer", "featuresLoaded", layerId, features);
+}
+/**
+ * Returns the style model to the given id.
+ * @param {String} styleId id of the style model
+ * @returns {Object} the style model
+ */
+export function getStyleModelById (styleId) {
+    return Radio.request("StyleList", "returnModelById", styleId);
+}
+/**
+ * Returns the state of the initial loading of layers.
+ * @returns {number} state of loading
+ */
+// export function getInitialLoadingState () {
+//     return Radio.request("Map", "getInitialLoading");
+// }
+/**
+ * Listens to channel i18next and changes the translations of the layer, if language changes.
+ * @param {boolean} layer the layer to call the function 'changeLang' at.
+ * @returns {void}
+ */
+export function onLanguageChanged (layer) {
+    const channel = Radio.channel("i18next");
+
+    channel.on({
+        "languageChanged": function () {
+            if (typeof layer.changeLang === "function") {
+                layer.changeLang();
+            }
+            else {
+                console.warn("Layer ", layer, "must impelement the function changeLang to translate its textes.");
+            }
+        }
+    }, this);
+
+}
+
 

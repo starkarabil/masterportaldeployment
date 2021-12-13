@@ -57,6 +57,8 @@ export default function Layer (attrs, layer, initialize = true) {
     this.setMinMaxResolutions();
     this.checkForScale({scale: store.getters["Map/scale"]});
     this.registerInteractionMapViewListeners();
+    bridge.onLanguageChanged(this);
+    this.changeLang();
 }
 /**
  * Initalizes the layer. Sets property singleBaselayer and sets the layer visible, if selected in attributes or treetype light.
@@ -319,6 +321,10 @@ Layer.prototype.setIsSelected = function (newValue) {
         bridge.updateLayerView(this);
         bridge.renderMenu();
     }
+    if (this.get("typ") === "WFS") {
+        // data will be loaded at first selection
+        this.updateSource();
+    }
 };
 /**
 * Toggles the attribute isVisibleInMap. If is true, the layer is set visible.
@@ -367,6 +373,7 @@ Layer.prototype.changeLang = function () {
     this.attributes.levelUpText = i18next.t("common:tree.levelUp");
     this.attributes.levelDownText = i18next.t("common:tree.levelDown");
     this.attributes.transparencyText = i18next.t("common:tree.transparency");
+    bridge.renderMenu();
 };
 /**
  * Calls Collection function moveModelDown
@@ -429,6 +436,74 @@ function handleSingleBaseLayer (isSelected, layer, map) {
  */
 Layer.prototype.setIsJustAdded = function (value) {
     this.set("isJustAdded", value);
+};
+/**
+ * Prepares the given features and sets or/and overwrites the coordinates based on the configuration of "altitude" and "altitudeOffset".
+ * @param {ol/Feature[]} features The olFeatures.
+ * @returns {void}
+ */
+Layer.prototype.prepareFeaturesFor3D = function (features) {
+    features.forEach(feature => {
+        let geometry = feature.getGeometry();
+
+        geometry = this.setAltitudeOnGeometry(geometry);
+        feature.setGeometry(geometry);
+    });
+};
+/**
+ * Sets the altitude and AltitudeOffset as z coordinate.
+ * @param {ol/geom} geometry Geometry of feature.
+ * @returns {ol/geom} - The geometry with newly set coordinates.
+ */
+Layer.prototype.setAltitudeOnGeometry = function (geometry) {
+    const type = geometry.getType(),
+        coords = geometry.getCoordinates();
+
+    if (type === "Point") {
+        geometry.setCoordinates(this.getPointCoordinatesWithAltitude(coords));
+    }
+    else if (type === "MultiPoint") {
+        geometry.setCoordinates(this.getMultiPointCoordinatesWithAltitude(coords));
+    }
+    else {
+        console.error("Type: " + type + " is not supported yet for function \"setAltitudeOnGeometry\"!");
+    }
+    return geometry;
+};
+/**
+ * Sets the altitude on multipoint coordinates.
+ * @param {Number[]} coords Coordinates.
+ * @returns {Number[]} - newly set cooordinates.
+ */
+Layer.prototype.getMultiPointCoordinatesWithAltitude = function (coords) {
+    return coords.map(coord => this.getPointCoordinatesWithAltitude(coord));
+};
+/**
+ * Sets the altitude on point coordinates.
+ * @param {Number[]} coord Coordinates.
+ * @returns {Number[]} - newly set cooordinates.
+ */
+Layer.prototype.getPointCoordinatesWithAltitude = function (coord) {
+    const altitude = this.get("altitude"),
+        altitudeOffset = this.get("altitudeOffset");
+
+    if (typeof altitude === "number") {
+        if (coord.length === 2) {
+            coord.push(parseFloat(altitude));
+        }
+        else if (coord.length === 3) {
+            coord[2] = parseFloat(altitude);
+        }
+    }
+    if (typeof altitudeOffset === "number") {
+        if (coord.length === 2) {
+            coord.push(parseFloat(altitudeOffset));
+        }
+        else if (coord.length === 3) {
+            coord[2] = coord[2] + parseFloat(altitudeOffset);
+        }
+    }
+    return coord;
 };
 
 /**
@@ -493,8 +568,18 @@ Layer.prototype.setMinMaxResolutions = function () {
     this.get("layer").setMaxResolution(resoByMaxScale + (resoByMaxScale / 100));
     this.get("layer").setMinResolution(resoByMinScale);
 };
-
-// backbone-relevant functions (may be removed if all layers are no longer backbone models):
+/**
+ * Triggers event if vector features are loaded
+ * @param {String} layerId id of the layer
+ * @param {ol.Feature[]} features Loaded vector features
+ * @fires Layer#RadioTriggerVectorLayerFeaturesLoaded
+ * @return {void}
+ */
+Layer.prototype.featuresLoaded = function (layerId, features) {
+    bridge.featuresLoaded(layerId, features);
+};
+// NOTICE: backbone-relevant functions, may be removed if all layers are no longer backbone models.
+// But set, get and has may stay, because they are convenient:)
 Layer.prototype.set = function (arg1, arg2) {
     if (typeof arg1 === "object") {
         Object.keys(arg1).forEach(key => {

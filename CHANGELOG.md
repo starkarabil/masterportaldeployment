@@ -10,11 +10,12 @@
 
 ## Unreleased - in development
 ### Added
+- Added style.json parameter "rotation" to wfs features with iconPointStyle, if the parameter is not given it will fall back to standard alignment.
 - Added the possibility to configure a predefined order of selected layers.
 - Feature: List component supports onRowClick callback
 - The following NPM packages are added:
-  - dependencies:
-    "bootstrap-sass"
+    - dependencies:
+        - "bootstrap-sass"
 
 ### Changed
 - Migrated the map from Backbone.js to Vue.js environment.
@@ -28,6 +29,9 @@
 - The following NPM packages are changed:
   - devDependencies:
     "less" => "sass", "less-loader => "sass-loader"
+- The WFSLayer is refactored. It is no longer a Backbone-model. The WFSLayer uses the masterportalAPI's wfs layer on creation.
+- The following NPM packages are updated:
+    - selenium-webdriver: 4.0.0 to version 4.1.0
 
 ### Deprecated
 
@@ -38,6 +42,13 @@
     - Add namespace to the filter as otherwise the features are not properly filtered.
     - Fix reset UI button.
     - Add missing error translation for wrong config.
+- The 'Select Features' tool can now also be used to select lines.
+
+---
+
+## v2.16.2 - 2021-12-09
+### Fixed
+- Clustered features are displayed correctly.
 
 ---
 
