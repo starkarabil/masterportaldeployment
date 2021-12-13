@@ -1221,13 +1221,13 @@ List of tools (`tools`) or links (`staticlinks`) appearing in the menu tab `info
 ***
 
 #### Portalconfig.menu.tree
-Hier können die Menüeinträge und deren Anordnung konfiguriert werden. Die Reihenfolge der Werkzeuge ergibt sich aus der Reihenfolge in der *Config.json*.
+The menu entries and their arrangement can be configured here. The order of the tools results from the order in the *Config.json*.
 
 |Name|Required|Type|Default|DefaultSource|Description|Expert|
 |----|--------|----|-------|-------------|-----------|------|
-|name|yes|String|||Name des Themenbaumes.|false|
-|glyphicon|no|String|||CSS Klasse des glyphicons.|false|
-|isInitOpen|no|Boolean|false||Gibt an ob der Themenbaum initial geöffnet ist.|false|
+|name|yes|String|||Name of the topic tree ("Themenbaum").|false|
+|glyphicon|no|String|||CSS class of the glyphicons.|false|
+|isInitOpen|no|Boolean|false||Indicates whether the topic tree  ("Themenbaum") is initially open.|false|
 
 ***
 
