@@ -433,22 +433,22 @@ export default {
                     </div>
                     <div
                         v-if="mode === 'supply'"
-                        class="hint col-md-12 col-sm-12"
+                        class="hint col-md-12"
                     >
                         {{ $t("modules.tools.coordToolkit.hintSupply") }}
                     </div>
                     <div
                         v-if="mode === 'search'"
-                        class="hint col-md-12 col-sm-12"
+                        class="hint col-md-12"
                     >
                         {{ $t("modules.tools.coordToolkit.hintSearch") }}
                     </div>
                     <div class="form-group form-group-sm">
                         <label
                             for="coordSystemField"
-                            class="col-md-5 col-sm-5 control-label"
+                            class="col-md-5 control-label"
                         >{{ $t("modules.tools.coordToolkit.coordSystemField") }}</label>
-                        <div class="col-md-7 col-sm-7">
+                        <div class="col-md-7">
                             <select
                                 id="coordSystemField"
                                 ref="coordSystemField"
@@ -473,9 +473,9 @@ export default {
                         <label
                             id="coordinatesEastingLabel"
                             for="coordinatesEastingField"
-                            class="col-md-5 col-sm-5 control-label"
+                            class="col-md-5 control-label"
                         >{{ $t(getLabel("eastingLabel")) }}</label>
-                        <div class="col-md-7 col-sm-7">
+                        <div class="col-md-7">
                             <input
                                 id="coordinatesEastingField"
                                 v-model="coordinatesEasting.value"
@@ -508,9 +508,9 @@ export default {
                         <label
                             id="coordinatesNorthingLabel"
                             for="coordinatesNorthingField"
-                            class="col-md-5 col-sm-5 control-label"
+                            class="col-md-5 control-label"
                         >{{ $t(getLabel("northingLabel")) }}</label>
-                        <div class="col-md-7 col-sm-7">
+                        <div class="col-md-7">
                             <input
                                 id="coordinatesNorthingField"
                                 v-model="coordinatesNorthing.value"
@@ -543,9 +543,9 @@ export default {
                         <label
                             id="coordinatesHeightLabel"
                             for="coordinatesHeightField"
-                            class="col-md-5 col-sm-5 control-label"
+                            class="col-md-5 control-label"
                         >{{ $t("modules.tools.coordToolkit.heightLabel") }}</label>
-                        <div class="col-md-7 col-sm-7">
+                        <div class="col-md-7">
                             <input
                                 id="coordinatesHeightField"
                                 :value="$t(height)"
@@ -560,7 +560,7 @@ export default {
                         v-if="isDefaultStyle()"
                         class="form-group form-group-sm"
                     >
-                        <div class="col-md-12 col-sm-12 info">
+                        <div class="col-md-12 info">
                             {{ $t("modules.tools.measure.influenceFactors") }}
                             <span v-if="heightLayer !== null">
                                 <br>
@@ -573,7 +573,7 @@ export default {
                         v-if="isEnabled('search')"
                         class="form-group form-group-sm"
                     >
-                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-12">
                             <button
                                 id="searchByCoordBtn"
                                 class="btn btn-primary btn-block"
