@@ -16,6 +16,7 @@
 - The following NPM packages are added:
     - dependencies:
         - "bootstrap-sass"
+        - "bootstrap-icons"
 
 ### Changed
 - Migrated the map from Backbone.js to Vue.js environment.
@@ -32,6 +33,7 @@
 - The WFSLayer is refactored. It is no longer a Backbone-model. The WFSLayer uses the masterportalAPI's wfs layer on creation.
 - The following NPM packages are updated:
     - selenium-webdriver: 4.0.0 to version 4.1.0
+- Switched Icon Library from Glyphicon to Bootstrap Icons. Edited Webpack Config. Updated icon usage in vue components to use scss. Updated icon usage in backbone modules. Edited docs & tests accordingly.
 
 ### Deprecated
 
