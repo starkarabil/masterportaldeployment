@@ -19,7 +19,7 @@
 
 ### Changed
 - Migrated the map from Backbone.js to Vue.js environment.
-- Migrated the layer wmsTime from Backbone.js to Vue.js environment.
+- Migrated the layer wmsTime and WMTS from Backbone.js to Vue.js environment.
 - WfsSearch:
     - Update documentation.
         - Change parameter `wfsSearch.searchInstance.requestConfig.gazetteer` from a `Boolean` to an `Object`. Move parameters `namespaces` and `memberSuffix` to that Object.
@@ -36,6 +36,7 @@
 ### Deprecated
 
 ### Removed
+- WMS-layer: Hamburgensie for web_atlasde has been removed.
 
 ### Fixed
 - WfsSearch:
@@ -43,6 +44,10 @@
     - Fix reset UI button.
     - Add missing error translation for wrong config.
 - The 'Select Features' tool can now also be used to select lines.
+- In the "light" type topic tree, layers loaded via url parameters are now sorted correctly.
+- Print:
+    - The canvas is now drawn on the top layer after a new layer is switched on in the topic tree.
+    - When printing is opened initially, the canvas is now always drawn on the top layer.
 
 ---
 

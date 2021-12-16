@@ -2,7 +2,7 @@ import WMSLayer from "../../../src/core/layers/wms";
 import WFSLayer from "../../../src/core/layers/wfs";
 import GroupedLayers from "../../../src/core/layers/group";
 import WMSTimeLayer from "../../../src/core/layers/wmsTime";
-import WMTSLayer from "./layer/wmts";
+import WMTSLayer from "../../../src/core/layers/wmts";
 import StaticImageLayer from "./layer/staticImage";
 import GeoJSONLayer from "./layer/geojson";
 import SensorLayer from "./layer/sensor";
@@ -123,7 +123,8 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
             "moveModelInTree": this.moveModelInTree,
             "updateSelection": function (model) {
                 this.trigger("updateSelection", model);
-            }
+            },
+            "selectedChanged": this.selectedChanged
         }, this);
 
         this.listenTo(this, {
@@ -141,20 +142,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
                 this.trigger("traverseTree", model);
                 channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
             },
-            "change:isSelected": function (model, value) {
-                if (model.get("type") === "layer") {
-                    // Only reset Indeces in Custom Tree, because Light Tree Layers always keep their
-                    // positions regardless of active or not
-                    if (Radio.request("Parser", "getTreeType") !== "light") {
-                        model.resetSelectionIDX();
-                    }
-
-                    model.setIsVisibleInMap(value);
-                    this.updateLayerView();
-                }
-                this.trigger("updateSelection");
-                channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
-            },
+            "change:isSelected": this.selectedChanged,
             "change:transparency": function () {
                 channel.trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
             },
@@ -330,7 +318,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
     setVisibleByParentIsExpanded: function (parentId) {
         const parent = this.findWhere({id: parentId});
 
-        if (!parent.get("isExpanded")) {
+        if (!parent?.get("isExpanded")) {
             this.setAllDescendantsInvisible(parentId, Radio.request("Util", "isViewMobile"));
         }
         else {
@@ -576,6 +564,19 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
         // if the treeType is custom, handle sorting according to layerSequence
         if (treeType === "custom") {
             initialLayers = this.handleLayerSequence(allLayerModels);
+        }
+        else if (treeType === "light") {
+            layerModels.forEach(layer => {
+                const index = allLayerModels.indexOf(layer);
+
+                if (index > -1) {
+                    baseLayerModels.splice(index, 0, layer);
+                }
+                else {
+                    baseLayerModels.push(layer);
+                }
+            });
+            initialLayers = baseLayerModels;
         }
         else {
             initialLayers = baseLayerModels.concat(layerModels);
@@ -1186,6 +1187,27 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
     },
     addAlwaysActiveTool: function (model) {
         this.alwaysActiveTools.push(model);
+    },
+
+    /**
+     * Updates the selected layersList if selected is changed.
+     * @param {Object} model The model.
+     * @param {Boolean} value Is selected value.
+     * @returns {void}
+     */
+    selectedChanged: function (model, value) {
+        if (model.get("type") === "layer") {
+            // Only reset Indeces in Custom Tree, because Light Tree Layers always keep their
+            // positions regardless of active or not
+            if (Radio.request("Parser", "getTreeType") !== "light") {
+                model.resetSelectionIDX();
+            }
+
+            model.setIsVisibleInMap(value);
+            this.updateLayerView();
+        }
+        this.trigger("updateSelection");
+        Radio.channel("ModelList").trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
     }
 });
 
