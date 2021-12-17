@@ -371,7 +371,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
         if (this.model.get("initSearchString") !== undefined && this.model.get("finalHitList").length === 1) {
             this.hitSelected();
         }
-        this.$("#searchInput + span").show();
+        this.$("#searchInput + span").css("display", "inline-block");
     },
 
     /**
@@ -927,7 +927,7 @@ const SearchbarView = Backbone.View.extend(/** @lends SearchbarView.prototype */
 
             // the "x-button" in the searchbar
             if (evt.target.value.length > 0) {
-                this.$("#searchInput + span").show();
+                this.$("#searchInput + span").css("display", "inline-block");
             }
             else {
                 this.$("#searchInput + span").hide();
