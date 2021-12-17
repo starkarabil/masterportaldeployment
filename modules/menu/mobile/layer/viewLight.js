@@ -84,7 +84,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
                 this.$el.addClass("disabled");
                 this.$el.find("*").css("pointer-events", "none");
                 if (statusCheckbox === 0) {
-                    this.$el.find("div.pull-left").css("pointer-events", "auto");
+                    this.$el.find("div.float-start").css("pointer-events", "auto");
                 }
             }
             else {
@@ -118,7 +118,7 @@ const LayerView = Backbone.View.extend(/** @lends LayerView.prototype */{
         // Animation Zahnrad
         this.$(".bi-gear").parent(".bootstrap-icon").toggleClass("rotate rotate-back");
         this.$(".switch-icon").toggleClass("rotate rotate-back");
-        this.$(".switch-icon").toggleClass("bi-dash-lg bi-plus-lg");
+        this.$(".switch-icon").children("i").toggleClass("bi-dash-lg bi-plus-lg");
         // Slide-Animation templateSetting
         if (this.model.get("isSettingVisible") === false) {
             this.$el.find(".item-settings").slideUp("slow", function () {
