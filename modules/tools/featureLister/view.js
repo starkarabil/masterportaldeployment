@@ -219,10 +219,10 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
         Object.entries(this.$(".featurelist-navtabs").children()).forEach(([, child]) => {
             if (child.id === "featurelistFeaturelist") {
                 this.$(child).removeClass("disabled");
-                this.$(child).addClass("active");
+                this.$(child).children(".nav-link").addClass("active");
             }
             else {
-                this.$(child).removeClass("active");
+                this.$(child).children(".nav-link").removeClass("active");
             }
         });
         this.$("#featurelist-themes").hide();
@@ -238,10 +238,10 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
         this.$(".featurelist-navtabs").children().toArray().forEach(child => {
             if (child.id === "featurelistThemeChooser") {
                 this.$(child).removeClass("disabled");
-                this.$(child).addClass("active");
+                this.$(child).children(".nav-link").addClass("active");
             }
             else {
-                this.$(child).removeClass("active");
+                this.$(child).children(".nav-link").removeClass("active");
             }
         });
 
@@ -264,10 +264,10 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
         Object.entries(this.$(".featurelist-navtabs").children()).forEach(([, child]) => {
             if (child.id === "featurelistFeaturedetails") {
                 this.$(child).removeClass("disabled");
-                this.$(child).addClass("active");
+                this.$(child).children(".nav-link").addClass("active");
             }
             else {
-                this.$(child).removeClass("active");
+                this.$(child).children(".nav-link").removeClass("active");
             }
         });
         this.$("#featurelist-themes").hide();
@@ -313,10 +313,10 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
         this.model.set("layerid", this.getLastIdPart(evt));
 
         this.$(evt.currentTarget.parentElement.children).toArray().forEach(li => {
-            this.$(li).removeClass("active");
+            this.$(li).children(".nav-link").removeClass("active");
         });
 
-        this.$(evt.currentTarget).addClass("active");
+        this.$(evt.currentTarget).children(".nav-link").addClass("active");
     },
     /**
      * When a new layer is selected, all features are scanned for possible keys. These are basis for new headlines 'thead'.
@@ -442,7 +442,7 @@ const FeatureListerView = Backbone.View.extend(/** @lends FeatureListerView.prot
 
         this.$("#featurelist-themes-ul").empty();
         ll.forEach(layer => {
-            this.$("#featurelist-themes-ul").append("<li id='featurelist-layer-" + layer.id + "' class='featurelist-themes-li' role='presentation'><a href='#'>" + layer.name + "</a></li>");
+            this.$("#featurelist-themes-ul").append("<li id='featurelist-layer-" + layer.id + "' class='nav-item featurelist-themes-li' role='presentation'><a class='nav-link' href='#'>" + layer.name + "</a></li>");
         });
     },
     /**
