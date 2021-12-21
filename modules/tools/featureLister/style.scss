@@ -114,15 +114,6 @@ $background_color_1: rgb(255, 255, 255);
         }
     }
 }
-.featurelist-win-content {
-    >.panel-group {
-        padding: 12px;
-        margin-bottom: 0;
-        .panel {
-            margin-top: 8px;
-        }
-    }
-}
 .featurelist-heading {
     padding: 8px;
     >.featurelist-title {
@@ -143,7 +134,7 @@ $background_color_1: rgb(255, 255, 255);
         }
     }
 }
-.panel-heading {
+.card-header {
     background: #e7e7e7;
     color: $color_4;
     cursor: pointer;

@@ -81,7 +81,7 @@ async function ListTests ({builder, url, resolution, browsername, capability, mo
             });
 
             it("visible features list can be expanded", async function () {
-                await (await driver.findElement(By.css(".panel-footer .featurelist-list-button"))).click();
+                await (await driver.findElement(By.css(".card-footer .featurelist-list-button"))).click();
                 featureListEntries = await driver.findElements(By.css("#featurelist-list-table tbody tr"));
 
                 expect(featureListEntries).to.have.lengthOf(20);

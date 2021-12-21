@@ -5,26 +5,32 @@
     <li class="featurelist-navtabs-li text-center disabled" role="presentation" id="featurelistFeaturedetails"><a href="#"><%=details%></a></li>
 </ul>
 
-<div id="featurelist-themes" class="featurelist-themes panel panel-default">
-    <div id="featurelist-themes-header" class="panel-heading"><%=visibleVectorLayers%></div>
-    <ul id="featurelist-themes-ul" class="nav nav-pills nav-stacked"></ul>
+<div id="featurelist-themes" class="featurelist-themes card">
+    <div id="featurelist-themes-header" class="card-header"><%=visibleVectorLayers%></div>
+    <div class="card-body">
+        <ul id="featurelist-themes-ul" class="nav nav-pills nav-stacked"></ul>
+    </div>
 </div>
 
-<div id="featurelist-list" class="panel featurelist-list panel-default">
-    <div id="featurelist-list-header" class="panel-heading"></div>
-    <div class="table-responsive  featurelist-list-table">
-        <table id="featurelist-list-table" class="table table-striped table-hover table-condensed table-bordered"></table>
+<div id="featurelist-list" class="card featurelist-list">
+    <div id="featurelist-list-header" class="card-header"></div>
+    <div class="card-body">
+        <div class="table-responsive featurelist-list-table">
+            <table id="featurelist-list-table" class="table table-striped table-hover table-condensed table-bordered"></table>
+        </div>
     </div>
-    <div class="panel-footer featurelist-list-footer">
+    <div class="card-footer featurelist-list-footer">
         <button type="button" class="btn btn-outline-default navbar-btn featurelist-list-button" aria-label="Left Align">
-            <span class="bootstrap-icon import-icon" aria-hidden="true"><i class="box-arrow-in-down-right"></i></span> <%=more%>
+            <span class="bootstrap-icon import-icon" aria-hidden="true"><i class="bi-box-arrow-in-down-right"></i></span> <%=more%>
         </button>
         <p class="navbar-text featurelist-list-message"></p>
     </div>
 </div>
 
-<div id="featurelist-details" class="featurelist-details panel panel-default">
-    <div id="featurelist-details-header" class="panel-heading"><%=detailsOfSelected%></div>
-    <ul class="list-group featurelist-details-ul">
-    </ul>
+<div id="featurelist-details" class="featurelist-details card">
+    <div id="featurelist-details-header" class="card-header"><%=detailsOfSelected%></div>
+    <div class="card-body">
+        <ul class="list-group featurelist-details-ul">
+        </ul>
+    </div>
 </div>
