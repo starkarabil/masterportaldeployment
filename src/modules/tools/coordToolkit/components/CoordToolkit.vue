@@ -443,7 +443,7 @@ export default {
                     >
                         {{ $t("modules.tools.coordToolkit.hintSearch") }}
                     </div>
-                    <div class="form-group form-group-sm">
+                    <div class="form-group form-group-sm row">
                         <label
                             for="coordSystemField"
                             class="col-md-5 form-label"
@@ -467,7 +467,7 @@ export default {
                         </div>
                     </div>
                     <div
-                        class="form-group form-group-sm"
+                        class="form-group form-group-sm row"
                         :class="getClassForEasting()"
                     >
                         <label
@@ -502,7 +502,7 @@ export default {
                         </div>
                     </div>
                     <div
-                        class="form-group form-group-sm"
+                        class="form-group form-group-sm row"
                         :class="getClassForNorthing()"
                     >
                         <label
@@ -538,7 +538,7 @@ export default {
                     </div>
                     <div
                         v-if="isEnabled( 'supply') && heightLayer !== null"
-                        class="form-group form-group-sm"
+                        class="form-group form-group-sm row"
                     >
                         <label
                             id="coordinatesHeightLabel"
@@ -558,7 +558,7 @@ export default {
                     </div>
                     <div
                         v-if="isDefaultStyle()"
-                        class="form-group form-group-sm"
+                        class="form-group form-group-sm row"
                     >
                         <div class="col-md-12 info">
                             {{ $t("modules.tools.measure.influenceFactors") }}
@@ -571,7 +571,7 @@ export default {
                     </div>
                     <div
                         v-if="isEnabled('search')"
-                        class="form-group form-group-sm"
+                        class="form-group form-group-sm row"
                     >
                         <div class="col-12">
                             <button
