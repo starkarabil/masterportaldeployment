@@ -279,7 +279,7 @@ export default {
             >
                 <div class="form-group form-group-sm row">
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="docTitle"
                     >{{ $t("common:modules.tools.print.titleLabel") }}</label>
                     <div class="col-md-7">
@@ -294,7 +294,7 @@ export default {
                 </div>
                 <div class="form-group form-group-sm row">
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="printLayout"
                     >{{ $t("common:modules.tools.print.layoutLabel") }}</label>
                     <div class="col-md-7">
@@ -316,7 +316,7 @@ export default {
                 </div>
                 <div class="form-group form-group-sm row">
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="printFormat"
                     >
                         {{ $t("common:modules.tools.print.formatLabel") }}
@@ -340,7 +340,7 @@ export default {
                 </div>
                 <div class="form-group form-group-sm row scale">
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="printScale"
                     >{{ $t("common:modules.tools.print.scaleLabel") }}</label>
                     <div class="col-md-7">
@@ -387,7 +387,7 @@ export default {
                     class="form-group form-group-sm row"
                 >
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="printLegend"
                     >
                         {{ $t("common:modules.tools.print.withLegendLabel") }}
@@ -407,7 +407,7 @@ export default {
                     class="form-group form-group-sm row"
                 >
                     <label
-                        class="col-md-5 form-label"
+                        class="col-md-5 col-form-label"
                         for="printGfi"
                     >
                         {{ $t("common:modules.tools.print.withInfoLabel") }}
