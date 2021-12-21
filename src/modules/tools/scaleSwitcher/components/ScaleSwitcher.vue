@@ -91,6 +91,7 @@ export default {
             <div
                 v-if="active"
                 id="scale-switcher"
+                class="row"
             >
                 <label
                     for="scale-switcher-select"
@@ -117,11 +118,3 @@ export default {
         </template>
     </Tool>
 </template>
-
-<style lang="scss" scoped>
-    @import "~variables";
-
-    label {
-        margin-top: 7px;
-    }
-</style>
