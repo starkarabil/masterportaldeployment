@@ -403,6 +403,7 @@ export default {
                                 id="supplyCoordRadio"
                                 type="radio"
                                 name="mode"
+                                class="form-check-input"
                                 :checked="isSupplyCoordChecked()"
                                 :disabled="isSupplyCoordDisabled()"
                                 @click="changeMode('supply')"
@@ -410,7 +411,7 @@ export default {
                             <label
                                 for="supplyCoordRadio"
                                 :title="isSupplyCoordDisabled()? $t('modules.tools.coordToolkit.disabledTooltip'): ''"
-                                :class="{ 'form-label': true, 'enabled': isEnabled('supply') }"
+                                :class="{ 'form-check-label': true, 'enabled': isEnabled('supply') }"
                                 @click="changeMode('supply')"
                                 @keydown.enter="changeMode('supply')"
                             >{{ $t("modules.tools.coordToolkit.supply") }}</label>
@@ -420,12 +421,13 @@ export default {
                                 id="searchByCoordRadio"
                                 type="radio"
                                 name="mode"
+                                class="form-check-input"
                                 :checked="!isSupplyCoordChecked()"
                                 @click="changeMode('search')"
                             >
                             <label
                                 for="searchByCoordRadio"
-                                :class="{'form-label': true, 'enabled': isEnabled('search') }"
+                                :class="{'form-check-label': true, 'enabled': isEnabled('search') }"
                                 @click="changeMode('search')"
                                 @keydown.enter="changeMode('search')"
                             >{{ $t("modules.tools.coordToolkit.search") }}</label>
