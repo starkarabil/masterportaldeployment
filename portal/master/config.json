@@ -415,7 +415,25 @@
           "featureLister": {
             "name": "translate#common:menu.tools.featureLister",
             "icon": "bi-list",
-            "lister": 10
+            "lister": 10,
+            "highlightVectorRulesPolygon": {
+              "fill": {
+                "color": [255, 255, 255, 0.9]
+            },
+            "stroke": {
+                "width": 4,
+                "color": [0, 0, 204, 0.9]
+            }
+          },
+          "highlightVectorRulesPointLine": {
+            "stroke": {
+                "width": 8,
+                "color": [255, 0, 255, 0.9]
+              },
+              "image": {
+                  "scale": 1.5
+              }
+            }
           },
           "saveSelection": {
             "name": "translate#common:menu.tools.saveSelection",

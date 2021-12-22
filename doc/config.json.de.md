@@ -2111,21 +2111,122 @@ Objekt zum Ändern des voreingestellten Formats beim Herunterladen einer Zeichnu
 
 [inherits]: # (Portalconfig.menu.tool)
 
-Modul, das Vektor Features darstellt. Durch Hovern über ein Feature in der Liste wird auf der Karte der Marker gesetzt.
+Modul, das Vektor Features darstellt. Durch Hovern über ein Feature in der Liste wird auf der Karte das Feature hervorgehoben.
 
 |Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
 |----|-------------|---|-------|------------|------|
 |maxFeatures|nein|Integer|20|Anzahl der zu zeigenden Features. Über einen Button können weitere Features in dieser Anzahl zugeladen werden.|false|
+|highlightVectorRulesPolygon|nein|**[highlightVectorRulesPolygon](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespolygon)**||Angabe der Füllfarbe und der Umriss-Farbe und -Strichstärke für das Hervorheben der Polygon-Features.|false|
+|highlightVectorRulesPointLine|nein|**[highlightVectorRulesPointLine](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespointline)**||Angabe der Umriss-Farbe und -Strichstärke für das Hervorheben von Linien und Skalierungsfaktor für das Hervorheben von Punkten.|false|
 
 **Beispiel**
-```
-#!json
+
+```json
 "featureLister": {
     "name": "Liste",
     "icon": "bi-list",
-    "maxFeatures": 10
+    "maxFeatures": 10,
+    "highlightVectorRulesPolygon": {
+        "fill": {
+            "color": [255, 0, 255, 0.9]
+        },
+        "stroke": {
+            "width": 4,
+            "color": [0, 0, 204, 0.9]
+        }
+    },
+    "highlightVectorRulesPointLine": {
+        "stroke": {
+            "width": 8,
+            "color": [255, 0, 255, 0.9]
+        },
+        "image": {
+            "scale": 2
+        }
+    }
 }
 ```
+***
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPolygon
+
+Angabe der Umriss-Farbe und -Strichstärke für das Hervorheben von Linien und Skalierungsfaktor für das Hervorheben von Punkten.
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|fill|nein|**[fill](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespolygonfill)**||Mögliche Einstellung: color|false|
+|stroke|nein|**[stroke](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespolygonstroke)**||Mögliche Einstellung: width|false|
+
+***
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPolygon.fill
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|color|nein|Float[]|[255, 255, 255, 0.5]|Mögliche Einstellung: color (RGBA)|false|
+
+```json
+"fill": { "color": [215, 102, 41, 0.9] }
+```
+
+***
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPolygon.stroke
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|width|nein|Integer|1|Mögliche Einstellung: width|false|
+|color|nein|Float[]|[255, 255, 255, 0.5]|Mögliche Einstellung: color (RGBA)|false|
+
+```json
+"stroke": { "width": 4 , "color": [255, 0, 255, 0.9]}
+```
+
+***
+
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPointLine
+
+Angabe der Umriss-Farbe und -Strichstärke für das Hervorheben von Linien und Skalierungsfaktor für das Hervorheben von Punkten.
+
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|stroke|nein|**[stroke](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespointlinestroke)**||Mögliche Einstellung: width|false|
+|image|nein|**[image](#markdown-header-portalconfigmenutoolfeaturelisterhighlightvectorrulespointlineimage)**||Mögliche Einstellung: scale|false|
+
+***
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPointLine.stroke
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|width|nein|Integer|1|Mögliche Einstellung: width|false|
+|color|nein|Float[]|[255, 255, 255, 0.5]|Mögliche Einstellung: color (RGBA)|false|
+
+```json
+"stroke": { "width": 4 , "color": [255, 0, 255, 0.9]}
+```
+
+***
+
+##### Portalconfig.menu.tool.featureLister.highlightVectorRulesPointLine.image
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|scale|nein|Integer|1.5|Mögliche Einstellung: scale|false|
+
+```json
+"image": { "scale": 2}
+```
+
+***
+
+##### Portalconfig.menu.tool.gfi.highlightVectorRules.text
+|Name|Verpflichtend|Typ|Default|Beschreibung|Expert|
+|----|-------------|---|-------|------------|------|
+|scale|nein|Float|1|Mögliche Einstellung: scale|false|
+
+```json
+"text": { "scale": 2 }
+```
+
+***
 
 #### Portalconfig.menu.tool.measure
 
