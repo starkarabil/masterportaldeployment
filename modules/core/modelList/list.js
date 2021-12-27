@@ -548,12 +548,12 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
      */
     initLayerIndeces: function (paramLayers) {
         const allLayerModels = this.getTreeLayers(),
-            baseLayerModels = allLayerModels.filter(function (layerModel) {
+            baseLayerModels = allLayerModels.filter(layerModel => {
                 return layerModel.get("isBaseLayer") === true && paramLayers.find(model => {
                     return model.id === layerModel.id;
                 }) === undefined;
             }),
-            layerModels = allLayerModels.filter(function (layerModel) {
+            layerModels = allLayerModels.filter(layerModel => {
                 return layerModel.get("isBaseLayer") !== true || paramLayers.find(model => {
                     return model.id === layerModel.id;
                 }) !== undefined;
@@ -563,7 +563,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
         let initialLayers = [];
 
         // if the treeType is custom, handle sorting according to layerSequence
-        if (treeType === "custom") {
+        if (treeType === "custom" && layerModels.find(layer => layer.get("layerSequence"))) {
             initialLayers = this.handleLayerSequence(allLayerModels);
         }
         else if (treeType === "light") {
@@ -665,8 +665,9 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
         currentLayers.sort(function (layer1, layer2) {
             return layer1.get("selectionIDX") > layer2.get("selectionIDX") ? 1 : -1;
         });
+
         // if the treeType is custom, handle sorting according to layerSequence
-        if (treeType === "custom") {
+        if (treeType === "custom" && combinedLayers.find(layer => layer.get("layerSequence"))) {
             currentLayers = this.handleLayerSequence(combinedLayers, currentLayers, newLayers);
         }
         else {
@@ -1200,12 +1201,6 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
      */
     selectedChanged: function (model, value) {
         if (model.get("type") === "layer") {
-            // Only reset Indeces in Custom Tree, because Light Tree Layers always keep their
-            // positions regardless of active or not
-            if (Radio.request("Parser", "getTreeType") !== "light") {
-                model.resetSelectionIDX();
-            }
-
             model.setIsVisibleInMap(value);
             this.updateLayerView();
         }

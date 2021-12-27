@@ -35,6 +35,7 @@
 - The WFSLayer is refactored. It is no longer a Backbone-model. The WFSLayer uses the masterportalAPI's wfs layer on creation.
 - The following NPM packages are updated:
     - selenium-webdriver: 4.0.0 to version 4.1.0
+    - @masterportal/mpconfigparser: 1.1.2 to version 1.2.0
 - The elastic search now reads out all attributes of a found layer and takes them into account when processing the layer.
 - Switched Icon Library from Glyphicon to Bootstrap Icons. Edited Webpack Config. Updated icon usage in vue components to use scss. Updated icon usage in backbone modules. Edited docs & tests accordingly.
 
@@ -42,20 +43,26 @@
 
 ### Removed
 - WMS-layer: Hamburgensie for web_atlasde has been removed.
+- AddWMS: HH-specific WMS-URL example has been removed.
 
 ### Fixed
 - WfsSearch:
     - Add namespace to the filter as otherwise the features are not properly filtered.
     - Fix reset UI button.
     - Add missing error translation for wrong config.
-- The 'Select Features' tool can now also be used to select lines.
-- In the "light" type topic tree, layers loaded via url parameters are now sorted correctly.
+- SelectFeatures:
+    - The 'Select Features' tool can now also be used to select lines.
 - Print:
     - The canvas is now drawn on the top layer after a new layer is switched on in the topic tree.
     - When printing is opened initially, the canvas is now always drawn on the top layer.
     - Grouplayer legends are now printable.
 - ParametricUrl:
     - Layers can be loaded by mdid value.
+- Topic tree:
+    - In the "light" type topic tree, layers loaded via url parameters are now sorted correctly.
+    - Expanding transparency under 'Subject data' and 'Selected topics' now synchronous.
+    - Only the selected cog will rotate.
+    - The layer order is now preserved in all trees when switching on and off.
 
 ---
 

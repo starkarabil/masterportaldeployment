@@ -292,7 +292,7 @@ Layer.prototype.toggleIsSettingVisible = function () {
 
     layers.setIsSettingVisible(false);
     this.setIsSettingVisible(!oldValue);
-    bridge.renderMenuSettings();
+    bridge.renderMenuSettings(this.get("id"));
 };
 /**
  * Sets the attribute isSelected and sets the layers visibility. If newValue is false, the layer is removed from map.
@@ -307,9 +307,6 @@ Layer.prototype.setIsSelected = function (newValue) {
     // do not use this.set("isSelected", value), because of neverending recursion
     this.attributes.isSelected = newValue;
     this.setIsVisibleInMap(newValue);
-    if (treeType !== "light") {
-        this.resetSelectionIDX();
-    }
 
     if (newValue) {
         bridge.addLayerToIndex(this.layer, this.get("selectionIDX"));
