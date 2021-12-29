@@ -138,7 +138,7 @@ export default {
          * @returns {void}
          */
         onError () {
-            this.$store.dispatch("Alerting/addSingleAlert", "<strong>" + i18next.t("common:modules.controls.orientation.geolocationDeniedText") + " </strong>");
+            this.$store.dispatch("Alerting/addSingleAlert", "<strong>" + i18next.t("modules.controls.orientation.geolocationDeniedText") + " </strong>");
             this.isGeolocationDenied = true;
             if (this.geolocation !== null) {
                 this.untrack();
@@ -348,7 +348,7 @@ export default {
          * @returns {void}
          */
         onPOIError (evt) {
-            this.$store.dispatch("Alerting/addSingleAlert", "<strong>" + i18next.t("common:modules.controls.orientation.trackingDeniedText") + " </strong>" + evt.message);
+            this.$store.dispatch("Alerting/addSingleAlert", "<strong>" + i18next.t("modules.controls.orientation.trackingDeniedText") + " </strong>" + evt.message);
 
             if (this.geolocation !== null) {
                 this.untrack();
@@ -461,7 +461,7 @@ export default {
         />
         <ControlIcon
             id="geolocate"
-            :title="$t('common:modules.controls.orientation.titleGeolocate')"
+            :title="$t('modules.controls.orientation.titleGeolocate')"
             :icon-name="'map-marker'"
             :on-click="getOrientation"
         />
@@ -469,7 +469,7 @@ export default {
             v-if="showPoiIcon"
             id="geolocatePOI"
             :icon-name="'record'"
-            :title="$t('common:modules.controls.orientation.titleGeolocatePOI')"
+            :title="$t('modules.controls.orientation.titleGeolocatePOI')"
             :on-click="getPOI"
         />
         <PoiChoice

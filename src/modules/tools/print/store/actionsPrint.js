@@ -172,7 +172,7 @@ export default {
         }
 
         if (typeof metadata === "undefined") {
-            dispatch("Alerting/addSingleAlert", i18next.t("common:modules.layerInformation.errorMessage", {cswObjCswUrl: cswObj.cswUrl}), {root: true});
+            dispatch("Alerting/addSingleAlert", i18next.t("modules.layerInformation.errorMessage", {cswObjCswUrl: cswObj.cswUrl}), {root: true});
         }
         else {
             cswObj.parsedData = {};
@@ -263,7 +263,7 @@ export default {
     waitForPrintJobSuccess: async function ({state, dispatch, commit}, response) {
         // Error processing...
         if (response.status === "error") {
-            dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.print.waitForPrintErrorMessage"), {root: true});
+            dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.print.waitForPrintErrorMessage"), {root: true});
             console.error("Error: " + response.error);
         }
         else if (response.done) {

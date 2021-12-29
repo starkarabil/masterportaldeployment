@@ -23,7 +23,7 @@ export default {
         ...mapGetters("Map", ["is3d"]),
         ...mapGetters("Footer", Object.keys(getters)),
         showLanguageSwitcher () {
-            return this.$i18n.i18next.options.isEnabled() && Object.keys(this.$i18n.i18next.options.getLanguages()).length > 1;
+            return i18next.options.isEnabled() && Object.keys(i18next.options.getLanguages()).length > 1;
         }
     },
     mounted () {

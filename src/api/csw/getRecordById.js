@@ -93,18 +93,18 @@ function parseAbstract (json) {
 function parseFrequenzy (json) {
     const attributes = getMdIdentification(json)?.resourceMaintenance?.MD_MaintenanceInformation?.maintenanceAndUpdateFrequency?.MD_MaintenanceFrequencyCode?.getAttributes(),
         frequencyTypes = {
-            continual: "common:modules.cswParser.continual",
-            daily: "common:modules.cswParser.daily",
-            weekly: "common:modules.cswParser.weekly",
-            fortnightly: "common:modules.cswParser.fortnightly",
-            monthly: "common:modules.cswParser.monthly",
-            quarterly: "common:modules.cswParser.quarterly",
-            biannually: "common:modules.cswParser.biannually",
-            annually: "common:modules.cswParser.annually",
-            asNeeded: "common:modules.cswParser.asNeeded",
-            irregular: "common:modules.cswParser.irregular",
-            notPlanned: "common:modules.cswParser.notPlanned",
-            unknown: "common:modules.cswParser.unknown"
+            continual: "modules.cswParser.continual",
+            daily: "modules.cswParser.daily",
+            weekly: "modules.cswParser.weekly",
+            fortnightly: "modules.cswParser.fortnightly",
+            monthly: "modules.cswParser.monthly",
+            quarterly: "modules.cswParser.quarterly",
+            biannually: "modules.cswParser.biannually",
+            annually: "modules.cswParser.annually",
+            asNeeded: "modules.cswParser.asNeeded",
+            irregular: "modules.cswParser.irregular",
+            notPlanned: "modules.cswParser.notPlanned",
+            unknown: "modules.cswParser.unknown"
         };
 
     if (attributes?.codeListValue) {

@@ -99,8 +99,8 @@ export default {
 
             this.titleText = [
                 this.$t(this.chartValue?.title || ""),
-                `${this.$t("common:modules.tools.gfi.themes.sensor.sensorBarChart.chartTitleAverage")} `
-                + this.$t(`common:modules.tools.gfi.themes.sensor.sensorBarChart.${this.periodUnit}`, {count: this.periodLength}),
+                `${this.$t("modules.tools.gfi.themes.sensor.sensorBarChart.chartTitleAverage")} `
+                + this.$t(`modules.tools.gfi.themes.sensor.sensorBarChart.${this.periodUnit}`, {count: this.periodLength}),
                 this.$t(this.noticeText)
             ];
 
@@ -203,7 +203,7 @@ export default {
                         min: 0,
                         max: 23,
                         callback: value => value % 2 ? "" : this.$t(
-                            "common:modules.tools.gfi.themes.sensor.sensorBarChart.clock", {value}
+                            "modules.tools.gfi.themes.sensor.sensorBarChart.clock", {value}
                         )
                     }
                 }],
@@ -267,7 +267,7 @@ export default {
                 id="left"
                 type="button"
                 class="leftButton kat btn"
-                :title="$t('common:modules.tools.gfi.themes.sensor.sensorBarChart.previousWeekday')"
+                :title="$t('modules.tools.gfi.themes.sensor.sensorBarChart.previousWeekday')"
                 @click="showPreviousWeekDay"
             >
                 <span class="glyphicon glyphicon-chevron-left" />
@@ -277,7 +277,7 @@ export default {
                 id="right"
                 type="button"
                 class="rightButton kat btn"
-                :title="$t('common:modules.tools.gfi.themes.sensor.sensorBarChart.nextWeekday')"
+                :title="$t('modules.tools.gfi.themes.sensor.sensorBarChart.nextWeekday')"
                 @click="showNextWeekDay"
             >
                 <span class="glyphicon glyphicon-chevron-right" />

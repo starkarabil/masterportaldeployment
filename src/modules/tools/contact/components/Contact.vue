@@ -15,7 +15,6 @@ export default {
         ...mapGetters("Tools/Contact", keyStore.getters)
     },
     created () {
-        this.$on("close", this.close);
         // warn if deprecated param is used
         if (this.serviceID) {
             console.warn("Contact Tool: The parameter 'serviceID' is deprecated in the next major release! Please use serviceId instead.");
@@ -91,7 +90,7 @@ export default {
                     html-element="textarea"
                     input-name="message"
                     :input-value="message"
-                    :label-text="$t('common:modules.tools.contact.messageLabel')"
+                    :label-text="$t('modules.tools.contact.messageLabel')"
                     :rows="maxLines"
                     :valid-input="validMessage"
                 />
@@ -110,9 +109,9 @@ export default {
                             type="checkbox"
                             @click="togglePrivacyPolicyAccepted"
                         >
-                        {{ $t("common:modules.tools.contact.privacyPolicy.label") }}
+                        {{ $t("modules.tools.contact.privacyPolicy.label") }}
                     </label>
-                    <p v-html="$t('common:modules.tools.contact.privacyPolicy.info', {privacyPolicyLink})" />
+                    <p v-html="$t('modules.tools.contact.privacyPolicy.info', {privacyPolicyLink})" />
                 </div>
                 <button
                     id="tool-contact-send-message"
@@ -120,7 +119,7 @@ export default {
                     class="btn btn-primary pull-right"
                     :disabled="!validForm"
                 >
-                    {{ $t("common:modules.tools.contact.sendButton") }}
+                    {{ $t("modules.tools.contact.sendButton") }}
                 </button>
             </form>
         </template>

@@ -36,7 +36,6 @@ export default {
         if (Radio.request("Parser", "getTreeType") === "light") {
             this.refreshVectorTileLayerList();
         }
-        this.$on("close", this.close);
     },
     methods: {
         ...mapMutations("Tools/StyleVT", Object.keys(mutations)),
@@ -82,10 +81,10 @@ export default {
                 v-if="vectorTileLayerList.length === 0"
                 id="tool-styleVT-noStyleableLayers"
             >
-                {{ $t("common:modules.tools.styleVT.noStyleableLayers") }}
+                {{ $t("modules.tools.styleVT.noStyleableLayers") }}
             </p>
             <div v-else>
-                <p>{{ $t("common:modules.tools.styleVT.introText") }}</p>
+                <p>{{ $t("modules.tools.styleVT.introText") }}</p>
                 <form
                     id="tool-styleVT-styleableLayersAvailable"
                     class="form-horizontal"
@@ -96,7 +95,7 @@ export default {
                             for="tool-styleVT-selectedLayerField"
                             class="range-label"
                         >
-                            {{ $t("common:modules.tools.styleVT.theme") }}
+                            {{ $t("modules.tools.styleVT.theme") }}
                         </label>
                         <select
                             id="tool-styleVT-selectedLayerField"
@@ -109,7 +108,7 @@ export default {
                                 value=""
                                 selected
                             >
-                                {{ $t("common:modules.tools.styleVT.chooseTheme") }}
+                                {{ $t("modules.tools.styleVT.chooseTheme") }}
                             </option>
                             <option
                                 v-for="vectorTileLayer in vectorTileLayerList"
@@ -130,7 +129,7 @@ export default {
                             for="tool-styleVT-selectedStyleField"
                             class="style-label"
                         >
-                            {{ $t("common:modules.tools.styleVT.style") }}
+                            {{ $t("modules.tools.styleVT.style") }}
                         </label>
                         <select
                             id="tool-styleVT-selectedStyleField"

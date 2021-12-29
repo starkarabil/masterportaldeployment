@@ -159,7 +159,7 @@ describe("src/modules/tools/routing/utils/directions/routing-ors-directions.js",
             }
             catch (error) {
                 expect(error.message).equal(
-                    "common:modules.tools.routing.errors.errorIsochronesFetch"
+                    "modules.tools.routing.errors.errorIsochronesFetch"
                 );
             }
         });

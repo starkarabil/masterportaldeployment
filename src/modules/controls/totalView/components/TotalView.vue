@@ -60,7 +60,7 @@ export default {
             :is="component"
             id="start-totalview"
             class="total-view-button"
-            :title="$t('common:modules.controls.totalView.titleButton')"
+            :title="$t('modules.controls.totalView.titleButton')"
             :disabled="!mapMoved"
             :icon-name="glyphiconToUse"
             :on-click="startResetView"

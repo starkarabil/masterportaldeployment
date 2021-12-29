@@ -18,7 +18,7 @@ describe("src/modules/tools/searchByCoord/components/SearchByCoord.vue", () => {
                     children: {
                         searchByCoord:
                             {
-                                "name": "translate#common:menu.tools.searchByCoord",
+                                "name": "translate#menu.tools.searchByCoord",
                                 "glyphicon": "glyphicon-record",
                                 "renderToWindow": true
                             }

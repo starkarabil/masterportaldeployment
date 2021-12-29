@@ -32,7 +32,7 @@ const state = {
     active: false,
     id: "contact",
     // defaults for config.json tool parameters
-    name: "common:menu.contact",
+    name: "menu.contact",
     glyphicon: "glyphicon-envelope",
     renderToWindow: true,
     resizableWindow: true,

@@ -1,4 +1,5 @@
-import Vue from "vue";
+// import Vue from "vue";
+import {createApp, h, configureCompat} from "vue";
 import App from "../src/App.vue";
 import store from "../src/app-store";
 import loadAddons from "../src/addons";
@@ -57,7 +58,7 @@ let sbconfig,
 
 /* eslint-disable no-process-env */
 if (process.env.NODE_ENV === "development") {
-    Vue.config.devtools = true;
+    // Vue.config.devtools = true;
 }
 
 /**
@@ -69,7 +70,7 @@ async function loadApp () {
     const legacyAddons = Object.is(ADDONS, {}) ? {} : ADDONS,
         utilConfig = {},
         style = Radio.request("Util", "getUiStyle"),
-        vueI18Next = initiateVueI18Next();
+        i18n = initiateVueI18Next();
     /* eslint-disable no-undef */
     let app = {},
         searchbarAttributes = {};
@@ -91,23 +92,34 @@ async function loadApp () {
         Vue.use(RemoteInterfaceVue, Config.remoteInterface);
     }
 
-    // import and register Vue addons according the config.js
-    await loadAddons(Config.addons);
-
-    Vue.config.productionTip = false;
+    // Vue.config.productionTip = false;
 
     store.commit("setConfigJs", Config);
 
     // must be done here, else it is done too late
     readUrlParamEarly();
 
-    app = new Vue({
-        el: "#masterportal-root",
+    app = createApp({
         name: "VueApp",
-        render: h => h(App),
-        store,
-        i18n: vueI18Next
+        render: () => h(App)
     });
+
+    app.use(store);
+    app.use(i18n);
+
+    configureCompat({
+        // default everything to Vue 2 behavior
+        MODE: 2
+    });
+
+    // import and register Vue addons according the config.js
+    // await loadAddons(Config.addons, app);
+    // app = new Vue({
+    //     el: "#masterportal-root",
+    //     render: h => h(App),
+    //     store,
+    //     i18n: vueI18Next
+    // });
 
 
     // Core laden
@@ -126,7 +138,8 @@ async function loadApp () {
     createMaps(Config, Radio.request("Parser", "getPortalConfig").mapView);
     new WindowView();
 
-    app.$mount();
+    // app.$mount();
+    app.mount("#masterportal-root");
 
     new WFSTransactionModel();
     new MenuLoader();
@@ -255,7 +268,7 @@ async function loadApp () {
 
     if (Config.addons !== undefined) {
         Radio.channel("Addons");
-        const i18nextLanguages = vueI18Next?.i18next?.options?.getLanguages() ? vueI18Next.i18next.options.getLanguages() : {};
+        // const i18nextLanguages = i18n?.i18next?.options?.getLanguages() ? i18n.i18next.options.getLanguages() : {};
         let initCounter = 0;
 
         Config.addons.forEach((addonKey) => {
@@ -264,27 +277,27 @@ async function loadApp () {
             }
         });
 
-        initCounter = initCounter * Object.keys(i18nextLanguages).length;
+        // initCounter = initCounter * Object.keys(i18nextLanguages).length;
 
         // loads all language files from addons for backbone- and vue-addons
         Config.addons.forEach((addonKey) => {
             if (legacyAddons[addonKey] !== undefined) {
-                Object.keys(i18nextLanguages).forEach((lng) => {
-                    import(
-                        /* webpackChunkName: "additionalLocales" */
-                        /* webpackInclude: /[\\\/]additional.json$/ */
-                        `../addons/${addonKey}/locales/${lng}/additional.json`)
-                        .then(({default: additionalLocales}) => {
-                            vueI18Next.i18next.addResourceBundle(lng, "additional", additionalLocales, true);
-                            initCounter--;
-                            checkInitCounter(initCounter, legacyAddons);
-                        }).catch(error => {
-                            initCounter--;
-                            console.warn(error);
-                            console.warn("Translation files of addon " + addonKey + " could not be loaded or does not exist. Addon is not translated.");
-                            checkInitCounter(initCounter, legacyAddons);
-                        });
-                });
+                // Object.keys(i18nextLanguages).forEach((lng) => {
+                //     import(
+                //         /* webpackChunkName: "additionalLocales" */
+                //         /* webpackInclude: /[\\\/]additional.json$/ */
+                //         `../addons/${addonKey}/locales/${lng}/additional.json`)
+                //         .then(({default: additionalLocales}) => {
+                //             // i18n.i18next.addResourceBundle(lng, "additional", additionalLocales, true);
+                //             initCounter--;
+                //             checkInitCounter(initCounter, legacyAddons);
+                //         }).catch(error => {
+                //             initCounter--;
+                //             console.warn(error);
+                //             console.warn("Translation files of addon " + addonKey + " could not be loaded or does not exist. Addon is not translated.");
+                //             checkInitCounter(initCounter, legacyAddons);
+                //         });
+                // });
             }
         });
     }

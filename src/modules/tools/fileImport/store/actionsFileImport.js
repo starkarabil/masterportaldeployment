@@ -159,8 +159,8 @@ export default {
                 fileFormat = fileNameSplit.length > 0 ? "*." + fileNameSplit[fileNameSplit.length - 1] : "unknown";
 
             alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.error"),
-                content: i18next.t("common:modules.tools.fileImport.alertingMessages.missingFormat", {format: fileFormat})
+                category: i18next.t("modules.alerting.categories.error"),
+                content: i18next.t("modules.tools.fileImport.alertingMessages.missingFormat", {format: fileFormat})
             };
 
             dispatch("Alerting/addSingleAlert", alertingMessage, {root: true});
@@ -199,8 +199,8 @@ export default {
         catch (ex) {
             console.warn(ex);
             alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.error"),
-                content: i18next.t("common:modules.tools.fileImport.alertingMessages.formatError", {filename: datasrc.filename})
+                category: i18next.t("modules.alerting.categories.error"),
+                content: i18next.t("modules.tools.fileImport.alertingMessages.formatError", {filename: datasrc.filename})
             };
 
             dispatch("Alerting/addSingleAlert", alertingMessage, {root: true});
@@ -209,8 +209,8 @@ export default {
 
         if (!Array.isArray(features) || features.length === 0) {
             alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.error"),
-                content: i18next.t("common:modules.tools.fileImport.alertingMessages.missingFileContent", {filename: datasrc.filename})
+                category: i18next.t("modules.alerting.categories.error"),
+                content: i18next.t("modules.tools.fileImport.alertingMessages.missingFileContent", {filename: datasrc.filename})
             };
 
             dispatch("Alerting/addSingleAlert", alertingMessage, {root: true});
@@ -223,8 +223,8 @@ export default {
             if (feature.getGeometry() === null) {
                 featureError = true;
                 alertingMessage = {
-                    category: i18next.t("common:modules.alerting.categories.error"),
-                    content: i18next.t("common:modules.tools.fileImport.alertingMessages.featureError")
+                    category: i18next.t("modules.alerting.categories.error"),
+                    content: i18next.t("modules.tools.fileImport.alertingMessages.featureError")
                 };
 
                 dispatch("Alerting/addSingleAlert", alertingMessage, {root: true});
@@ -264,14 +264,14 @@ export default {
 
         if (featureError) {
             alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.info"),
-                content: i18next.t("common:modules.tools.fileImport.alertingMessages.successPartly", {filename: datasrc.filename})
+                category: i18next.t("modules.alerting.categories.info"),
+                content: i18next.t("modules.tools.fileImport.alertingMessages.successPartly", {filename: datasrc.filename})
             };
         }
         else {
             alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.info"),
-                content: i18next.t("common:modules.tools.fileImport.alertingMessages.success", {filename: datasrc.filename})
+                category: i18next.t("modules.alerting.categories.info"),
+                content: i18next.t("modules.tools.fileImport.alertingMessages.success", {filename: datasrc.filename})
             };
         }
 

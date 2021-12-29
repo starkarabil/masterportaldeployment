@@ -53,6 +53,8 @@ export default {
     methods: {
         close (event) {
             if (event.type === "click" || event.which === 32 || event.which === 13) {
+                console.log(13);
+                console.log(this);
                 this.$emit("close");
             }
         }

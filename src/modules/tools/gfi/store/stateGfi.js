@@ -14,7 +14,7 @@
  */
 const state = {
     id: "gfi",
-    name: "common:menu.tools.getInfos",
+    name: "menu.tools.getInfos",
     glyphicon: "glyphicon-info-sign",
     active: false,
     currentFeature: null,

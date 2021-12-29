@@ -22,7 +22,7 @@ export default {
             @input="$emit('input', $event.target.checked)"
         >
         <span class="ml-2">
-            {{ $t('common:modules.tools.routing.batchProcessing.header') }}
+            {{ $t('modules.tools.routing.batchProcessing.header') }}
         </span>
     </label>
 </template>

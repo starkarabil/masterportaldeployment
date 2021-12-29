@@ -52,9 +52,9 @@ export default {
         ...mapGetters("GraphicalSelect", Object.keys(getters)),
         optionsValue: function () {
             return this.options ? this.options : {
-                "Box": this.$t("common:snippets.graphicalSelect.selectBySquare"),
-                "Circle": this.$t("common:snippets.graphicalSelect.selectByCircle"),
-                "Polygon": this.$t("common:snippets.graphicalSelect.selectByPolygon")
+                "Box": this.$t("snippets.graphicalSelect.selectBySquare"),
+                "Circle": this.$t("snippets.graphicalSelect.selectByCircle"),
+                "Polygon": this.$t("snippets.graphicalSelect.selectByPolygon")
             };
         }
     },
@@ -132,19 +132,19 @@ export default {
         checkOptions: function () {
             if (!this.geographicValues.every(key => Object.keys(this.optionsValue).includes(key))) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedOption") + this.geographicValues
+                    "content": i18next.t("snippets.graphicalSelect.alert.notSupportedOption") + this.geographicValues
                 });
             }
 
             if (!this.geographicValues.includes(this.selectedOption)) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedSelection") + this.geographicValues
+                    "content": i18next.t("snippets.graphicalSelect.alert.notSupportedSelection") + this.geographicValues
                 });
             }
 
             if (!this.selectionElements.includes(this.selectElement)) {
                 this.addSingleAlert({
-                    "content": i18next.t("common:snippets.graphicalSelect.alert.notSupportedElement") + this.selectionElements
+                    "content": i18next.t("snippets.graphicalSelect.alert.notSupportedElement") + this.selectionElements
                 });
             }
         },

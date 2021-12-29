@@ -28,7 +28,7 @@ export default {
          */
         firstColumnHeaderName: function () {
             return this.feature.getTheme()?.params?.data?.firstColumnHeaderName ||
-                this.$t("common:modules.tools.gfi.themes.sensor.sensorData.firstColumnHeaderName");
+                this.$t("modules.tools.gfi.themes.sensor.sensorData.firstColumnHeaderName");
         },
 
         /**

@@ -183,7 +183,7 @@ WFSLayer.prototype.getStyleFunction = function (attrs) {
         };
     }
     else {
-        console.error(i18next.t("common:modules.core.modelList.layer.wrongStyleId", {styleId}));
+        console.error(i18next.t("modules.core.modelList.layer.wrongStyleId", {styleId}));
     }
 
     return style;

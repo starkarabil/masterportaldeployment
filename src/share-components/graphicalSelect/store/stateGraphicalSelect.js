@@ -24,7 +24,7 @@ const state = {
     active: false,
     name: "Geometrie",
     type: "string",
-    displayName: "common:snippets.graphicalSelect.displayName",
+    displayName: "snippets.graphicalSelect.displayName",
     snippetType: "graphicalSelect",
     isMultiple: false,
     drawInteraction: undefined,
@@ -39,8 +39,8 @@ const state = {
     selectionElements: ["Dropdown"],
     geographicValues: ["Box", "Circle", "Polygon"],
     currentValue: "",
-    tooltipMessage: "common:snippets.graphicalSelect.tooltipMessage",
-    tooltipMessagePolygon: "common:snippets.graphicalSelect.tooltipMessagePolygon",
+    tooltipMessage: "snippets.graphicalSelect.tooltipMessage",
+    tooltipMessagePolygon: "snippets.graphicalSelect.tooltipMessagePolygon",
     selectedAreaGeoJson: undefined,
     defaultSelection: ""
 };

@@ -91,7 +91,7 @@ describe("src/modules/tools/wfsSearch/components/WfsSearch.vue", () => {
             resetButton = wrapper.find("#tool-wfsSearch-button-resetUI");
 
         expect(resetButton.exists()).to.be.true;
-        expect(resetButton.text()).to.equal("common:modules.tools.wfsSearch.resetButton");
+        expect(resetButton.text()).to.equal("modules.tools.wfsSearch.resetButton");
     });
     it("renders an input element of type submit to search", () => {
         store.commit("Tools/WfsSearch/setInstances", instances);
@@ -102,7 +102,7 @@ describe("src/modules/tools/wfsSearch/components/WfsSearch.vue", () => {
             searchInput = wrapper.find("#tool-wfsSearch-button-search");
 
         expect(searchInput.exists()).to.be.true;
-        expect(searchInput.element.value).to.equal("common:modules.tools.wfsSearch.searchButton");
+        expect(searchInput.element.value).to.equal("modules.tools.wfsSearch.searchButton");
         expect(searchInput.element.type).to.equal("submit");
     });
     it("renders a clickable button to show the search results if the user searched and results were found", () => {
@@ -116,7 +116,7 @@ describe("src/modules/tools/wfsSearch/components/WfsSearch.vue", () => {
             searchButton = wrapper.find("#tool-wfsSearch-button-showResults");
 
         expect(searchButton.exists()).to.be.true;
-        expect(searchButton.text()).to.equal("common:modules.tools.wfsSearch.showResults (1)");
+        expect(searchButton.text()).to.equal("modules.tools.wfsSearch.showResults (1)");
         expect(searchButton.element.disabled).to.be.false;
     });
     it("renders a disabled button if the user searched and no results were found", () => {
@@ -130,7 +130,7 @@ describe("src/modules/tools/wfsSearch/components/WfsSearch.vue", () => {
             searchButton = wrapper.find("#tool-wfsSearch-button-showResults");
 
         expect(searchButton.exists()).to.be.true;
-        expect(searchButton.text()).to.equal("common:modules.tools.wfsSearch.showResults (0)");
+        expect(searchButton.text()).to.equal("modules.tools.wfsSearch.showResults (0)");
         expect(searchButton.element.disabled).to.be.true;
     });
     it("renders a disabled button if the user searched but the parameter 'resultList' was not configured", () => {
@@ -145,7 +145,7 @@ describe("src/modules/tools/wfsSearch/components/WfsSearch.vue", () => {
             searchButton = wrapper.find("#tool-wfsSearch-button-showResults");
 
         expect(searchButton.exists()).to.be.true;
-        expect(searchButton.text()).to.equal("common:modules.tools.wfsSearch.showResults (1)");
+        expect(searchButton.text()).to.equal("modules.tools.wfsSearch.showResults (1)");
         expect(searchButton.element.disabled).to.be.true;
     });
 });

@@ -39,7 +39,7 @@ export default {
     created () {
         this.utilChannel.on("hideLoader", this.turnSimple);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.utilChannel.off("hideLoader", this.turnSimple);
     },
     methods: {

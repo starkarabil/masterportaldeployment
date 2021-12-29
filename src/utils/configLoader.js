@@ -11,8 +11,8 @@ export default function requestConfig (url) {
         .then(response => response)
         .catch(error => {
             const alertingMessage = {
-                category: i18next.t("common:modules.alerting.categories.warning"),
-                content: i18next.t("common:utils.parametricURL.errorLoadConfig", {url: url})
+                category: i18next.t("modules.alerting.categories.warning"),
+                content: i18next.t("utils.parametricURL.errorLoadConfig", {url: url})
             };
 
             console.warn("Error occured during loading ", url, " to set config by url param.", error);

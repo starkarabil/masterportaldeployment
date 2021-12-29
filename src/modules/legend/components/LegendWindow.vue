@@ -47,7 +47,8 @@ export default {
                     this.createLegendForLayerInfo(this.layerIdForLayerInfo);
                 }
             }
-        }
+        },
+        deep: true
     },
     created () {
         this.listenToLayerVisibilityChanged();
@@ -750,7 +751,7 @@ export default {
                         ref="collapse-all-icon"
                         tabindex="0"
                         class="glyphicon glyphicon-arrow-up toggle-collapse-all legend"
-                        :title="$t('common:modules.legend.toggleCollapseAll')"
+                        :title="$t('modules.legend.toggleCollapseAll')"
                         @click="toggleCollapseAll($event)"
                         @keydown="toggleCollapseAll($event)"
                     />

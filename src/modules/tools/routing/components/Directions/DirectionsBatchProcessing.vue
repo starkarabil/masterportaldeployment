@@ -55,14 +55,14 @@ export default {
                         }
                         if (this.countFailed !== 0) {
                             this.addSingleAlert({
-                                category: this.$t("common:modules.alerting.categories.error"),
-                                content: this.$t("common:modules.tools.routing.directions.batchProcessing.errorSomeFailed", {countFailed: this.coundFailed})
+                                category: this.$t("modules.alerting.categories.error"),
+                                content: this.$t("modules.tools.routing.directions.batchProcessing.errorSomeFailed", {countFailed: this.coundFailed})
                             });
                         }
                     }
                     catch (e) {
                         this.addSingleAlert({
-                            category: this.$t("common:modules.alerting.categories.error"),
+                            category: this.$t("modules.alerting.categories.error"),
                             content: e.message
                         });
                     }
@@ -136,7 +136,7 @@ export default {
         parseCsv (filecontent) {
             return new Promise((resolve, reject) => {
                 if (typeof filecontent !== "string") {
-                    reject(new Error(this.$t("common:modules.tools.routing.directions.batchProcessing.errorNoEntries")));
+                    reject(new Error(this.$t("modules.tools.routing.directions.batchProcessing.errorNoEntries")));
                     return;
                 }
                 const content = filecontent.replace(/[\r]/g, "").trim(),
@@ -145,11 +145,11 @@ export default {
                     tasks = [];
 
                 if (content.length === 0 || count === 0) {
-                    reject(new Error(this.$t("common:modules.tools.routing.directions.batchProcessing.errorNoEntries")));
+                    reject(new Error(this.$t("modules.tools.routing.directions.batchProcessing.errorNoEntries")));
                     return;
                 }
                 if (count > this.settings.batchProcessing.limit) {
-                    reject(new Error(this.$t("common:modules.tools.routing.directions.batchProcessing.errorToManyEntriesInFile", {limit: this.settings.batchProcessing.limit})));
+                    reject(new Error(this.$t("modules.tools.routing.directions.batchProcessing.errorToManyEntriesInFile", {limit: this.settings.batchProcessing.limit})));
                     return;
                 }
 
@@ -162,12 +162,12 @@ export default {
                     }
 
                     if (lineParts.length !== 5) {
-                        reject(new Error(this.$t("common:modules.tools.routing.directions.batchProcessing.errorToManyEntriesInRow", {row: i})));
+                        reject(new Error(this.$t("modules.tools.routing.directions.batchProcessing.errorToManyEntriesInRow", {row: i})));
                         return;
                     }
 
                     if (!this.isNumber(Number(lineParts[1])) || !this.isNumber(Number(lineParts[2])) || !this.isNumber(Number(lineParts[3])) || !this.isNumber(Number(lineParts[4]))) {
-                        reject(new Error(this.$t("common:modules.tools.routing.directions.batchProcessing.errorRowContainsEntriesNoNumber", {row: i})));
+                        reject(new Error(this.$t("modules.tools.routing.directions.batchProcessing.errorRowContainsEntriesNoNumber", {row: i})));
                         return;
                     }
 
@@ -194,13 +194,13 @@ export default {
                 endeLat = Number(lineParts[4]),
                 result = {
                     ID: id,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: endeLon,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: endeLat,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: null,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: null,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: this.settings.speedProfile
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: endeLon,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: endeLat,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: null,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: null,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: this.settings.speedProfile
                 };
 
             try {
@@ -212,8 +212,8 @@ export default {
                     instructions: false
                 });
 
-                result[i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")] = directionsResult.distance.toFixed(2);
-                result[i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")] = (directionsResult.duration / 60).toFixed(2);
+                result[i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")] = directionsResult.distance.toFixed(2);
+                result[i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")] = (directionsResult.duration / 60).toFixed(2);
             }
             catch (error) {
                 this.countFailed = this.countFailed + 1;
@@ -237,7 +237,7 @@ export default {
         :settings="settings"
         :progress="taskHandler ? taskHandler.progress : 0"
         :is-processing="isProcessing"
-        :structure-text="$t('common:modules.tools.routing.directions.batchProcessing.structure')"
+        :structure-text="$t('modules.tools.routing.directions.batchProcessing.structure')"
         example-text="1;8.12;50.67;9.12;51.67"
         @filesadded="addFiles($event)"
         @cancelProcess="taskHandler.cancelRun()"

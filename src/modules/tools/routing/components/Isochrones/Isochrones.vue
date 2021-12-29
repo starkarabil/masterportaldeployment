@@ -59,7 +59,7 @@ export default {
         this.initIsochrones();
     },
 
-    beforeDestroy () {
+    beforeUnmount () {
         this.closeIsochrones();
     },
 
@@ -167,8 +167,8 @@ export default {
             :class="['pointer mr-4 ', isInputDisabled ? 'opacity-05' : '']"
             :speed-profile-id="option"
             :fill-color="option === settings.speedProfile ? '#0077ff' : '#000000'"
-            :tooltip="$t('common:modules.tools.routing.speedprofiles.' + option)"
-            @click.native="changeSpeedProfile(option)"
+            :tooltip="$t('modules.tools.routing.speedprofiles.' + option)"
+            @click="changeSpeedProfile(option)"
         />
 
         <hr>
@@ -186,7 +186,7 @@ export default {
             <IsochronesBatchProcessing :settings="settings" />
         </template>
         <template v-else>
-            <h6>{{ $t('common:modules.tools.routing.isochrones.startpoint') }}</h6>
+            <h6>{{ $t('modules.tools.routing.isochrones.startpoint') }}</h6>
 
             <form
                 id="routing-isochrones-coordinate-input-form"
@@ -196,15 +196,15 @@ export default {
                 <RoutingCoordinateInput
                     :count-waypoints="1"
                     :waypoint="waypoint"
-                    @removeWaypoint="onRemoveWaypoint()"
-                    @searchResultSelected="zoomOnWaypoint()"
+                    @remove-waypoint="onRemoveWaypoint()"
+                    @search-result-selected="zoomOnWaypoint()"
                 />
             </form>
         </template>
 
         <hr>
 
-        <h6>{{ $t('common:modules.tools.routing.isochrones.optimizeHeader') }}</h6>
+        <h6>{{ $t('modules.tools.routing.isochrones.optimizeHeader') }}</h6>
 
         <select
             id="routing-isochrones-methodoption"
@@ -219,14 +219,14 @@ export default {
                 :selected="option === settings.isochronesMethodOption"
                 :disabled="isInputDisabled"
             >
-                {{ $t('common:modules.tools.routing.isochrones.optimization.' + option) }}
+                {{ $t('modules.tools.routing.isochrones.optimization.' + option) }}
             </option>
         </select>
 
 
         <template v-if="settings.isochronesMethodOption === 'DISTANCE'">
             <RoutingSliderInput
-                :label="$t('common:modules.tools.routing.isochrones.maxDistance')"
+                :label="$t('modules.tools.routing.isochrones.maxDistance')"
                 :value="settings.distanceValue"
                 :min="settings.minDistance"
                 :max="settings.maxDistance"
@@ -238,7 +238,7 @@ export default {
 
         <template v-else-if="settings.isochronesMethodOption === 'TIME'">
             <RoutingSliderInput
-                :label="$t('common:modules.tools.routing.isochrones.maxTraveltime')"
+                :label="$t('modules.tools.routing.isochrones.maxTraveltime')"
                 :value="settings.timeValue"
                 :min="settings.minTime"
                 :max="settings.maxTime"
@@ -249,7 +249,7 @@ export default {
         </template>
 
         <RoutingSliderInput
-            :label="$t('common:modules.tools.routing.isochrones.interval')"
+            :label="$t('modules.tools.routing.isochrones.interval')"
             :value="settings.intervalValue"
             :min="minIntervalValue"
             :max="maxIntervalValue"
@@ -264,8 +264,8 @@ export default {
             :settings="settings"
             :active-avoid-features-options="routingAvoidFeaturesOptions"
             :disabled="isInputDisabled"
-            @addAvoidOption="onAddAvoidOption($event)"
-            @removeAvoidOption="onRemoveAvoidOption($event)"
+            @add-avoid-option="onAddAvoidOption($event)"
+            @remove-avoid-option="onRemoveAvoidOption($event)"
         />
 
         <template v-if="!(settings.batchProcessing.enabled && settings.batchProcessing.active)">
@@ -279,7 +279,7 @@ export default {
                         :disabled="waypoint.getCoordinates().length === 0 || isInputDisabled"
                         @click="findIsochrones()"
                     >
-                        {{ $t('common:modules.tools.routing.isochrones.calculate') }}
+                        {{ $t('modules.tools.routing.isochrones.calculate') }}
                     </button>
                 </div>
 
@@ -289,7 +289,7 @@ export default {
                 >
                     <hr class="w-100">
 
-                    <span class="mb-2">{{ $t('common:modules.tools.routing.isochrones.legend') }}</span>
+                    <span class="mb-2">{{ $t('modules.tools.routing.isochrones.legend') }}</span>
                     <div
                         v-for="(area, index) of routingIsochrones.getAreas()"
                         :key="'result-area-' + index"

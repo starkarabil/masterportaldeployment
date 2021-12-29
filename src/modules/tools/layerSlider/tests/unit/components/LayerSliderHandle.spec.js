@@ -16,7 +16,7 @@ describe("src/modules/tools/layerSlider/components/LayerSliderHandle.vue", () =>
                     tools: {
                         children: {
                             layerSlider: {
-                                "name": "translate#common:menu.tools.layerSlider",
+                                "name": "translate#menu.tools.layerSlider",
                                 "glyphicon": "glyphicon-film",
                                 "sliderType": "handle"
                             }
@@ -54,13 +54,13 @@ describe("src/modules/tools/layerSlider/components/LayerSliderHandle.vue", () =>
                             namespaced: true,
                             getters: {
                                 id: () => "layerSlider",
-                                name: () => "common:menu.tools.layerSlider",
+                                name: () => "menu.tools.layerSlider",
                                 glyphicon: () => "glyphicon-film",
                                 renderToWindow: () => true,
                                 resizableWindow: () => true,
                                 isVisibleInMenu: () => true,
                                 deactivateGFI: () => false,
-                                title: () => "common:modules.tools.layerSlider.title",
+                                title: () => "modules.tools.layerSlider.title",
                                 active: () => false,
                                 layerIds: () => layerIds,
                                 activeLayer: () => {

@@ -7,11 +7,12 @@ const allAddons = VUE_ADDONS || {};
 /**
  * Adds all addons based on config.js and addonsConf.json to the Vue Instance and store
  * @param {String[]} config The array of addonKeys specified in config.js
+ * @param {Object} app The vue application.
  * @returns {void}
  */
-export default async function (config) {
-    Vue.prototype.$toolAddons = []; // add .$toolAddons to store tools in
-    Vue.prototype.$gfiThemeAddons = []; // add .$gfiThemeAddons to store themes in
+export default async function (config, app) {
+    app.config.globalProperties.$toolAddons = []; // add .$toolAddons to store tools in
+    app.config.globalProperties.$gfiThemeAddons = []; // add .$gfiThemeAddons to store themes in
     if (config) {
         const addons = config.map(async addonKey => {
             try {
@@ -19,10 +20,10 @@ export default async function (config) {
 
                 if (addonConf && Object.prototype.hasOwnProperty.call(addonConf, "type")) {
                     if (addonConf.type === "tool") {
-                        await loadToolAddons(addonKey);
+                        await loadToolAddons(addonKey, app);
                     }
                     else if (addonConf.type === "gfiTheme") {
-                        await loadGfiThemes(addonKey);
+                        await loadGfiThemes(addonKey, app);
                     }
                 }
             }
@@ -39,27 +40,29 @@ export default async function (config) {
 /**
  * Loads the gfi themes and creates the Vue component and adds it to Vue instance globally
  * @param {String} addonKey specified in config.js
+ * @param {Object} app The vue application.
  * @returns {void}
  */
-async function loadGfiThemes (addonKey) {
+async function loadGfiThemes (addonKey, app) {
     const addon = await loadAddon(addonKey);
 
     Vue.component(addon.component.name, addon.component);
     // Add the componentName to a global array on vue instance called $gfiThemeAddons
-    Vue.prototype.$gfiThemeAddons.push(addon.component.name);
+    app.config.globalProperties.$gfiThemeAddons.push(addon.component.name);
 }
 
 /**
  * Creates the Vue component and adds it to Vue instance globally.
  * Registeres the store at module "Tools" and adds the local-files.
  * @param {String} addonKey specified in config.js
+ * @param {Object} app The vue application.
  * @returns {void}
  */
-async function loadToolAddons (addonKey) {
+async function loadToolAddons (addonKey, app) {
     const addon = await loadAddon(addonKey);
 
     // Add the addonKey to a global array on vue instance
-    Vue.prototype.$toolAddons.push(addon.component.name);
+    app.config.globalProperties.$toolAddons.push(addon.component.name);
 
     // register the vuex store module
     store.registerModule(["Tools", addon.component.name], addon.store);

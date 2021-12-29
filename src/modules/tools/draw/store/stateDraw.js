@@ -143,7 +143,7 @@ const symbol = {
         tooltipCircleRadiusNode: null,
         withoutGUI: false,
         zIndex: 0,
-        name: "common:menu.tools.draw",
+        name: "menu.tools.draw",
         imgPath: "",
         // // // // // //
         // UI SETTINGS //

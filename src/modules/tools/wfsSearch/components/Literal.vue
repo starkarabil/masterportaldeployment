@@ -26,19 +26,19 @@ export default {
 <template>
     <Field
         v-if="literal.field"
+        v-bind="literal.field"
         :key="`tool-wfsSearch-clause-literal-field-${literal.field.id}-${literal.field.fieldName}`"
         :dropdown-input-uses-id="literal.field.usesId"
         :field-id="literal.field.id"
         :suggestions-config="suggestions"
-        v-bind="literal.field"
     />
     <!-- NOTE: This div can be styled for visual highlighting -->
     <div v-else-if="literal.clause">
         <template
             v-for="(lit, i) of literal.clause.literals"
+            :key="'tool-wfsSearch-clause-literal' + i"
         >
             <Literal
-                :key="'tool-wfsSearch-clause-literal' + i"
                 :literal="lit"
             />
         </template>

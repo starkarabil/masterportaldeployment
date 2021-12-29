@@ -27,7 +27,7 @@ const state = {
     active: false,
     id: "wfsSearch",
     // defaults for config.json tool parameters
-    name: "common:menu.tools.wfsSearch",
+    name: "menu.tools.wfsSearch",
     glyphicon: "glyphicon-search",
     renderToWindow: false,
     resizableWindow: true,

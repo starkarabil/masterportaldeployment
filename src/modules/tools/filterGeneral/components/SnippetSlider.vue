@@ -104,7 +104,7 @@ export default {
 
             if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 45) {
                 if (Number.isInteger(this.step) || (!Number.isInteger(this.step) && charCode !== 46)) {
-                    store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.incorrectEntry"));
+                    store.dispatch("Alerting/addSingleAlert", i18next.t("snippets.slider.incorrectEntry"));
                     evt.stopPropagation();
                     return false;
                 }
@@ -163,7 +163,7 @@ export default {
          * @returns {void}
          */
         getAlertRangeText () {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.outOfRangeErrorMessage", {
+            store.dispatch("Alerting/addSingleAlert", i18next.t("snippets.slider.outOfRangeErrorMessage", {
                 minValueSlider: this.minimumValue,
                 maxValueSlider: this.maximumValue
             }));

@@ -141,12 +141,12 @@ export default {
          */
         getPlaceholder () {
             if (this.waypoint.index === 0) {
-                return i18next.t("common:modules.tools.routing.startpoint");
+                return i18next.t("modules.tools.routing.startpoint");
             }
             else if (this.waypoint.index === this.countWaypoints - 1) {
-                return i18next.t("common:modules.tools.routing.endpoint");
+                return i18next.t("modules.tools.routing.endpoint");
             }
-            return i18next.t("common:modules.tools.routing.waypoint");
+            return i18next.t("modules.tools.routing.waypoint");
         }
     }
 };
@@ -158,7 +158,7 @@ export default {
             v-if="isFocused"
             class="mx-6 helptext"
         >
-            <span>{{ $t('common:modules.tools.routing.coordinateInputHelp') }}</span>
+            <span>{{ $t('modules.tools.routing.coordinateInputHelp') }}</span>
         </div>
 
         <div class="d-flex justify-content-between">
@@ -190,7 +190,7 @@ export default {
                         <span
                             v-show="waypoint.index !== 0"
                             class="pointer glyphicon glyphicon-chevron-up"
-                            :title="$t('common:modules.tools.routing.moveWaypointUp')"
+                            :title="$t('modules.tools.routing.moveWaypointUp')"
                             @click="$emit('moveWaypointUp')"
                             @keydown.enter="$emit('moveWaypointUp')"
                         />
@@ -199,7 +199,7 @@ export default {
                         <span
                             v-show="waypoint.index !== countWaypoints - 1"
                             class="pointer glyphicon glyphicon-chevron-down"
-                            :title="$t('common:modules.tools.routing.moveWaypointDown')"
+                            :title="$t('modules.tools.routing.moveWaypointDown')"
                             @click="$emit('moveWaypointDown')"
                             @keydown.enter="$emit('moveWaypointDown')"
                         />
@@ -207,7 +207,7 @@ export default {
                 </div>
                 <span
                     class="selfAlignCenter pointer glyphicon glyphicon-remove ml-4"
-                    :title="$t('common:modules.tools.routing.deleteWaypoint')"
+                    :title="$t('modules.tools.routing.deleteWaypoint')"
                     @click="$emit('removeWaypoint')"
                     @keydown.enter="$emit('removeWaypoint')"
                 />

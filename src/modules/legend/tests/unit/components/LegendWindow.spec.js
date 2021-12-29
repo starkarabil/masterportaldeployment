@@ -14,7 +14,7 @@ describe("LegendWindow.vue", () => {
             Portalconfig: {
                 menu: {
                     legend: {
-                        name: "common:modules.legend.name",
+                        name: "modules.legend.name",
                         glyphicon: "glyphicon-book",
                         showCollapseAllButton: true
                     }

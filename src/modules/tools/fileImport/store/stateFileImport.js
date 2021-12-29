@@ -18,7 +18,7 @@ export default {
     deactivateGFI: false,
     glyphicon: "glyphicon-import",
     id: "fileImport",
-    name: "common:menu.tools.fileImport",
+    name: "menu.tools.fileImport",
     onlyDesktop: true,
     renderToWindow: true,
     resizableWindow: false,
@@ -26,18 +26,18 @@ export default {
     importedFileNames: [],
     supportedFiletypes: {
         auto: {
-            caption: "common:modules.tools.fileImport.captions.supportedFiletypes.auto"
+            caption: "modules.tools.fileImport.captions.supportedFiletypes.auto"
         },
         kml: {
-            caption: "common:modules.tools.fileImport.captions.supportedFiletypes.kml",
+            caption: "modules.tools.fileImport.captions.supportedFiletypes.kml",
             rgx: /\.kml$/i
         },
         gpx: {
-            caption: "common:modules.tools.fileImport.captions.supportedFiletypes.gpx",
+            caption: "modules.tools.fileImport.captions.supportedFiletypes.gpx",
             rgx: /\.gpx$/i
         },
         geojson: {
-            caption: "common:modules.tools.fileImport.captions.supportedFiletypes.geojson",
+            caption: "modules.tools.fileImport.captions.supportedFiletypes.geojson",
             rgx: /\.(geo)?json$/i
         }
     }

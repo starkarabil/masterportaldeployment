@@ -63,7 +63,7 @@ const state = {
     heightValueBuilding: null,
 
     // defaults for config.json parameters
-    name: "common:menu.tools.coordToolkit",
+    name: "menu.tools.coordToolkit",
     glyphicon: "glyphicon-globe",
     renderToWindow: true,
     resizableWindow: true,

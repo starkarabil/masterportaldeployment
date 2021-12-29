@@ -16,7 +16,7 @@ export default {
     deactivateGFI: false,
     glyphicon: "glyphicon-menu-hamburger",
     id: "layerClusterToggler",
-    name: "common:menu.tools.layerClusterToggler",
+    name: "menu.tools.layerClusterToggler",
     onlyDesktop: true,
     renderToWindow: true,
     resizableWindow: false,

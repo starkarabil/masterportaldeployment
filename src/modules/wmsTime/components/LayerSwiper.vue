@@ -21,7 +21,7 @@ export default {
         target.focus();
         this.setLayerSwiperDomSwiper(target);
     },
-    beforeDestroy: function () {
+    beforeUnmount: function () {
         mapCollection.getMap(this.mapId, this.mapMode).un("postcompose", this.updateMap);
     },
     methods: {
@@ -43,8 +43,8 @@ export default {
     <button
         id="wmsTime-layerSwiper-button"
         class="btn"
-        :title="$t('common:modules.wmsTime.layerSwiper.title')"
-        :aria-describedby="$t('common:modules.wmsTime.layerSwiper.description', {amount: currentTimeSliderObject.keyboardMovement})"
+        :title="$t('modules.wmsTime.layerSwiper.title')"
+        :aria-describedby="$t('modules.wmsTime.layerSwiper.description', {amount: currentTimeSliderObject.keyboardMovement})"
         @keydown.left="moveSwiper"
         @keydown.right="moveSwiper"
         @mousedown="mouseMovement"

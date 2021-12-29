@@ -13,7 +13,7 @@ export async function preparePrint (getResponse) {
             layout: "A4 Hochformat",
             outputFormat: "pdf",
             attributes: {
-                title: i18next.t("common:modules.tools.compareFeatures.title"),
+                title: i18next.t("modules.tools.compareFeatures.title"),
                 datasource: [
                     {
                         table: {

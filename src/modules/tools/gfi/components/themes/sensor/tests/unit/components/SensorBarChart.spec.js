@@ -111,7 +111,7 @@ describe("src/modules/tools/gfi/components/themes/senor/components/SensorBarChar
                 display: true,
                 position: "bottom",
                 text: ["Ein schoener Titel",
-                    "common:modules.tools.gfi.themes.sensor.sensorBarChart.chartTitleAverage common:modules.tools.gfi.themes.sensor.sensorBarChart.month",
+                    "modules.tools.gfi.themes.sensor.sensorBarChart.chartTitleAverage modules.tools.gfi.themes.sensor.sensorBarChart.month",
                     ""]
             }
         );
@@ -142,7 +142,7 @@ describe("src/modules/tools/gfi/components/themes/senor/components/SensorBarChar
         expect(result.xAxes[0].ticks.min).equals(0);
         expect(result.xAxes[0].ticks.max).equals(23);
         expect(result.xAxes[0].ticks.callback).to.be.a("function");
-        expect(result.xAxes[0].ticks.callback()).equals("common:modules.tools.gfi.themes.sensor.sensorBarChart.clock");
+        expect(result.xAxes[0].ticks.callback()).equals("modules.tools.gfi.themes.sensor.sensorBarChart.clock");
 
         expect(result.yAxes[0].ticks.min).equals(0);
         expect(result.yAxes[0].ticks.max).equals(maxValue);

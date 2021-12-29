@@ -52,7 +52,7 @@ export default {
     async created () {
         this.initDirections();
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.closeDirections();
     },
     methods: {
@@ -160,8 +160,8 @@ export default {
             :class="['pointer mr-4 ', isInputDisabled ? 'opacity-05' : '']"
             :speed-profile-id="option"
             :fill-color="option === settings.speedProfile ? '#0077ff' : '#000000'"
-            :tooltip="$t('common:modules.tools.routing.speedprofiles.' + option)"
-            @click.native="changeSpeedProfile(option)"
+            :tooltip="$t('modules.tools.routing.speedprofiles.' + option)"
+            @click="changeSpeedProfile(option)"
         />
 
         <hr>
@@ -189,16 +189,16 @@ export default {
                     :key="index"
                     :count-waypoints="waypoints.length"
                     :waypoint="waypoint"
-                    @moveWaypointUp="moveWaypointUp(waypoint.index)"
-                    @moveWaypointDown="moveWaypointDown(waypoint.index)"
-                    @removeWaypoint="removeWaypoint({index: waypoint.index, reload: true})"
-                    @searchResultSelected="findDirections()"
+                    @move-waypoint-up="moveWaypointUp(waypoint.index)"
+                    @move-waypoint-down="moveWaypointDown(waypoint.index)"
+                    @remove-waypoint="removeWaypoint({index: waypoint.index, reload: true})"
+                    @search-result-selected="findDirections()"
                 />
             </form>
 
             <div class="d-flex justify-content-between mt-4">
                 <div class="d-flex">
-                    <span> {{ $t('common:modules.tools.routing.directions.restrictedAreas') }}:</span>
+                    <span> {{ $t('modules.tools.routing.directions.restrictedAreas') }}:</span>
 
                     <svg
                         class="ml-2 pointer"
@@ -214,7 +214,7 @@ export default {
                         @click="changeMapInteractionModeAvoidAreasEdit()"
                         @keydown.enter="changeMapInteractionModeAvoidAreasEdit()"
                     >
-                        <title>{{ $t('common:modules.tools.routing.directions.editRestrictedAreas') }}</title>
+                        <title>{{ $t('modules.tools.routing.directions.editRestrictedAreas') }}</title>
                         <path
                             :fill="isMapInteractionModeAvoidAreasEdit ? '#f00' : '#000'"
                             d="M3,0c1.656,0 3,1.344 3,3c0,1.656 -1.344,3 -3,3c-1.656,0 -3,-1.344 -3,-3c0,-1.656 1.344,-3 3,-3Zm0,1.5c0.828,0 1.5,0.672 1.5,1.5c0,0.828 -0.672,1.5 -1.5,1.5c-0.828,0 -1.5,-0.672 -1.5,-1.5c0,-0.828 0.672,-1.5 1.5,-1.5Z"
@@ -268,7 +268,7 @@ export default {
                         @click="changeMapInteractionModeAvoidAreasDelete()"
                         @keydown.enter="changeMapInteractionModeAvoidAreasDelete()"
                     >
-                        <title>{{ $t('common:modules.tools.routing.directions.deleteRestrictedAreas') }}</title>
+                        <title>{{ $t('modules.tools.routing.directions.deleteRestrictedAreas') }}</title>
                         <path
                             :fill="isMapInteractionModeAvoidAreasDelete ? '#f00' : '#000'"
                             d="M3,0c1.656,0 3,1.344 3,3c0,1.656 -1.344,3 -3,3c-1.656,0 -3,-1.344 -3,-3c0,-1.656 1.344,-3 3,-3Zm0,1.5c0.828,0 1.5,0.672 1.5,1.5c0,0.828 -0.672,1.5 -1.5,1.5c-0.828,0 -1.5,-0.672 -1.5,-1.5c0,-0.828 0.672,-1.5 1.5,-1.5Z"
@@ -317,13 +317,13 @@ export default {
                 <div class="d-flex">
                     <span
                         class="glyphicon glyphicon-trash pointer ml-4"
-                        :title="$t('common:modules.tools.routing.resetSettings')"
+                        :title="$t('modules.tools.routing.resetSettings')"
                         @click="reset()"
                         @keydown.enter="reset()"
                     />
                     <span
                         class="glyphicon glyphicon-plus pointer ml-4"
-                        :title="$t('common:modules.tools.routing.addWaypoint')"
+                        :title="$t('modules.tools.routing.addWaypoint')"
                         @click="addWaypoint({index: waypoints.length -1})"
                         @keydown.enter="addWaypoint({index: waypoints.length -1})"
                     />
@@ -346,7 +346,7 @@ export default {
                 :selected="option === settings.preference"
                 :disabled="isInputDisabled"
             >
-                {{ $t('common:modules.tools.routing.directions.preference.' + option) }}
+                {{ $t('modules.tools.routing.directions.preference.' + option) }}
             </option>
         </select>
 
@@ -356,8 +356,8 @@ export default {
             :settings="settings"
             :active-avoid-features-options="routingAvoidFeaturesOptions"
             :disabled="isInputDisabled"
-            @addAvoidOption="onAddAvoidOption($event)"
-            @removeAvoidOption="onRemoveAvoidOption($event)"
+            @add-avoid-option="onAddAvoidOption($event)"
+            @remove-avoid-option="onRemoveAvoidOption($event)"
         />
 
         <template v-if="!(settings.batchProcessing.enabled && settings.batchProcessing.active)">
@@ -373,7 +373,7 @@ export default {
                     <RoutingSpeedProfileIcon
                         :speed-profile-id="settings.speedProfile"
                         fill-color="#000000"
-                        :tooltip="$t('common:modules.tools.routing.speedprofiles.' + settings.speedProfile)"
+                        :tooltip="$t('modules.tools.routing.speedprofiles.' + settings.speedProfile)"
                     />
                     <RoutingDurationDisplay :duration="routingDirections.duration" />
                     <RoutingDistanceDisplay :distance="routingDirections.distance" />
@@ -381,9 +381,11 @@ export default {
 
                 <hr class="mb-0">
 
-                <template v-for="(segment, segmentIndex) of routingDirections.segments">
+                <template
+                    v-for="(segment, segmentIndex) of routingDirections.segments"
+                    :key="'segment' + segmentIndex"
+                >
                     <div
-                        :key="'segment_header_' + segmentIndex"
                         class="d-flex pointer step pl-2 py-4"
                         @mouseover="highlightRoute({fromWaypointIndex: segmentIndex, toWaypointIndex: segmentIndex + 1})"
                         @focus="highlightRoute({fromWaypointIndex: segmentIndex, toWaypointIndex: segmentIndex + 1})"
@@ -425,7 +427,6 @@ export default {
                     </div>
 
                     <hr
-                        :key="'segment_divider_' + segmentIndex"
                         class="m-0"
                     >
 

@@ -52,12 +52,12 @@ export default {
             :aria-label="$t('modules.footer.mouse')"
             :class="['mouse-position-span', open ? 'open' : 'closed']"
         >
-            {{ prettyMouseCoord || $t(`common:modules.controls.mousePosition.hint`) }}
+            {{ prettyMouseCoord || $t(`modules.controls.mousePosition.hint`) }}
         </span>
         <ControlIcon
             id="hide-mouse-position"
             :icon-name="`chevron-${open ? 'left' : 'right'}`"
-            :title="$t(`common:modules.controls.mousePosition.${open ? 'hide' : 'show'}MousePosition`)"
+            :title="$t(`modules.controls.mousePosition.${open ? 'hide' : 'show'}MousePosition`)"
             :on-click="toggleOpen"
             inline
         />

@@ -18,7 +18,7 @@ describe("src/modules/tools/selectFeatures/components/SelectFeatures.vue", () =>
                         children: {
                             "selectFeatures":
                             {
-                                "name": "translate#common:menu.tools.selectFeatures"
+                                "name": "translate#menu.tools.selectFeatures"
                             }
                         }
                     }

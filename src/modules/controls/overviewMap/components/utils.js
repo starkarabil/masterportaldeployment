@@ -37,11 +37,11 @@ export function getOverviewMapLayer (id) {
 
     if (!layerId) {
         console.error("Missing layerId for control overviewMap. Could not infer initially visible base layer id.");
-        store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.controls.overviewMap.missingLayerId"));
+        store.dispatch("Alerting/addSingleAlert", i18next.t("modules.controls.overviewMap.missingLayerId"));
     }
     else if (!ovmLayer) {
         console.error(`Could not create overviewMap for (inferred?) id "${layerId}". Given id: "${id}".`);
-        store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.controls.overviewMap.missingLayerId"));
+        store.dispatch("Alerting/addSingleAlert", i18next.t("modules.controls.overviewMap.missingLayerId"));
     }
 
     return ovmLayer;

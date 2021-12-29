@@ -101,7 +101,7 @@ describe("src/modules/tools/coord/store/actionsCoordToolkit.js", () => {
                         }
                     }
                 ],
-                expectedHeight = "common:modules.tools.coordToolkit.noHeightWater",
+                expectedHeight = "modules.tools.coordToolkit.noHeightWater",
                 state = {
                     heightElementName: heightElementName,
                     heightValueWater: heightValueWater
@@ -124,7 +124,7 @@ describe("src/modules/tools/coord/store/actionsCoordToolkit.js", () => {
                         }
                     }
                 ],
-                expectedHeight = "common:modules.tools.coordToolkit.noHeightBuilding",
+                expectedHeight = "modules.tools.coordToolkit.noHeightBuilding",
                 state = {
                     heightElementName: heightElementName,
                     heightValueBuilding: heightValueBuilding

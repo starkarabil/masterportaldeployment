@@ -50,7 +50,7 @@ const actions = {
         }
         else {
             dispatch("resetModule", true);
-            dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.wfsSearch.wrongConfig", {id: restLayerId ? restLayerId : layerId, title}), {root: true});
+            dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.wfsSearch.wrongConfig", {id: restLayerId ? restLayerId : layerId, title}), {root: true});
         }
     },
     /**

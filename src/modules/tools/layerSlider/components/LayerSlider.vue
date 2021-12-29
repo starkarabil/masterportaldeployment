@@ -25,9 +25,6 @@ export default {
             }
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     mounted () {
         this.checkIfAllLayersAvailable(this.layerIds);
         this.addIndexToLayerIds(this.layerIds);

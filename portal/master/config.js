@@ -32,7 +32,7 @@ const Config = {
     ],
     footer: {
         urls: [{
-            "bezeichnung": "common:modules.footer.designation",
+            "bezeichnung": "modules.footer.designation",
             "url": "https://geoinfo.hamburg.de/",
             "alias": "Landesbetrieb Geoinformation und Vermessung",
             "alias_mobil": "LGV"
@@ -51,7 +51,7 @@ const Config = {
     scaleLine: true,
     mouseHover: {
         numFeaturesToShow: 2,
-        infoText: "common:mouseHover.infoText"
+        infoText: "mouseHover.infoText"
     },
     startingMap3D: false,
     obliqueMap: true,

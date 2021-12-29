@@ -17,7 +17,7 @@ describe("src/modules/tools/compareFeatures/components/CompareFeatures.vue", () 
                     children: {
                         compareFeatures:
                             {
-                                "name": "translate#common:menu.tools.compareFeatures",
+                                "name": "translate#menu.tools.compareFeatures",
                                 "glyphicon": "glyphicon-record",
                                 "renderToWindow": true
                             }

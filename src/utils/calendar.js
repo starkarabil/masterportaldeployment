@@ -21,145 +21,145 @@ import moment from "moment";
  */
 const publicHolidayMatrix = {
     newYearsDay: {
-        translationKey: "common:utils.calendar.newYearsDay",
+        translationKey: "utils.calendar.newYearsDay",
         getMoment: (year) => {
             return moment(year + "-01-01", "YYYY-MM-DD");
         }
     },
     epiphany: {
-        translationKey: "common:utils.calendar.epiphany",
+        translationKey: "utils.calendar.epiphany",
         getMoment: (year) => {
             return moment(year + "-01-06", "YYYY-MM-DD");
         }
     },
     goodFriday: {
-        translationKey: "common:utils.calendar.goodFriday",
+        translationKey: "utils.calendar.goodFriday",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).subtract(2, "days");
         }
     },
     easterSunday: {
-        translationKey: "common:utils.calendar.easterSunday",
+        translationKey: "utils.calendar.easterSunday",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment);
         }
     },
     easterMonday: {
-        translationKey: "common:utils.calendar.easterMonday",
+        translationKey: "utils.calendar.easterMonday",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).add(1, "days");
         }
     },
     laborDay: {
-        translationKey: "common:utils.calendar.laborDay",
+        translationKey: "utils.calendar.laborDay",
         getMoment: (year) => {
             return moment(year + "-05-01", "YYYY-MM-DD");
         }
     },
     ascensionDay: {
-        translationKey: "common:utils.calendar.ascensionDay",
+        translationKey: "utils.calendar.ascensionDay",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).add(39, "days");
         }
     },
     pentecostSunday: {
-        translationKey: "common:utils.calendar.pentecostSunday",
+        translationKey: "utils.calendar.pentecostSunday",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).add(49, "days");
         }
     },
     pentecostMonday: {
-        translationKey: "common:utils.calendar.pentecostMonday",
+        translationKey: "utils.calendar.pentecostMonday",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).add(50, "days");
         }
     },
     corpusChristi: {
-        translationKey: "common:utils.calendar.corpusChristi",
+        translationKey: "utils.calendar.corpusChristi",
         getMoment: (year, easterMoment) => {
             return moment(easterMoment).add(60, "days");
         }
     },
     peaceFestival: {
-        translationKey: "common:utils.calendar.peaceFestival",
+        translationKey: "utils.calendar.peaceFestival",
         getMoment: (year) => {
             return moment(year + "-08-08", "YYYY-MM-DD");
         }
     },
     assumptionDay: {
-        translationKey: "common:utils.calendar.assumptionDay",
+        translationKey: "utils.calendar.assumptionDay",
         getMoment: (year) => {
             return moment(year + "-08-15", "YYYY-MM-DD");
         }
     },
     germanUnityDay: {
-        translationKey: "common:utils.calendar.germanUnityDay",
+        translationKey: "utils.calendar.germanUnityDay",
         getMoment: (year) => {
             return moment(year + "-10-03", "YYYY-MM-DD");
         }
     },
     reformationDay: {
-        translationKey: "common:utils.calendar.reformationDay",
+        translationKey: "utils.calendar.reformationDay",
         getMoment: (year) => {
             return moment(year + "-10-31", "YYYY-MM-DD");
         }
     },
     allSaintsDay: {
-        translationKey: "common:utils.calendar.allSaintsDay",
+        translationKey: "utils.calendar.allSaintsDay",
         getMoment: (year) => {
             return moment(year + "-11-01", "YYYY-MM-DD");
         }
     },
     penanceDay: {
-        translationKey: "common:utils.calendar.penanceDay",
+        translationKey: "utils.calendar.penanceDay",
         getMoment: (year, easterMoment, firstAdvent) => {
             return moment(firstAdvent).subtract(11, "days");
         }
     },
     firstAdvent: {
-        translationKey: "common:utils.calendar.firstAdvent",
+        translationKey: "utils.calendar.firstAdvent",
         getMoment: (year, easterMoment, firstAdvent) => {
             return moment(firstAdvent);
         }
     },
     secondAdvent: {
-        translationKey: "common:utils.calendar.secondAdvent",
+        translationKey: "utils.calendar.secondAdvent",
         getMoment: (year, easterMoment, firstAdvent) => {
             return moment(firstAdvent).add(7, "days");
         }
     },
     thirdAdvent: {
-        translationKey: "common:utils.calendar.thirdAdvent",
+        translationKey: "utils.calendar.thirdAdvent",
         getMoment: (year, easterMoment, firstAdvent) => {
             return moment(firstAdvent).add(14, "days");
         }
     },
     fourthAdvent: {
-        translationKey: "common:utils.calendar.fourthAdvent",
+        translationKey: "utils.calendar.fourthAdvent",
         getMoment: (year, easterMoment, firstAdvent) => {
             return moment(firstAdvent).add(21, "days");
         }
     },
     christmasEve: {
-        translationKey: "common:utils.calendar.christmasEve",
+        translationKey: "utils.calendar.christmasEve",
         getMoment: (year) => {
             return moment(year + "-12-24", "YYYY-MM-DD");
         }
     },
     christmasDay: {
-        translationKey: "common:utils.calendar.christmasDay",
+        translationKey: "utils.calendar.christmasDay",
         getMoment: (year) => {
             return moment(year + "-12-25", "YYYY-MM-DD");
         }
     },
     secondDayOfChristmas: {
-        translationKey: "common:utils.calendar.secondDayOfChristmas",
+        translationKey: "utils.calendar.secondDayOfChristmas",
         getMoment: (year) => {
             return moment(year + "-12-26", "YYYY-MM-DD");
         }
     },
     newYearsEve: {
-        translationKey: "common:utils.calendar.newYearsEve",
+        translationKey: "utils.calendar.newYearsEve",
         getMoment: (year) => {
             return moment(year + "-12-31", "YYYY-MM-DD");
         }

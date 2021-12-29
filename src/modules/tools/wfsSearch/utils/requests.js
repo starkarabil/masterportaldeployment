@@ -168,5 +168,5 @@ function sendRequest (store, {url, typeName}, filter, fromServicesJson, storedQu
 
     return axios.get(encodeURI(requestUrl))
         .then(response => handleAxiosResponse(response, "WfsSearch, searchFeatures, sendRequest"))
-        .catch(error => store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.wfsSearch.searchError", {error})));
+        .catch(error => store.dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.wfsSearch.searchError", {error})));
 }

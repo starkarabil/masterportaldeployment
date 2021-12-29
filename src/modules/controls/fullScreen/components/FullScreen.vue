@@ -126,7 +126,7 @@ export default {
     <div class="fullscreen-button">
         <component
             :is="component"
-            :title="$t(`common:modules.controls.fullScreen.${active ? 'disable' : 'enable'}`)"
+            :title="$t(`modules.controls.fullScreen.${active ? 'disable' : 'enable'}`)"
             :icon-name="active ? 'resize-small' : 'fullscreen'"
             :on-click="toggleFullScreen"
         />

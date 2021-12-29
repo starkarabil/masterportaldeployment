@@ -52,7 +52,6 @@ export default {
     },
     created () {
         console.warn("The tool 'supplyCoord' is deprecated in 3.0.0. Please use 'coordToolkit' instead.");
-        this.$on("close", this.close);
     },
     methods: {
         ...mapMutations("Tools/SupplyCoord", Object.keys(mutations)),

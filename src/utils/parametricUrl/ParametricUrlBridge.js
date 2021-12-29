@@ -151,7 +151,7 @@ function parseZoomToGeometry (urlParamValue) {
             gemometryToZoom = geometries[parseInt(urlParamValue, 10) - 1];
         }
         else {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:utils.parametricURL.alertZoomToGeometry"));
+            store.dispatch("Alerting/addSingleAlert", i18next.t("utils.parametricURL.alertZoomToGeometry"));
         }
     }
 
@@ -224,7 +224,7 @@ function parseLayerParams (layerIdString, visibilityString = "", transparencyStr
     if (layerIdList.length !== visibilityList.length || visibilityList.length !== transparencyList.length) {
         // timeout may be removed, if everything is migrated to vue. Now it is needed for portal/basic.
         setTimeout(() => {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:utils.parametricURL.alertWrongAmountVisibility"), {root: true, category: "Warning"});
+            store.dispatch("Alerting/addSingleAlert", i18next.t("utils.parametricURL.alertWrongAmountVisibility"), {root: true, category: "Warning"});
         }, 500);
         return null;
     }
@@ -346,7 +346,7 @@ function alertWrongLayerIds (layerIdsNotFound) {
         console.warn("The following Url-Param-LayerIds could not be found " + layerIdsNotFoundConcat);
         // timeout may be removed, if everything is migrated to vue. Now it is needed for portal/basic.
         setTimeout(() => {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:utils.parametricURL.alertWrongLayerIds"), {root: true});
+            store.dispatch("Alerting/addSingleAlert", i18next.t("utils.parametricURL.alertWrongLayerIds"), {root: true});
         }, 500);
     }
 }

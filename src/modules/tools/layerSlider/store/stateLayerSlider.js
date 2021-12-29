@@ -24,13 +24,13 @@
 const state = {
     active: false,
     id: "layerSlider",
-    name: "common:menu.tools.layerSlider",
+    name: "menu.tools.layerSlider",
     glyphicon: "glyphicon-film",
     renderToWindow: true,
     resizableWindow: true,
     isVisibleInMenu: true,
     deactivateGFI: false,
-    title: "common:modules.tools.layerSlider.title",
+    title: "modules.tools.layerSlider.title",
     layerIds: [],
     activeLayer: {
         layerId: "",

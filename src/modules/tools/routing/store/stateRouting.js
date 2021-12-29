@@ -3,7 +3,7 @@ const state = {
     active: false,
     id: "routing",
     // mandatory defaults for config.json parameters
-    name: "common:menu.tools.routing",
+    name: "menu.tools.routing",
     glyphicon: "glyphicon-road",
     renderToWindow: false,
     resizableWindow: true,

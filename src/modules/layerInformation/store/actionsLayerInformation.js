@@ -133,8 +133,8 @@ const actions = {
             commit("setPeriodicityKey", "");
             commit("setDateRevision", "");
             commit("setDatePublication", "");
-            commit("setAbstractText", i18next.t("common:modules.layerInformation.noMetadataLoaded"));
-            commit("setNoMetadataLoaded", i18next.t("common:modules.layerInformation.noMetadataLoaded"));
+            commit("setAbstractText", i18next.t("modules.layerInformation.noMetadataLoaded"));
+            commit("setNoMetadataLoaded", i18next.t("modules.layerInformation.noMetadataLoaded"));
         }
         else {
             commit("setTitle", metadata?.getTitle());

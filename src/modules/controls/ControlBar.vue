@@ -133,6 +133,7 @@ export default {
                     :key="`${categoryIndex}-${index}`"
                 >
                     <component
+                        v-bind="control.props"
                         :is="control.component"
                         :key="control.key"
                         :class="[
@@ -140,7 +141,6 @@ export default {
                             mobile && hiddenMobile(control.key) ? 'hidden' : '',
                             className
                         ]"
-                        v-bind="control.props"
                     />
                 </li>
             </template>

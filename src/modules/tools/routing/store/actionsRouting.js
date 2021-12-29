@@ -75,8 +75,8 @@ export default {
         }
         catch (err) {
             dispatch("Alerting/addSingleAlert", {
-                category: i18next.t("common:modules.alerting.categories.error"),
-                content: i18next.t("common:modules.tools.routing.errors.fetchingCoordinates")
+                category: i18next.t("modules.alerting.categories.error"),
+                content: i18next.t("modules.tools.routing.errors.fetchingCoordinates")
             }, {root: true});
         }
         return geosearchResults;

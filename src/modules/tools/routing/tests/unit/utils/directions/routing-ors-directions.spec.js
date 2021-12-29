@@ -195,7 +195,7 @@ describe("src/modules/tools/routing/utils/directions/routing-ors-directions.js",
                 expect(true).to.be.false;
             }
             catch (error) {
-                expect(error.message).equal("common:modules.tools.routing.errors.noRouteFound");
+                expect(error.message).equal("modules.tools.routing.errors.noRouteFound");
             }
         });
 
@@ -230,7 +230,7 @@ describe("src/modules/tools/routing/utils/directions/routing-ors-directions.js",
                 expect(true).to.be.false;
             }
             catch (error) {
-                expect(error.message).equal("common:modules.tools.routing.errors.avoidAreaBig");
+                expect(error.message).equal("modules.tools.routing.errors.avoidAreaBig");
             }
         });
 
@@ -261,7 +261,7 @@ describe("src/modules/tools/routing/utils/directions/routing-ors-directions.js",
                 expect(true).to.be.false;
             }
             catch (error) {
-                expect(error.message).equal("common:modules.tools.routing.errors.errorRouteFetch");
+                expect(error.message).equal("modules.tools.routing.errors.errorRouteFetch");
             }
         });
     });

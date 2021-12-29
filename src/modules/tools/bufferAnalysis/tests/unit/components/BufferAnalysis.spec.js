@@ -21,7 +21,7 @@ describe("src/modules/tools/bufferAnalysis/components/BufferAnalysis.vue", () =>
                     children: {
                         bufferAnalysis:
                             {
-                                "name": "translate#common:menu.tools.bufferAnalysis",
+                                "name": "translate#menu.tools.bufferAnalysis",
                                 "glyphicon": "glyphicon-random"
                             }
                     }

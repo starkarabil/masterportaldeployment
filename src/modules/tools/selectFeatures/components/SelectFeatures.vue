@@ -32,9 +32,6 @@ export default {
 
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     methods: {
         ...mapMutations("Tools/SelectFeatures", Object.keys(mutations)),
         ...mapActions("Map", {
@@ -306,7 +303,7 @@ export default {
          * @returns {String} the translation or the key itself on error
          */
         translate (key, options = null) {
-            if (key === "common:" + this.$t(key)) {
+            if (key === "" + this.$t(key)) {
                 console.warn("the key " + JSON.stringify(key) + " is unknown to the common translation");
             }
 
@@ -318,7 +315,7 @@ export default {
 
 <template lang="html">
     <Tool
-        :title="translate('common:menu.tools.selectFeatures')"
+        :title="translate('menu.tools.selectFeatures')"
         :icon="glyphicon"
         :active="active"
         :render-to-window="renderToWindow"
@@ -336,7 +333,7 @@ export default {
                     v-if="selectedFeaturesWithRenderInformation.length === 0"
                     class="selectFeaturesDefaultMessage"
                 >
-                    {{ translate("common:modules.tools.selectFeatures.noFeatureChosen") }}
+                    {{ translate("modules.tools.selectFeatures.noFeatureChosen") }}
                 </div>
                 <div
                     v-else
@@ -345,10 +342,10 @@ export default {
                 >
                     <template
                         v-for="(selectedFeature, index) in selectedFeaturesWithRenderInformation"
+                        :key="index"
                     >
                         <table
                             v-if="selectedFeature.properties.length > 0"
-                            :key="index"
                             class="table table-striped table-bordered"
                         >
                             <tbody>
@@ -389,22 +386,19 @@ export default {
                         </table>
                         <p
                             v-else
-                            :key="index"
                         >
-                            {{ translate("common:modules.tools.selectFeatures.propertylessFeature") }}
+                            {{ translate("modules.tools.selectFeatures.propertylessFeature") }}
                         </p>
                         <a
                             :id="index + '-selectFeatures-feature'"
-                            :key="'a' + index"
                             href="#"
                             class="select-features-zoom-link"
                             @click="featureZoom"
                         >
-                            {{ translate("common:modules.tools.selectFeatures.zoomToFeature") }}
+                            {{ translate("modules.tools.selectFeatures.zoomToFeature") }}
                         </a>
                         <hr
                             v-if="index !== selectedFeaturesWithRenderInformation.length - 1"
-                            :key="'h' + index"
                         >
                     </template>
                 </div>

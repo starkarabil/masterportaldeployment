@@ -67,8 +67,6 @@ export default {
      * @returns {void}
      */
     created () {
-        this.$on("close", this.close);
-
         Backbone.Events.listenTo(Radio.channel("ModelList"), {
             "updatedSelectedLayerList": () => {
                 if (typeof this.eventListener !== "undefined") {
@@ -209,7 +207,7 @@ export default {
                 this.setPrintStarted(true);
             }
             else {
-                this.addSingleAlert(this.$t("common:modules.tools.print.alertMessage"));
+                this.addSingleAlert(this.$t("modules.tools.print.alertMessage"));
             }
         },
 
@@ -281,7 +279,7 @@ export default {
                     <label
                         class="col-sm-5 control-label"
                         for="docTitle"
-                    >{{ $t("common:modules.tools.print.titleLabel") }}</label>
+                    >{{ $t("modules.tools.print.titleLabel") }}</label>
                     <div class="col-sm-7">
                         <input
                             id="docTitle"
@@ -296,7 +294,7 @@ export default {
                     <label
                         class="col-sm-5 control-label"
                         for="printLayout"
-                    >{{ $t("common:modules.tools.print.layoutLabel") }}</label>
+                    >{{ $t("modules.tools.print.layoutLabel") }}</label>
                     <div class="col-sm-7">
                         <select
                             id="printLayout"
@@ -319,7 +317,7 @@ export default {
                         class="col-sm-5 control-label"
                         for="printFormat"
                     >
-                        {{ $t("common:modules.tools.print.formatLabel") }}
+                        {{ $t("modules.tools.print.formatLabel") }}
                     </label>
                     <div class="col-sm-7">
                         <select
@@ -342,7 +340,7 @@ export default {
                     <label
                         class="col-sm-5 control-label"
                         for="printScale"
-                    >{{ $t("common:modules.tools.print.scaleLabel") }}</label>
+                    >{{ $t("modules.tools.print.scaleLabel") }}</label>
                     <div class="col-sm-7">
                         <select
                             id="printScale"
@@ -378,7 +376,7 @@ export default {
                         v-show="showHintInfoScale"
                         class="hint-info"
                     >
-                        {{ $t("common:modules.tools.print.hintInfoScale") }}
+                        {{ $t("modules.tools.print.hintInfoScale") }}
                     </div>
                 </div>
                 <div
@@ -388,7 +386,7 @@ export default {
                         class="col-sm-5 control-label"
                         for="printLegend"
                     >
-                        {{ $t("common:modules.tools.print.withLegendLabel") }}
+                        {{ $t("modules.tools.print.withLegendLabel") }}
                     </label>
                     <div class="col-sm-7">
                         <div class="checkbox">
@@ -408,7 +406,7 @@ export default {
                         class="col-sm-5 control-label"
                         for="printGfi"
                     >
-                        {{ $t("common:modules.tools.print.withInfoLabel") }}
+                        {{ $t("modules.tools.print.withInfoLabel") }}
                     </label>
                     <div class="col-sm-7">
                         <div class="checkbox">
@@ -429,7 +427,7 @@ export default {
                             class="btn btn-primary btn-block"
                             @click="print"
                         >
-                            {{ $t("common:modules.tools.print.printLabel") }}
+                            {{ $t("modules.tools.print.printLabel") }}
                         </button>
                     </div>
                 </div>
@@ -466,7 +464,7 @@ export default {
                             class="btn btn-primary btn-sm btn-block"
                             @click="download($event.target, file.downloadUrl, file.filename)"
                         >
-                            {{ $t("common:modules.tools.print.downloadFile") }}
+                            {{ $t("modules.tools.print.downloadFile") }}
                         </button>
                         <button
                             v-else
@@ -474,7 +472,7 @@ export default {
                             class="btn btn-default btn-sm btn-block"
                             disabled
                         >
-                            {{ $t("common:modules.tools.print.createDownloadFile") }}
+                            {{ $t("modules.tools.print.createDownloadFile") }}
                         </button>
                     </div>
                 </div>

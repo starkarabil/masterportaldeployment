@@ -3,7 +3,7 @@ const webpack = require("webpack"),
     MiniCssExtractPlugin = require("mini-css-extract-plugin"),
     path = require("path"),
     fse = require("fs-extra"),
-    VueLoaderPlugin = require("vue-loader/lib/plugin"),
+    {VueLoaderPlugin} = require("vue-loader"),
 
     rootPath = path.resolve(__dirname, "../"),
     addonBasePath = path.resolve(rootPath, "addons"),
@@ -106,7 +106,8 @@ module.exports = function () {
         resolve: {
             alias: {
                 text: "text-loader",
-                "variables": path.resolve(__dirname, "..", "css", "variables.scss")
+                "variables": path.resolve(__dirname, "..", "css", "variables.scss"),
+                vue: "@vue/compat"
             }
         },
         module: {
@@ -152,8 +153,26 @@ module.exports = function () {
                     options: {
                         loaders: {
                             js: "babel-loader?presets[]=env"
+                        },
+                        compilerOptions: {
+                            compatConfig: {
+                                MODE: 2
+                            }
                         }
                     }
+                },
+                {
+                    test: /\.(json5?|ya?ml)$/,
+                    type: "javascript/auto",
+                    include: [path.resolve(__dirname, "locales_vue")],
+                    use: [
+                        {
+                            loader: "@intlify/vue-i18n-loader",
+                            options: {
+                                forceStringify: true
+                            }
+                        }
+                    ]
                 },
                 {
                     test: /\.(png|jpe?g|gif)$/i,

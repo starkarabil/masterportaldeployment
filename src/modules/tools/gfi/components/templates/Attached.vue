@@ -64,7 +64,7 @@ export default {
         this.createOverlay();
         this.createPopover();
     },
-    beforeDestroy () {
+    beforeUnmount () {
         Radio.trigger("Map", "removeOverlay", this.overlay);
     },
     methods: {

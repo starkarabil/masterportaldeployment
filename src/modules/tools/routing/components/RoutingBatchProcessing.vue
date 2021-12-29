@@ -111,7 +111,7 @@ export default {
             id="routing-batch-processing-isprocessing"
             class="d-flex flex-column"
         >
-            <span>{{ $t('common:modules.tools.routing.batchProcessing.isProcessing') }}</span>
+            <span>{{ $t('modules.tools.routing.batchProcessing.isProcessing') }}</span>
             <div class="d-flex">
                 <progress
                     class="col-xs-8"
@@ -124,7 +124,7 @@ export default {
                 >{{ progress }} %</span>
                 <span
                     class="col-xs-1 glyphicon glyphicon-remove pointer"
-                    :title="$t('common:modules.tools.routing.batchProcessing.cancel')"
+                    :title="$t('modules.tools.routing.batchProcessing.cancel')"
                     @click="$emit('cancelProcess')"
                     @keydown.enter="$emit('cancelProcess')"
                 />
@@ -138,11 +138,11 @@ export default {
         >
             <div class="strukturtext d-flex flex-column bg-light-pink mb-2">
                 <div class="d-flex flex-column">
-                    <span>{{ $t('common:modules.tools.routing.batchProcessing.structure') }}:</span>
+                    <span>{{ $t('modules.tools.routing.batchProcessing.structure') }}:</span>
                     <b>{{ structureText }}</b>
                 </div>
                 <div class="d-flex mb-2">
-                    <span>{{ $t('common:modules.tools.routing.batchProcessing.example') }}:</span>
+                    <span>{{ $t('modules.tools.routing.batchProcessing.example') }}:</span>
                     <span>{{ exampleText }}</span>
                 </div>
             </div>
@@ -157,7 +157,7 @@ export default {
                     <p
                         class="caption"
                     >
-                        {{ $t('common:modules.tools.routing.batchProcessing.placeFile') }}
+                        {{ $t('modules.tools.routing.batchProcessing.placeFile') }}
                     </p>
                 </div>
 
@@ -175,7 +175,7 @@ export default {
                 type="button"
                 @click="startFileInput()"
             >
-                {{ $t('common:modules.tools.routing.batchProcessing.uploadFile') }}
+                {{ $t('modules.tools.routing.batchProcessing.uploadFile') }}
             </button>
         </div>
 

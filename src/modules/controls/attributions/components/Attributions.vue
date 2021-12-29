@@ -52,7 +52,7 @@ export default {
         this.updateAttributions();
         this.setOpen(this.mobile ? this.isInitOpenMobile : this.isInitOpenDesktop);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.attributionsChannel.off("createAttribution", this.addAttribution);
         this.attributionsChannel.off("removeAttribution", this.removeAttribution);
         this.modelListChannel.off("updateVisibleInMapList", this.updateAttributions);
@@ -76,7 +76,7 @@ export default {
         <ControlIcon
             class="attributions-button"
             :disabled="!openable"
-            :title="$t(`common:modules.controls.attributions.${open ? 'hideAttributions' : 'showAttributions'}`)"
+            :title="$t(`modules.controls.attributions.${open ? 'hideAttributions' : 'showAttributions'}`)"
             :icon-name="open ? 'forward' : 'info-sign'"
             :on-click="toggleAttributionsFlyout"
         />
@@ -85,12 +85,14 @@ export default {
             class="attributions-view"
         >
             <dl>
-                <template v-for="(attribution, index) in attributionList">
-                    <dt :key="'attributions-' + index + '-dt'">
+                <template
+                    v-for="(attribution, index) in attributionList"
+                    :key="'attributions-' + index"
+                >
+                    <dt>
                         {{ attribution.name }}:
                     </dt>
                     <dd
-                        :key="'attributions-' + index + '-dd'"
                         v-html="attribution.text"
                     />
                 </template>

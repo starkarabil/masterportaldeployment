@@ -28,7 +28,7 @@ describe("src/modules/tools/draw/utils/style/createIconStyle.js", () => {
             const color = [0, 0, 0, 1],
                 pointSize = 16,
                 symbol = {
-                    caption: i18next.t("common:modules.tools.draw.iconList.iconCloud"),
+                    caption: i18next.t("modules.tools.draw.iconList.iconCloud"),
                     type: "image",
                     value: iconPath + "cloud.png"
                 },
@@ -43,7 +43,7 @@ describe("src/modules/tools/draw/utils/style/createIconStyle.js", () => {
                 imgPath = "https://geodienste.hamburg.de/lgv-config/img",
                 pointSize = 16,
                 symbol = {
-                    caption: i18next.t("common:modules.tools.draw.iconList.iconCloud"),
+                    caption: i18next.t("modules.tools.draw.iconList.iconCloud"),
                     type: "image",
                     value: "cloud.png"
                 },

@@ -25,11 +25,11 @@ const actions = {
      */
     onSendSuccess: ({state, commit, dispatch}, ticketId) => {
         const {closeAfterSend, deleteAfterSend, withTicketNo, id} = state;
-        let content = i18next.t("common:modules.tools.contact.successMessage");
+        let content = i18next.t("modules.tools.contact.successMessage");
 
         if (withTicketNo) {
             content += "\r\n";
-            content += i18next.t("common:modules.tools.contact.successTicket");
+            content += i18next.t("modules.tools.contact.successTicket");
             content += ticketId;
         }
 
@@ -83,14 +83,14 @@ const actions = {
         // stop sending if form is not valid
         if (!getters.validForm) {
             console.warn("An error occurred sending an email: send with incorrect fields aborted");
-            dispatch("showWarningAlert", "common:modules.tools.contact.errorIncompleteDeclarations");
+            dispatch("showWarningAlert", "modules.tools.contact.errorIncompleteDeclarations");
             return;
         }
 
         // stop sending if mail service is not defined
         if (!mailServiceUrl) {
             console.warn(`"An error occurred sending an e-mail: serviceId ${id} is unknown to the RestReader.`);
-            dispatch("showWarningAlert", "common:modules.tools.contact.error.message");
+            dispatch("showWarningAlert", "modules.tools.contact.error.message");
             return;
         }
 
@@ -102,12 +102,12 @@ const actions = {
                 to,
                 subject: createSubject(
                     ticketId,
-                    state.subject || (i18next.t("common:modules.tools.contact.mailSubject") + systemInfo.portalTitle)
+                    state.subject || (i18next.t("modules.tools.contact.mailSubject") + systemInfo.portalTitle)
                 ),
                 text: createMessage(state, includeSystemInfo ? systemInfo : null)
             },
             () => dispatch("onSendSuccess", ticketId),
-            () => dispatch("showWarningAlert", "common:modules.tools.contact.error.message")
+            () => dispatch("showWarningAlert", "modules.tools.contact.error.message")
         );
     }
 };

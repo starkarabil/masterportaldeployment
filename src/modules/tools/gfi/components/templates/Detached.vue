@@ -57,11 +57,11 @@ export default {
             this.hideMarker();
         });
     },
-    mounted: function () {
+    mounted () {
         this.highlightVectorFeature();
         this.setMarker();
     },
-    beforeDestroy: function () {
+    beforeUnmount () {
         this.removeHighlighting();
         this.removePointMarker();
     },

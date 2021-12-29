@@ -15,7 +15,7 @@ export default {
     active: false,
     glyphicon: "glyphicon-filter",
     id: "filterGeneral",
-    name: "common:menu.tools.filter",
+    name: "menu.tools.filter",
     renderToWindow: false,
     resizableWindow: true,
     deactivateGFI: false,

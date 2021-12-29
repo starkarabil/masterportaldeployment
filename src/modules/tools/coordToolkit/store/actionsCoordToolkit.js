@@ -103,10 +103,10 @@ export default {
         if (features.length >= 1) {
             height = features[0].get(state.heightElementName);
             if (height === state.heightValueWater) {
-                height = "common:modules.tools.coordToolkit.noHeightWater";
+                height = "modules.tools.coordToolkit.noHeightWater";
             }
             else if (height === state.heightValueBuilding) {
-                height = "common:modules.tools.coordToolkit.noHeightBuilding";
+                height = "modules.tools.coordToolkit.noHeightBuilding";
             }
             else {
                 const heightParsed = Number.parseFloat(height);

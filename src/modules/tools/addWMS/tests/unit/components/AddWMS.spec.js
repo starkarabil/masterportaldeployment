@@ -18,7 +18,7 @@ describe("src/modules/tools/addWMS/components/AddWMS.vue", () => {
                         children: {
                             addWMS:
                                 {
-                                    "name": "translate#common:menu.tools.addWms",
+                                    "name": "translate#menu.tools.addWms",
                                     "glyphicon": "glyphicon-plus",
                                     "renderToWindow": true
                                 }

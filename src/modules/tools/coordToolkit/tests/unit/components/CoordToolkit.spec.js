@@ -42,7 +42,7 @@ describe("src/modules/tools/coordToolkit/components/CoordToolkit.vue", () => {
                         children: {
                             coordToolkit:
                             {
-                                "name": "translate#common:menu.tools.coordToolkit",
+                                "name": "translate#menu.tools.coordToolkit",
                                 "glyphicon": "glyphicon-globe"
                             }
                         }

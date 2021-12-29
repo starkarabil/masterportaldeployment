@@ -120,7 +120,7 @@ export default {
         * layers will not be printed.
         */
         if (foundVectorTileLayers.length && state.active) {
-            dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.print.vtlWarning"), {root: true});
+            dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.print.vtlWarning"), {root: true});
         }
 
         commit("setVisibleLayer", state.visibleLayerList);
@@ -198,7 +198,7 @@ export default {
             }
         });
 
-        hintInfo = i18next.t("common:modules.tools.print.invisibleLayer", {scale: "1: " + thousandsSeparator(scale, " ")});
+        hintInfo = i18next.t("modules.tools.print.invisibleLayer", {scale: "1: " + thousandsSeparator(scale, " ")});
         hintInfo = hintInfo + "<br>" + invisibleLayerNames;
 
         if (invisibleLayer.length && hintInfo !== state.hintInfo) {

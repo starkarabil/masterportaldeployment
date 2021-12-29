@@ -48,7 +48,6 @@ export default {
         }
     },
     created () {
-        this.$on("close", this.close);
         this.ol2DMap.addLayer(this.layer);
     },
     mounted () {

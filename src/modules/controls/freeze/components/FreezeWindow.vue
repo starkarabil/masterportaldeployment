@@ -82,14 +82,14 @@ export default {
         <p
             ref="unfreeze"
             :class="isTable ? 'table freeze-view-close' : 'freeze-view-close'"
-            :title="$t(`common:modules.controls.freeze.unfreeze`)"
+            :title="$t(`modules.controls.freeze.unfreeze`)"
             :style="isTable ? cssVars : ''"
             tabindex="0"
             role="button"
             @click="hideFreezeWin($event)"
             @keydown="hideFreezeWin($event)"
         >
-            {{ $t(`common:modules.controls.freeze.unfreeze`) }}
+            {{ $t(`modules.controls.freeze.unfreeze`) }}
         </p>
     </div>
 </template>

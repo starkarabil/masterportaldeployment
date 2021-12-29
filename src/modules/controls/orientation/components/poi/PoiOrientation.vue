@@ -323,7 +323,7 @@ export default {
                         @keydown="closeIconTriggered($event)"
                     />
                     <h4 class="modal-title">
-                        {{ $t("common:modules.controls.orientation.titleGeolocatePOI") }}
+                        {{ $t("modules.controls.orientation.titleGeolocatePOI") }}
                     </h4>
                 </div>
                 <div>
@@ -374,7 +374,7 @@ export default {
                                             <td v-else-if="feat.imgPath.length > 0">
                                                 <img
                                                     :src="feat.imgPath"
-                                                    :alt="$t('common:modules.controls.orientation.imgAlt')"
+                                                    :alt="$t('modules.controls.orientation.imgAlt')"
                                                 >
                                             </td>
                                             <td>
@@ -384,7 +384,7 @@ export default {
                                                 >
                                                     <strong>{{ featNearbyTitleText }}</strong>
                                                 </p>
-                                                <p>{{ feat.dist2Pos + " " + $t('common:modules.controls.orientation.distanceUnit') }}</p>
+                                                <p>{{ feat.dist2Pos + " " + $t('modules.controls.orientation.distanceUnit') }}</p>
                                             </td>
                                         </tr>
                                     </tbody>

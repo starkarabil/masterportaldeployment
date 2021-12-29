@@ -32,7 +32,6 @@ export default {
         }
     },
     async created () {
-        this.$on("close", this.close);
         // updateMap is called too late in Tool.vue when routing tool is set to active:true in config.json
         if (!this.renderToWindow) {
             Radio.trigger("Map", "updateSize");
@@ -42,7 +41,7 @@ export default {
         }
         catch (e) {
             this.addSingleAlert({
-                category: this.$t("common:modules.alerting.categories.error"),
+                category: this.$t("modules.alerting.categories.error"),
                 content: e.message
             });
             this.$emit("close");
@@ -127,7 +126,7 @@ export default {
                         @keydown.enter="changeActiveRoutingToolOption(routingToolOption.id)"
                     >
                         <span class="glyphicon glyphicon-option-vertical" />
-                        <span>{{ $t("common:modules.tools.routing.tabs." + routingToolOption.id) }}</span>
+                        <span>{{ $t("modules.tools.routing.tabs." + routingToolOption.id) }}</span>
                         <RoutingLoadingSpinner
                             v-if="(routingToolOption.id === 'DIRECTIONS' && isLoadingDirections) || (routingToolOption.id === 'ISOCHRONES' && isLoadingIsochrones)"
                             class="ml-2"
@@ -136,7 +135,7 @@ export default {
 
                     <div
                         class="d-flex flex-column justify-content-center ml-2"
-                        :title="$t('common:modules.tools.routing.helpTooltip')"
+                        :title="$t('modules.tools.routing.helpTooltip')"
                         @click="toggleHelp()"
                         @keydown.enter="toggleHelp()"
                     >

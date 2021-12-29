@@ -18,27 +18,27 @@ export default {
         ...mapGetters(["uiStyle"]),
         eastingNoCoordMessage: function () {
             if (this.currentProjection.projName !== "longlat") {
-                return this.$t("common:modules.tools.coordToolkit.errorMsg.noCoord", {valueKey: this.$t(this.getLabel("eastingLabel"))});
+                return this.$t("modules.tools.coordToolkit.errorMsg.noCoord", {valueKey: this.$t(this.getLabel("eastingLabel"))});
             }
-            return this.$t("common:modules.tools.coordToolkit.errorMsg.hdmsNoCoord", {valueKey: this.$t(this.getLabel("eastingLabel"))});
+            return this.$t("modules.tools.coordToolkit.errorMsg.hdmsNoCoord", {valueKey: this.$t(this.getLabel("eastingLabel"))});
         },
         northingNoCoordMessage: function () {
             if (this.currentProjection.projName !== "longlat") {
-                return this.$t("common:modules.tools.coordToolkit.errorMsg.noCoord", {valueKey: this.$t(this.getLabel("northingLabel"))});
+                return this.$t("modules.tools.coordToolkit.errorMsg.noCoord", {valueKey: this.$t(this.getLabel("northingLabel"))});
             }
-            return this.$t("common:modules.tools.coordToolkit.errorMsg.hdmsNoCoord", {valueKey: this.$t(this.getLabel("northingLabel"))});
+            return this.$t("modules.tools.coordToolkit.errorMsg.hdmsNoCoord", {valueKey: this.$t(this.getLabel("northingLabel"))});
         },
         northingNoMatchMessage: function () {
             if (this.currentProjection.projName !== "longlat") {
-                return this.$t("common:modules.tools.coordToolkit.errorMsg.noMatch", {valueKey: this.$t(this.getLabel("northingLabel"))});
+                return this.$t("modules.tools.coordToolkit.errorMsg.noMatch", {valueKey: this.$t(this.getLabel("northingLabel"))});
             }
-            return this.$t("common:modules.tools.coordToolkit.errorMsg.hdmsNoMatch", {valueKey: this.$t(this.getLabel("northingLabel"))});
+            return this.$t("modules.tools.coordToolkit.errorMsg.hdmsNoMatch", {valueKey: this.$t(this.getLabel("northingLabel"))});
         },
         eastingNoMatchMessage: function () {
             if (this.currentProjection.projName !== "longlat") {
-                return this.$t("common:modules.tools.coordToolkit.errorMsg.noMatch", {valueKey: this.$t(this.getLabel("eastingLabel"))});
+                return this.$t("modules.tools.coordToolkit.errorMsg.noMatch", {valueKey: this.$t(this.getLabel("eastingLabel"))});
             }
-            return this.$t("common:modules.tools.coordToolkit.errorMsg.hdmsNoMatch", {valueKey: this.$t(this.getLabel("eastingLabel"))});
+            return this.$t("modules.tools.coordToolkit.errorMsg.hdmsNoMatch", {valueKey: this.$t(this.getLabel("eastingLabel"))});
         }
     },
     watch: {
@@ -74,9 +74,6 @@ export default {
                 this.changeMode("search");
             }
         }
-    },
-    created () {
-        this.$on("close", this.close);
     },
     mounted () {
         /**
@@ -581,7 +578,7 @@ export default {
                                 type="button"
                                 @click="searchCoordinate(coordinatesEasting, coordinatesNorthing)"
                             >
-                                {{ $t("common:modules.tools.coordToolkit.searchBtn") }}
+                                {{ $t("modules.tools.coordToolkit.searchBtn") }}
                             </button>
                         </div>
                     </div>

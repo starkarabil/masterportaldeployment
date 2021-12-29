@@ -33,7 +33,8 @@ export default {
                     this.$el.style.display = "none";
                 }
             });
-        }
+        },
+        deep: true
     }
 };
 </script>
@@ -74,7 +75,7 @@ export default {
                         target="_blank"
                         :title="legendPart"
                     >
-                        {{ $t("common:modules.legend.linkToPdf") }}
+                        {{ $t("modules.legend.linkToPdf") }}
                     </a>
                 </template>
 
@@ -117,7 +118,7 @@ export default {
                             target="_blank"
                             :title="legendPart.graphic"
                         >
-                            {{ $t("common:modules.legend.linkToPdf") }}
+                            {{ $t("modules.legend.linkToPdf") }}
                         </a>
                         <span>
                             {{ legendPart.name }}
@@ -130,7 +131,7 @@ export default {
             v-else
         >
             <span>
-                {{ $t("common:menu.legend.noLegendForLayerInfo") }}
+                {{ $t("menu.legend.noLegendForLayerInfo") }}
             </span>
         </template>
     </div>

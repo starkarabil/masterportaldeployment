@@ -65,10 +65,10 @@ export default {
         replaceBoolean (value) {
             if (typeof value === "string") {
                 if (value === "true") {
-                    return value.replace("true", i18next.t("common:share-components.list.replace.true"));
+                    return value.replace("true", i18next.t("share-components.list.replace.true"));
                 }
                 if (value === "No") {
-                    return value.replace("No", i18next.t("common:share-components.list.replace.No"));
+                    return value.replace("No", i18next.t("share-components.list.replace.No"));
                 }
             }
             return "";
@@ -106,7 +106,7 @@ export default {
                             type="button"
                             class="btn btn-lgv-grey col-md-12 col-sm-12"
                         >
-                            {{ $t("common:share-components.list.zoomToResult") }}
+                            {{ $t("share-components.list.zoomToResult") }}
                         </button>
                     </template>
                     <template v-else-if="isWebLink(data.values_[key])">

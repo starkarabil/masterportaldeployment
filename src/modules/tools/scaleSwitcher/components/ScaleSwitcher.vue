@@ -37,13 +37,6 @@ export default {
             }
         }
     },
-    /**
-     * Lifecycle hook: adds a "close"-Listener to close the tool.
-     * @returns {void}
-     */
-    created () {
-        this.$on("close", this.close);
-    },
     methods: {
         ...mapActions("Map", ["setResolutionByIndex"]),
         ...mapMutations("Tools/ScaleSwitcher", Object.keys(mutations)),

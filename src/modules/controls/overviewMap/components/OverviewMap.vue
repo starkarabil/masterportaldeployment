@@ -61,7 +61,7 @@ export default {
         this.checkModeVisibility();
         this.mapChannel.on("change", this.checkModeVisibility);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.mapChannel.off("change", this.checkModeVisibility);
     },
     mounted () {
@@ -115,7 +115,7 @@ export default {
         <component
             :is="component"
             :class="['overviewmap-button', (open && uiStyle !== 'TABLE') ? 'space-above' : '']"
-            :title="$t(`common:modules.controls.overviewMap.${open ? 'hide' : 'show'}Overview${localeSuffix}`)"
+            :title="$t(`modules.controls.overviewMap.${open ? 'hide' : 'show'}Overview${localeSuffix}`)"
             icon-name="globe"
             :on-click="toggleOverviewMapFlyout"
         />

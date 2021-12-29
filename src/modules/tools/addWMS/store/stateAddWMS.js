@@ -13,7 +13,7 @@
 const state = {
     active: false,
     id: "addWMS",
-    name: "common:menu.tools.addWms",
+    name: "menu.tools.addWms",
     glyphicon: "glyphicon-plus",
     renderToWindow: true,
     resizableWindow: true,

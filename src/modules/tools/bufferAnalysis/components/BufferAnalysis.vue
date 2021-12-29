@@ -137,7 +137,6 @@ export default {
     created () {
         this.initJSTSParser();
         this.loadSelectOptions();
-        this.$on("close", this.close);
     },
     methods: {
         ...mapMutations("Tools/BufferAnalysis", Object.keys(mutations)),

@@ -56,7 +56,7 @@ describe("src/modules/tools/gfi/components/themes/senor/components/SensorData.vu
     });
 
     it("should render a table with header informations ", () => {
-        const results = ["common:modules.tools.gfi.themes.sensor.sensorData.firstColumnHeaderName", "available", "charging"];
+        const results = ["modules.tools.gfi.themes.sensor.sensorData.firstColumnHeaderName", "available", "charging"];
 
         expect(wrapper.find("table > thead > tr").exists()).to.be.true;
         wrapper.findAll("table > thead > tr > th").wrappers.forEach((th, index) => {

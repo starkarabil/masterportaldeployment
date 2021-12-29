@@ -45,9 +45,6 @@ export default {
             }
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     methods: {
         ...mapActions("Tools/FileImport", [
             "importKML",

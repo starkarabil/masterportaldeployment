@@ -43,8 +43,8 @@ function createLiteralStructure (stateLiterals, literals = null, userHelp = []) 
  * @returns {String} String representation for the structure of the given literal.
  */
 export function createUserHelp (literals) {
-    const and = i18next.t("common:modules.tools.wfsSearch.userHelp.and"),
-        or = i18next.t("common:modules.tools.wfsSearch.userHelp.or"),
+    const and = i18next.t("modules.tools.wfsSearch.userHelp.and"),
+        or = i18next.t("modules.tools.wfsSearch.userHelp.or"),
         structure = createLiteralStructure(literals);
     let userHelp = "",
         marker = "";

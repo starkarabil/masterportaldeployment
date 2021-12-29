@@ -122,7 +122,7 @@ export default {
             return Math.floor(pixelWidth) + "px";
         },
         /**
-         * Minifies tool and emits evnt.
+         * Minifies tool and emits event.
          * @param {Event} event - the dom event
          * @return {void}
          */
@@ -133,7 +133,7 @@ export default {
             }
         },
         /**
-         * Maximizes tool and emits evnt.
+         * Maximizes tool and emits event.
          * @param {Event} event - the dom event
          * @return {void}
          */
@@ -161,7 +161,7 @@ export default {
         close (event) {
             if (event.type === "click" || event.which === 32 || event.which === 13) {
                 // emit event to parent e.g. coordToolKit (which uses the tool as component and is therefor the parent)
-                this.$parent.$emit("close", event);
+                this.$parent.close(event);
             }
         }
     }
@@ -185,7 +185,7 @@ export default {
             h-pos="l"
             :min-w="200"
             target-sel="#tool-sidebar-vue"
-            @endResizing="updateMap"
+            @end-resizing="updateMap"
         >
             <div>&#8942;</div>
         </BasicResizeHandle>

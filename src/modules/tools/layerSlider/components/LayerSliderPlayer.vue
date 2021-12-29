@@ -161,7 +161,7 @@ export default {
                 id="title"
                 type="text"
                 class="form-control"
-                :placeholder="$t('common:modules.tools.layerSlider.titleNotConfigured')"
+                :placeholder="$t('modules.tools.layerSlider.titleNotConfigured')"
                 :value="$t(activeLayer.title)"
                 readonly="true"
             >

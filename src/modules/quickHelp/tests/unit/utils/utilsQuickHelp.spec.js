@@ -75,9 +75,9 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
     });
     describe("getNormalizedStringEntry", () => {
         it("should return a normalized text entry for the given translatable string with \":\"", () => {
-            const entry = "common:foo",
+            const entry = "foo",
                 expected = {
-                    text: "common:foo",
+                    text: "foo",
                     type: "text/plain"
                 };
 
@@ -153,7 +153,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
         });
         it("should normalize the given list only for entry types string and objects", () => {
             const list = [
-                    "common:foo",
+                    "foo",
                     "foo",
                     {
                         imgName: "bar"
@@ -162,7 +162,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                 ],
                 expected = [
                     {
-                        text: "common:foo",
+                        text: "foo",
                         type: "text/plain"
                     },
                     {
@@ -183,7 +183,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
             const section = {
                     title: "foo",
                     list: [
-                        "common:bar",
+                        "bar",
                         "baz"
                     ]
                 },
@@ -191,7 +191,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                     title: "foo",
                     list: [
                         {
-                            text: "common:bar",
+                            text: "bar",
                             type: "text/plain"
                         },
                         {
@@ -249,7 +249,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                     foo: {
                         title: "fooTitle",
                         list: [
-                            "common:foo"
+                            "foo"
                         ]
                     },
                     bar: {
@@ -272,7 +272,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                     {
                         title: "foobarTitle",
                         list: [
-                            "common:foobar"
+                            "foobar"
                         ],
                         before: "foo"
                     },
@@ -301,7 +301,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         title: "foobarTitle",
                         list: [
                             {
-                                text: "common:foobar",
+                                text: "foobar",
                                 type: "text/plain"
                             }
                         ]
@@ -310,7 +310,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         title: "fooTitle",
                         list: [
                             {
-                                text: "common:foo",
+                                text: "foo",
                                 type: "text/plain"
                             }
                         ]
@@ -376,7 +376,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         {
                             title: "bar",
                             list: [
-                                "common:bar"
+                                "bar"
                             ]
                         },
                         {
@@ -394,7 +394,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             title: "bar",
                             list: [
                                 {
-                                    text: "common:bar",
+                                    text: "bar",
                                     type: "text/plain"
                                 }
                             ]
@@ -422,7 +422,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         foo: {
                             title: "bar",
                             list: [
-                                "common:bar"
+                                "bar"
                             ]
                         },
                         foobar: {
@@ -440,7 +440,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             title: "bar",
                             list: [
                                 {
-                                    text: "common:bar",
+                                    text: "bar",
                                     type: "text/plain"
                                 }
                             ]
@@ -501,7 +501,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         foo: {
                             title: "bar",
                             list: [
-                                "common:bar"
+                                "bar"
                             ]
                         }
                     }
@@ -513,7 +513,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             title: "bar",
                             list: [
                                 {
-                                    text: "common:bar",
+                                    text: "bar",
                                     type: "text/plain"
                                 }
                             ]
@@ -530,7 +530,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                         bar: {
                             title: "bar",
                             list: [
-                                "common:baz"
+                                "baz"
                             ]
                         }
                     }
@@ -563,7 +563,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             title: "bar",
                             list: [
                                 {
-                                    text: "common:baz",
+                                    text: "baz",
                                     type: "text/plain"
                                 }
                             ]
@@ -606,7 +606,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             bar: {
                                 title: "bar",
                                 list: [
-                                    "common:baz"
+                                    "baz"
                                 ]
                             }
                         }
@@ -619,7 +619,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                             fooquez: {
                                 title: "qwez",
                                 list: [
-                                    "common:qwez"
+                                    "qwez"
                                 ]
                             }
                         }
@@ -653,7 +653,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                                 title: "bar",
                                 list: [
                                     {
-                                        text: "common:baz",
+                                        text: "baz",
                                         type: "text/plain"
                                     }
                                 ]
@@ -667,7 +667,7 @@ describe("src/modules/quickHelp/utils/utilsQuickHelp.js", () => {
                                 title: "qwez",
                                 list: [
                                     {
-                                        text: "common:qwez",
+                                        text: "qwez",
                                         type: "text/plain"
                                     }
                                 ]

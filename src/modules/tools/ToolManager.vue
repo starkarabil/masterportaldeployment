@@ -69,11 +69,13 @@ export default {
 
 <template lang="html">
     <div class="tool-manager">
-        <template v-for="tool in configuredTools">
+        <template
+            v-for="tool in configuredTools"
+            :key="'tool-' + tool.key"
+        >
             <component
                 :is="tool.component"
                 v-if="toolsInSidebar[tool.component.name] === showInSidebar"
-                :key="'tool-' + tool.key"
             />
         </template>
     </div>

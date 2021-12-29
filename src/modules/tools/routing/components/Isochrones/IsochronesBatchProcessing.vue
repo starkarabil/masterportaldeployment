@@ -55,14 +55,14 @@ export default {
                         }
                         if (this.countFailed !== 0) {
                             this.addSingleAlert({
-                                category: this.$t("common:modules.alerting.categories.error"),
-                                content: this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorSomeFailed", {countFailed: this.coundFailed})
+                                category: this.$t("modules.alerting.categories.error"),
+                                content: this.$t("modules.tools.routing.isochrones.batchProcessing.errorSomeFailed", {countFailed: this.coundFailed})
                             });
                         }
                     }
                     catch (e) {
                         this.addSingleAlert({
-                            category: this.$t("common:modules.alerting.categories.error"),
+                            category: this.$t("modules.alerting.categories.error"),
                             content: e.message
                         });
                     }
@@ -126,7 +126,7 @@ export default {
         parseCsv (filecontent) {
             return new Promise((resolve, reject) => {
                 if (typeof filecontent !== "string") {
-                    reject(new Error(this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorNoEntries")));
+                    reject(new Error(this.$t("modules.tools.routing.isochrones.batchProcessing.errorNoEntries")));
                     return;
                 }
                 const content = filecontent.replace(/[\r]/g, "").trim(),
@@ -135,11 +135,11 @@ export default {
                     tasks = [];
 
                 if (content.length === 0 || count === 0) {
-                    reject(new Error(this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorNoEntries")));
+                    reject(new Error(this.$t("modules.tools.routing.isochrones.batchProcessing.errorNoEntries")));
                     return;
                 }
                 if (count > this.settings.batchProcessing.limit) {
-                    reject(new Error(this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInFile", {limit: this.settings.batchProcessing.limit})));
+                    reject(new Error(this.$t("modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInFile", {limit: this.settings.batchProcessing.limit})));
                     return;
                 }
 
@@ -152,12 +152,12 @@ export default {
                     }
 
                     if (lineParts.length !== 3) {
-                        reject(new Error(this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInRow", {row: i})));
+                        reject(new Error(this.$t("modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInRow", {row: i})));
                         return;
                     }
 
                     if (!this.isNumber(Number(lineParts[1])) || !this.isNumber(Number(lineParts[2]))) {
-                        reject(new Error(this.$t("common:modules.tools.routing.isochrones.batchProcessing.errorRowContainsEntriesNoNumber", {row: i})));
+                        reject(new Error(this.$t("modules.tools.routing.isochrones.batchProcessing.errorRowContainsEntriesNoNumber", {row: i})));
                         return;
                     }
 
@@ -193,8 +193,8 @@ export default {
                 return isochronesResult.getAreas().map(
                     area => area.getGeojsonFeature({
                         ID: id,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat
                     })
                 );
             }
@@ -210,8 +210,8 @@ export default {
                     },
                     properties: {
                         ID: id,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: startLon,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: startLat,
                         error: true
                     }
                 }
@@ -234,7 +234,7 @@ export default {
         :settings="settings"
         :progress="taskHandler ? taskHandler.progress : 0"
         :is-processing="isProcessing"
-        :structure-text="$t('common:modules.tools.routing.isochrones.batchProcessing.structure')"
+        :structure-text="$t('modules.tools.routing.isochrones.batchProcessing.structure')"
         example-text="1;8.12;50.67"
         @filesadded="addFiles($event)"
         @cancelProcess="taskHandler.cancelRun()"

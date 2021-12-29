@@ -17,7 +17,7 @@ export default {
         title: {
             type: String,
             required: false,
-            default: "common:button.download"
+            default: "button.download"
         },
         /**
          * first case: "data"
@@ -116,7 +116,7 @@ export default {
          */
         handleDownloadError (msg) {
             console.warn(msg);
-            this.$store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.exportButton.error.download"));
+            this.$store.dispatch("Alerting/addSingleAlert", i18next.t("modules.exportButton.error.download"));
         },
         /**
          * triggers the download based on the given props

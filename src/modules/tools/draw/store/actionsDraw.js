@@ -204,7 +204,7 @@ const initialState = JSON.parse(JSON.stringify(stateDraw)),
                     const featureCount = state.layer.getSource().getFeatures().length;
 
                     if (featureCount > maxFeatures - 1) {
-                        dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.limitReached", {count: maxFeatures}), {root: true});
+                        dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.limitReached", {count: maxFeatures}), {root: true});
                         dispatch("deactivateDrawInteractions");
                         dispatch("removeInteraction", interaction);
                     }

@@ -18,7 +18,7 @@ describe("src/modules/tools/routing/components/Directions/DirectionsBatchProcess
                 tools: {
                     children: {
                         routing: {
-                            name: "translate#common:menu.tools.routing",
+                            name: "translate#menu.tools.routing",
                             glyphicon: "glyphicon-road",
                             renderToWindow: true
                         }
@@ -100,37 +100,37 @@ describe("src/modules/tools/routing/components/Directions/DirectionsBatchProcess
         const downloadObjects = [
                 {
                     ID: "DEBBAL540001ChiF",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.37832,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.40167,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.37832,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.40167,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                 },
                 {
                     ID: "DEBBAL660000sAIN",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.21956,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.07882,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.21956,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.07882,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                 },
                 {
                     ID: "DEGAC00000007133",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 8.8615,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 48.82629,
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                    [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 8.8615,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 48.82629,
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                    [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                 }
             ],
             csv = wrapper.vm.createCsvToDownload(downloadObjects),
-            expectedResult = `ID;${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")};${i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")}
+            expectedResult = `ID;${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")};${i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")}
 DEBBAL540001ChiF;13.05518;52.39465;9.37832;49.40167;1020.57;12.34;CAR
 DEBBAL660000sAIN;13.95471;51.74632;9.21956;49.07882;1020.57;12.34;CAR
 DEGAC00000007133;13.0285;52.30963;8.8615;48.82629;1020.57;12.34;CAR`;
@@ -157,33 +157,33 @@ DEGAC00000007133;13.0285;52.30963;8.8615;48.82629`,
                 expectedResult = JSON.stringify([
                     {
                         ID: "DEBBAL540001ChiF",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.37832,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.40167,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.37832,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.40167,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                     },
                     {
                         ID: "DEBBAL660000sAIN",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.21956,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.07882,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 9.21956,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 49.07882,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                     },
                     {
                         ID: "DEGAC00000007133",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 8.8615,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 48.82629,
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
-                        [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xEnd")]: 8.8615,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yEnd")]: 48.82629,
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.time")]: "1020.57",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.distance")]: "12.34",
+                        [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.profile")]: "CAR"
                     }
                 ]);
 
@@ -204,7 +204,7 @@ DEGAC00000007133;13.0285;52.30963;8.8615;48.82629`,
                 expect(true).to.be.false;
             }
             catch (e) {
-                expect(e.message).equal("common:modules.tools.routing.directions.batchProcessing.errorNoEntries");
+                expect(e.message).equal("modules.tools.routing.directions.batchProcessing.errorNoEntries");
             }
         });
 
@@ -224,7 +224,7 @@ DEGAC00000007133;13.0285;52.30963;8.8615;48.82629`);
                 expect(true).to.be.false;
             }
             catch (e) {
-                expect(e.message).equal("common:modules.tools.routing.directions.batchProcessing.errorToManyEntriesInFile");
+                expect(e.message).equal("modules.tools.routing.directions.batchProcessing.errorToManyEntriesInFile");
             }
         });
 
@@ -243,7 +243,7 @@ DEGAC00000007133;13.0285;52.30963;8.8615;48.82629;1`);
                 expect(true).to.be.false;
             }
             catch (e) {
-                expect(e.message).equal("common:modules.tools.routing.directions.batchProcessing.errorToManyEntriesInRow");
+                expect(e.message).equal("modules.tools.routing.directions.batchProcessing.errorToManyEntriesInRow");
             }
         });
 
@@ -262,7 +262,7 @@ DEGAC00000007133;13.0285;52.30963;8.8615;48.82629`);
                 expect(true).to.be.false;
             }
             catch (e) {
-                expect(e.message).equal("common:modules.tools.routing.directions.batchProcessing.errorRowContainsEntriesNoNumber");
+                expect(e.message).equal("modules.tools.routing.directions.batchProcessing.errorRowContainsEntriesNoNumber");
             }
         });
     });

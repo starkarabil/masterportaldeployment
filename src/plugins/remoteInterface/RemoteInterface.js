@@ -28,7 +28,7 @@ export default {
             }
         });
 
-        Vue.prototype.$remoteInterface = {
+        app.config.globalProperties.$remoteInterface = {
             sendMessage: params => {
                 if (params instanceof Object === false) {
                     console.error("RemoteInterface sendMessage error: Given param is not an Object.");

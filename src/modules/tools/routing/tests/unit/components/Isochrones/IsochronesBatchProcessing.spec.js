@@ -19,7 +19,7 @@ describe("src/modules/tools/routing/components/Isochrones/IsochronesBatchProcess
                 tools: {
                     children: {
                         routing: {
-                            name: "translate#common:menu.tools.routing",
+                            name: "translate#menu.tools.routing",
                             glyphicon: "glyphicon-road",
                             renderToWindow: true
                         }
@@ -181,8 +181,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEBBAL540001ChiF",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465
                             }
                         },
                         {
@@ -208,8 +208,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEBBAL540001ChiF",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.05518,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.39465
                             }
                         },
                         {
@@ -235,8 +235,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEBBAL660000sAIN",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632
                             }
                         },
                         {
@@ -262,8 +262,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEBBAL660000sAIN",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.95471,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 51.74632
                             }
                         },
                         {
@@ -289,8 +289,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEGAC00000007133",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963
                             }
                         },
                         {
@@ -316,8 +316,8 @@ DEGAC00000007133;13.0285;52.30963`,
                                 speedProfile: "CAR",
                                 avoidSpeedProfileOptions: [],
                                 ID: "DEGAC00000007133",
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
-                                [i18next.t("common:modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.xStart")]: 13.0285,
+                                [i18next.t("modules.tools.routing.directions.batchProcessing.downloadHeader.yStart")]: 52.30963
                             }
                         }
                     ]
@@ -340,7 +340,7 @@ DEGAC00000007133;13.0285;52.30963`,
             }
             catch (e) {
                 expect(e.message).equal(
-                    "common:modules.tools.routing.isochrones.batchProcessing.errorNoEntries"
+                    "modules.tools.routing.isochrones.batchProcessing.errorNoEntries"
                 );
             }
         });
@@ -362,7 +362,7 @@ DEGAC00000007133;13.0285;52.30963`);
             }
             catch (e) {
                 expect(e.message).equal(
-                    "common:modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInFile"
+                    "modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInFile"
                 );
             }
         });
@@ -383,7 +383,7 @@ DEGAC00000007133;13.0285;52.30963;1`);
             }
             catch (e) {
                 expect(e.message).equal(
-                    "common:modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInRow"
+                    "modules.tools.routing.isochrones.batchProcessing.errorToManyEntriesInRow"
                 );
             }
         });
@@ -404,7 +404,7 @@ DEGAC00000007133;13.0285;52.30963`);
             }
             catch (e) {
                 expect(e.message).equal(
-                    "common:modules.tools.routing.isochrones.batchProcessing.errorRowContainsEntriesNoNumber"
+                    "modules.tools.routing.isochrones.batchProcessing.errorRowContainsEntriesNoNumber"
                 );
             }
         });

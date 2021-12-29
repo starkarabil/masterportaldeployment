@@ -19,7 +19,7 @@ describe("src/modules/tools/routing/components/RoutingDownload.vue", () => {
                     children: {
                         routing:
                             {
-                                "name": "translate#common:menu.tools.routing",
+                                "name": "translate#menu.tools.routing",
                                 "glyphicon": "glyphicon-road",
                                 "renderToWindow": true
                             }

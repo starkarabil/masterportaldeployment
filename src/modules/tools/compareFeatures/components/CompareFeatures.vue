@@ -48,9 +48,6 @@ export default {
             }
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     updated () {
         this.enableButton();
     },
@@ -93,24 +90,24 @@ export default {
     class="template"
 >
     <Modal
-        :title="$t('common:modules.tools.compareFeatures.title')"
+        :title="$t('modules.tools.compareFeatures.title')"
         :icon="glyphicon"
         :show-modal="active"
-        @modalHid="close"
+        @modal-hid="close"
     >
         <Modal
-            :title="$t('common:modules.tools.compareFeatures.title')"
+            :title="$t('modules.tools.compareFeatures.title')"
             :icon="glyphicon"
             :show-modal="showAlert && !active"
-            @modalHid="setShowAlert(false)"
+            @modal-hid="setShowAlert(false)"
         >
             <div>
                 <div v-if="!listFull">
                     <h4 v-if="currentFeatureName">
-                        {{ $t("common:modules.tools.compareFeatures.feedback.addedWithName", {currentFeatureName}) }}
+                        {{ $t("modules.tools.compareFeatures.feedback.addedWithName", {currentFeatureName}) }}
                     </h4>
                     <h4 v-else>
-                        {{ $t("common:modules.tools.compareFeatures.feedback.added") }}
+                        {{ $t("modules.tools.compareFeatures.feedback.added") }}
                     </h4>
                     <hr>
                 </div>
@@ -119,37 +116,37 @@ export default {
                     id="tool-compareFeatures-buttons-feedback-listFull"
                 >
                     <h4 v-if="currentFeatureName">
-                        {{ $t("common:modules.tools.compareFeatures.feedback.notAddedWithName", {currentFeatureName}) }}
+                        {{ $t("modules.tools.compareFeatures.feedback.notAddedWithName", {currentFeatureName}) }}
                     </h4>
                     <h4 v-else>
-                        {{ $t("common:modules.tools.compareFeatures.feedback.notAdded") }}
+                        {{ $t("modules.tools.compareFeatures.feedback.notAdded") }}
                     </h4>
                     <hr>
-                    <p>{{ $t("common:modules.tools.compareFeatures.feedback.limitReached") }}</p>
-                    <p>{{ $t("common:modules.tools.compareFeatures.feedback.removeObjects") }}</p>
+                    <p>{{ $t("modules.tools.compareFeatures.feedback.limitReached") }}</p>
+                    <p>{{ $t("modules.tools.compareFeatures.feedback.removeObjects") }}</p>
                     <hr>
                 </div>
                 <div id="tool-compareFeatures-buttons">
                     <button
                         class="btn btn-default btn-infos"
-                        :title="$t('common:button.back')"
+                        :title="$t('button.back')"
                         @click="setShowAlert(false)"
                     >
-                        {{ $t("common:button.back") }}
+                        {{ $t("button.back") }}
                     </button>
                     <button
                         class="btn btn-primary btn-infos"
-                        :title="$t('common:modules.tools.compareFeatures.feedback.goToComparisonlist')"
+                        :title="$t('modules.tools.compareFeatures.feedback.goToComparisonlist')"
                         @click="setActive(true)"
                     >
-                        {{ $t("common:modules.tools.compareFeatures.feedback.goToComparisonlist") }}
+                        {{ $t("modules.tools.compareFeatures.feedback.goToComparisonlist") }}
                     </button>
                 </div>
             </div>
         </Modal>
         <template #header>
             <h4 class="tool-compareFeatures-modal-title">
-                {{ $t('common:modules.tools.compareFeatures.title') }}
+                {{ $t('modules.tools.compareFeatures.title') }}
             </h4>
             <div
                 v-if="hasMultipleLayers"
@@ -160,7 +157,7 @@ export default {
                     id="tool-compareFeatures-select-label"
                     class="col-xs-3"
                     for="tool-compareFeatures-select"
-                >{{ $t("common:modules.tools.compareFeatures.topicsSelection") }}</label>
+                >{{ $t("modules.tools.compareFeatures.topicsSelection") }}</label>
                 <div class="col-xs-3">
                     <select
                         id="tool-compareFeatures-select"
@@ -185,10 +182,10 @@ export default {
             >
                 <hr>
                 <p class="bold">
-                    {{ $t("common:modules.tools.compareFeatures.noFeatures.nothingSelected", {objects: $t("common:modules.tools.compareFeatures.noFeatures.objectName")}) }}
+                    {{ $t("modules.tools.compareFeatures.noFeatures.nothingSelected", {objects: $t("modules.tools.compareFeatures.noFeatures.objectName")}) }}
                 </p>
                 <br>
-                <p v-html="$t('common:modules.tools.compareFeatures.noFeatures.info', {iconEmptyStar, iconYellowStar, interpolation: {escapeValue: false}})" />
+                <p v-html="$t('modules.tools.compareFeatures.noFeatures.info', {iconEmptyStar, iconYellowStar, interpolation: {escapeValue: false}})" />
             </div>
             <ComparisonList
                 v-if="hasFeatures && !hasMultipleLayers"
@@ -196,7 +193,7 @@ export default {
                 :list-of-features="preparedList[Object.keys(preparedList)[0]]"
                 :max-attributes-to-show="numberOfAttributesToShow"
                 :enable-more-info="showMoreInfo"
-                :title-remove-button="$t('common:modules.tools.compareFeatures.removeFromList')"
+                :title-remove-button="$t('modules.tools.compareFeatures.removeFromList')"
             />
             <ComparisonList
                 v-if="active && hasMultipleLayers"
@@ -205,7 +202,7 @@ export default {
                 :selected-layer="selectedLayer"
                 :max-attributes-to-show="numberOfAttributesToShow"
                 :enable-more-info="showMoreInfo"
-                :title-remove-button="$t('common:modules.tools.compareFeatures.removeFromList')"
+                :title-remove-button="$t('modules.tools.compareFeatures.removeFromList')"
             />
         </div>
         <template #footer>
@@ -217,18 +214,18 @@ export default {
 
                 <button
                     class="btn btn-default btn-infos"
-                    :title="!showMoreInfo ? $t('common:modules.tools.compareFeatures.moreInfo') : $t('common:modules.tools.compareFeatures.lessInfo')"
+                    :title="!showMoreInfo ? $t('modules.tools.compareFeatures.moreInfo') : $t('modules.tools.compareFeatures.lessInfo')"
                     :disabled="!showMoreInfoButton"
                     @click="moreInfo()"
                 >
-                    {{ !showMoreInfo ? $t("common:modules.tools.compareFeatures.moreInfo") : $t("common:modules.tools.compareFeatures.lessInfo") }}
+                    {{ !showMoreInfo ? $t("modules.tools.compareFeatures.moreInfo") : $t("modules.tools.compareFeatures.lessInfo") }}
                 </button>
                 <button
                     class="btn btn-primary btn-infos"
-                    :title="$t('common:modules.tools.compareFeatures.exportAsPdf')"
+                    :title="$t('modules.tools.compareFeatures.exportAsPdf')"
                     @click="startPrint"
                 >
-                    {{ $t("common:modules.tools.compareFeatures.exportAsPdf") }}
+                    {{ $t("modules.tools.compareFeatures.exportAsPdf") }}
                 </button>
                 <div
                     v-if="printStarted"

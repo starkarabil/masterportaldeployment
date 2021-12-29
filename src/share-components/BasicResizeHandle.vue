@@ -115,7 +115,7 @@ export default {
             if (this.targetSel === "offsetParent") {
                 return res;
             }
-
+console.log(this);
             res = this.$el.closest(this.targetSel);
             if (res === null) {
                 console.warn("Vue-mp-simple-resizable Module: 'No target element found. Please verify your markup and selector. Currently defined target element selector:'", this.targetSel);

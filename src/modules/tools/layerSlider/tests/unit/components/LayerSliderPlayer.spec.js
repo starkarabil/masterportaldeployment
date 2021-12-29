@@ -17,7 +17,7 @@ describe("src/modules/tools/layerSlider/components/LayerSliderPlayer.vue", () =>
                 tools: {
                     children: {
                         layerSlider: {
-                            "name": "translate#common:menu.tools.layerSlider",
+                            "name": "translate#menu.tools.layerSlider",
                             "glyphicon": "glyphicon-film",
                             "windowsInterval": null
                         }

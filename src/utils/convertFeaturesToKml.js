@@ -141,7 +141,7 @@ function transformCoordinates (geometry) {
         case "Polygon":
             return transform(coords, true);
         default:
-            // dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.download.unknownGeometry", {geometry: type}), {root: true});
+            // dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.download.unknownGeometry", {geometry: type}), {root: true});
             return [];
     }
 }

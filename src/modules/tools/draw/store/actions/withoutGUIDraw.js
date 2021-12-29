@@ -261,7 +261,7 @@ function initializeWithoutGUI ({state, commit, dispatch, getters}, {drawType, co
             }
             catch (e) {
                 // The given JSON was invalid
-                dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.geometryDrawFailed"), {root: true});
+                dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.geometryDrawFailed"), {root: true});
             }
         }
     }

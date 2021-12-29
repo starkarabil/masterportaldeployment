@@ -28,9 +28,6 @@ export default {
             }
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     methods: {
         ...mapMutations("Tools/LayerClusterToggler", Object.keys(mutations)),
 
@@ -60,7 +57,7 @@ export default {
                         layerId = id.layerId + "-" + id.suffix;
                     }
                     else if (typeof layerId !== "string") {
-                        console.warn(this.$t("common:modules.tools.layerClusterToggler.idFormatError"));
+                        console.warn(this.$t("modules.tools.layerClusterToggler.idFormatError"));
                         return;
                     }
 
@@ -68,7 +65,7 @@ export default {
                     const layer = Radio.request("ModelList", "getModelByAttributes", {"id": layerId});
 
                     if (typeof layer === "undefined") {
-                        console.warn(this.$t("common:modules.tools.layerClusterToggler.idError", {layerId}));
+                        console.warn(this.$t("modules.tools.layerClusterToggler.idError", {layerId}));
                     }
                     else {
                         layer.set("isSelected", this.isToggled);

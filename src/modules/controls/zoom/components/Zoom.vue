@@ -33,7 +33,7 @@ export default {
         this.checkModeVisibility();
         this.mapChannel.on("change", this.checkModeVisibility);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.mapChannel.off("change", this.checkModeVisibility);
     },
     methods: {
@@ -58,13 +58,13 @@ export default {
     >
         <ControlIcon
             icon-name="plus"
-            :title="$t(`common:modules.controls.zoom.zoomIn`)"
+            :title="$t(`modules.controls.zoom.zoomIn`)"
             :disabled="maximumZoomLevelActive"
             :on-click="increaseZoomLevel"
         />
         <ControlIcon
             icon-name="minus"
-            :title="$t(`common:modules.controls.zoom.zoomOut`)"
+            :title="$t(`modules.controls.zoom.zoomOut`)"
             :disabled="minimumZoomLevelActive"
             :on-click="decreaseZoomLevel"
         />

@@ -16,7 +16,7 @@ const state = {
     glyphicon: "glyphicon-tint",
     id: "styleVT",
     layerModel: null,
-    name: "common:menu.tools.styleVt",
+    name: "menu.tools.styleVt",
     renderToWindow: true,
     resizableWindow: true,
     initialWidth: 600,

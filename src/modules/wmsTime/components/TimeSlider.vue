@@ -86,7 +86,7 @@ export default {
                 class="btn btn-sm btn-lgv-grey"
                 @click="toggleSwiper(layerId)"
             >
-                {{ $t(`common:modules.wmsTime.timeSlider.buttons.${minWidth && layerSwiper.active ? "deactivateL" : "l"}ayerSwiper`) }}
+                {{ $t(`modules.wmsTime.timeSlider.buttons.${minWidth && layerSwiper.active ? "deactivateL" : "l"}ayerSwiper`) }}
             </button>
         </div>
         <div class="timeSlider-innerWrapper-interactions">
@@ -94,7 +94,7 @@ export default {
                 <button
                     :id="'timeSlider-button-backward-' + layerId"
                     class="btn btn-sm btn-lgv-grey"
-                    :aria-label="$t('common:modules.wmsTime.timeSlider.buttons.backward')"
+                    :aria-label="$t('modules.wmsTime.timeSlider.buttons.backward')"
                     :disabled="nextIndex(false) === -1"
                     @click="moveOne(false)"
                 >
@@ -103,7 +103,7 @@ export default {
                 <button
                     :id="'timeSlider-button-play-' + layerId"
                     class="btn btn-sm btn-lgv-grey"
-                    :aria-label="$t('common:modules.wmsTime.timeSlider.buttons.play')"
+                    :aria-label="$t('modules.wmsTime.timeSlider.buttons.play')"
                     @click="play"
                 >
                     <i
@@ -113,7 +113,7 @@ export default {
                 <button
                     :id="'timeSlider-button-forward-' + layerId"
                     class="btn btn-sm btn-lgv-grey"
-                    :aria-label="$t('common:modules.wmsTime.timeSlider.buttons.forward')"
+                    :aria-label="$t('modules.wmsTime.timeSlider.buttons.forward')"
                     :disabled="nextIndex() === timeRange.length"
                     @click="moveOne(true)"
                 >
@@ -134,7 +134,7 @@ export default {
                     :min="min"
                     :max="max"
                     :step="step"
-                    :aria-label="$t('common:modules.wmsTime.timeSlider.inputRangeLabel')"
+                    :aria-label="$t('modules.wmsTime.timeSlider.inputRangeLabel')"
                     @input="sliderValue = Number($event.target.value)"
                 >
             </fieldset>

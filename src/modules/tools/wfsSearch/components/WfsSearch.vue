@@ -63,9 +63,6 @@ export default {
             }
         }
     },
-    created () {
-        this.$on("close", this.close);
-    },
     methods: {
         ...mapMutations("Tools/WfsSearch", Object.keys(mutations)),
         ...mapActions("Tools/WfsSearch", Object.keys(actions)),
@@ -143,7 +140,7 @@ export default {
                             class="col-md-5 col-sm-5 control-label"
                             for="tool-wfsSearch-instances-select"
                         >
-                            {{ $t("common:modules.tools.wfsSearch.instancesSelectLabel") }}
+                            {{ $t("modules.tools.wfsSearch.instancesSelectLabel") }}
                         </label>
                         <div class="col-md-7 col-sm-7">
                             <select
@@ -174,17 +171,19 @@ export default {
                         <span
                             id="tool-wfsSearch-userHelp-text"
                             class="col-md-11 col-sm-11"
-                            :aria-label="$t('common:modules.tools.wfsSearch.userHelp.label')"
-                            v-html="$t('common:modules.tools.wfsSearch.userHelp.text', {userHelp})"
+                            :aria-label="$t('modules.tools.wfsSearch.userHelp.label')"
+                            v-html="$t('modules.tools.wfsSearch.userHelp.text', {userHelp})"
                         />
                     </div>
                     <hr>
-                    <template v-for="(literal, i) of currentInstance.literals">
+                    <template
+                        v-for="(literal, i) of currentInstance.literals"
+                        :key="'tool-wfsSearch-clause' + i"
+                    >
                         <Literal
-                            :key="'tool-wfsSearch-clause' + i"
                             :literal="literal"
                         />
-                        <hr :key="'tool-wfsSearch-clause-divider' + i">
+                        <hr>
                     </template>
                     <div class="form-group form-group-sm">
                         <div class="col-md-6 col-sm-6">
@@ -194,7 +193,7 @@ export default {
                                 class="btn btn-lgv-grey col-md-12 col-sm-12"
                                 @click="resetUI"
                             >
-                                {{ $t("common:modules.tools.wfsSearch.resetButton") }}
+                                {{ $t("modules.tools.wfsSearch.resetButton") }}
                             </button>
                         </div>
                         <div class="col-md-6 col-sm-6">
@@ -203,7 +202,7 @@ export default {
                                 type="submit"
                                 class="btn btn-lgv-grey col-md-12 col-sm-12"
                                 :disabled="requiredFields"
-                                :value="$t('common:modules.tools.wfsSearch.searchButton')"
+                                :value="$t('modules.tools.wfsSearch.searchButton')"
                             >
                         </div>
                         <div
@@ -216,7 +215,7 @@ export default {
                                 :disabled="results.length === 0 || !headers"
                                 @click="setShowResultList(true)"
                             >
-                                {{ $t("common:modules.tools.wfsSearch.showResults") + " " + `(${results.length})` }}
+                                {{ $t("modules.tools.wfsSearch.showResults") + " " + `(${results.length})` }}
                             </button>
                         </div>
                     </div>
@@ -250,7 +249,7 @@ export default {
                     <h4>{{ $t(name) }}</h4>
                     <hr>
                 </header>
-                <span>{{ $t("common:modules.tools.wfsSearch.noResults") }}</span>
+                <span>{{ $t("modules.tools.wfsSearch.noResults") }}</span>
             </template>
         </Modal>
     </div>

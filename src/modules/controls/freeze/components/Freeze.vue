@@ -48,13 +48,13 @@ export default {
         <component
             :is="component"
             :class="[component ? 'control' : 'Table']"
-            :title="$t(`common:modules.controls.freeze.freeze`)"
+            :title="$t('modules.controls.freeze.freeze')"
             :icon-name="'ban-circle'"
             :on-click="showFreezeWin"
         />
         <FreezeWindow
             v-if="isActive"
-            @hideFreezeWin="hideFreezeWin"
+            @hide-freeze-win="hideFreezeWin"
         />
     </div>
 </template>

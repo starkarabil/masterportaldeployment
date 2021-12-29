@@ -23,13 +23,13 @@ describe("translateKeyWithPlausibilityCheck", () => {
     });
     it("should return the given key if the key includes more than one \":\"", () => {
         expect(translateKeyWithPlausibilityCheck("foo:bar:baz", () => {
-            // mocking i18next behavior $t("common:unvalid:key") => "unvalid.key"
+            // mocking i18next behavior $t("unvalid:key") => "unvalid.key"
             return "bar.baz";
         })).to.equal("foo:bar:baz");
     });
     it("should return the given key if only one \":\" is found and the translation equals the value from the \":\" onwards", () => {
         expect(translateKeyWithPlausibilityCheck("foo:bar", () => {
-            // mocking i18next behavior $t("common:unvalid.key") => "unvalid.key"
+            // mocking i18next behavior $t("unvalid.key") => "unvalid.key"
             return "bar";
         })).to.equal("foo:bar");
     });

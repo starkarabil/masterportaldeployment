@@ -83,7 +83,7 @@ describe("src/utils/calendar.js", () => {
             expect(result.moment.format).to.be.a("function");
             expect(result.moment.format("YYYY-MM-DD")).to.equal("2021-01-06");
             expect(result.holidayKey).to.equal("epiphany");
-            expect(result.translationKey).to.equal("common:utils.calendar.epiphany");
+            expect(result.translationKey).to.equal("utils.calendar.epiphany");
         });
     });
     describe("getPublicHolidays", () => {
@@ -97,28 +97,28 @@ describe("src/utils/calendar.js", () => {
             expect(publicHolidays[0].moment.format).to.be.a("function");
             expect(publicHolidays[0].moment.format("YYYY-MM-DD")).to.equal("2021-01-06");
             expect(publicHolidays[0].holidayKey).to.equal("epiphany");
-            expect(publicHolidays[0].translationKey).to.equal("common:utils.calendar.epiphany");
+            expect(publicHolidays[0].translationKey).to.equal("utils.calendar.epiphany");
 
             expect(publicHolidays[1]).to.be.an("object");
             expect(publicHolidays[1].moment).to.be.an("object");
             expect(publicHolidays[1].moment.format).to.be.a("function");
             expect(publicHolidays[1].moment.format("YYYY-MM-DD")).to.equal("2021-05-13");
             expect(publicHolidays[1].holidayKey).to.equal("ascensionDay");
-            expect(publicHolidays[1].translationKey).to.equal("common:utils.calendar.ascensionDay");
+            expect(publicHolidays[1].translationKey).to.equal("utils.calendar.ascensionDay");
 
             expect(publicHolidays[2]).to.be.an("object");
             expect(publicHolidays[2].moment).to.be.an("object");
             expect(publicHolidays[2].moment.format).to.be.a("function");
             expect(publicHolidays[2].moment.format("YYYY-MM-DD")).to.equal("2021-11-17");
             expect(publicHolidays[2].holidayKey).to.equal("penanceDay");
-            expect(publicHolidays[2].translationKey).to.equal("common:utils.calendar.penanceDay");
+            expect(publicHolidays[2].translationKey).to.equal("utils.calendar.penanceDay");
 
             expect(publicHolidays[3]).to.be.an("object");
             expect(publicHolidays[3].moment).to.be.an("object");
             expect(publicHolidays[3].moment.format).to.be.a("function");
             expect(publicHolidays[3].moment.format("YYYY-MM-DD")).to.equal("2021-12-31");
             expect(publicHolidays[3].holidayKey).to.equal("newYearsEve");
-            expect(publicHolidays[3].translationKey).to.equal("common:utils.calendar.newYearsEve");
+            expect(publicHolidays[3].translationKey).to.equal("utils.calendar.newYearsEve");
         });
     });
     describe("hasHolidayInWeek", () => {

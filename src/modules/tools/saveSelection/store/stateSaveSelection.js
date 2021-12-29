@@ -19,7 +19,7 @@ const state = {
     active: false,
     id: "saveSelection",
     // defaults for config.json tool parameters
-    name: "common:menu.tools.saveSelection",
+    name: "menu.tools.saveSelection",
     glyphicon: "glyphicon-share",
     renderToWindow: true,
     resizableWindow: true,

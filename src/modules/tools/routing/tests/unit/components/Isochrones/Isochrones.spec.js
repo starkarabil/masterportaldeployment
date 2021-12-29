@@ -23,7 +23,7 @@ describe("src/modules/tools/routing/components/Isochrones/Isochrones.vue", () =>
                     children: {
                         routing:
                             {
-                                "name": "translate#common:menu.tools.routing",
+                                "name": "translate#menu.tools.routing",
                                 "glyphicon": "glyphicon-road",
                                 "renderToWindow": true
                             }
@@ -137,12 +137,12 @@ describe("src/modules/tools/routing/components/Isochrones/Isochrones.vue", () =>
         await wrapper.vm.$nextTick();
         expect(
             wrapper.findAllComponents(RoutingSliderInputComponent)
-                .filter(el => el.vm.$props.label === "common:modules.tools.routing.isochrones.maxDistance")
+                .filter(el => el.vm.$props.label === "modules.tools.routing.isochrones.maxDistance")
                 .length
         ).equal(1);
         expect(
             wrapper.findAllComponents(RoutingSliderInputComponent)
-                .filter(el => el.vm.$props.label === "common:modules.tools.routing.isochrones.maxTraveltime")
+                .filter(el => el.vm.$props.label === "modules.tools.routing.isochrones.maxTraveltime")
                 .length
         ).equal(0);
     });
@@ -153,12 +153,12 @@ describe("src/modules/tools/routing/components/Isochrones/Isochrones.vue", () =>
         await wrapper.vm.$nextTick();
         expect(
             wrapper.findAllComponents(RoutingSliderInputComponent)
-                .filter(el => el.vm.$props.label === "common:modules.tools.routing.isochrones.maxTraveltime")
+                .filter(el => el.vm.$props.label === "modules.tools.routing.isochrones.maxTraveltime")
                 .length
         ).equal(1);
         expect(
             wrapper.findAllComponents(RoutingSliderInputComponent)
-                .filter(el => el.vm.$props.label === "common:modules.tools.routing.isochrones.maxDistance")
+                .filter(el => el.vm.$props.label === "modules.tools.routing.isochrones.maxDistance")
                 .length
         ).equal(0);
     });

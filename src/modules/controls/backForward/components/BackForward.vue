@@ -30,7 +30,7 @@ export default {
     mounted () {
         this.ol2DMap.on("moveend", this.memorizeMap);
     },
-    beforeDestroy () {
+    beforeUnmount () {
         this.ol2DMap.un("moveend", this.memorizeMap);
     },
     methods: {
@@ -55,14 +55,14 @@ export default {
     <div class="back-forward-buttons">
         <ControlIcon
             class="forward"
-            :title="$t(`common:modules.controls.backForward.stepForward`)"
+            :title="$t(`modules.controls.backForward.stepForward`)"
             :disabled="!forthAvailable"
             :icon-name="glyphiconFor"
             :on-click="moveForward"
         />
         <ControlIcon
             class="backward"
-            :title="$t(`common:modules.controls.backForward.stepBackward`)"
+            :title="$t(`modules.controls.backForward.stepBackward`)"
             :disabled="!backAvailable"
             :icon-name="glyphiconBack"
             :on-click="moveBackward"

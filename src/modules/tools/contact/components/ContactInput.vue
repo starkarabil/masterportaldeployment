@@ -92,7 +92,7 @@ export default {
                 :type="htmlElement === 'input' ? inputType : ''"
                 class="form-control"
                 :aria-describedby="`tool-contact-${inputName}-help`"
-                :placeholder="$t(`common:modules.tools.contact.placeholder.${inputName}`)"
+                :placeholder="$t(`modules.tools.contact.placeholder.${inputName}`)"
                 :rows="htmlElement === 'textarea' ? rows : ''"
                 @keyup="changeFunction($event.currentTarget.value)"
             />
@@ -113,7 +113,7 @@ export default {
             class="help-block"
         >
             {{ $t(
-                `common:modules.tools.contact.error.${inputName + (inputName === "message" ? "Input" : "")}`,
+                `modules.tools.contact.error.${inputName + (inputName === "message" ? "Input" : "")}`,
                 {length: minMessageLength}
             ) }}
         </span>

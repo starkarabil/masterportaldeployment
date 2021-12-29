@@ -59,7 +59,7 @@ WMSTimeLayer.prototype.prepareTime = function (attrs) {
             const {Dimension, Extent} = result.Capability.Layer.Layer[0];
 
             if (!Dimension || !Extent || Dimension[0].name !== "time" || Extent.name !== "time") {
-                throw Error(i18next.t("common:modules.core.modelList.layer.wms.invalidTimeLayer", {id: this.id}));
+                throw Error(i18next.t("modules.core.modelList.layer.wms.invalidTimeLayer", {id: this.id}));
             }
             return Extent;
         })
@@ -82,7 +82,7 @@ WMSTimeLayer.prototype.prepareTime = function (attrs) {
             Radio.trigger("Parser", "removeItem", attrs.id);
             Radio.trigger("Util", "refreshTree");
 
-            console.error(i18next.t("common:modules.core.modelList.layer.wms.errorTimeLayer", {error, id: attrs.id}));
+            console.error(i18next.t("modules.core.modelList.layer.wms.errorTimeLayer", {error, id: attrs.id}));
         });
 };
 

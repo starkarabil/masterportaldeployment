@@ -42,10 +42,10 @@ export default {
             return getTheme(this.feature.getTheme(), this.$options.components, this.$gfiThemeAddons);
         }
     },
-    mounted: function () {
+    mounted () {
         this.placingPointMarker(this.clickCoord);
     },
-    beforeDestroy: function () {
+    beforeUnmount () {
         this.removePointMarker();
     },
     methods: {

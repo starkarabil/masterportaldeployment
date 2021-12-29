@@ -27,27 +27,27 @@ export default {
         ...mapGetters("Tools/AddWMS", Object.keys(getters)),
 
         placeholder () {
-            return i18next.t("common:modules.tools.addWMS.placeholder");
+            return i18next.t("modules.tools.addWMS.placeholder");
         },
 
         textLoadLayer () {
-            return i18next.t("common:modules.tools.addWMS.textLoadLayer");
+            return i18next.t("modules.tools.addWMS.textLoadLayer");
         },
 
         errorEmptyUrl () {
-            return i18next.t("common:modules.tools.addWMS.errorEmptyUrl");
+            return i18next.t("modules.tools.addWMS.errorEmptyUrl");
         },
 
         errorHttpUrl () {
-            return i18next.t("common:modules.tools.addWMS.errorHttpsMessage");
+            return i18next.t("modules.tools.addWMS.errorHttpsMessage");
         },
 
         errorIfInExtent () {
-            return i18next.t("common:modules.tools.addWMS.ifInExtent");
+            return i18next.t("modules.tools.addWMS.ifInExtent");
         },
 
         completeMessage () {
-            return i18next.t("common:modules.tools.addWMS.completeMessage");
+            return i18next.t("modules.tools.addWMS.completeMessage");
         }
     },
     watch: {
@@ -63,8 +63,6 @@ export default {
         }
     },
     created () {
-        this.$on("close", this.close);
-
         if (!["custom", "default"].includes(this.treeTyp)) {
             console.error("The addWMS tool is currently only supported for the custom and default theme trees!");
             this.close();
@@ -207,7 +205,7 @@ export default {
          * @returns {void}
          */
         displayErrorMessage: function () {
-            this.$store.dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.addWMS.errorMessage"));
+            this.$store.dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.addWMS.errorMessage"));
         },
 
         /**

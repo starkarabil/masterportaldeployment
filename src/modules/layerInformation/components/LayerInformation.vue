@@ -167,7 +167,7 @@ export default {
         @close="triggerClose"
     >
         <template #title>
-            <span>{{ $t("common:modules.layerInformation.informationAndLegend") }}</span>
+            <span>{{ $t("modules.layerInformation.informationAndLegend") }}</span>
         </template>
         <template #body>
             <div class="body">
@@ -189,7 +189,7 @@ export default {
                         type="button"
                         @click="onClickDropdown"
                     >
-                        {{ $t("common:modules.layerInformation.changeLayerInfo") }}
+                        {{ $t("modules.layerInformation.changeLayerInfo") }}
                         <span class="caret" />
                     </button>
                     <ul
@@ -223,18 +223,18 @@ export default {
                             target="_blank"
                             @click="onClick"
                         >
-                            {{ $t("common:modules.layerInformation.additionalMetadata") }}
+                            {{ $t("modules.layerInformation.additionalMetadata") }}
                         </a>
                     </p>
                 </div>
                 <p v-if="showPublication">
-                    {{ $t("common:modules.layerInformation.publicationCreation") }}: {{ datePublication }}
+                    {{ $t("modules.layerInformation.publicationCreation") }}: {{ datePublication }}
                 </p>
                 <p v-if="showRevision">
-                    {{ $t("common:modules.layerInformation.lastModified") }}: {{ dateRevision }}
+                    {{ $t("modules.layerInformation.lastModified") }}: {{ dateRevision }}
                 </p>
                 <p v-if="showPeriodicity">
-                    {{ $t("common:modules.layerInformation.periodicityTitle") }}: {{ $t(periodicityKey) }}
+                    {{ $t("modules.layerInformation.periodicityTitle") }}: {{ $t(periodicityKey) }}
                 </p>
                 <hr>
                 <ul class="nav nav-tabs">
@@ -247,7 +247,7 @@ export default {
                         <a
                             href="#layerinfo-legend"
                             @click="setActiveTab"
-                        >{{ $t("common:modules.layerInformation.legend") }}
+                        >{{ $t("modules.layerInformation.legend") }}
                         </a>
                     </li>
                     <li
@@ -260,7 +260,7 @@ export default {
                         <a
                             href="#LayerInfoDataDownload"
                             @click="setActiveTab"
-                        >{{ $t("common:modules.layerInformation.downloadDataset") }}
+                        >{{ $t("modules.layerInformation.downloadDataset") }}
                         </a>
                     </li>
                     <li
@@ -273,7 +273,7 @@ export default {
                         <a
                             href="#url"
                             @click="setActiveTab"
-                        >{{ $t(layerInfo.typ) }} - {{ $t("common:modules.layerInformation.addressSuffix") }}
+                        >{{ $t(layerInfo.typ) }} - {{ $t("modules.layerInformation.addressSuffix") }}
                         </a>
                     </li>
                 </ul>
@@ -314,7 +314,7 @@ export default {
                             v-if="(showAttachFile)"
                             class="col-md-5 pt-5"
                         >
-                            <span class="download-note">{{ $t(("common:modules.layerInformation.attachFileMessage")) }}</span>
+                            <span class="download-note">{{ $t(("modules.layerInformation.attachFileMessage")) }}</span>
                         </div>
                     </div>
                     <div

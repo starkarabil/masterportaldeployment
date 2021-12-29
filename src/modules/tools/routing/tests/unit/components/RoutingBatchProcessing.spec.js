@@ -17,7 +17,7 @@ describe("src/modules/tools/routing/components/RoutingBatchProcessing.vue", () =
                     children: {
                         routing:
                             {
-                                "name": "translate#common:menu.tools.routing",
+                                "name": "translate#menu.tools.routing",
                                 "glyphicon": "glyphicon-road",
                                 "renderToWindow": true
                             }

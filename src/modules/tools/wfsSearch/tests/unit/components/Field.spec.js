@@ -59,7 +59,7 @@ describe("src/modules/tools/wfsSearch/components/Field.vue", () => {
         expect(wrapper.find("select").exists()).to.be.true;
         expect(wrapper.find("label").text()).to.equal("inputLabel");
         expect(wrapper.find("input").exists()).to.be.false;
-        expect(options.at(0).text()).to.equal("common:modules.tools.wfsSearch.optionsPlaceholder");
+        expect(options.at(0).text()).to.equal("modules.tools.wfsSearch.optionsPlaceholder");
         expect(options.at(1).text()).to.equal("Option A");
         expect(options.at(2).text()).to.equal("Option B");
     });

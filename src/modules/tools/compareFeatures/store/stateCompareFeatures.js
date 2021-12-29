@@ -23,7 +23,7 @@
  */
 const state = {
     // defaults for config.json parameters
-    name: "common:modules.tools.compareFeatures.title",
+    name: "modules.tools.compareFeatures.title",
     glyphicon: "glyphicon-th-list",
     renderToWindow: true,
     resizableWindow: true,

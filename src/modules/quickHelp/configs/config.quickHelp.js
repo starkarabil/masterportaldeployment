@@ -1,12 +1,12 @@
 const configQuickHelp = {
     search: {
-        title: "common:modules.quickHelp.search.title",
+        title: "modules.quickHelp.search.title",
         content: {
             generalInfo: {
-                title: "common:modules.quickHelp.search.generalInfo",
+                title: "modules.quickHelp.search.generalInfo",
                 list: [
                     {
-                        text: "common:modules.quickHelp.search.generalInfoHelp1",
+                        text: "modules.quickHelp.search.generalInfoHelp1",
                         type: "text/html"
                     },
                     {
@@ -14,7 +14,7 @@ const configQuickHelp = {
                         imgKey: "searchbarAllgemeines1"
                     },
                     {
-                        text: "common:modules.quickHelp.search.generalInfoHelp2",
+                        text: "modules.quickHelp.search.generalInfoHelp2",
                         type: "text/html"
                     },
                     {
@@ -28,37 +28,37 @@ const configQuickHelp = {
                 ]
             },
             addressSearch: {
-                title: "common:modules.quickHelp.search.addressSearch",
+                title: "modules.quickHelp.search.addressSearch",
                 list: [
                     {
-                        text: "common:modules.quickHelp.search.addressHelp",
+                        text: "modules.quickHelp.search.addressHelp",
                         type: "text/plain"
                     }
                 ]
             },
             houseNumberHelp: {
-                title: "common:modules.quickHelp.search.houseNumberSearch",
+                title: "modules.quickHelp.search.houseNumberSearch",
                 list: [
                     {
-                        text: "common:modules.quickHelp.search.houseNumberHelp",
+                        text: "modules.quickHelp.search.houseNumberHelp",
                         type: "text/plain"
                     }
                 ]
             },
             topicSearchHelp: {
-                title: "common:modules.quickHelp.search.topicsSearch",
+                title: "modules.quickHelp.search.topicsSearch",
                 list: [
                     {
-                        text: "common:modules.quickHelp.search.topicsHelp",
+                        text: "modules.quickHelp.search.topicsHelp",
                         type: "text/plain"
                     }
                 ]
             },
             parcelSearch: {
-                title: "common:modules.quickHelp.search.parcelSearch",
+                title: "modules.quickHelp.search.parcelSearch",
                 list: [
                     {
-                        text: "common:modules.quickHelp.search.parcelHelp",
+                        text: "modules.quickHelp.search.parcelHelp",
                         type: "text/html"
                     },
                     {
@@ -70,63 +70,63 @@ const configQuickHelp = {
         }
     },
     tree: {
-        title: "common:modules.quickHelp.topicTree.title",
+        title: "modules.quickHelp.topicTree.title",
         content: {
             generalInfo: {
-                title: "common:modules.quickHelp.search.generalInfo",
+                title: "modules.quickHelp.search.generalInfo",
                 list: [
                     {
-                        text: "common:modules.quickHelp.topicTree.topicsHelp1",
+                        text: "modules.quickHelp.topicTree.topicsHelp1",
                         type: "text/html"
                     }
                 ]
             },
             topics: {
-                title: "common:modules.quickHelp.topicTree.topics",
+                title: "modules.quickHelp.topicTree.topics",
                 list: [
                     {
-                        text: "common:modules.quickHelp.topicTree.topicsHelp2",
+                        text: "modules.quickHelp.topicTree.topicsHelp2",
                         type: "text/html"
                     },
                     "themen.png",
                     {
-                        text: "common:modules.quickHelp.topicTree.topicsHelp3",
+                        text: "modules.quickHelp.topicTree.topicsHelp3",
                         type: "text/html",
                         interpolation: {iconCls: "glyphicon glyphicon-info-sign"}
                     },
                     "themen_2.png",
                     {
-                        text: "common:modules.quickHelp.topicTree.topicsHelp4",
+                        text: "modules.quickHelp.topicTree.topicsHelp4",
                         type: "text/html"
                     }
                 ]
             },
             selection: {
-                title: "common:modules.quickHelp.topicTree.selection",
+                title: "modules.quickHelp.topicTree.selection",
                 list: [
                     {
-                        text: "common:modules.quickHelp.topicTree.topicsHelp3",
+                        text: "modules.quickHelp.topicTree.topicsHelp3",
                         type: "text/html",
                         interpolation: {iconCls: "glyphicon glyphicon-cog rotate"}
                     }
                 ]
             },
             saveSelection: {
-                title: "common:modules.quickHelp.topicTree.saveSelection",
+                title: "modules.quickHelp.topicTree.saveSelection",
                 list: [
-                    "common:modules.quickHelp.topicTree.topicsHelp6"
+                    "modules.quickHelp.topicTree.topicsHelp6"
                 ]
             }
         }
     },
     routing: {
-        title: "common:modules.quickHelp.routingTool.header",
+        title: "modules.quickHelp.routingTool.header",
         content: {
             generalInfo: {
-                title: "common:modules.quickHelp.routingTool.headerGeneral",
+                title: "modules.quickHelp.routingTool.headerGeneral",
                 list: [
                     {
-                        text: "common:modules.quickHelp.routingTool.textGeneral",
+                        text: "modules.quickHelp.routingTool.textGeneral",
                         type: "text/plain"
                     },
                     {
@@ -136,15 +136,15 @@ const configQuickHelp = {
                 ]
             },
             routePlanning: {
-                title: "common:modules.quickHelp.routingTool.routing.header",
+                title: "modules.quickHelp.routingTool.routing.header",
                 list: [
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.text",
+                        text: "modules.quickHelp.routingTool.routing.text",
                         type: "text/plain"
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.headerMeansOfTransport",
+                        text: "modules.quickHelp.routingTool.headerMeansOfTransport",
                         type: "text/html"
                     },
                     {
@@ -152,16 +152,16 @@ const configQuickHelp = {
                         imgKey: "routingTool2"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.textMeansOfTransport",
+                        text: "modules.quickHelp.routingTool.textMeansOfTransport",
                         type: "text/plain"
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.headerAdditionOfWaypoints",
+                        text: "modules.quickHelp.routingTool.routing.headerAdditionOfWaypoints",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textAdditionOfWaypoints",
+                        text: "modules.quickHelp.routingTool.routing.textAdditionOfWaypoints",
                         type: "text/plain"
                     },
                     {
@@ -169,7 +169,7 @@ const configQuickHelp = {
                         imgKey: "routingTool3"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textAdditionOfWaypoints2",
+                        text: "modules.quickHelp.routingTool.routing.textAdditionOfWaypoints2",
                         type: "text/plain"
                     },
                     {
@@ -183,11 +183,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.headerRestrictedAreas",
+                        text: "modules.quickHelp.routingTool.routing.headerRestrictedAreas",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textRestrictedAreas",
+                        text: "modules.quickHelp.routingTool.routing.textRestrictedAreas",
                         type: "text/plain"
                     },
                     {
@@ -196,11 +196,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.headerAvoidTrafficRoutes",
+                        text: "modules.quickHelp.routingTool.routing.headerAvoidTrafficRoutes",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textAvoidTrafficRoutes",
+                        text: "modules.quickHelp.routingTool.routing.textAvoidTrafficRoutes",
                         type: "text/plain"
                     },
                     {
@@ -209,11 +209,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.headerRouteDescription",
+                        text: "modules.quickHelp.routingTool.routing.headerRouteDescription",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textRouteDescription",
+                        text: "modules.quickHelp.routingTool.routing.textRouteDescription",
                         type: "text/plain"
                     },
                     {
@@ -222,11 +222,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.headerExport",
+                        text: "modules.quickHelp.routingTool.routing.headerExport",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routing.textExport",
+                        text: "modules.quickHelp.routingTool.routing.textExport",
                         type: "text/plain"
                     },
                     {
@@ -236,10 +236,10 @@ const configQuickHelp = {
                 ]
             },
             routingBatchProcessing: {
-                title: "common:modules.quickHelp.routingTool.routingBatchProcessing.header",
+                title: "modules.quickHelp.routingTool.routingBatchProcessing.header",
                 list: [
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.text",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.text",
                         type: "text/plain"
                     },
                     {
@@ -247,23 +247,23 @@ const configQuickHelp = {
                         imgKey: "routingTool8"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.listFormat",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.listFormat",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.listCoordinates",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.listCoordinates",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.listSeperation",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.listSeperation",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.listStructure",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.listStructure",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.listExample",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.listExample",
                         type: "text/plain"
                     },
                     {
@@ -271,7 +271,7 @@ const configQuickHelp = {
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.text2",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.text2",
                         type: "text/plain"
                     },
                     {
@@ -279,21 +279,21 @@ const configQuickHelp = {
                         imgKey: "routingTool9"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.routingBatchProcessing.text3",
+                        text: "modules.quickHelp.routingTool.routingBatchProcessing.text3",
                         type: "text/plain"
                     }
                 ]
             },
             isochrones: {
-                title: "common:modules.quickHelp.routingTool.isochrones.header",
+                title: "modules.quickHelp.routingTool.isochrones.header",
                 list: [
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.text",
+                        text: "modules.quickHelp.routingTool.isochrones.text",
                         type: "text/plain"
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.headerMeansOfTransport",
+                        text: "modules.quickHelp.routingTool.headerMeansOfTransport",
                         type: "text/html"
                     },
                     {
@@ -301,16 +301,16 @@ const configQuickHelp = {
                         imgKey: "routingTool2"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.textMeansOfTransport",
+                        text: "modules.quickHelp.routingTool.textMeansOfTransport",
                         type: "text/plain"
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.headerAdditionOfStartpoint",
+                        text: "modules.quickHelp.routingTool.isochrones.headerAdditionOfStartpoint",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textAdditionOfStartpoint",
+                        text: "modules.quickHelp.routingTool.isochrones.textAdditionOfStartpoint",
                         type: "text/plain"
                     },
                     {
@@ -318,7 +318,7 @@ const configQuickHelp = {
                         imgKey: "routingTool10"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textAdditionOfStartpoint2",
+                        text: "modules.quickHelp.routingTool.isochrones.textAdditionOfStartpoint2",
                         type: "text/plain"
                     },
                     {
@@ -332,11 +332,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.headerOptimizationAvoidTrafficRoutes",
+                        text: "modules.quickHelp.routingTool.isochrones.headerOptimizationAvoidTrafficRoutes",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textOptimizationAvoidTrafficRoutes",
+                        text: "modules.quickHelp.routingTool.isochrones.textOptimizationAvoidTrafficRoutes",
                         type: "text/plain"
                     },
                     {
@@ -345,11 +345,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.headerIntervalMaxDistance",
+                        text: "modules.quickHelp.routingTool.isochrones.headerIntervalMaxDistance",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textIntervalMaxDistance",
+                        text: "modules.quickHelp.routingTool.isochrones.textIntervalMaxDistance",
                         type: "text/plain"
                     },
                     {
@@ -358,11 +358,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.headerPerformCalculation",
+                        text: "modules.quickHelp.routingTool.isochrones.headerPerformCalculation",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textPerformCalculation",
+                        text: "modules.quickHelp.routingTool.isochrones.textPerformCalculation",
                         type: "text/plain"
                     },
                     {
@@ -371,11 +371,11 @@ const configQuickHelp = {
                     },
 
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.headerExport",
+                        text: "modules.quickHelp.routingTool.isochrones.headerExport",
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochrones.textExport",
+                        text: "modules.quickHelp.routingTool.isochrones.textExport",
                         type: "text/plain"
                     },
                     {
@@ -385,10 +385,10 @@ const configQuickHelp = {
                 ]
             },
             isochronesBatchProcessing: {
-                title: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.header",
+                title: "modules.quickHelp.routingTool.isochronesBatchProcessing.header",
                 list: [
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.text",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.text",
                         type: "text/plain"
                     },
                     {
@@ -396,23 +396,23 @@ const configQuickHelp = {
                         imgKey: "routingTool14"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.listFormat",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.listFormat",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.listCoordinates",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.listCoordinates",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.listSeperation",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.listSeperation",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.listStructure",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.listStructure",
                         type: "text/plain"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.listExample",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.listExample",
                         type: "text/plain"
                     },
                     {
@@ -420,7 +420,7 @@ const configQuickHelp = {
                         type: "text/html"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.text2",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.text2",
                         type: "text/plain"
                     },
                     {
@@ -428,7 +428,7 @@ const configQuickHelp = {
                         imgKey: "routingTool15"
                     },
                     {
-                        text: "common:modules.quickHelp.routingTool.isochronesBatchProcessing.text3",
+                        text: "modules.quickHelp.routingTool.isochronesBatchProcessing.text3",
                         type: "text/plain"
                     },
                     {

@@ -196,7 +196,7 @@ export default {
                         >
                             <button
                                 class="close"
-                                :title="$t('common:modules.tools.compareFeatures.removeFromList')"
+                                :title="$t('modules.tools.compareFeatures.removeFromList')"
                                 @click="removeFeatureFromPreparedList({features: listOfFeatures, featureId: key, selectedLayer: selectedLayer})"
                             >
                                 <span
@@ -251,7 +251,7 @@ export default {
                         >
                             <button
                                 class="close"
-                                :title="$t('common:modules.tools.compareFeatures.removeFromList')"
+                                :title="$t('modules.tools.compareFeatures.removeFromList')"
                                 @click="removeFeatureFromPreparedList({features: listOfFeatures, featureId: key, selectedLayer: selectedLayer})"
                             >
                                 <span

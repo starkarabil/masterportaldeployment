@@ -35,25 +35,25 @@ export function drawInteractionOnDrawEvent ({state, commit, dispatch, rootState}
 
                 if (drawType.id === "drawDoubleCircle") {
                     if (outerRadius === null || outerRadius === 0) {
-                        dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.undefinedTwoCircles"), {root: true});
+                        dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.undefinedTwoCircles"), {root: true});
                         layerSource.removeFeature(event.feature);
                         state.outerBorderColor = errorBorder;
                     }
                     else {
-                        dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.undefinedInnerCircle"), {root: true});
+                        dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.undefinedInnerCircle"), {root: true});
                         layerSource.removeFeature(event.feature);
                         state.outerBorderColor = "";
                     }
                 }
                 else {
-                    dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.undefinedRadius"), {root: true});
+                    dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.undefinedRadius"), {root: true});
                     layerSource.removeFeature(event.feature);
                 }
             }
             else {
                 if (outerRadius === null || outerRadius === 0) {
                     if (drawType.id === "drawDoubleCircle") {
-                        dispatch("Alerting/addSingleAlert", i18next.t("common:modules.tools.draw.undefinedOuterCircle"), {root: true});
+                        dispatch("Alerting/addSingleAlert", i18next.t("modules.tools.draw.undefinedOuterCircle"), {root: true});
                         layerSource.removeFeature(event.feature);
                         state.outerBorderColor = errorBorder;
                     }

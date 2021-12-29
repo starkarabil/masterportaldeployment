@@ -31,17 +31,17 @@ export default function Layer (attrs, layer, initialize = true) {
         isOutOfRange: undefined,
         isSecured: false,
         domId: "layer-list-group-item-" + attrs.id,
-        showTopicText: i18next.t("common:tree.showTopic"),
-        removeTopicText: i18next.t("common:tree.removeTopicText"),
-        changeClassDivisionText: i18next.t("common:tree.changeClassDivision"),
-        transparencyText: i18next.t("common:tree.transparency"),
-        increaseTransparencyText: i18next.t("common:tree.increaseTransparency"),
-        reduceTransparencyText: i18next.t("common:tree.reduceTransparency"),
-        removeLayerText: i18next.t("common:tree.removeLayer"),
-        levelUpText: i18next.t("common:tree.levelUp"),
-        levelDownText: i18next.t("common:tree.levelDown"),
-        settingsText: i18next.t("common:tree.settings"),
-        infosAndLegendText: i18next.t("common:tree.infosAndLegend")
+        showTopicText: i18next.t("tree.showTopic"),
+        removeTopicText: i18next.t("tree.removeTopicText"),
+        changeClassDivisionText: i18next.t("tree.changeClassDivision"),
+        transparencyText: i18next.t("tree.transparency"),
+        increaseTransparencyText: i18next.t("tree.increaseTransparency"),
+        reduceTransparencyText: i18next.t("tree.reduceTransparency"),
+        removeLayerText: i18next.t("tree.removeLayer"),
+        levelUpText: i18next.t("tree.levelUp"),
+        levelDownText: i18next.t("tree.levelDown"),
+        settingsText: i18next.t("tree.settings"),
+        infosAndLegendText: i18next.t("tree.infosAndLegend")
     };
 
     this.layer = layer;
@@ -357,19 +357,19 @@ Layer.prototype.updateLayerSource = function () {
  * @returns {void}
  */
 Layer.prototype.changeLang = function () {
-    this.attributes.selectedTopicsText = i18next.t("common:tree.removeSelection");
-    this.attributes.infosAndLegendText = i18next.t("common:tree.infosAndLegend");
-    this.attributes.removeTopicText = i18next.t("common:tree.removeTopic");
-    this.attributes.showTopicText = i18next.t("common:tree.showTopic");
-    this.attributes.securedTopicText = i18next.t("common:tree.securedTopic");
-    this.attributes.changeClassDivisionText = i18next.t("common:tree.changeClassDivision");
-    this.attributes.settingsText = i18next.t("common:tree.settings");
-    this.attributes.increaseTransparencyText = i18next.t("common:tree.increaseTransparency");
-    this.attributes.reduceTransparencyText = i18next.t("common:tree.reduceTransparency");
-    this.attributes.removeLayerText = i18next.t("common:tree.removeLayer");
-    this.attributes.levelUpText = i18next.t("common:tree.levelUp");
-    this.attributes.levelDownText = i18next.t("common:tree.levelDown");
-    this.attributes.transparencyText = i18next.t("common:tree.transparency");
+    this.attributes.selectedTopicsText = i18next.t("tree.removeSelection");
+    this.attributes.infosAndLegendText = i18next.t("tree.infosAndLegend");
+    this.attributes.removeTopicText = i18next.t("tree.removeTopic");
+    this.attributes.showTopicText = i18next.t("tree.showTopic");
+    this.attributes.securedTopicText = i18next.t("tree.securedTopic");
+    this.attributes.changeClassDivisionText = i18next.t("tree.changeClassDivision");
+    this.attributes.settingsText = i18next.t("tree.settings");
+    this.attributes.increaseTransparencyText = i18next.t("tree.increaseTransparency");
+    this.attributes.reduceTransparencyText = i18next.t("tree.reduceTransparency");
+    this.attributes.removeLayerText = i18next.t("tree.removeLayer");
+    this.attributes.levelUpText = i18next.t("tree.levelUp");
+    this.attributes.levelDownText = i18next.t("tree.levelDown");
+    this.attributes.transparencyText = i18next.t("tree.transparency");
     bridge.renderMenu();
 };
 /**

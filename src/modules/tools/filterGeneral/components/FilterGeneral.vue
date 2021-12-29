@@ -43,9 +43,6 @@ export default {
         ...mapGetters("Tools/FilterGeneral", Object.keys(getters)),
         console: () => console
     },
-    created () {
-        this.$on("close", this.close);
-    },
     mounted () {
         this.$nextTick(() => {
             this.initialize();

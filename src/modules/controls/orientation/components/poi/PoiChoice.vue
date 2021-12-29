@@ -9,8 +9,8 @@ export default {
         ...mapGetters("controls/orientation", Object.keys(getters)),
         choices () {
             return {
-                "currentPosition": this.$t("common:modules.controls.orientation.poiChoiceCurrentPostion"),
-                "customPosition": this.$t("common:modules.controls.orientation.poiChoiceCustomPostion")
+                "currentPosition": this.$t("modules.controls.orientation.poiChoiceCurrentPostion"),
+                "customPosition": this.$t("modules.controls.orientation.poiChoiceCustomPostion")
             };
         }
     },
@@ -103,12 +103,12 @@ export default {
                     />
                     <h4 class="modal-title">
                         <span class="control-icon glyphicon glyphicon-record standalone" />
-                        {{ $t("common:modules.controls.orientation.titleGeolocatePOI") }}
+                        {{ $t("modules.controls.orientation.titleGeolocatePOI") }}
                     </h4>
                 </div>
                 <div class="choice-content">
                     <div class="choice-title">
-                        {{ $t("common:modules.controls.orientation.poiChoiceTitle") }}
+                        {{ $t("modules.controls.orientation.poiChoiceTitle") }}
                     </div>
                     <label
                         v-for="(val, key) in choices"
@@ -130,13 +130,13 @@ export default {
                         tabindex="0"
                         @click="triggerTrack"
                     >
-                        {{ $t("common:modules.controls.orientation.poiChoiceConfirmation") }}
+                        {{ $t("modules.controls.orientation.poiChoiceConfirmation") }}
                     </button>
                     <button
                         class="stop btn btn-default"
                         @click="stopPoi"
                     >
-                        {{ $t("common:modules.controls.orientation.poiChoiceStop") }}
+                        {{ $t("modules.controls.orientation.poiChoiceStop") }}
                     </button>
                 </div>
             </div>

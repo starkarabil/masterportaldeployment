@@ -24,7 +24,7 @@ export default {
     <div>
         <hr>
         <p class="bold">
-            {{ $t("common:button.download") }}
+            {{ $t("button.download") }}
         </p>
         <form
             id="tool-draw-download"
@@ -36,7 +36,7 @@ export default {
                     class="col-md-5 col-sm-5 control-label"
                     for="tool-draw-download-format"
                 >
-                    {{ $t("common:modules.tools.draw.download.format") }}
+                    {{ $t("modules.tools.draw.download.format") }}
                 </label>
                 <div class="col-md-7 col-sm-7">
                     <select
@@ -45,7 +45,7 @@ export default {
                         @change="setDownloadSelectedFormat($event.target.value)"
                     >
                         <option value="none">
-                            {{ $t("common:modules.tools.draw.download.pleaseChoose") }}
+                            {{ $t("modules.tools.draw.download.pleaseChoose") }}
                         </option>
                         <option
                             v-for="format in download.formats"
@@ -63,14 +63,14 @@ export default {
                     class="col-md-5 col-sm-5 control-label"
                     for="tool-draw-download-filename"
                 >
-                    {{ $t("common:modules.tools.draw.download.filename") }}
+                    {{ $t("modules.tools.draw.download.filename") }}
                 </label>
                 <div class="col-md-7 col-sm-7">
                     <input
                         id="tool-draw-download-filename"
                         type="text"
                         class="form-control"
-                        :placeholder="$t('common:modules.tools.draw.download.enterFilename')"
+                        :placeholder="$t('modules.tools.draw.download.enterFilename')"
                         @keyup="setDownloadFileName"
                     >
                 </div>
@@ -90,7 +90,7 @@ export default {
                             @click="fileDownloaded"
                         >
                             <span class="glyphicon glyphicon-floppy-disk" />
-                            {{ $t("common:modules.tools.draw.button.saveDrawing") }}
+                            {{ $t("modules.tools.draw.button.saveDrawing") }}
                         </button>
                     </a>
                 </div>

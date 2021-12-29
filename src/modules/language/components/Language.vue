@@ -6,14 +6,16 @@ export default {
     name: "Language",
     data () {
         return {
-            showWindow: false
+            showWindow: false,
+            languages: {}
         };
     },
     computed: {
         ...mapGetters("Language", Object.keys(getters))
     },
     created: function () {
-        this.setCurrentLocale(this.$i18n.i18next.language);
+        this.languages = i18next.options.getLanguages();
+        this.setCurrentLocale(this.$i18n.locale);
     },
     methods: {
         ...mapMutations("Language", ["setCurrentLocale"]),
@@ -40,7 +42,7 @@ export default {
             @click="toggleLanguageWindow"
             @keydown.enter="toggleLanguageWindow"
         >
-            {{ $i18n.i18next.language }}
+            {{ $i18n.locale }}
         </a>
         <div
             v-if="showWindow"
@@ -60,18 +62,18 @@ export default {
                     <span
                         class="glyphicon glyphicon-remove"
                     />
-                    <span class="screenreader">$t("modules.language.toggleWindow"</span>
+                    <span class="screenreader">{{ $t("modules.language.toggleWindow") }}</span>
                 </a>
             </div>
             <div class="form-group form-group-sm">
                 <div
-                    v-for="(value, key) in $i18n.i18next.options.getLanguages()"
+                    v-for="(value, key) in languages"
                     :key="key"
                     class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
                 >
                     <button
                         class="lng btn"
-                        :disabled="key === $i18n.i18next.language"
+                        :disabled="key === $i18n.locale"
                         @click="translate(key)"
                     >
                         {{ $t("modules.language." + key) }}

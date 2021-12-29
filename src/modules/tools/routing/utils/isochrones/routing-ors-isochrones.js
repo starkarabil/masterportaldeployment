@@ -82,7 +82,7 @@ async function fetchRoutingOrsIsochrones ({
         });
     }
     catch (e) {
-        throw new Error(i18next.t("common:modules.tools.routing.errors.errorIsochronesFetch"));
+        throw new Error(i18next.t("modules.tools.routing.errors.errorIsochronesFetch"));
     }
 
 

@@ -34,8 +34,6 @@ export default {
             console.warn("The Parameter 'simpleMap' in the config.js is deprecated in the next major release. Please use the parameter 'simpleMap' as part of the configuration of the 'saveSelection' tool in the config.json.");
             this.setSimpleMap(Config.simpleMap);
         }
-
-        this.$on("close", this.close);
     },
     methods: {
         ...mapMutations("Tools/SaveSelection", constants.mutations),
@@ -107,7 +105,7 @@ export default {
                     id="tool-saveSelection-helpBlock"
                     class="info"
                 >
-                    {{ $t("common:modules.tools.saveSelection.infoText") }}
+                    {{ $t("modules.tools.saveSelection.infoText") }}
                 </span>
             </form>
         </template>

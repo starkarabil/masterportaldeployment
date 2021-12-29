@@ -1,5 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import {createStore} from "vuex";
 
 import Alerting from "../modules/alerting/store/indexAlerting";
 import ConfirmAction from "../modules/confirmAction/store/indexConfirmAction";
@@ -24,9 +23,7 @@ import toolsModule from "../modules/tools/indexTools";
 
 import isMobile from "../utils/isMobile";
 
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
+const store = createStore({
     modules: {
         Alerting,
         ConfirmAction,

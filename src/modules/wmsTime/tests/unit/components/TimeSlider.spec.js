@@ -71,7 +71,7 @@ describe("src/modules/wmsTime/components/TimeSlider.vue", () => {
         expect(wrapper.find(".timeSlider-innerWrapper").element.tagName).to.equal("DIV");
         expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").exists()).to.be.true;
         expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").element.tagName).to.equal("BUTTON");
-        expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").text()).to.equal("common:modules.wmsTime.timeSlider.buttons.layerSwiper");
+        expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").text()).to.equal("modules.wmsTime.timeSlider.buttons.layerSwiper");
     });
     it("renders the TimeSlider component with the possibility to activate the the LayerSwiper component and the text to deactivate it if it is currently active", () => {
         window.innerWidth = 801;
@@ -96,6 +96,6 @@ describe("src/modules/wmsTime/components/TimeSlider.vue", () => {
         expect(wrapper.find(".timeSlider-innerWrapper").element.tagName).to.equal("DIV");
         expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").exists()).to.be.true;
         expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").element.tagName).to.equal("BUTTON");
-        expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").text()).to.equal("common:modules.wmsTime.timeSlider.buttons.deactivateLayerSwiper");
+        expect(wrapper.find("#timeSlider-activate-layerSwiper-layerId").text()).to.equal("modules.wmsTime.timeSlider.buttons.deactivateLayerSwiper");
     });
 });

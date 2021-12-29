@@ -252,8 +252,8 @@ describe("src/utils/attributeMapper.js", () => {
                     condition: "contains",
                     type: "boolean",
                     format: {
-                        true: "common:modules.tools.gfi.boolean.yes",
-                        false: "common:modules.tools.gfi.boolean.no"
+                        true: "modules.tools.gfi.boolean.yes",
+                        false: "modules.tools.gfi.boolean.no"
                     }
                 }
             };
@@ -262,7 +262,7 @@ describe("src/utils/attributeMapper.js", () => {
             // Propably mocking of language-file would get the right translated value?
             expect(mapAttributes(props, mappingObj)).to.deep.equal(
                 {
-                    boolean: "common:modules.tools.gfi.boolean.yes"
+                    boolean: "modules.tools.gfi.boolean.yes"
                 });
         });
         it("should map object with mapping object and no type (defaults to string)", () => {

@@ -18,7 +18,7 @@ describe("src/modules/tools/layerClusterToggler/components/LayerClusterToggler.v
                         children: {
                             layerClusterToggler:
                                 {
-                                    "name": "translate#common:menu.tools.layerClusterToggler",
+                                    "name": "translate#menu.tools.layerClusterToggler",
                                     "glyphicon": "glyphicon-education",
                                     "renderToWindow": true
                                 }

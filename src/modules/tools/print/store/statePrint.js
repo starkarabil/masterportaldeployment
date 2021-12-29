@@ -35,7 +35,7 @@
  */
 const state = {
     active: false,
-    name: "common:menu.tools.print",
+    name: "menu.tools.print",
     id: "print",
     isVisibleInMenu: true,
     renderToWindow: false,
