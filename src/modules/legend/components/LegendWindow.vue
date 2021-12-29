@@ -25,7 +25,7 @@ export default {
          */
         showLegend (showLegend) {
             if (showLegend) {
-                document.getElementsByClassName("navbar-collapse")[0].classList.remove("in");
+                document.getElementsByClassName("navbar-collapse")[0].classList.remove("show");
                 this.createLegend();
                 // focus to first element
                 this.$nextTick(() => {
@@ -707,7 +707,7 @@ export default {
                     layerTitleElement = layerLegendElement.parentElement.firstChild;
 
                 layerTitleElement.classList.add("collapsed");
-                layerLegendElement.classList.remove("in");
+                layerLegendElement.classList.remove("show");
             });
         },
 
@@ -722,7 +722,7 @@ export default {
                     layerTitleElement = layerLegendElement.parentElement.firstChild;
 
                 layerTitleElement.classList.remove("collapsed");
-                layerLegendElement.classList.add("in");
+                layerLegendElement.classList.add("show");
                 layerLegendElement.removeAttribute("style");
             });
         }
