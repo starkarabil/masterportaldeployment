@@ -45,6 +45,152 @@ describe("src/api/wfs/describeFeatureType.js", () => {
         console.error.restore();
     });
 
+    describe("describeFeatureType", () => {
+        it("should return undefined if the first parameter is not defined", () => {
+            const response = describeFeatureType(undefined);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is not defined", () => {
+            describeFeatureType(undefined);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is undefined. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the first parameter is a number", () => {
+            const response = describeFeatureType(666);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is a number", () => {
+            describeFeatureType(666);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is 666. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the first parameter is an array", () => {
+            const response = describeFeatureType(["Array"]);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is an array", () => {
+            describeFeatureType(["Array"]);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is Array. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the first parameter is a boolean", () => {
+            const response = describeFeatureType(true);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is a boolean", () => {
+            describeFeatureType(false);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is false. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the first parameter is null", () => {
+            const response = describeFeatureType(null);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is null", () => {
+            describeFeatureType(null);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is null. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the first parameter is an object", () => {
+            const response = describeFeatureType({});
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the first parameter is an object", () => {
+            describeFeatureType({});
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Url is [object Object]. Url has to be defined and a string.")).to.be.true;
+        });
+        it("should return undefined if the second parameter is a number", () => {
+            const response = describeFeatureType("url", 666);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the second parameter is a number", () => {
+            describeFeatureType("url", 666);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Version is 666. Version has to be a string. Default is 1.1.0.")).to.be.true;
+        });
+        it("should return undefined if the second parameter is an array", () => {
+            const response = describeFeatureType("url", [666]);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the second parameter is an array", () => {
+            describeFeatureType("url", [666]);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Version is 666. Version has to be a string. Default is 1.1.0.")).to.be.true;
+        });
+        it("should return undefined if the second parameter is a boolean", () => {
+            const response = describeFeatureType("url", true);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the second parameter is a boolean", () => {
+            describeFeatureType("url", false);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Version is false. Version has to be a string. Default is 1.1.0.")).to.be.true;
+        });
+        it("should return undefined if the second parameter is a null", () => {
+            const response = describeFeatureType("url", null);
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the second parameter is a null", () => {
+            describeFeatureType("url", null);
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Version is null. Version has to be a string. Default is 1.1.0.")).to.be.true;
+        });
+        it("should return undefined if the second parameter is an object", () => {
+            const response = describeFeatureType("url", {});
+
+            expect(response).to.be.undefined;
+        });
+        it("should call an error message if the second parameter is an object", () => {
+            describeFeatureType("url", {});
+
+            expect(console.error.calledOnce).to.be.true;
+            expect(console.error.calledWith("api/wfs/describeFeatureType: Version is [object Object]. Version has to be a string. Default is 1.1.0.")).to.be.true;
+        });
+
+        it("should return a reponse if the first paramerter is correct and the second parameter is not defined", async () => {
+            const response = await describeFeatureType("https://geodienste.hamburg.de/HH_WFS_Krankenhaeuser", undefined);
+
+            expect(response).to.be.an("object");
+        });
+        it("should return a reponse if the first and second parameter are correct", async () => {
+            const response = await describeFeatureType("https://geodienste.hamburg.de/HH_WFS_Krankenhaeuser", "2.0.0");
+
+            expect(response).to.be.an("object");
+        });
+        it("should return undefined if the first paramerter is wrong and the second parameter is not defined", async () => {
+            const response = await describeFeatureType("url", undefined);
+
+            expect(response).to.be.undefined;
+        });
+
+        it("should return undefined if the first and second parameter are incorrect strings", async () => {
+            const response = await describeFeatureType("test", "test");
+
+            expect(response).to.be.undefined;
+        });
+    });
+
     describe("getFeatureDescription", () => {
         it("should return undefined if the first parameter is a number and call a console error", () => {
             expect(getFeatureDescription(123)).to.be.undefined;
@@ -123,14 +269,6 @@ describe("src/api/wfs/describeFeatureType.js", () => {
 
         it("should return undefined if featureType was not found", () => {
             expect(getFeatureDescription(json, "test")).to.be.undefined;
-        });
-    });
-
-    describe("describeFeatureType", () => {
-        it("should return undefined if request failed", async () => {
-            const response = await describeFeatureType("test", "test");
-
-            expect(response).to.be.undefined;
         });
     });
 });

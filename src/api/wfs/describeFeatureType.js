@@ -1,23 +1,43 @@
 import axios from "axios";
-import xml2json from "../xml2json";
+import xml2json from "../utils/xml2json";
+import {errorHandling} from "../utils/errorHandling";
 
 /**
- * Handles the WFS DescribeFeatureType request.
+ * Handles the WFS DescribeFeatureType request and returns the response.
+ * To return a list of feature types, the GET request would be as follows. This request will return the list of feature types, sorted by namespace:
  * @param {String} url - The url of the WFS.
  * @param {String} [version="1.1.0"] - The version of the WFS.
+ * @param {String[]} [featureTypes] - A comma-separated list of feature types. If no value is specified, that is interpreted as all feature types.
  * @returns {Promise<Object|undefined>} Promise object represents the DescribeFeatureType request.
  */
-export function describeFeatureType (url, version = "1.1.0") {
-    return axios.get(url, {
-        // the params "service", "request", "version" are required
+export function describeFeatureType (url, version = "1.1.0", featureTypes) {
+    if (typeof url !== "string") {
+        console.error(`api/wfs/describeFeatureType: Url is ${url}. Url has to be defined and a string.`);
+        return undefined;
+    }
+
+    if (typeof version !== "string") {
+        console.error(`api/wfs/describeFeatureType: Version is ${version}. Version has to be a string. Default is 1.1.0.`);
+        return undefined;
+    }
+
+    const options = {
+        url,
+        method: "GET",
         params: {
+            // mandatory parameters
             service: "WFS",
             request: "DescribeFeatureType",
-            version: version
+            version,
+            // optional parameters
+            typeName: Array.isArray(featureTypes) ? featureTypes.join(",") : featureTypes, // WFS 1.x.x
+            typeNames: Array.isArray(featureTypes) ? featureTypes.join(",") : featureTypes // WFS 2.x.x
         }
-    }).then(response => {
-        return xml2json(response.request.responseXML);
-    }).catch(error => errorHandling(error));
+    };
+
+    return axios(options)
+        .then(response => xml2json(response.request.responseXML))
+        .catch(error => errorHandling(error, "api/wfs/describeFeatureType"));
 }
 
 /**
@@ -54,32 +74,4 @@ export function getFeatureDescription (json, featureTypeName) {
     });
 
     return description;
-}
-
-/**
- * Handles an axios error.
- * @param {Object} error - The axios error object.
- * @returns {void}
- * @see {@link https://github.com/axios/axios#handling-errors}
- */
-export function errorHandling (error) {
-    let errorMessage = "";
-
-    if (error.response) {
-        console.error(error.response.data);
-        console.error(error.response.status);
-        console.error(error.response.headers);
-        errorMessage = "The request was made and the server responded with a status code that falls out of the range of 2xx.";
-    }
-    else if (error.request) {
-        // `error.request` is an instance of XMLHttpRequest
-        console.error(error.request);
-        errorMessage = "The request was made but no response was received.";
-    }
-    else {
-        console.error("Error", error.message);
-        errorMessage = "Something happened in setting up the request that triggered an Error.";
-    }
-    console.error("describeFeatureType: " + errorMessage);
-    console.warn(error.config);
 }
