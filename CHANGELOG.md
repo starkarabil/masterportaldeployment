@@ -6,6 +6,17 @@
 ## Known Issues
 - 3D: The position indicator inside of a 3D object vanishes when clicking on the object.
 
+## Unreleased - in development
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ---
 ## v2.17.1 - 2022-01-011
 ### Changed
