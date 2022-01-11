@@ -7,7 +7,7 @@
 - 3D: The position indicator inside of a 3D object vanishes when clicking on the object.
 
 ---
-## Unreleased - in development
+## v2.17.1 - 2022-01-011
 ### Changed
 - The MasterportalAPI version is updated to v1.7.1. This fixes reading of WFS-Layer, the WFS version is taken into account when generating the WFS format.
 
