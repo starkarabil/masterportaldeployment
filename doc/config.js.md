@@ -20,6 +20,7 @@ In the following, all configuration options are described. For all configuration
 |cesiumParameter|no|**[cesiumParameter](#markdown-header-cesiumparameter)**||Cesium flags||
 |cswId|no|String|`"3"`|Reference to a CSW interface used to retrieve layer information. The ID will be resolved to a service defined in the **[rest-services.json](rest-services.json.md)** file.|`"my CSW-ID"`|
 |defaultToolId|no|String|`"gfi"`|The tool with the given ID will be active when no other tool is active.|"filter"|
+|layerSelector|no|**[layerSelector](#markdown-header-layerselector)**||Optional configuration for the layerSelector module||
 |featureViaURL|no|**[featureViaURL](#markdown-header-featureviaurl)**||Optional configuration for the URL parameter `featureViaURL`. See **[urlParameter](urlParameter.md)** for details. Implemented for treeTypes *light* and *custom*.||
 |footer|no|**[footer](#markdown-header-footer)**||If set, a footer is shown and configured with this object.||
 |gfiWindow|no|String|`"detached"`|_Deprecated in the next major release. Please use the attribute "Portalconfig.menu.tool.gfi.desktopType" of the **[config.json](#config.json.md)** instead._ Display type and attribute information for all layer types. **attached**: the attribute information window is opened at click position **detached**: the attribute information window is opened at the top right of the map; a marker is set to the click position.|`"attached"`|
@@ -349,6 +350,73 @@ In the following, all configuration options are described. For all configuration
         "attribute": "district_name",
         "geometries": ["DISTRICT1", "DISTRICT2"]
     }
+}
+```
+
+***
+
+## layerSelector
+
+|Name|Required|Type|Default|Description|
+|----|--------|----|-------|-----------|
+|events|yes|Array||events to be executed from other modules to select or add layers in layertree|
+|default|no|Object||object to overwirte the missing parts in the events objects|
+
+**Example:**
+
+```json
+{
+    "events": [
+        {
+            "source": "modulname",
+            "filter": (value) => value === "graustufen",
+            "deselectPreviousLayers": "allways",
+            "layerIds": ["1001"]
+        },
+        {
+            "source": "modulname",
+            "filter": (value) => value === "farbe",
+            "deselectPreviousLayers": "allways",
+            "layerIds": ["1000"]
+        }
+    ],
+    "default": {
+        "openFolderForLayerIds": [],
+        "showMenuInDesktopMode": false
+    }
+}
+```
+
+***
+
+### layerSelector.events
+
+Array of Objects to configure which are executed from other modules to interact with the layer tree
+
+|Name|Required|Type|Default|Description|
+|----|--------|----|-------|-----------|
+|source|yes|String||The name of this event. it have to be equal to the source attribute the module sets.|
+|showLayerId|no|Array||Layer IDs of Layer to be selected in the layer tree|
+|layerIds|no|Array||Layer IDs to add to the layer tree.|
+|openFolderForLayerIds|no|Array||List of Layer IDs to open their folders in the layer tree.|
+|filter|no|Function||Function to check if this event should be triggered.|
+|extent|no|Array||Bounding Box to zoom to when this event is triggered.|
+|deselectPreviousLayers|no|String|allways|Deselects the previous layers if it has the value allways.|
+|showMenuInDesktopMode|no|Boolean||If this Event should run in the desktop mode|
+
+**Example:**
+
+```json
+{
+    "layers": [{
+        "showLayerId": null,
+        "layerIds": [],
+        "openFolderForLayerIds": [],
+        "filter": null,
+        "extent": [550697, 5927004,579383, 5941340],
+        "deselectPreviousLayers": "allways",
+        "showMenuInDesktopMode": false
+    }]
 }
 ```
 
