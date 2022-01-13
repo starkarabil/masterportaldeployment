@@ -400,7 +400,14 @@
             },
             "filterGeneral": {
                 "selectAll": "Select all",
-                "selectBoxLabel": "Choose an Option"
+                "selectBoxLabel": "Choose an Option",
+                "checkBoxInfo": "Checkbox Information",
+                "dropDownInfo": "DropDown Information",
+                "textFieldInfo": "Testfield Information",
+                "sliderInfo": "Slider Information",
+                "sliderRangeInfo": "Slider Range Information",
+                "dateInfo": "Date Information",
+                "dateRangeInfo": "Date Range Information"
             },
             "filter": {
                 "result": "Result",
@@ -544,8 +551,8 @@
                 "noHeightBuilding": "Building area, no heights available",
                 "heightLayerInfo": "The basis of the elevation information is \"{{layer}}\" with elevations in meters above sea level (NHN).",
                 "hdms": {
-                    "eastingLabel": "Longitude",
-                    "northingLabel": "Latitude"
+                    "eastingLabel": "Latitude",
+                    "northingLabel": "Longitude"
                 },
                 "cartesian": {
                     "eastingLabel": "Easting",
@@ -561,7 +568,9 @@
                 },
                 "hintSupply": "Click in the map to request coordinates",
                 "hintSearch": "Enter the coordinates to search for",
-                "disabledTooltip": "This function is not available in the 3D view."
+                "disabledTooltip": "This function is not available in the 3D view.",
+                "copyCoordsBtn": "Copy pair of coordinates",
+                "copyCoordBtn": " Copy {{value}}"
             },
             "gfi": {
                 "errorMessage": "An error has occurred  during the information request (GetFeatureInfo).<br>Please try again later. If the problem persists, please contact the operator of the service.",
@@ -952,7 +961,8 @@
                 "address": "address",
                 "location": "location",
                 "subject": "subject (external topics)",
-                "topic": "issues & topics"
+                "topic": "issues & topics",
+                "general": "topics"
             },
             "specialWFS": {
                 "ongoing": "in process",
@@ -1086,7 +1096,8 @@
             "from": " from",
             "to":" to",
             "incorrectEntry": "Incorrect entry, please enter a whole number!",
-            "outOfRangeErrorMessage": "The input value must be within the validity range {{minValueSlider}} and {{{maxValueSlider}}!"
+            "outOfRangeErrorMessage": "The input value must be within the validity range {{minValueSlider}} and {{{maxValueSlider}}!",
+            "valueOutOfRangeErrorMessage": "The input {{inputValue}} value must be within the validity range {{minValueSlider}} and {{{maxValueSlider}}!"
         }
     },
     "share-components": {

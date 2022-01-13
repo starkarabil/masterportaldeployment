@@ -400,7 +400,14 @@
             },
             "filterGeneral": {
                 "selectAll": "Alles auswählen",
-                "selectBoxLabel": "Wählen Sie eine Option"
+                "selectBoxLabel": "Wählen Sie eine Option",
+                "checkBoxInfo": "Checkbox Information",
+                "dropDownInfo": "DropDown Information",
+                "textFieldInfo": "Testfeld Information",
+                "sliderInfo": "Slider Information",
+                "sliderRangeInfo": "Slider Range Information",
+                "dateInfo": "Date Information",
+                "dateRangeInfo": "Date Range Information"
             },
             "filter": {
                 "result": "Treffer",
@@ -544,8 +551,8 @@
                 "noHeightBuilding": "Gebäudefläche, keine Höhen vorhanden",
                 "heightLayerInfo": "Grundlage der Höheninformation ist das \"{{layer}}\" mit Höhenangaben in Metern über Normalhöhennull (NHN).",
                 "hdms": {
-                    "eastingLabel": "Länge",
-                    "northingLabel": "Breite"
+                    "eastingLabel": "Breite",
+                    "northingLabel": "Länge"
                 },
                 "cartesian": {
                     "eastingLabel": "Rechtswert",
@@ -561,7 +568,9 @@
                 },
                 "hintSupply": "Klicken Sie in die Karte um Koordinaten abzufragen",
                 "hintSearch": "Geben Sie die zu suchenden Koordinaten ein",
-                "disabledTooltip": "Diese Funktion steht nicht in der 3D Ansicht zur Verfügung"
+                "disabledTooltip": "Diese Funktion steht nicht in der 3D Ansicht zur Verfügung",
+                "copyCoordsBtn": "Koordinatenpaar kopieren",
+                "copyCoordBtn": " {{value}} kopieren"
             },
             "gfi": {
                 "errorMessage": "Bei der Informationsabfrage (GetFeatureInfo) ist ein Fehler aufgetreten.<br>Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut. Falls das Problem weiterhin auftritt, wenden Sie sich bitte an den Betreiber des Dienstes.",
@@ -952,7 +961,8 @@
                 "address": "Adresse",
                 "location": "Ort",
                 "subject": "Thema (externe Fachdaten)",
-                "topic": "Thema (Fachdaten)"
+                "topic": "Thema (Fachdaten)",
+                "general": "Fachdaten"
             },
             "specialWFS": {
                 "ongoing": "im Verfahren",
@@ -1086,7 +1096,8 @@
             "from": " ab",
             "to":" bis",
             "incorrectEntry": "Fehlerhafte Eingabe, bitte eine ganze Zahl eingeben!",
-            "outOfRangeErrorMessage": "Der Eingabewert muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!"
+            "outOfRangeErrorMessage": "Der Eingabewert muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!",
+            "valueOutOfRangeErrorMessage": "Der Eingabewert {{inputValue}} muss innerhalb des Gültigkeitsbereiches {{minValueSlider}} und {{maxValueSlider}} liegen!"
         }
     },
     "share-components": {

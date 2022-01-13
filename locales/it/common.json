@@ -444,8 +444,8 @@
                 "searchBtn": "Cerca",
                 "coordSystemField": "Sistema di riferimento",
                 "hdms": {
-                    "eastingLabel": "Longitudine",
-                    "northingLabel": "Latitudine"
+                    "eastingLabel": "Latitudine",
+                    "northingLabel": "Longitudine"
                 },
                 "cartesian": {
                     "eastingLabel": "Longitudine",
@@ -695,7 +695,8 @@
                 "address": "indirizzo",
                 "location": "comune",
                 "subject": "dati specialistici",
-                "topic": "oggetto"
+                "topic": "oggetto",
+                "general": "oggetto"
             },
             "specialWFS": {
                 "ongoing": "in corso",

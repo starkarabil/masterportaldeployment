@@ -25,7 +25,17 @@ export default {
             required: false,
             default: false
         },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
         display: {
+            type: String,
+            required: false,
+            default: ""
+        },
+        info: {
             type: String,
             required: false,
             default: ""
@@ -75,8 +85,10 @@ export default {
     },
     data () {
         return {
+            disable: true,
             interface: {},
             invalid: false,
+            showInfo: false,
             service: {
                 type: "WFS",
                 url: "https://geodienste.hamburg.de/HH_WFS_Regionaler_Bildungsatlas_Bev_Stadtteil",
@@ -88,10 +100,20 @@ export default {
             dropdownSelected: []
         };
     },
+    computed: {
+        infoText: function () {
+            return this.info ? this.info : this.$t("modules.tools.filterGeneral.dropDownInfo");
+        }
+    },
     watch: {
         dropdownSelected: {
             handler (value) {
                 this.emitCurrentRule(value);
+            }
+        },
+        disabled: {
+            handler (value) {
+                this.disable = typeof value === "boolean" ? value : true;
             }
         }
     },
@@ -110,11 +132,18 @@ export default {
             }
 
             this.emitCurrentRule(this.dropdownSelected);
+
+            if (typeof this.dropdownValue !== "undefined" && this.dropdownValue.length > 0) {
+                this.disable = false;
+            }
         });
     },
     methods: {
         translate (key) {
             return i18next.t(key);
+        },
+        toggleInfo () {
+            this.showInfo = !this.showInfo;
         },
         setUniqueValues (onsuccess) {
             this.interface = new InterfaceOL(new IntervalRegister(), {
@@ -139,8 +168,10 @@ export default {
                     res[list[6]] = "Harburg";
 
                     onsuccess(res);
+                    this.disable = false;
                 }
             }, error => {
+                this.disable = false;
                 console.warn(error);
             });
         },
@@ -179,25 +210,47 @@ export default {
         v-if="!invalid"
         class="snippetDropdownContainer"
     >
-        <label
-            class="snippetDropdownLabel"
-            for="selectbox"
-        >{{ label }}:</label>
-        <select
-            id="selectbox"
-            v-model="dropdownSelected"
-            name="selectbox"
-            :class="multiselect ? multipleClass : singleClass"
-            :multiple="multiselect"
-        >
-            <option
-                v-for="(optionValue, index) in dropdownValue"
-                :key="'optionValue' + '-' + index"
-                :value="optionValue"
+        <div class="left">
+            <label
+                class="select-box-label"
+                for="select-box"
+            >{{ label }}:</label>
+        </div>
+        <div class="right">
+            <div class="info-icon">
+                <span
+                    :class="['glyphicon glyphicon-info-sign', showInfo ? 'opened' : '']"
+                    @click="toggleInfo()"
+                    @keydown.enter="toggleInfo()"
+                >&nbsp;</span>
+            </div>
+        </div>
+        <div class="select-box-container">
+            <select
+                id="select-box"
+                v-model="dropdownSelected"
+                name="select-box"
+                :disabled="disable"
+                :class="multiselect ? multipleClass : singleClass"
+                :multiple="multiselect"
             >
-                {{ optionValue }}
-            </option>
-        </select>
+                <option
+                    v-for="(optionValue, index) in dropdownValue"
+                    :key="'optionValue' + '-' + index"
+                    :value="index"
+                >
+                    {{ optionValue }}
+                </option>
+            </select>
+        </div>
+        <div
+            v-show="showInfo"
+            class="bottom"
+        >
+            <div class="info-text">
+                <span>{{ infoText }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -208,6 +261,7 @@ export default {
         outline: 0;
         position: relative;
         width: 100%;
+        margin-bottom: 5px;
     }
     .multipleClass {
         display: inline-block;
@@ -231,5 +285,55 @@ export default {
         vertical-align: middle;
         background: #fff;
         border: 1px solid rgb(34,34,34);
+    }
+    .disabled {
+        border-color: #dddddd;
+        background-color: #f8f8f8;
+    }
+    .enabled {
+        border-color: initial;
+        background-color: initial;
+    }
+    .snippetDropdownContainer {
+        padding: 5px;
+        margin-bottom: 10px;
+        height: auto;
+    }
+    .snippetDropdownContainer .info-icon {
+        float: right;
+        font-size: 16px;
+        color: #ddd;
+    }
+    .snippetDropdownContainer .info-icon .opened {
+        color: #000;
+    }
+    .snippetDropdownContainer .info-icon:hover {
+        cursor: pointer;
+        color: #a5a09e;
+    }
+    .snippetDropdownContainer .info-text {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 10px;
+        padding: 15px 10px;
+    }
+    .glyphicon-info-sign:before {
+        content: "\E086";
+    }
+    .snippetDropdownContainer select {
+        clear: left;
+        width: 100%;
+    }
+    .snippetDropdownContainer .bottom {
+        clear: left;
+        width: 100%;
+    }
+    .snippetDropdownContainer .left {
+        float: left;
+        width: 90%;
+    }
+    .snippetDropdownContainer .right {
+        position: absolute;
+        right: 10px;
     }
 </style>

@@ -44,7 +44,11 @@ describe("src/modules/tools/filterGeneral/components/SnippetDropdown.vue", () =>
     });
 
     it("should render selectbox", () => {
-        expect(wrapper.find("#selectbox").exists()).to.be.true;
+        expect(wrapper.find("#select-box").exists()).to.be.true;
+    });
+
+    it("should render selectbox container", () => {
+        expect(wrapper.find(".select-box-container").exists()).to.be.true;
     });
 
     it("should render hidden if visible is false", () => {
@@ -74,7 +78,7 @@ describe("src/modules/tools/filterGeneral/components/SnippetDropdown.vue", () =>
             localVue
         });
 
-        expect(wrapper.find(".snippetDropdownLabel").exists()).to.be.true;
+        expect(wrapper.find(".select-box-label").exists()).to.be.true;
     });
 
     it("should render correctly if multiselect is false", () => {
@@ -129,7 +133,7 @@ describe("src/modules/tools/filterGeneral/components/SnippetDropdown.vue", () =>
             },
             localVue
         });
-        expect(wrapper.find(".snippetDropdownLabel").text()).to.be.equal("foobar:");
+        expect(wrapper.find(".select-box-label").text()).to.be.equal("foobar:");
     });
 
     it("Options should have two items", async () => {
@@ -214,6 +218,56 @@ describe("src/modules/tools/filterGeneral/components/SnippetDropdown.vue", () =>
 
         await options.at(0).setSelected();
 
-        expect(wrapper.find("select").element.value).to.equal("First Opt");
+        expect(wrapper.find("select").element.value).to.equal("0");
+        await options.at(1).setSelected();
+
+        expect(wrapper.find("select").element.value).to.equal("1");
+    });
+
+    it("should render but also be disabled", () => {
+        wrapper = shallowMount(SnippetDropdown, {
+            propsData: {
+                disabled: true,
+                operator: "EQ",
+                visible: true,
+                multiselect: false,
+                value: ["First Opt", "Second Opt"]
+            },
+            localVue
+        });
+        expect(wrapper.find("#select-box").exists()).to.be.true;
+        expect(wrapper.vm.disabled).to.be.true;
+
+    });
+
+    it("should render and be enabaled", () => {
+        wrapper = shallowMount(SnippetDropdown, {
+            propsData: {
+                disabled: false,
+                operator: "EQ",
+                visible: true,
+                multiselect: false,
+                value: ["First Opt", "Second Opt"]
+            },
+            localVue
+        });
+        expect(wrapper.find("#select-box").exists()).to.be.true;
+        expect(wrapper.vm.disabled).to.be.false;
+    });
+
+    it("should render the info span", () => {
+        wrapper = shallowMount(SnippetDropdown, {
+            propsData: {
+                disabled: false,
+                operator: "EQ",
+                visible: true,
+                multiselect: false,
+                value: ["First Opt", "Second Opt"],
+                info: "Die Info"
+            },
+            localVue
+        });
+        expect(wrapper.find(".info-text").exists()).to.be.true;
+        expect(wrapper.find(".info-text span").element.innerHTML).to.be.equal("Die Info");
     });
 });

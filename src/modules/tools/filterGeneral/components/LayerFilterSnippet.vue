@@ -41,8 +41,16 @@ export default {
             paging: {
                 page: 0,
                 total: 0
-            }
+            },
+            disabled: false
         };
+    },
+    watch: {
+        paging () {
+            if (this.paging.page >= this.paging.total) {
+                this.setFormDisable(false);
+            }
+        }
     },
     mounted () {
         if (Array.isArray(this.layerConfig?.snippets)) {
@@ -125,6 +133,7 @@ export default {
                 rules: this.getCurrentRules()
             };
 
+            this.setFormDisable(true);
             this.api.filter(filterQuestion, filterAnswer => {
                 this.paging = filterAnswer.paging;
 
@@ -134,13 +143,24 @@ export default {
             }, error => {
                 console.warn("filter error", error);
             });
+
+        },
+        /**
+         * Sets the disabled flag
+         * @param {Boolean} disable true/false to en/disable form
+         * @returns {void}
+         */
+        setFormDisable (disable) {
+            this.disabled = disable;
         }
     }
 };
 </script>
 
 <template>
-    <div>
+    <div
+        class="panel-body"
+    >
         <div
             v-if="Object.prototype.hasOwnProperty.call(layerConfig, 'snippets') && Array.isArray(layerConfig.snippets)"
         >
@@ -153,6 +173,8 @@ export default {
                     class="snippet"
                 >
                     <SnippetCheckbox
+                        :disabled="disabled"
+                        :info="snippet.info"
                         :label="snippet.label"
                         :operator="snippet.operator"
                         :prechecked="snippet.prechecked"
@@ -167,13 +189,16 @@ export default {
                         :attr-name="snippet.attrName"
                         :add-select-all="snippet.addSelectAll"
                         :auto-init="snippet.autoInit"
+                        :disabled="disabled"
                         :display="snippet.display"
+                        :info="snippet.info"
                         :label="snippet.label"
                         :multiselect="snippet.multiselect"
                         :operator="snippet.operator"
                         :placeholder="snippet.placeholder"
                         :prechecked="snippet.prechecked"
                         :render-icons="snippet.renderIcons"
+                        :snippet-id="indexSnippet"
                         :value="snippet.value"
                         :visible="snippet.visible"
                         @ruleChanged="ruleChanged"
@@ -184,12 +209,14 @@ export default {
                     class="snippet"
                 >
                     <SnippetInput
-                        :snippet-id="indexSnippet"
                         :attr-name="snippet.attrName"
+                        :disabled="disabled"
+                        :info="snippet.info"
                         :label="snippet.label"
                         :operator="snippet.operator"
                         :placeholder="snippet.placeholder"
                         :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
                         :visible="snippet.visible"
                         @ruleChanged="ruleChanged"
                     />
@@ -200,6 +227,8 @@ export default {
                 >
                     <SnippetDate
                         :attr-name="snippet.attrName"
+                        :disabled="disabled"
+                        :info="snippet.info"
                         :format="snippet.format"
                         :label="snippet.label"
                         :max-value="snippet.maxValue"
@@ -215,6 +244,8 @@ export default {
                 >
                     <SnippetDateRange
                         :attr-name="snippet.attrName"
+                        :disabled="disabled"
+                        :info="snippet.info"
                         :format="snippet.format"
                         :label="snippet.label"
                         :max-value="snippet.maxValue"
@@ -231,6 +262,8 @@ export default {
                     <SnippetSlider
                         :attr-name="snippet.attrName"
                         :decimal-step="snippet.decimalStep"
+                        :disabled="disabled"
+                        :info="snippet.info"
                         :label="snippet.label"
                         :min-value="snippet.minValue"
                         :max-value="snippet.maxValue"
@@ -244,9 +277,18 @@ export default {
                     class="snippet"
                 >
                     <SnippetSliderRange
-                        :operator="Object.prototype.hasOwnProperty.call(snippet, 'operater') ? snippet.operater : 'BETWEEN'"
-                        :values="Object.prototype.hasOwnProperty.call(snippet, 'value') ? snippet.value : ''"
-                        :label="Object.prototype.hasOwnProperty.call(snippet, 'label') ? snippet.label : ''"
+                        :attr-name="snippet.attrName"
+                        :decimal-step="snippet.decimalStep"
+                        :disabled="disabled"
+                        :info="snippet.info"
+                        :label="snippet.label"
+                        :min-value="snippet.minValue"
+                        :max-value="snippet.maxValue"
+                        :operater="snippet.operator"
+                        :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
+                        :visible="snippet.visible"
+                        @ruleChanged="ruleChanged"
                     />
                 </div>
             </div>
@@ -268,7 +310,7 @@ export default {
     @import "~/css/mixins.scss";
     .snippet {
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         b {
             display: block;
         }

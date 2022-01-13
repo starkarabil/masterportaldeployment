@@ -17,6 +17,16 @@ export default {
             required: false,
             default: 1
         },
+        disabled: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        info: {
+            type: String,
+            required: false,
+            default: ""
+        },
         label: {
             type: String,
             required: false,
@@ -50,6 +60,7 @@ export default {
     },
     data () {
         return {
+            disable: true,
             interface: {},
             invalid: false,
             minimumValue: this.minValue,
@@ -61,15 +72,27 @@ export default {
                 url: "https://geodienste.hamburg.de/HH_WFS_Regionaler_Bildungsatlas_Bev_Stadtteil",
                 typename: "regionaler_bildungsatlas_bevoelkerung_stadtteile"
             },
+            showInfo: false,
             step: this.decimalStep,
             value: this.prechecked
         };
+    },
+    computed: {
+        infoText: function () {
+            return this.info ? this.info : this.$t("modules.tools.filterGeneral.sliderInfo");
+        }
     },
     watch: {
         value (newVal) {
             if (newVal) {
                 this.value = this.getValueInRange(newVal, true);
+                if (newVal === this.value) {
+                    this.$refs.inputNumber.value = this.value;
+                }
             }
+        },
+        disabled (value) {
+            this.disable = typeof value === "boolean" ? value : true;
         }
     },
     created () {
@@ -79,6 +102,10 @@ export default {
         this.setMinOnly(this.minimumValue, this.maximumValue);
         this.setMaxOnly(this.minimumValue, this.maximumValue);
         this.setMinMaxValue(this.minimumValue, this.maximumValue);
+        this.disable = false;
+    },
+    mounted () {
+        this.$refs.inputNumber.value = this.value;
     },
     methods: {
         /**
@@ -94,33 +121,27 @@ export default {
             console.warn("Please check the parameter decimalStep in configuration, it should be a positive number");
             return 1;
         },
-        /**
-         * Checking if the input key is in valid format and void invalid format (number)
-         * @param {Event} evt - keypress event
-         * @returns {Boolean} true if the input is in valid format (number)
-         */
-        checkKeyNumber (evt) {
-            const charCode = evt.which ? evt.which : evt.keyCode;
-
-            if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 45) {
-                if (Number.isInteger(this.step) || (!Number.isInteger(this.step) && charCode !== 46)) {
-                    store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.incorrectEntry"));
-                    evt.stopPropagation();
-                    return false;
-                }
-            }
-
-            return true;
-        },
 
         /**
-         * Checking if the input field is empty and set the value to the minimum value
+         * Checking if the input field is valid and reset to valid value
          * @param {Event} evt - input event
          * @returns {void}
          */
-        checkEmpty (evt) {
+        checkInput (evt) {
             if (evt?.target?.value === "") {
-                this.value = this.minimumValue;
+                this.getAlertRangeText();
+                this.$refs.inputNumber.value = this.value;
+            }
+            else {
+                const value = this.getValueInRange(evt?.target?.value, true);
+
+                if (evt?.target?.value !== value.toString()) {
+                    this.$refs.inputNumber.value = this.value;
+                }
+                else {
+                    this.value = this.$refs.inputNumber.value;
+                    this.$refs.inputNumber.blur();
+                }
             }
         },
 
@@ -142,17 +163,16 @@ export default {
             }
 
             if (value < this.minimumValue) {
-                value = this.minimumValue;
                 if (flag) {
-                    this.getAlertRangeText();
+                    this.getAlertRangeText(value);
                 }
+                value = this.minimumValue;
             }
             else if (value > this.maximumValue) {
-                value = this.maximumValue;
-                this.getAlertRangeText();
                 if (flag) {
-                    this.getAlertRangeText();
+                    this.getAlertRangeText(value);
                 }
+                value = this.maximumValue;
             }
 
             return value;
@@ -160,10 +180,12 @@ export default {
 
         /**
          * Getting slider range error text in alerting box
+         * @param {String} value the input value from input field
          * @returns {void}
          */
-        getAlertRangeText () {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.outOfRangeErrorMessage", {
+        getAlertRangeText (value) {
+            store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueOutOfRangeErrorMessage", {
+                inputValue: value,
                 minValueSlider: this.minimumValue,
                 maxValueSlider: this.maximumValue
             }));
@@ -211,7 +233,9 @@ export default {
                     this.maximumValue = maximumValue === undefined && isObject(minMaxObj) && Object.prototype.hasOwnProperty.call(minMaxObj, "max") ? minMaxObj.max : maximumValue;
                     this.setInvalid(this.minimumValue, this.maximumValue);
                     this.value = this.getValueInRange(this.value, false);
+                    this.disable = false;
                 }, onerror => {
+                    this.disable = false;
                     console.warn(onerror);
                 }, this.minOnly, this.maxOnly);
             }
@@ -234,6 +258,9 @@ export default {
             }
 
             this.invalid = false;
+        },
+        toggleInfo () {
+            this.showInfo = !this.showInfo;
         }
     }
 };
@@ -243,38 +270,115 @@ export default {
     <div
         v-show="visible"
         v-if="!invalid"
+        class="snippetSliderContainer"
     >
-        <label for="slider-single">{{ label }}</label>
+        <div class="right">
+            <div class="info-icon">
+                <span
+                    :class="['glyphicon glyphicon-info-sign', showInfo ? 'opened' : '']"
+                    @click="toggleInfo()"
+                    @keydown.enter="toggleInfo()"
+                >&nbsp;</span>
+            </div>
+        </div>
+        <label
+            class="left"
+            for="input-single"
+        >{{ label }}</label>
         <input
-            v-model="value"
+            ref="inputNumber"
             class="input-single"
-            type="text"
-            :name="label"
-            @keypress="checkKeyNumber"
-            @input="checkEmpty"
-        >
-        <input
-            v-model="value"
-            class="slider-single"
-            type="range"
-            :step="step"
+            type="number"
             :min="minimumValue"
             :max="maximumValue"
+            :name="label"
+            :disabled="disable"
+            :placeholder="value"
+            @blur="checkInput"
+            @keyup.enter="checkInput"
         >
+        <div class="slider-input-container">
+            <input
+                id="input-single"
+                v-model="value"
+                class="slider-single"
+                type="range"
+                :class="disable ? 'disabled':''"
+                :step="step"
+                :disabled="disable"
+                :min="minimumValue"
+                :max="maximumValue"
+            >
+        </div>
         <span class="min">{{ minimumValue }}</span>
         <span class="max">{{ maximumValue }}</span>
+        <div
+            v-show="showInfo"
+            class="bottom"
+        >
+            <div class="info-text">
+                <span>{{ infoText }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
     @import "~/css/mixins.scss";
-    input[type="text"] {
+    .snippetSliderContainer {
+        padding: 5px;
+        margin-bottom: 10px;
+        height: auto;
+    }
+    .snippetSliderContainer input {
+        clear: left;
+        width: 100%;
+        box-sizing: border-box;
+        outline: 0;
+        position: relative;
+        margin-bottom: 5px;
+    }
+    .snippetSliderContainer .info-icon {
+        float: right;
+        font-size: 16px;
+        color: #ddd;
+    }
+    .snippetSliderContainer .info-icon .opened {
+        color: #000;
+    }
+    .snippetSliderContainer .info-icon:hover {
+        cursor: pointer;
+        color: #a5a09e;
+    }
+    .snippetSliderContainer .info-text {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 10px;
+        padding: 15px 10px;
+    }
+    .snippetSliderContainer .bottom {
+        clear: left;
+        width: 100%;
+    }
+    .snippetSliderContainer .left {
+        float: left;
+        width: 90%;
+    }
+    .snippetSliderContainer .right {
+        position: absolute;
+        right: 10px;
+    }
+    input[type="number"] {
+        text-align: center;
+        font-size: 12px;
+        -moz-appearance: textfield;
         width: 60px;
         float: right;
         margin-bottom: 10px;
-        text-align: center;
         padding-top: 5px;
+        margin-top: 2px;
     }
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -283,9 +387,6 @@ export default {
     }
 
     /* Firefox */
-    input[type="text"] {
-        -moz-appearance: textfield;
-    }
     input[type="range"] {
         -webkit-appearance: none;
         background-color: #ddd;
@@ -334,12 +435,52 @@ export default {
         background-color: #3177b1;
     }
     span {
-        margin-top: 5px;
         &.min {
             float: left;
         }
         &.max {
             float: right;
         }
+    }
+    input[type="range"].disabled {
+        -webkit-appearance: none;
+        background-color: grey;
+        height: 15px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    input[type="range"].disabled::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: #ddd;
+        border-radius: 50%;
+        box-shadow: -210px 0 0 200px grey;
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        border: 0;
+    }
+
+    input[type="range"].disabled::-moz-range-thumb {
+        background: #ddd;
+        border-radius: 50%;
+        box-shadow: -1010px 0 0 1000px grey;
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        border: 0;
+    }
+    input[type="range"].disabled::-moz-range-track {
+        background-color: grey;
+    }
+    input[type="range"].disabled::-moz-range-progress {
+        background-color: grey;
+        height: 15px
+    }
+    input[type="range"].disabled::-ms-fill-upper {
+        background-color: grey;
+    }
+    input[type="range"].disabled::-ms-fill-lower {
+        background-color: grey;
     }
 </style>
