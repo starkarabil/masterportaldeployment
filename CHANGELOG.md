@@ -41,6 +41,7 @@
     - vue-loader: 15.9.6 to 15.9.8
     - zip-a-folder: 1.1.0 to 1.1.2
     - MasterportalAPI: v1.8.0. This also raised ol to version 6.11.0.
+- Added JPG and JPEG to print formats
 
 ### Deprecated
 
