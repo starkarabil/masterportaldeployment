@@ -267,10 +267,10 @@ export default {
         <div class="right">
             <div class="info-icon">
                 <span
-                    :class="['glyphicon glyphicon-info-sign', showInfo ? 'opened' : '']"
+                    :class="['bootstrap-icon', showInfo ? 'opened' : '']"
                     @click="toggleInfo()"
                     @keydown.enter="toggleInfo()"
-                >&nbsp;</span>
+                ><i class="bi-info-circle-fill" /></span>
             </div>
         </div>
         <div class="input-container">

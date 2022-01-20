@@ -115,10 +115,10 @@ export default {
         <div class="right">
             <div class="info-icon">
                 <span
-                    :class="['glyphicon glyphicon-info-sign', showInfo ? 'opened' : '']"
+                    :class="['bootstrap-icon', showInfo ? 'opened' : '']"
                     @click="toggleInfo()"
                     @keydown.enter="toggleInfo()"
-                >&nbsp;</span>
+                ><i class="bi-info-circle-fill" /></span>
             </div>
         </div>
         <div
@@ -156,9 +156,6 @@ export default {
         border-radius: 5px;
         font-size: 10px;
         padding: 15px 10px;
-    }
-    .glyphicon-info-sign:before {
-        content: "\E086";
     }
     .snippetCheckboxContainer .bottom {
         clear: left;
