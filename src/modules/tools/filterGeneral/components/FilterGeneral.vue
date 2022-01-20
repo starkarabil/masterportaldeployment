@@ -7,18 +7,8 @@ import mutations from "../store/mutationsFilterGeneral";
 import LayerFilterSnippet from "./LayerFilterSnippet.vue";
 import {convertToNewConfig} from "../utils/convertToNewConfig";
 import MapHandler from "../utils/mapHandler.js";
-import {
-    getFeaturesByLayerId,
-    isFeatureInMapExtent,
-    getLayerByLayerId,
-    showFeaturesByIds,
-    createLayerIfNotExists
-} from "../utils/openlayerFunctions.js";
+import {getLayerByLayerId, showFeaturesByIds, createLayerIfNotExists} from "../utils/openlayerFunctions.js";
 import LayerList from "../components/LayerList.vue";
-
-// will be replaced by api
-import InterfaceOL from "../interfaces/interface.ol.js";
-import IntervalRegister from "../utils/intervalRegister.js";
 
 export default {
     name: "FilterGeneral",
@@ -30,17 +20,14 @@ export default {
     data () {
         return {
             storePath: this.$store.state.Tools.FilterGeneral,
-            api: new InterfaceOL(new IntervalRegister(), {
-                getFeaturesByLayerId,
-                isFeatureInMapExtent
-            }),
             mapHandler: new MapHandler({
                 getLayerByLayerId,
                 showFeaturesByIds,
                 createLayerIfNotExists
             }),
             selectedLayers: [],
-            alreadySelectedLayers: []
+            alreadySelectedLayers: [],
+            layerLoaded: {}
         };
     },
     computed: {
@@ -51,7 +38,7 @@ export default {
                 return this.layers;
             }
             return this.layers.filter(layer => {
-                return this.alreadySelectedLayers.includes(layer.layerId);
+                return this.alreadySelectedLayers.includes(layer.filterId);
             });
         }
     },
@@ -59,6 +46,11 @@ export default {
         this.$on("close", this.close);
     },
     mounted () {
+        if (Array.isArray(this.layers)) {
+            this.layers.forEach((layer, filterId) => {
+                layer.filterId = filterId;
+            });
+        }
         this.$nextTick(() => {
             this.initialize();
             // console.log("Alte Config", this.configs);
@@ -80,36 +72,36 @@ export default {
         },
         /**
          * Update selectedLayers array.
-         * @param {String[]|String} layerIds ids which should be added or removed
+         * @param {String[]|String} filterIds ids which should be added or removed
          * @returns {Object[]} selected layer fetched from config
          */
-        updateSelectedLayers (layerIds) {
-            if (!Array.isArray(layerIds) && typeof layerIds !== "string") {
+        updateSelectedLayers (filterIds) {
+            if (!Array.isArray(filterIds) && typeof filterIds !== "number") {
                 return;
             }
             const confLayers = this.layers.filter(layer => {
-                return Array.isArray(layerIds) ? layerIds.includes(layer.layerId) : layer.layerId === layerIds;
+                return Array.isArray(filterIds) ? filterIds.includes(layer.filterId) : layer.filterId === filterIds;
             });
 
-            if (Array.isArray(layerIds)) {
-                layerIds.forEach(layerId => {
-                    if (!this.alreadySelectedLayers.includes(layerId)) {
-                        this.alreadySelectedLayers.push(layerId);
+            if (Array.isArray(filterIds)) {
+                filterIds.forEach(filterId => {
+                    if (!this.alreadySelectedLayers.includes(filterId)) {
+                        this.alreadySelectedLayers.push(filterId);
                     }
                 });
             }
             else {
-                this.alreadySelectedLayers.push(layerIds);
+                this.alreadySelectedLayers.push(filterIds);
             }
 
             this.selectedLayers = confLayers;
         },
         /**
          * Check if layer filter should be displayed.
-         * @param {String} layerId layerid to check
+         * @param {String} filterId filterId to check
          * @returns {Boolean} true if should be displayed false if not
          */
-        showLayerSnippet (layerId) {
+        showLayerSnippet (filterId) {
             if (!Array.isArray(this.selectedLayers)) {
                 return false;
             }
@@ -117,8 +109,16 @@ export default {
                 return true;
             }
             return this.selectedLayers.some(selectedLayer => {
-                return selectedLayer.layerId === layerId;
+                return selectedLayer.filterId === filterId;
             });
+        },
+        /**
+         * Setting the layer loaded true if the layer is clicked from the filter Id
+         * @param {String} filterId filterId to check
+         * @returns {void}
+         */
+        setLayerLoaded (filterId) {
+            this.layerLoaded[filterId] = true;
         }
     }
 };
@@ -145,17 +145,18 @@ export default {
                 :layers="layers"
                 :multi-layer-selector="multiLayerSelector"
                 @updateselectedlayers="updateSelectedLayers"
+                @setLayerLoaded="setLayerLoaded"
             >
                 <template
                     #default="slotProps"
                 >
                     <div
-                        :class="['panel-collapse', 'collapse', showLayerSnippet(slotProps.layer.layerId) ? 'in' : '']"
+                        :class="['panel-collapse', 'collapse', showLayerSnippet(slotProps.layer.filterId) ? 'in' : '']"
                         role="tabpanel"
                     >
                         <LayerFilterSnippet
+                            v-if="showLayerSnippet(slotProps.layer.filterId) || layerLoaded[slotProps.layer.filterId]"
                             :layer-config="slotProps.layer"
-                            :api="api"
                             :map-handler="mapHandler"
                         />
                     </div>
@@ -166,7 +167,6 @@ export default {
                     v-for="(layerConfig, indexLayer) in layers"
                     :key="'layer-' + indexLayer"
                     :layer-config="layerConfig"
-                    :api="api"
                     :map-handler="mapHandler"
                 />
             </div>

@@ -1,11 +1,14 @@
 <script>
-import InterfaceOL from "../interfaces/interface.ol.js";
-import IntervalRegister from "../utils/intervalRegister.js";
 import moment from "moment";
 
 export default {
     name: "SnippetDateRange",
     props: {
+        api: {
+            type: Object,
+            required: false,
+            default: null
+        },
         attrName: {
             type: [String, Array],
             required: true
@@ -50,6 +53,11 @@ export default {
             required: false,
             default: () => []
         },
+        snippetId: {
+            type: Number,
+            required: false,
+            default: 0
+        },
         visible: {
             type: Boolean,
             required: false,
@@ -59,20 +67,15 @@ export default {
     data () {
         return {
             disable: true,
-            fromDate: Array.isArray(this.prechecked) && this.prechecked.length === 2 ? this.convertDateFormat(this.prechecked[0]) : null,
-            interface: null,
+            fromDate: null,
             invalid: false,
-            initialMin: Array.isArray(this.minValue) ? this.convertDateFormat(this.minValue[0]) : this.convertDateFormat(this.minValue),
-            maxFrom: Array.isArray(this.minValue) ? this.convertDateFormat(this.minValue[1]) : this.convertDateFormat(this.maxValue),
-            minFrom: Array.isArray(this.minValue) ? this.convertDateFormat(this.minValue[0]) : this.convertDateFormat(this.minValue),
-            maxUntil: Array.isArray(this.maxValue) ? this.convertDateFormat(this.maxValue[1]) : this.convertDateFormat(this.maxValue),
-            minUntil: Array.isArray(this.maxValue) ? this.convertDateFormat(this.maxValue[0]) : this.convertDateFormat(this.minValue),
-            untilDate: Array.isArray(this.prechecked) && this.prechecked.length === 2 ? this.convertDateFormat(this.prechecked[1]) : null,
-            service: {
-                type: "WFS",
-                url: "https://geodienste.hamburg.de/HH_WFS_Baustellen",
-                typename: "tns_steckbrief_visualisierung"
-            },
+            initialMin: null,
+            internalFormat: "YYYY-MM-DD",
+            maxFrom: null,
+            minFrom: null,
+            maxUntil: null,
+            minUntil: null,
+            untilDate: null,
             showInfo: false
         };
     },
@@ -82,50 +85,91 @@ export default {
         }
     },
     watch: {
+        fromDate (value) {
+            this.emitCurrentRule([value, this.untilDate]);
+        },
+        untilDate (value) {
+            this.emitCurrentRule([this.fromDate, value]);
+        },
         disabled (value) {
             this.disable = typeof value === "boolean" ? value : true;
         }
     },
     created () {
+        this.fromDate = Array.isArray(this.prechecked) && this.prechecked.length === 2 ? this.convertToInternalDateFormat(this.prechecked[0], this.format) : null;
+        this.initialMin = Array.isArray(this.minValue) ? this.convertToInternalDateFormat(this.minValue[0], this.format) : this.convertToInternalDateFormat(this.minValue, this.format);
+        this.maxFrom = Array.isArray(this.minValue) ? this.convertToInternalDateFormat(this.minValue[1], this.format) : this.convertToInternalDateFormat(this.maxValue, this.format);
+        this.minFrom = Array.isArray(this.minValue) ? this.convertToInternalDateFormat(this.minValue[0], this.format) : this.convertToInternalDateFormat(this.minValue, this.format);
+        this.maxUntil = Array.isArray(this.maxValue) ? this.convertToInternalDateFormat(this.maxValue[1], this.format) : this.convertToInternalDateFormat(this.maxValue, this.format);
+        this.minUntil = Array.isArray(this.maxValue) ? this.convertToInternalDateFormat(this.maxValue[0], this.format) : this.convertToInternalDateFormat(this.minValue, this.format);
+        this.untilDate = Array.isArray(this.prechecked) && this.prechecked.length === 2 ? this.convertToInternalDateFormat(this.prechecked[1], this.format) : null;
+
         if (this.isInvalid()) {
             this.invalid = true;
-            return;
         }
-        this.interface = new InterfaceOL(new IntervalRegister(), {
-            getFeaturesByLayerId: false,
-            isFeatureInMapExtent: false
+    },
+    mounted () {
+        this.$nextTick(() => {
+            this.checkPrechecked();
+            this.checkMinMax();
+            this.disableFrom = this.disabled;
+            this.disableUntil = this.disabled;
+            this.emitCurrentRule([this.fromDate, this.untilDate], true);
         });
-        this.checkPrechecked();
-        this.checkMinMax();
-        this.disableFrom = this.disabled;
-        this.disableUntil = this.disabled;
     },
     methods: {
+        /**
+         * Emits the current rule to whoever is listening.
+         * @param {*} value the value to put into the rule
+         * @param {Boolean} [startup=false] true if the call comes on startup, false if a user actively changed a snippet
+         * @returns {void}
+         */
+        emitCurrentRule (value, startup = false) {
+            this.$emit("ruleChanged", {
+                snippetId: this.snippetId,
+                startup,
+                rule: {
+                    attrName: this.attrName,
+                    operator: this.operator,
+                    format: this.format,
+                    value: [
+                        moment(value[0], this.internalFormat).format(this.format),
+                        moment(value[1], this.internalFormat).format(this.format)
+                    ]
+                }
+            });
+        },
         /**
          * Checks if something is wrong configured, throws an console.warn message if so.
          * @returns {Boolean} returns true if something is configured wrong, false if everything is ok
          */
         isInvalid () {
-            if (
-                ((this.prechecked.length !== 2 && this.prechecked.length !== 0) && Array.isArray(this.prechecked))
-                || (this.minValue && this.maxValue && !Array.isArray(this.minValue) && !Array.isArray(this.maxValue) && moment(this.minValue, this.format) > moment(this.maxValue, this.format))
-            ) {
-                console.warn("Please check your configurations. Make sure to check if maxValue is not earlier than minValue and if prechecked is an array based on 2 date strings or is empty");
+            if (!Array.isArray(this.prechecked) || this.prechecked.length !== 2 && this.prechecked.length !== 0) {
+                console.warn("Please check your configuration. Make sure to check if prechecked is an array with two date strings, an empty array of left away entirely.");
                 return true;
             }
-            else if ((Array.isArray(this.minValue) && this.minValue.length < 2) && (Array.isArray(this.maxValue) && this.maxValue.length < 2)) {
-                console.warn("You must configure an start and end date if you use Arrays for maxValue or minValue");
+            else if (
+                typeof this.minValue === "string"
+                && typeof this.maxValue === "string"
+                && moment(this.minValue, this.format) > moment(this.maxValue, this.format)
+            ) {
+                console.warn("Please check your configuration. Make sure to check that maxValue is not earlier than minValue.");
+                return true;
+            }
+            else if (Array.isArray(this.minValue) && this.minValue.length !== 2 || Array.isArray(this.maxValue) && this.maxValue.length !== 2) {
+                console.warn("Please check your configuration. If you use arrays for maxValue or minValue, use an array with exactly two entries which are the min and max values.");
                 return true;
             }
             return false;
         },
         /**
-         * Parse given param to date string.
-         * @param {*} date param which should be parsed to date format
-         * @returns {*|String} string or given param
+         * Converts the given date string to an internal format using the given format.
+         * @param {String} date the date to be converted
+         * @param {String} format the format the given date has
+         * @returns {String} the formatted date
          */
-        convertDateFormat (date) {
-            return typeof date !== "undefined" && typeof date === "string" ? moment(date, this.format).format("YYYY-MM-DD") : date;
+        convertToInternalDateFormat (date, format) {
+            return date ? moment(date, format).format(this.internalFormat) : date;
         },
         /**
          * Set min or max or both for the first datepicker.
@@ -135,17 +179,19 @@ export default {
          * @returns {void}
          */
         setMinMaxFromDate (attribute, min = false, max = false) {
-            this.interface.getMinMax(this.service, attribute, minMaxObj => {
-                const minFormated = this.convertDateFormat(minMaxObj?.min),
-                    maxFormated = this.convertDateFormat(minMaxObj?.max);
+            if (this.api) {
+                this.api.getMinMax(attribute, minMaxObj => {
+                    const minFormated = this.convertToInternalDateFormat(minMaxObj?.min, this.format),
+                        maxFormated = this.convertToInternalDateFormat(minMaxObj?.max, this.format);
 
-                this.minFrom = minFormated ? minFormated : this.minFrom;
-                this.maxFrom = maxFormated ? maxFormated : this.maxFrom;
-                // If user configured prechecked dates which are not between min and max
-                this.checkPrechecked();
-            }, onerror => {
-                console.warn(onerror);
-            }, min, max);
+                    this.minFrom = minFormated ? minFormated : this.minFrom;
+                    this.maxFrom = maxFormated ? maxFormated : this.maxFrom;
+                    // If user configured prechecked dates which are not between min and max
+                    this.checkPrechecked();
+                }, onerror => {
+                    console.warn(onerror);
+                }, min, max);
+            }
         },
         /**
          * Set min or max or both for the second datepicker.
@@ -155,18 +201,20 @@ export default {
          * @returns {void}
          */
         setMinMaxUntilDate (attribute, min = false, max = false) {
-            this.interface.getMinMax(this.service, attribute, minMaxObj => {
-                const minFormated = this.convertDateFormat(minMaxObj?.min),
-                    maxFormated = this.convertDateFormat(minMaxObj?.max);
+            if (this.api) {
+                this.api.getMinMax(attribute, minMaxObj => {
+                    const minFormated = this.convertToInternalDateFormat(minMaxObj?.min, this.format),
+                        maxFormated = this.convertToInternalDateFormat(minMaxObj?.max, this.format);
 
-                this.minUntil = minFormated ? minFormated : this.minUntil;
-                this.maxUntil = maxFormated ? maxFormated : this.maxUntil;
-                this.initialMin = this.minUntil;
-                // If user configured prechecked dates which are not between min and max
-                this.checkPrechecked();
-            }, onerror => {
-                console.warn(onerror);
-            }, min, max);
+                    this.minUntil = minFormated ? minFormated : this.minUntil;
+                    this.maxUntil = maxFormated ? maxFormated : this.maxUntil;
+                    this.initialMin = this.minUntil;
+                    // If user configured prechecked dates which are not between min and max
+                    this.checkPrechecked();
+                }, onerror => {
+                    console.warn(onerror);
+                }, min, max);
+            }
         },
         /**
          * Check min max for the 'until' and 'from' field.
@@ -211,7 +259,7 @@ export default {
          * @returns {void}
          */
         changeMin () {
-            if (this.fromDate && (moment(this.fromDate) > moment(this.initialMin))) {
+            if (this.fromDate && (moment(this.fromDate, this.internalFormat) > moment(this.initialMin, this.internalFormat))) {
                 this.minUntil = this.fromDate;
                 if (this.fromDate > this.untilDate) {
                     this.untilDate = this.fromDate;
@@ -224,7 +272,7 @@ export default {
         checkPrechecked () {
             if (!Array.isArray(this.prechecked)) {
                 this.invalid = true;
-                console.warn("Precheked is not an array. It should be either an an array of 2 date strings or empty");
+                console.warn("Prechecked is not an array. It should be either an an array of 2 date strings or empty.");
                 return;
             }
             else if (this.prechecked.length !== 2) {
@@ -233,23 +281,23 @@ export default {
             const precheckedBeginn = moment(this.prechecked[0], this.format),
                 precheckedEnd = moment(this.prechecked[1], this.format);
 
-            if (!precheckedBeginn.isValid() && !precheckedEnd.isValid) {
+            if (!precheckedBeginn.isValid() && !precheckedEnd.isValid()) {
                 return;
             }
 
             if (typeof this.minFrom !== "undefined" && typeof this.maxFrom !== "undefined") {
-                if (precheckedBeginn < moment(this.minFrom, "YYYY-MM-DD")) {
+                if (precheckedBeginn < moment(this.minFrom, this.internalFormat)) {
                     this.fromDate = this.minFrom;
                 }
-                else if (precheckedBeginn > moment(this.maxFrom, "YYYY-MM-DD")) {
+                else if (precheckedBeginn > moment(this.maxFrom, this.internalFormat)) {
                     this.fromDate = this.maxFrom;
                 }
             }
             if (typeof this.minUntil !== "undefined" && typeof this.maxUntil !== "undefined") {
-                if (precheckedEnd < moment(this.minUntil, "YYYY-MM-DD")) {
+                if (precheckedEnd < moment(this.minUntil, this.internalFormat)) {
                     this.untilDate = this.minUntil;
                 }
-                else if (precheckedEnd > moment(this.maxUntil, "YYYY-MM-DD")) {
+                else if (precheckedEnd > moment(this.maxUntil, this.internalFormat)) {
                     this.untilDate = this.maxUntil;
                 }
             }

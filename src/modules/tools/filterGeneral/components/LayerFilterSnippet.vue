@@ -8,6 +8,7 @@ import SnippetInput from "./SnippetInput.vue";
 import SnippetSlider from "./SnippetSlider.vue";
 import SnippetSliderRange from "./SnippetSliderRange.vue";
 import isObject from "../../../../utils/isObject";
+import FilterApi from "../interfaces/filter.api.js";
 
 export default {
     name: "LayerFilterSnippet",
@@ -26,10 +27,6 @@ export default {
             type: Object,
             required: true
         },
-        api: {
-            type: Object,
-            required: true
-        },
         mapHandler: {
             type: Object,
             required: true
@@ -42,7 +39,11 @@ export default {
                 page: 0,
                 total: 0
             },
-            disabled: false
+            disabled: false,
+            showStop: false,
+            layerModel: null,
+            layerService: null,
+            api: null
         };
     },
     watch: {
@@ -51,6 +52,12 @@ export default {
                 this.setFormDisable(false);
             }
         }
+    },
+    created () {
+        this.activateLayer(this.layerConfig?.layerId);
+        this.setLayerService(this.layerModel);
+
+        this.api = new FilterApi(this.layerConfig.filterId, this.layerService);
     },
     mounted () {
         if (Array.isArray(this.layerConfig?.snippets)) {
@@ -70,18 +77,6 @@ export default {
          */
         checkSnippetType (snippet, type) {
             return isObject(snippet) && Object.prototype.hasOwnProperty.call(snippet, "type") && snippet.type === type;
-        },
-        /**
-         * Returns the service object for the filter question based on config.
-         * @returns {Object} the service object to use
-         */
-        getService () {
-            if (typeof this.layerConfig?.layerId === "string") {
-                return {
-                    layerId: this.layerConfig.layerId
-                };
-            }
-            return this.layerConfig?.service ? this.layerConfig.service : {};
         },
         /**
          * Triggered when a rule changed at a snippet.
@@ -123,8 +118,8 @@ export default {
          */
         filter () {
             const filterQuestion = {
-                service: this.getService(),
-                filterId: 1,
+                filterId: this.layerConfig.filterId,
+                service: this.layerService,
                 snippetId: false,
                 commands: {
                     paging: this.layerConfig?.paging ? this.layerConfig.paging : 1000,
@@ -134,6 +129,84 @@ export default {
             };
 
             this.setFormDisable(true);
+            this.showStopButton(true);
+
+            if (isObject(this.layerModel)) {
+                this.layerModel.set("isSelected", true);
+                this.layerModel.set("isVisible", true);
+
+                this.layerModel.layer.getSource().on("featuresloadend", () => {
+                    this.runApiFilter(filterQuestion);
+                });
+
+                if (this.layerModel.layer.getSource().getFeatures().length) {
+                    this.runApiFilter(filterQuestion);
+                }
+            }
+        },
+        /**
+         * Sets the disabled flag
+         * @param {Boolean} disable true/false to en/disable form
+         * @returns {void}
+         */
+        setFormDisable (disable) {
+            this.disabled = disable;
+        },
+        /**
+         * Showing or not Showing terminate button
+         * @param {Boolean} value true/false to en/disable to show terminate button
+         * @returns {void}
+         */
+        showStopButton (value) {
+            this.showStop = value;
+        },
+        /**
+         * Activating the layer for filtering
+         * @param {String} layerId the layer Id from config
+         * @returns {void}
+         */
+        activateLayer (layerId) {
+            if (typeof layerId === "string" && (!this.layerConfig?.service || this.layerConfig?.service?.type.toLowerCase() === "ol")) {
+                const layers = Radio.request("Map", "getLayers"),
+                    visibleLayer = typeof layers?.getArray !== "function" ? [] : layers.getArray().filter(layer => {
+                        return layer.getVisible() === true && layer.get("id") === layerId;
+                    });
+
+                if (Array.isArray(visibleLayer) && !visibleLayer.length) {
+                    Radio.trigger("ModelList", "addModelsByAttributes", {"id": layerId});
+                }
+
+                this.layerModel = Radio.request("ModelList", "getModelByAttributes", {"id": layerId});
+            }
+        },
+        /**
+         * Setting layer service
+         * @param {Object} layerModel the layer model
+         * @returns {void}
+         */
+        setLayerService (layerModel) {
+            if (isObject(this.layerConfig?.service)) {
+                this.layerService = this.layerConfig?.service;
+            }
+            else if (isObject(layerModel) && typeof this.layerConfig?.service === "undefined") {
+                this.layerService = {
+                    "type": "OL",
+                    "layerId": this.layerConfig?.layerId,
+                    "url": layerModel.get("url"),
+                    "typename": layerModel.get("featureType"),
+                    "namespace": layerModel.get("featureNS")
+                };
+            }
+            else if (layerModel === null && typeof this.layerConfig?.service === "undefined") {
+                console.warn("Please check your configuration of layerId or service, the portal could not load them");
+            }
+        },
+        /**
+         * Running the api function to filter the layer
+         * @param {Object} filterQuestion the filter parameters for api
+         * @returns {void}
+         */
+        runApiFilter (filterQuestion) {
             this.api.filter(filterQuestion, filterAnswer => {
                 this.paging = filterAnswer.paging;
 
@@ -143,15 +216,19 @@ export default {
             }, error => {
                 console.warn("filter error", error);
             });
-
         },
         /**
-         * Sets the disabled flag
-         * @param {Boolean} disable true/false to en/disable form
+         * Terminating the filter process by terminating every snippet
          * @returns {void}
          */
-        setFormDisable (disable) {
-            this.disabled = disable;
+        stopfilter () {
+            this.api.stop(() => {
+                this.showStopButton(false);
+                this.setFormDisable(false);
+            },
+            err => {
+                console.warn(err);
+            });
         }
     }
 };
@@ -173,12 +250,16 @@ export default {
                     class="snippet"
                 >
                     <SnippetCheckbox
+                        :api="api"
+                        :attr-name="snippet.attrName"
                         :disabled="disabled"
                         :info="snippet.info"
                         :label="snippet.label"
                         :operator="snippet.operator"
                         :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
                         :visible="snippet.visible"
+                        @ruleChanged="ruleChanged"
                     />
                 </div>
                 <div
@@ -186,6 +267,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetDropdown
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :add-select-all="snippet.addSelectAll"
                         :auto-init="snippet.autoInit"
@@ -209,6 +291,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetInput
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :disabled="disabled"
                         :info="snippet.info"
@@ -226,6 +309,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetDate
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :disabled="disabled"
                         :info="snippet.info"
@@ -235,7 +319,9 @@ export default {
                         :min-value="snippet.minValue"
                         :operator="snippet.operator"
                         :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
                         :visible="snippet.visible"
+                        @ruleChanged="ruleChanged"
                     />
                 </div>
                 <div
@@ -243,6 +329,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetDateRange
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :disabled="disabled"
                         :info="snippet.info"
@@ -252,7 +339,9 @@ export default {
                         :min-value="snippet.minValue"
                         :operator="snippet.operator"
                         :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
                         :visible="snippet.visible"
+                        @ruleChanged="ruleChanged"
                     />
                 </div>
                 <div
@@ -260,6 +349,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetSlider
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :decimal-step="snippet.decimalStep"
                         :disabled="disabled"
@@ -269,7 +359,9 @@ export default {
                         :max-value="snippet.maxValue"
                         :operater="snippet.operator"
                         :prechecked="snippet.prechecked"
+                        :snippet-id="indexSnippet"
                         :visible="snippet.visible"
+                        @ruleChanged="ruleChanged"
                     />
                 </div>
                 <div
@@ -277,6 +369,7 @@ export default {
                     class="snippet"
                 >
                     <SnippetSliderRange
+                        :api="api"
                         :attr-name="snippet.attrName"
                         :decimal-step="snippet.decimalStep"
                         :disabled="disabled"
@@ -292,16 +385,22 @@ export default {
                     />
                 </div>
             </div>
-        </div>
-        <div class="snippet">
-            <button
-                @click="filter()"
-            >
-                Filtern
-            </button>
-            <ProgressBar
-                :paging="paging"
-            />
+            <div class="snippet">
+                <button
+                    @click="filter()"
+                >
+                    Filtern
+                </button>
+                <button
+                    v-if="paging.page < paging.total && showStop"
+                    @click="stopfilter()"
+                >
+                    {{ $t("button.stop") }}
+                </button>
+                <ProgressBar
+                    :paging="paging"
+                />
+            </div>
         </div>
     </div>
 </template>

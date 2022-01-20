@@ -1,12 +1,15 @@
 <script>
 import store from "../../../../app-store";
-import InterfaceOL from "../interfaces/interface.ol.js";
-import IntervalRegister from "../utils/intervalRegister.js";
 import isObject from "../../../../utils/isObject";
 
 export default {
     name: "SnippetSlider",
     props: {
+        api: {
+            type: Object,
+            required: false,
+            default: null
+        },
         attrName: {
             type: String,
             required: false,
@@ -52,6 +55,11 @@ export default {
             required: false,
             default: 0
         },
+        snippetId: {
+            type: Number,
+            required: false,
+            default: 0
+        },
         visible: {
             type: Boolean,
             required: false,
@@ -61,17 +69,11 @@ export default {
     data () {
         return {
             disable: true,
-            interface: {},
             invalid: false,
             minimumValue: this.minValue,
             maximumValue: this.maxValue,
             minOnly: false,
             maxOnly: false,
-            service: {
-                type: "WFS",
-                url: "https://geodienste.hamburg.de/HH_WFS_Regionaler_Bildungsatlas_Bev_Stadtteil",
-                typename: "regionaler_bildungsatlas_bevoelkerung_stadtteile"
-            },
             showInfo: false,
             step: this.decimalStep,
             value: this.prechecked
@@ -89,6 +91,7 @@ export default {
                 if (newVal === this.value) {
                     this.$refs.inputNumber.value = this.value;
                 }
+                this.emitCurrentRule(this.value);
             }
         },
         disabled (value) {
@@ -106,8 +109,29 @@ export default {
     },
     mounted () {
         this.$refs.inputNumber.value = this.value;
+        this.$nextTick(() => {
+            this.emitCurrentRule(this.value, true);
+        });
     },
     methods: {
+        /**
+         * Emits the current rule to whoever is listening.
+         * @param {*} value the value to put into the rule
+         * @param {Boolean} [startup=false] true if the call comes on startup, false if a user actively changed a snippet
+         * @returns {void}
+         */
+        emitCurrentRule (value, startup = false) {
+            this.$emit("ruleChanged", {
+                snippetId: this.snippetId,
+                startup,
+                rule: {
+                    attrName: this.attrName,
+                    operator: this.operator,
+                    value
+                }
+            });
+        },
+
         /**
          * Getting valid step
          * @param {Number} value - the step for slider
@@ -129,7 +153,7 @@ export default {
          */
         checkInput (evt) {
             if (evt?.target?.value === "") {
-                this.getAlertRangeText();
+                this.getAlertRangeText(undefined);
                 this.$refs.inputNumber.value = this.value;
             }
             else {
@@ -184,11 +208,16 @@ export default {
          * @returns {void}
          */
         getAlertRangeText (value) {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueOutOfRangeErrorMessage", {
-                inputValue: value,
-                minValueSlider: this.minimumValue,
-                maxValueSlider: this.maximumValue
-            }));
+            if (value === undefined) {
+                store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueEmptyErrorMessage"));
+            }
+            else {
+                store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueOutOfRangeErrorMessage", {
+                    inputValue: value,
+                    minValueSlider: this.minimumValue,
+                    maxValueSlider: this.maximumValue
+                }));
+            }
         },
 
         /**
@@ -223,12 +252,7 @@ export default {
          */
         setMinMaxValue (minimumValue, maximumValue) {
             if (minimumValue === undefined || maximumValue === undefined) {
-                this.interface = new InterfaceOL(new IntervalRegister(), {
-                    getFeaturesByLayerId: false,
-                    isFeatureInMapExtent: false
-                });
-
-                this.interface.getMinMax(this.service, this.attrName, minMaxObj => {
+                this.api.getMinMax(this.attrName, minMaxObj => {
                     this.minimumValue = minimumValue === undefined && isObject(minMaxObj) && Object.prototype.hasOwnProperty.call(minMaxObj, "min") ? minMaxObj.min : minimumValue;
                     this.maximumValue = maximumValue === undefined && isObject(minMaxObj) && Object.prototype.hasOwnProperty.call(minMaxObj, "max") ? minMaxObj.max : maximumValue;
                     this.setInvalid(this.minimumValue, this.maximumValue);

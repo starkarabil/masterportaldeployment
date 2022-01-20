@@ -9,7 +9,8 @@
 ---
 ## Unreleased - in development
 ### Added
-
+- The VectorBaseLayer is refactored. It is no longer a Backbone-model. The VectorBaseLayer uses the masterportalAPI's vectorBase layer on creation.
+- Package vue-multiselect: 2.1.6 is installed
 ### Changed
 - The following NPM packages are updated:
     - @babel/core: 7.16.0 to 7.16.7
@@ -39,6 +40,10 @@
     - sinon: 11.1.1 to 12.0.1
     - vue-loader: 15.9.6 to 15.9.8
     - zip-a-folder: 1.1.0 to 1.1.2
+    - MasterportalAPI: v1.8.0. This also raised ol to version 6.11.0.
+- The version of node was updated, must be >= 16.13.2. See https://docs.npmjs.com/cli/v8/configuring-npm/package-lock-json#handling-old-lockfiles.
+  The version of npm  was also updated, must be >= 8.1.2. The file .npmrc was added to set "engine-strict=true", as a result, the npm version and the node version are mandatory.
+- Migrated mapView to Vue.
 
 ### Deprecated
 
@@ -50,6 +55,7 @@
 ### Fixed
 - Fixed spelling of `DIRECTIONS` in documentation for routing tool.
 - Tool CoordToolkit: Labeling of longitude and latitude corrected if long/lat is selected as projection system.
+- Fixed issue #672: layerAttribution not working correctly if layer is not initially visible
 
 ---
 ## v2.17.1 - 2022-01-011

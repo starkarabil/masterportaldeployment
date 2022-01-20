@@ -475,10 +475,6 @@
           "vueAddon": {
             "name": "AddonTool",
             "icon": "bi-bullseye"
-          },
-          "tacticalMark": {
-            "name": "Taktische Zeichen",
-            "icon": "bi-geo-alt-fill"
           }
         }
       },

@@ -11,7 +11,7 @@ import TerrainLayer from "./layer/terrain";
 import EntitiesLayer from "./layer/entities";
 import TileSetLayer from "./layer/tileset";
 import VectorTileLayer from "./layer/vectorTile";
-import VectorBaseLayer from "./layer/vectorBase";
+import VectorBaseLayer from "../../../src/core/layers/vectorBase";
 import ObliqueLayer from "./layer/oblique";
 import Folder from "./folder/model";
 import Tool from "./tool/model";
@@ -1209,6 +1209,7 @@ const ModelList = Backbone.Collection.extend(/** @lends ModelList.prototype */{
             this.updateLayerView();
         }
         this.trigger("updateSelection");
+        Radio.channel("ModelList").trigger("updateVisibleInMapList");
         Radio.channel("ModelList").trigger("updatedSelectedLayerList", this.where({isSelected: true, type: "layer"}));
     }
 });

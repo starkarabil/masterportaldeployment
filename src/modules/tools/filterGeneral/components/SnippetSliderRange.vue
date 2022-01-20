@@ -1,12 +1,15 @@
 <script>
 import store from "../../../../app-store";
-import InterfaceOL from "../interfaces/interface.ol.js";
-import IntervalRegister from "../utils/intervalRegister.js";
 import isObject from "../../../../utils/isObject";
 
 export default {
     name: "SnippetSliderRange",
     props: {
+        api: {
+            type: Object,
+            required: false,
+            default: null
+        },
         attrName: {
             type: String,
             required: false,
@@ -68,7 +71,6 @@ export default {
     data () {
         return {
             disable: true,
-            interface: {},
             invalid: false,
             minimumValue: this.minValue,
             maximumValue: this.maxValue,
@@ -120,7 +122,7 @@ export default {
         this.$refs.inputMaxNumber.value = this.maxVal;
 
         this.$nextTick(() => {
-            this.emitCurrentRule([this.minVal, this.maxVal]);
+            this.emitCurrentRule([this.minVal, this.maxVal], true);
         });
     },
     created () {
@@ -156,7 +158,7 @@ export default {
          */
         checkInput (evt) {
             if (evt?.target?.value === "") {
-                this.getAlertRangeText();
+                this.getAlertRangeText(undefined);
                 if (evt?.target?.id === "slider-input-max") {
                     this.$refs.inputMaxNumber.value = this.maxVal;
                 }
@@ -233,18 +235,25 @@ export default {
                 }
             }
         },
+
         /**
          * Getting slider range error text in alerting box
          * @param {String} value the input value from input field
          * @returns {void}
          */
         getAlertRangeText (value) {
-            store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueOutOfRangeErrorMessage", {
-                inputValue: value,
-                minValueSlider: this.minimumValue,
-                maxValueSlider: this.maximumValue
-            }));
+            if (value === undefined) {
+                store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueEmptyErrorMessage"));
+            }
+            else {
+                store.dispatch("Alerting/addSingleAlert", i18next.t("common:snippets.slider.valueOutOfRangeErrorMessage", {
+                    inputValue: value,
+                    minValueSlider: this.minimumValue,
+                    maxValueSlider: this.maximumValue
+                }));
+            }
         },
+
         /**
          * Setting the parameter minOnly
          * @param {Number|undefined} minimumValue the minimum value
@@ -277,12 +286,7 @@ export default {
          */
         setMinMaxValue (minimumValue, maximumValue) {
             if (minimumValue === undefined || maximumValue === undefined) {
-                this.interface = new InterfaceOL(new IntervalRegister(), {
-                    getFeaturesByLayerId: false,
-                    isFeatureInMapExtent: false
-                });
-
-                this.interface.getMinMax(this.service, this.attrName, minMaxObj => {
+                this.api.getMinMax(this.attrName, minMaxObj => {
                     this.minimumValue = minimumValue === undefined && isObject(minMaxObj) && Object.prototype.hasOwnProperty.call(minMaxObj, "min") ? minMaxObj.min : minimumValue;
                     this.maximumValue = maximumValue === undefined && isObject(minMaxObj) && Object.prototype.hasOwnProperty.call(minMaxObj, "max") ? minMaxObj.max : maximumValue;
                     this.setInvalid(this.minimumValue, this.maximumValue);
@@ -314,25 +318,27 @@ export default {
         /**
          * Emits the current rule to whoever is listening.
          * @param {*} value the value to put into the rule
+         * @param {Boolean} [startup=false] true if the call comes on startup, false if a user actively changed a snippet
          * @returns {void}
          */
-        emitCurrentRule (value) {
+        emitCurrentRule (value, startup = false) {
             let result = value;
 
             if (Array.isArray(value)) {
                 result = [];
                 value.forEach(v => {
-                    if (v) {
+                    if (typeof v === "number") {
                         result.push(v);
                     }
                 });
             }
             this.$emit("ruleChanged", {
                 snippetId: this.snippetId,
+                startup,
                 rule: {
                     attrName: this.attrName,
                     operator: this.operator,
-                    result
+                    value: result
                 }
             });
         },

@@ -1,14 +1,16 @@
 <script>
-import InterfaceOL from "../interfaces/interface.ol.js";
-import IntervalRegister from "../utils/intervalRegister.js";
+import Multiselect from "vue-multiselect";
 
 export default {
     name: "SnippetDropdown",
+    components: {
+        Multiselect
+    },
     props: {
-        snippetId: {
-            type: Number,
+        api: {
+            type: Object,
             required: false,
-            default: 0
+            default: null
         },
         attrName: {
             type: String,
@@ -72,10 +74,17 @@ export default {
             required: false,
             default: "fromLegend"
         },
-        value: {
-            type: [Array, undefined],
+        snippetId: {
+            type: Number,
             required: false,
-            default: undefined
+            default: 0
+        },
+        value: {
+            type: [Array],
+            required: false,
+            default: () => {
+                return [];
+            }
         },
         visible: {
             type: Boolean,
@@ -86,14 +95,9 @@ export default {
     data () {
         return {
             disable: true,
-            interface: {},
+            isInitializing: true,
             invalid: false,
             showInfo: false,
-            service: {
-                type: "WFS",
-                url: "https://geodienste.hamburg.de/HH_WFS_Regionaler_Bildungsatlas_Bev_Stadtteil",
-                typename: "regionaler_bildungsatlas_bevoelkerung_stadtteile"
-            },
             multipleClass: "multipleClass",
             singleClass: "singleClass",
             dropdownValue: [],
@@ -108,7 +112,7 @@ export default {
     watch: {
         dropdownSelected: {
             handler (value) {
-                this.emitCurrentRule(value);
+                this.emitCurrentRule(value, this.isInitializing);
             }
         },
         disabled: {
@@ -118,24 +122,25 @@ export default {
         }
     },
     mounted () {
+        this.dropdownValue = !this.visible ? this.prechecked : this.value;
+        // triggers emitCurrentRule
+        this.dropdownSelected = Array.isArray(this.prechecked) ? this.prechecked : [];
+
+        if (this.visible && this.dropdownValue.length === 0) {
+            this.setUniqueValues(list => {
+                this.dropdownValue = list;
+            });
+        }
+        else if (!this.visible && this.dropdownValue.length === 0) {
+            this.invalid = true;
+        }
+
+        if (this.dropdownValue.length > 0) {
+            this.disable = false;
+        }
+
         this.$nextTick(() => {
-            this.dropdownValue = !this.visible ? this.prechecked : this.value;
-            this.dropdownSelected = Array.isArray(this.prechecked) ? this.prechecked : [];
-
-            if (this.visible && typeof this.dropdownValue === "undefined") {
-                this.setUniqueValues(list => {
-                    this.dropdownValue = list;
-                });
-            }
-            else if (!this.visible && typeof this.dropdownValue === "undefined") {
-                this.invalid = true;
-            }
-
-            this.emitCurrentRule(this.dropdownSelected);
-
-            if (typeof this.dropdownValue !== "undefined" && this.dropdownValue.length > 0) {
-                this.disable = false;
-            }
+            this.isInitializing = false;
         });
     },
     methods: {
@@ -146,28 +151,9 @@ export default {
             this.showInfo = !this.showInfo;
         },
         setUniqueValues (onsuccess) {
-            this.interface = new InterfaceOL(new IntervalRegister(), {
-                getFeaturesByLayerId: false,
-                isFeatureInMapExtent: false
-            });
-
-            this.interface.getUniqueValues(this.service, this.attrName, list => {
+            this.api.getUniqueValues(this.attrName, list => {
                 if (typeof onsuccess === "function") {
-                    // @TODO muss mit Micha abgestimmt werden,
-                    //  wie die API funktioniert und danach hier anpassen
-                    // eventuell muss die API erweitert werden,
-                    // da zur Zeit nur die Values (uniqId) zurückgeliefert werden.
-                    const res = [];
-
-                    res[list[0]] = "Altona";
-                    res[list[1]] = "Hamburg-Mitte";
-                    res[list[2]] = "Eimsbüttel";
-                    res[list[3]] = "Hamburg-Nord";
-                    res[list[4]] = "Wandsbek";
-                    res[list[5]] = "Bergedorf";
-                    res[list[6]] = "Harburg";
-
-                    onsuccess(res);
+                    onsuccess(list);
                     this.disable = false;
                 }
             }, error => {
@@ -178,9 +164,10 @@ export default {
         /**
          * Emits the current rule to whoever is listening.
          * @param {*} value the value to put into the rule
+         * @param {Boolean} [startup=false] true if the call comes on startup, false if a user actively changed a snippet
          * @returns {void}
          */
-        emitCurrentRule (value) {
+        emitCurrentRule (value, startup = false) {
             let result = value;
 
             if (Array.isArray(value)) {
@@ -193,6 +180,7 @@ export default {
             }
             this.$emit("ruleChanged", {
                 snippetId: this.snippetId,
+                startup,
                 rule: {
                     attrName: this.attrName,
                     operator: this.operator,
@@ -226,22 +214,21 @@ export default {
             </div>
         </div>
         <div class="select-box-container">
-            <select
+            <Multiselect
                 id="select-box"
                 v-model="dropdownSelected"
+                :options="dropdownValue"
                 name="select-box"
                 :disabled="disable"
-                :class="multiselect ? multipleClass : singleClass"
                 :multiple="multiselect"
-            >
-                <option
-                    v-for="(optionValue, index) in dropdownValue"
-                    :key="'optionValue' + '-' + index"
-                    :value="index"
-                >
-                    {{ optionValue }}
-                </option>
-            </select>
+                :placeholder="label"
+                :show-labels="false"
+                open-direction="bottom"
+                :hide-selected="true"
+                :close-on-select="true"
+                :clear-on-select="false"
+                :loading="disable"
+            />
         </div>
         <div
             v-show="showInfo"
@@ -254,6 +241,77 @@ export default {
     </div>
 </template>
 
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
+<style>
+    .select-box-container .multiselect .multiselect__spinner:after, .multiselect__spinner:before {
+        position: absolute;
+        content: "";
+        top: 50%;
+        left: 50%;
+        margin: -8px 0 0 -8px;
+        width: 16px;
+        height: 16px;
+        border-radius: 100%;
+        border: 2px solid transparent;
+        border-top-color: #828282;
+        box-shadow: 0 0 0 1px transparent;
+    }
+    .select-box-container .multiselect .multiselect__option {
+        display: block;
+        min-height: 30px;
+        line-height: 10px;
+        text-decoration: none;
+        text-transform: none;
+        vertical-align: middle;
+        position: relative;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .select-box-container .multiselect .multiselect__option--highlight {
+        background: #3177b1;
+        outline: none;
+        color: #fff;
+    }
+    .select-box-container .multiselect .multiselect__tag {
+        position: relative;
+        display: inline-block;
+        padding: 4px 26px 4px 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+        color: #fff;
+        line-height: 1;
+        background: #3177b1;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 100%;
+        text-overflow: ellipsis;
+    }
+    .select-box-container .multiselect .multiselect__option--highlight:after {
+        content: attr(data-select);
+        background: #a1d0ff;
+        color: white;
+    }
+    .select-box-container .multiselect .multiselect__tag-icon::after {
+        content: "\D7";
+        color: #dddddd;
+        font-size: 14px;
+    }
+    .select-box-container .multiselect .multiselect__tag-icon:hover {
+        background: #299ec1;
+    }
+    .select-box-container .multiselect .multiselect__placeholder {
+        color: #adadad;
+        display: inline-block;
+        margin-bottom: 10px;
+        padding-top: 2px;
+    }
+    .select-box-container .multiselect .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+        background: #ddd;
+    }
+</style>
+
 <style lang="scss" scoped>
     @import "~/css/mixins.scss";
     select {
@@ -262,29 +320,6 @@ export default {
         position: relative;
         width: 100%;
         margin-bottom: 5px;
-    }
-    .multipleClass {
-        display: inline-block;
-        width: 100%;
-        height: 100px;
-        padding: .375rem 1.75rem .375rem .75rem;
-        line-height: 1.5;
-        color: #495057;
-        vertical-align: middle;
-        background: #fff;
-        border: 1px solid rgb(34,34,34);
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-    .singleClass {
-        display: inline-block;
-        width: 100%;
-        height: 25px;
-        color: #495057;
-        vertical-align: middle;
-        background: #fff;
-        border: 1px solid rgb(34,34,34);
     }
     .disabled {
         border-color: #dddddd;
@@ -327,10 +362,6 @@ export default {
     .snippetDropdownContainer .bottom {
         clear: left;
         width: 100%;
-    }
-    .snippetDropdownContainer .left {
-        float: left;
-        width: 90%;
     }
     .snippetDropdownContainer .right {
         position: absolute;
