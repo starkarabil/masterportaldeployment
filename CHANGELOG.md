@@ -57,6 +57,7 @@
 - Tool CoordToolkit: Labeling of longitude and latitude corrected if long/lat is selected as projection system.
 - Fixed issue #672: layerAttribution not working correctly if layer is not initially visible
 - Issue #673: LayerSlider: The progress bar is now displayed correctly with more than 10 configured layers.
+- Issue #680, #683: transparency setting has no visible effect in treeType custom
 
 ---
 ## v2.17.1 - 2022-01-011
