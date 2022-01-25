@@ -16,12 +16,12 @@
 			"startZoomLevel": 9,
 			"placeholder": "Suche nach: - Adresse - Aktiven WFS"
 		},
-		"mapView": {
-			"backgroundImage": "./resources/img/backgroundCanvas.jpeg",
-			"startCenter": [561210, 5932600],
-			"extent": [510000.0, 5850000.0, 625000.4, 6000000.0],
-			"startZoomLevel": 1
-		},
+    "mapView": {
+      "backgroundImage": "",
+      "startCenter": [342581.5756060508,5699677.43851409],
+      "extent": [319737.319517,5681386.510791,364782.722108,5721828.154174],
+      "startzoomLevel": 3
+    },
 		"menu": {
 			"tree": {
 				"name": "Themen"
@@ -92,6 +92,11 @@
 		},
 		"Fachdaten": {
 			"Layer": [
+				{
+					"id": "NIVPs",
+					"name": "NIVPs",
+          "visibility": true
+				},
 				{
 					"id": "2426",
 					"name": "Bezirke",

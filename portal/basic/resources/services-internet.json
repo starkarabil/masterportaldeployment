@@ -985,5 +985,24 @@
           "kategorie_organisation" : "Landesbetrieb Geoinformation und Vermessung"
        }
     ]
-  }
+  },
+	{
+		"id": "NIVPs",
+		"typ": "WFS",
+		"url": "https://geoportal2.duisburg.de/arcgisserver/services/Masterportal/WFS_Fachdaten_MP/MapServer/WFSServer",
+		"version": "2.0.0",
+		"outputFormat":"text/xml",
+		"featureNS": "Masterportal_WFS_Fachdaten_MP",
+		"featureType": "NIVPs",
+		"legend" : true,
+		"legendURL" : "",
+		"gfiTheme" : "default",
+		"gfiComplex" : "false",
+		"hitTolerance" : 0,
+		"gfiAttributes": {
+			"NBZ": "Nummerrierungsbezirk",
+			"PKTNR": "Punktnummer"},
+		"datasets": [],
+		"urlIsVisible" : true
+	}
 ]
