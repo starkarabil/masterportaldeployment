@@ -3,7 +3,7 @@
 
 ## snippet for used modules
 
-If you want to use this module, you have to add this to the module which should execute the layerSelector:
+To use this module, the following code snippet hast to be added to the module which should execute the layerSelector:
 
 ```js
 // [...]
@@ -15,14 +15,14 @@ if (this.$store.state.LayerSelector !== undefined) {
 // [...]
 ```
 
-The attribute source must fit one source of the configured events.
+The attribute source must fit the sourceName used in the configured events.
 
 ## Configuration of the module
 
 |Name|Required|Type|Default|Description|
 |----|--------|----|-------|-----------|
-|events|yes|Array||events to be executed from other modules to select or add layers in layertree|
-|default|no|Object||object to overwirte the missing parts in the events objects|
+|events|yes|Object[]||Events to be executed from other modules to select or add layers in the layertree.|
+|default|no|Object||Object to overwirte the missing parts in the events objects.|
 
 **Example:**
 
@@ -54,19 +54,18 @@ The attribute source must fit one source of the configured events.
 
 ### layerSelector.events
 
-Array of Objects to configure which are executed from other modules to interact with the layer tree
+Array of Objects to configure which are executed from other modules to interact with the layer tree.
 
 |Name|Required|Type|Default|Description|
 |----|--------|----|-------|-----------|
-|source|yes|String||The name of this event. it have to be equal to the source attribute the module sets.|
-|showLayerId|no|Array||Layer IDs of Layer to be selected in the layer tree|
-|layerIds|no|Array||Layer IDs to add to the layer tree.|
-|openFolderForLayerIds|no|Array||List of Layer IDs to open their folders in the layer tree.|
+|source|yes|String||The name of the event. It has to be equal to the source attribute the module sets.|
+|showLayerId|no|String[]||Layer IDs of Layer to be selected in the layer tree.|
+|layerIds|no|String[]||Layer IDs to add to the layer tree.|
+|openFolderForLayerIds|no|String[]||List of Layer IDs to open their folders in the layer tree.|
 |filter|no|Function||Function to check if this event should be triggered.|
-|extent|no|Array||Bounding Box to zoom to when this event is triggered.|
+|extent|no|Integer[]||Bounding Box to zoom to when this event is triggered.|
 |deselectPreviousLayers|no|String|allways|Deselects the previous layers if it has the value allways.|
-|showMenuInDesktopMode|no|Boolean||If this Event should run in the desktop mode|
-
+|showMenuInDesktopMode|no|Boolean||If this Event should run in the desktop mode.|
 
 **Example:**
 
