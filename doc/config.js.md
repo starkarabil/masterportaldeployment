@@ -360,7 +360,7 @@ In the following, all configuration options are described. For all configuration
 |Name|Required|Type|Default|Description|
 |----|--------|----|-------|-----------|
 |events|yes|Object[]||Events to be executed from other modules to select or add layers in layertree.|
-|default|no|Object||Object to overwirte the missing parts in the events objects.|
+|default|no|Object||Object to overwrite the missing parts in the events objects.|
 
 **Example:**
 
@@ -395,7 +395,7 @@ Array of Objects to configure which are executed from other modules to interact 
 
 |Name|Required|Type|Default|Description|
 |----|--------|----|-------|-----------|
-|source|yes|String||The name of the event. It has to be equal to the source attribute the module sets.|
+|event|yes|String||The name of the event. For possible values and their meanings look further down.|
 |showLayerId|no|String[]||Layer IDs of Layer to be selected in the layer tree.|
 |layerIds|no|String[]||Layer IDs to add to the layer tree.|
 |openFolderForLayerIds|no|String[]||List of Layer IDs to open their folders in the layer tree.|
@@ -409,6 +409,7 @@ Array of Objects to configure which are executed from other modules to interact 
 ```json
 {
     "events": [{
+        "event": "",
         "showLayerId": null,
         "layerIds": [],
         "openFolderForLayerIds": [],
@@ -419,6 +420,16 @@ Array of Objects to configure which are executed from other modules to interact 
     }]
 }
 ```
+
+***
+
+**Values for event**
+
+|event|Description|
+|-----|-----------|
+|comparefeatures_select|when a layer is selected for comparison in CompareFeatures module|
+|fileimport_imported|when files were successfully imported in FileImport module|
+|measure_geometry|when the selected geometry value changed in Measure module|
 
 ***
 

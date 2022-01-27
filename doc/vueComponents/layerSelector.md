@@ -1,22 +1,5 @@
 # The layerSelector module
 
-
-## snippet for used modules
-
-To use this module, the following code snippet hast to be added to the module which should execute the layerSelector:
-
-```js
-// [...]
-
-if (this.$store.state.LayerSelector !== undefined) {
-    this.$store.state.LayerSelector.execute = {source: sourceName, argument: <selection of a field; optional>};
-}
-
-// [...]
-```
-
-The attribute source must fit the sourceName used in the configured events.
-
 ## Configuration of the module
 
 |Name|Required|Type|Default|Description|
@@ -30,13 +13,13 @@ The attribute source must fit the sourceName used in the configured events.
 {
     "events": [
         {
-            "source": "modulname",
+            "event": "eventName",
             "filter": (value) => value === "graustufen",
             "deselectPreviousLayers": "allways",
             "layerIds": ["1001"]
         },
         {
-            "source": "modulname",
+            "event": "eventName",
             "filter": (value) => value === "farbe",
             "deselectPreviousLayers": "allways",
             "layerIds": ["1000"],
@@ -58,7 +41,7 @@ Array of Objects to configure which are executed from other modules to interact 
 
 |Name|Required|Type|Default|Description|
 |----|--------|----|-------|-----------|
-|source|yes|String||The name of the event. It has to be equal to the source attribute the module sets.|
+|event|yes|String||The name of the event. For possible values and their meanings look further down.|
 |showLayerId|no|String[]||Layer IDs of Layer to be selected in the layer tree.|
 |layerIds|no|String[]||Layer IDs to add to the layer tree.|
 |openFolderForLayerIds|no|String[]||List of Layer IDs to open their folders in the layer tree.|
@@ -71,7 +54,8 @@ Array of Objects to configure which are executed from other modules to interact 
 
 ```json
 {
-    "layers": [{
+    "events": [{
+        "event": "",
         "showLayerId": null,
         "layerIds": [],
         "openFolderForLayerIds": [],
@@ -82,5 +66,21 @@ Array of Objects to configure which are executed from other modules to interact 
     }]
 }
 ```
+
+***
+
+**Values for event**
+
+|event|Description|
+|-----|-----------|
+|comparefeatures_select|when a layer is selected for comparison in CompareFeatures module|
+|fileimport_imported|when files were successfully imported in FileImport module|
+|measure_geometry|when the selected geometry value changed in Measure module|
+
+***
+
+**Information for developer**
+
+For more events add an entry into the eventMap attribute in **[stateLayerSelector.js](src\modules\layerSelector\store\stateLayerSelector.js)**
 
 ***

@@ -1,5 +1,6 @@
 import {fetchFirstModuleConfig} from "../../../utils/fetchFirstModuleConfig";
 import {Radio} from "backbone";
+import store from "../../../app-store";
 import globalGetters from "../../../app-store/getters";
 import globalState from "../../../app-store/state";
 
@@ -21,12 +22,14 @@ const configPaths = [
 
             context.dispatch("fillConfig");
 
+            context.dispatch("receiveEvents");
+
             return cfg;
         },
 
         /**
          * fills configs with the default values
-         * @param {Object} state the context state
+         * @param {Object} context the context
          * @returns {void}
          */
         fillConfig: function ({state}) {
@@ -58,6 +61,23 @@ const configPaths = [
         },
 
         /**
+         * create configured watches
+         * @param {Object} context the context
+         * @returns {void}
+         */
+        receiveEvents: function ({state, dispatch}) {
+            const evts = state.events;
+
+            evts.forEach((evt) => {
+                const source = state.eventMap[evt.source];
+
+                store.watch((mainState, mainGetters) => mainGetters[source], newVal => {
+                    dispatch("handleEvent", {cfg: evt, input: newVal});
+                });
+            });
+        },
+
+        /**
          * deselects already selected layers
          * @param {Object} vueObject Object with state, dispatch etc.
          * @param {String} treeType which type of layer tree is used
@@ -79,9 +99,9 @@ const configPaths = [
 
         /**
          * handles the event if it was executed
-         * @param {*} context the context
+         * @param {Object} context the context
          * @param {Object} param.cfg the configured object for this case
-         * @param {Object} param.input the value wich executes this event
+         * @param {Object} param.input the new value of the watched attribute
          * @returns {void}
          */
         handleEvent: async function ({dispatch}, {cfg, input}) {
@@ -132,8 +152,8 @@ const configPaths = [
 
         /**
          * executes the filter
-         * @param {*} context the context
-         * @param {*} param.filter function to check if this config should be used
+         * @param {Object} context the context
+         * @param {Function} param.filter function to check if this config should be used
          * @param {*} param.input the value wich executes this event
          * @returns {Boolean} true if the configured filter function returns true, otherwise false
          */
@@ -143,9 +163,9 @@ const configPaths = [
 
         /**
          * adds layers to the tree
-         * @param {*} context the context
-         * @param {*} param.layerIds layer ids to add
-         * @param {*} param.treeType type of the layertree
+         * @param {Object} context the context
+         * @param {String[]} param.layerIds layer ids to add
+         * @param {String} param.treeType type of the layertree
          * @returns {void}
          */
         handleEventAddLayers: function (context, {layerIds, treeType}) {
@@ -162,8 +182,8 @@ const configPaths = [
 
         /**
          * activates given layers
-         * @param {*} context the context
-         * @param {*} param.showLayerId the layer ids to show
+         * @param {Object} context the context
+         * @param {String[]} param.showLayerId the layer ids to show
          * @param {Boolean} param.showMenuInDesktopMode  if the client shows menu in desktop mode
          * @param {Boolean} param.isMobile if the client runs in mobile mode
          * @returns {void}
@@ -180,8 +200,8 @@ const configPaths = [
 
         /**
          * opens configured layer folders
-         * @param {*} context the context
-         * @param {*} param.openFolderForLayerIds configured layer ids
+         * @param {Object} context the context
+         * @param {String[]} param.openFolderForLayerIds configured layer ids
          * @returns {void}
          */
         handleEventOpenFolder: function (context, {openFolderForLayerIds}) {
@@ -194,9 +214,9 @@ const configPaths = [
 
         /**
          * zooms to the given extent with the given resolution
-         * @param {*} context the context
-         * @param {*} param.extent the extent to zoom to
-         * @param {*} param.minResolution the minimal resolution to zoom to
+         * @param {Object} context the context
+         * @param {Integer[]} param.extent the extent to zoom to
+         * @param {Number} param.minResolution the minimal resolution to zoom to
          * @returns{void}
          */
         handleEventExtend: function (context, {extent, minResolution}) {
