@@ -180,6 +180,9 @@ export default {
 </template>
 
 <style scoped>
+    .panel-group .panel + .panel {
+        margin-top: -1px;
+    }
     .panel-default > .panel-heading {
         cursor:default;
         background-color: white;

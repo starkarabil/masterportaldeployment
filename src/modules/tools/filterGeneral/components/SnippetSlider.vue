@@ -279,7 +279,7 @@ export default {
             :id="'snippetSlider-' + snippetId"
             ref="inputNumber"
             v-model="inRangeValue"
-            class="input-single"
+            class="input-single form-control"
             type="number"
             :min="minimumValue"
             :max="maximumValue"
@@ -315,6 +315,9 @@ export default {
 
 <style lang="scss" scoped>
     @import "~/css/mixins.scss";
+    .form-control {
+        height: 28px;
+    }
     .snippetSliderContainer {
         padding: 5px;
         margin-bottom: 10px;

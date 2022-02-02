@@ -414,7 +414,10 @@ export default {
             v-if="layerConfig.snippetTags !== false"
             class="snippetTags"
         >
-            <div v-show="hasUnfixedRules()">
+            <div
+                class="snippetTagsWrapper"
+                v-show="hasUnfixedRules()"
+            >
                 <SnippetTag
                     :is-reset-all="true"
                     label=""
@@ -424,6 +427,7 @@ export default {
                 />
             </div>
             <div
+                class="snippetTagsWrapper"
                 v-for="(rule, ruleIndex) in rules"
                 :key="'rule-' + ruleIndex"
             >
@@ -439,7 +443,7 @@ export default {
         </div>
         <div
             v-if="Object.prototype.hasOwnProperty.call(layerConfig, 'searchInMapExtent') && layerConfig.searchInMapExtent"
-            class="snippet"
+            class="form-group"
         >
             <SnippetCheckboxFilterInMapExtent
                 :filter-id="layerConfig.filterId"
@@ -607,11 +611,13 @@ export default {
             </div>
             <div class="snippet">
                 <button
+                    class="btn btn-primary btn-sm"
                     @click="filter()"
                 >
                     Filtern
                 </button>
                 <button
+                    class="btn btn-secondary btn-sm"
                     v-if="paging.page < paging.total && showStop"
                     @click="stopfilter()"
                 >
@@ -627,19 +633,30 @@ export default {
 
 <style lang="scss" scoped>
     @import "~/css/mixins.scss";
+    .win-body-vue {
+        padding: 0px;
+    }
     .panel-body {
-        padding: 0 15px;
+        padding: 0 5px;
+    }
+    .panel-heading {
+        padding: 5px;
     }
     .snippet {
         display: inline-block;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         width: 100%;
         b {
             display: block;
         }
     }
     .snippetTags {
-        display: block;
-        margin-bottom: 25px;
+        display: flow-root;
+        margin: 10px 0 25px 0;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .form-group {
+        clear: both;
     }
 </style>

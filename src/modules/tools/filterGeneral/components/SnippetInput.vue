@@ -175,7 +175,7 @@ export default {
             <input
                 :id="'snippetInput-' + snippetId"
                 v-model="value"
-                class="snippetInput"
+                class="snippetInput form-control"
                 type="text"
                 name="input"
                 :disabled="disabled"

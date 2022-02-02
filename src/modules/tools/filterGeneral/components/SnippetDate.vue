@@ -268,7 +268,7 @@ export default {
             <input
                 :id="'snippetDate-' + snippetId"
                 v-model="inRangeValue"
-                class="snippetDate"
+                class="snippetDate form-control"
                 type="date"
                 name="dateInput"
                 :max="maximumValue"
@@ -289,6 +289,9 @@ export default {
 
 <style lang="scss" scoped>
     @import "~/css/mixins.scss";
+    .form-control {
+        height: 28px;
+    }
     .snippetDateContainer {
         padding: 5px;
         margin-bottom: 10px;

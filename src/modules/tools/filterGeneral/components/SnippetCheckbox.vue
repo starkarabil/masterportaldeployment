@@ -233,8 +233,7 @@ export default {
         }
     }
     .snippetCheckboxContainer .right {
-        position: absolute;
-        right: 10px;
+        float: right;
     }
     .category-layer .right {
         right: 30px;
