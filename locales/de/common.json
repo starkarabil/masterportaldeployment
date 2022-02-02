@@ -18,7 +18,8 @@
         "save": "Speichern",
         "cancel": "Abbrechen",
         "open": "Öffnen",
-        "load": "Laden"
+        "load": "Laden",
+        "reset": "Zurücksetzen"
     },
     "colors": {
         "blue": "Blau",
