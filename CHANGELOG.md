@@ -10,7 +10,7 @@
 
 ## Unreleased - in development
 ### Added
-
+- Added WFS functions (GetFeature and DescribeFetureType) to the api folder to query the WFS-Requests in one place.
 ### Changed
 - Migrated the map from Backbone.js to Vue.js environment.
 
