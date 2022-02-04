@@ -144,6 +144,14 @@ export default {
             }
         },
         /**
+         * Emits the endResizing event upward
+         * @param {Event} event the dom event
+         * @returns {void}
+         */
+        onEndResizing (event) {
+            this.$emit("endResizing", event);
+        },
+        /**
          * Updates the size of the map depending on sidebars visibility
          *  @return {void}
          */
@@ -152,6 +160,7 @@ export default {
                 return;
             }
             Radio.trigger("Map", "updateSize");
+            this.onEndResizing();
         },
         /**
          * Updates size of map and emits event to parent.
@@ -265,6 +274,7 @@ export default {
                 target-sel=".tool-window-vue"
                 :min-w="200"
                 :min-h="100"
+                @endResizing="onEndResizing"
             />
         </div>
     </div>

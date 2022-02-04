@@ -107,7 +107,7 @@ function increaseFeature (commit, getters, highlightObject) {
             || highlightObject.layer?.id && highlightObject.id // if layerId and featureId are given
             ? getHighlightFeature(highlightObject.layer?.id, highlightObject.id, getters) // get feature from layersource, incl. check against clustered features
             : highlightObject.feature, // else, use provided feature itself if given
-        clonedStyle = styleObject(highlightObject, feature) ? styleObject(highlightObject, feature).clone() : feature.getStyle().clone(),
+        clonedStyle = styleObject(highlightObject, feature) ? styleObject(highlightObject, feature).clone() : feature.getStyle()?.clone(),
         clonedImage = clonedStyle ? clonedStyle.getImage() : undefined;
 
     if (clonedImage) {
