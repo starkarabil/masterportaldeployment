@@ -25,6 +25,13 @@ export default {
             required: false,
             default: false
         },
+        adjustment: {
+            type: Object,
+            required: false,
+            default: () => {
+                return {};
+            }
+        },
         autoInit: {
             type: Boolean,
             required: false,
@@ -100,10 +107,12 @@ export default {
         return {
             disable: true,
             isInitializing: true,
+            isAdjusting: false,
             showInfo: false,
             dropdownValue: [],
             dropdownSelected: [],
-            iconList: {}
+            iconList: {},
+            initialValue: false
         };
     },
     computed: {
@@ -149,13 +158,55 @@ export default {
     },
     watch: {
         dropdownSelected (value) {
-            if (!this.isInitializing || this.isInitializing && Array.isArray(this.prechecked)) {
+            if (this.isAdjusting) {
+                return;
+            }
+            else if (!this.isInitializing || this.isInitializing && Array.isArray(this.prechecked)) {
                 if (Array.isArray(value) && value.length) {
                     this.emitCurrentRule(value, this.isInitializing);
                 }
                 else {
                     this.deleteCurrentRule();
                 }
+            }
+        },
+        adjustment (adjusting) {
+//                this.dropdownValue = this.initialValue;
+            if (!isObject(adjusting) || this.visible === false) {
+                return;
+            }
+            if (this.initialValue === false && Array.isArray(this.dropdownValue)) {
+                this.initialValue = [];
+                this.dropdownValue.forEach(value => {
+                    this.initialValue.push(value);
+                });
+            }
+
+            if (adjusting?.start) {
+                this.isAdjusting = true;
+                this.dropdownValue = [];
+            }
+            if (isObject(adjusting?.adjust) && Array.isArray(adjusting.adjust?.value)) {
+                adjusting.adjust.value.forEach(value => {
+                    if (!this.dropdownValue.includes(value)) {
+                        this.dropdownValue.push(value);
+                    }
+                });
+            }
+            if (adjusting?.finish) {
+                const selected = [];
+
+                if (Array.isArray(this.dropdownValue)) {
+                    this.dropdownValue.forEach(value => {
+                        if (this.dropdownSelected.includes(value)) {
+                            selected.push(value);
+                        }
+                    });
+                }
+                this.dropdownSelected = selected;
+                this.$nextTick(() => {
+                    this.isAdjusting = false;
+                });
             }
         },
         disabled (value) {
